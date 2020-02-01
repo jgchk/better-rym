@@ -1,0 +1,24 @@
+{
+  "name": "better-rym",
+  "version": "2.2.1",
+  "description": "various improvements for rateyourmusic.com",
+  "private": true,
+  "scripts": {
+    "build:dev": "webpack --config webpack.dev.js",
+    "build:prod": "webpack --config webpack.prod.js"
+  },
+  "author": "Jake Cheek",
+  "license": "MIT",
+  "dependencies": {
+    "jquery": "^3.4.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.8.4",
+    "@babel/preset-env": "^7.8.4",
+    "babel-loader": "^8.0.6",
+    "clean-webpack-plugin": "^3.0.0",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10",
+    "webpack-merge": "^4.2.2"
+  }
+}
