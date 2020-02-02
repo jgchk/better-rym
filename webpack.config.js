@@ -20,6 +20,8 @@ module.exports = {
         name: 'betterRYM',
         author: 'mocha',
         version: dev ? `[version]-build.[buildTime]` : `[version]`,
+        grant:['GM_xmlhttpRequest'],
+        connect: ['self', 'api.jake.cafe'],
       },
     }),
   ],
