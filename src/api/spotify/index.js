@@ -36,7 +36,7 @@ function get_info(url) {
     info.title = response.name
     info.format = 'digital file'
     info.attributes = ['streaming']
-    info.date = response.release_date
+    info.date = response.release_date || response.album.release_date
     info.source = response.external_urls.spotify
     
     if (response.type === 'track') {
