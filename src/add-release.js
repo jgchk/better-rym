@@ -3,7 +3,7 @@ import { importers } from './api'
 
 const add_release_url = 'https://rateyourmusic.com/releases/ac'
 
-export function check_add_release_page() {
+export function check_add_release_page () {
   if (is_add_release_page()) {
     modify_release_page()
     return true
@@ -12,11 +12,11 @@ export function check_add_release_page() {
   }
 }
 
-function is_add_release_page() {
+function is_add_release_page () {
   return window.location.href.startsWith(add_release_url)
 }
 
-function modify_release_page() {
+function modify_release_page () {
   const $step1_header = $('#release_ac > div.submit_step_header').first()
   const $step0_header = $(`
     <div class="submit_step_header">
@@ -61,8 +61,8 @@ function modify_release_page() {
   $step1_header.before($box)
 }
 
-async function import_link(url) {
-  for (let importer_name of Object.keys(importers)) {
+async function import_link (url) {
+  for (const importer_name of Object.keys(importers)) {
     const importer = importers[importer_name]
     console.log(importer_name, importer.test(url))
     if (importer.test(url)) {
@@ -73,7 +73,7 @@ async function import_link(url) {
   }
 }
 
-function fill_info(info) {
+function fill_info (info) {
   console.log(info)
   fill_type(info.type)
   fill_date(info.date)
@@ -84,7 +84,7 @@ function fill_info(info) {
   fill_source(info.source)
 }
 
-function fill_type(info_type) {
+function fill_type (info_type) {
   const types = {
     album: 's',
     compilation: 'c',
@@ -103,7 +103,7 @@ function fill_type(info_type) {
   $radio_btn.prop('checked', true)
 }
 
-function fill_date(info_date) {
+function fill_date (info_date) {
   if (!info_date) return
   const [year, month, day] = info_date.split('-')
 
@@ -116,17 +116,17 @@ function fill_date(info_date) {
   $day.val(day)
 }
 
-String.prototype.capitalize = function() {
-    return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
-};
+String.prototype.capitalize = function () {
+  return this.replace(/(?:^|\s)\S/g, function (a) { return a.toUpperCase() })
+}
 
-function fill_title(info_title) {
+function fill_title (info_title) {
   const title = capitalize_title(info_title)
   const $title = $('#title')
   $title.val(title)
 }
 
-function capitalize_title(title) {
+function capitalize_title (title) {
   const title_split = title.split(' ')
   if (title_split.length === 0) return
 
@@ -143,14 +143,14 @@ function capitalize_title(title) {
   // always capitalize first and last word
   title_split[0] = title_split[0].capitalize()
   title_split[title_split.length - 1] = title_split[title_split.length - 1].capitalize()
-  
+
   return title_split.join(' ')
 }
 
-function fill_format(info_format) {
+function fill_format (info_format) {
   const formats = {
-    "digital file": 58,
-    "lossless digital": 59
+    'digital file': 58,
+    'lossless digital': 59
   }
 
   const format = formats[info_format]
@@ -160,7 +160,7 @@ function fill_format(info_format) {
   $radio_btn.prop('checked', true)
 }
 
-function fill_attributes(info_attributes) {
+function fill_attributes (info_attributes) {
   const attributes = {
     downloadable: 'attrib122',
     streaming: 'attrib123'
@@ -173,7 +173,7 @@ function fill_attributes(info_attributes) {
   })
 }
 
-function fill_tracks(info_tracks) {
+function fill_tracks (info_tracks) {
   const track_strings = info_tracks.map((info_track, i) => {
     const track_num = i + 1
     const title = capitalize_title(info_track.title)
@@ -192,7 +192,7 @@ function fill_tracks(info_tracks) {
   $simple_btn.click()
 }
 
-function fill_source(info_source) {
+function fill_source (info_source) {
   const $source = $('#notes')
   $source.val(info_source)
 }

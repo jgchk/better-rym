@@ -5,12 +5,12 @@ const client_id = '52dec9c30f7ac67e36faed73a9892095'
 const redirect_uri = 'https://rateyourmusic.com/callback/soundcloud/'
 SC.initialize({ client_id, redirect_uri })
 
-function test_url(url) {
-  const regex = /((http:\/\/(soundcloud\.com\/.*|soundcloud\.com\/.*\/.*|soundcloud\.com\/.*\/sets\/.*|soundcloud\.com\/groups\/.*|snd\.sc\/.*))|(https:\/\/(soundcloud\.com\/.*|soundcloud\.com\/.*\/.*|soundcloud\.com\/.*\/sets\/.*|soundcloud\.com\/groups\/.*)))/i;
+function test_url (url) {
+  const regex = /((http:\/\/(soundcloud\.com\/.*|soundcloud\.com\/.*\/.*|soundcloud\.com\/.*\/sets\/.*|soundcloud\.com\/groups\/.*|snd\.sc\/.*))|(https:\/\/(soundcloud\.com\/.*|soundcloud\.com\/.*\/.*|soundcloud\.com\/.*\/sets\/.*|soundcloud\.com\/groups\/.*)))/i
   return regex.test(url)
 }
 
-async function get_info(url) {
+async function get_info (url) {
   const response = await SC.resolve(url)
   console.log(response)
 

@@ -3,11 +3,11 @@ import { ms_to_minutes_seconds } from '../../lib/time'
 const info_url = (type, id) => `https://api.jake.cafe/spotify/${type}/${id}`
 const regex = /((http:\/\/(open\.spotify\.com\/.*|spoti\.fi\/.*|play\.spotify\.com\/.*))|(https:\/\/(open\.spotify\.com\/.*|play\.spotify\.com\/.*)))(album|track)\/([a-zA-Z0-9]+)/
 
-function test_url(url) {
+function test_url (url) {
   return regex.test(url)
 }
 
-function get_info(url) {
+function get_info (url) {
   const match = url.match(regex)
   const type = match[6]
   const id = match[7]
@@ -31,14 +31,14 @@ function get_info(url) {
     })
   })
 
-  function parse_response(response) {
+  function parse_response (response) {
     const info = {}
     info.title = response.name
     info.format = 'digital file'
     info.attributes = ['streaming']
     info.date = response.release_date || response.album.release_date
     info.source = response.external_urls.spotify
-    
+
     if (response.type === 'track') {
       info.type = 'single'
     } else if (response.album_type === 'single') {
@@ -74,5 +74,5 @@ function get_info(url) {
 
 export default {
   test: test_url,
-  info: get_info,
+  info: get_info
 }

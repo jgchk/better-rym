@@ -3,6 +3,5 @@ import spotify from './spotify'
 
 export const importers = {
   soundcloud,
-  spotify,
+  spotify
 }
-
