@@ -1,9 +1,12 @@
 import SC from 'soundcloud'
 import { msToMinutesSeconds } from '../lib/time'
 
-const clientId = '52dec9c30f7ac67e36faed73a9892095'
+const clientId = 'f0sxU3Az3dcl0lS1M9wFJ00SqawVL72n'
 const redirectUri = 'https://rateyourmusic.com/callback/soundcloud/'
-SC.initialize({ clientId, redirectUri })
+SC.initialize({
+  client_id: clientId,
+  redirect_uri: redirectUri
+})
 
 function testUrl (url) {
   const regex = /((http:\/\/(soundcloud\.com\/.*|soundcloud\.com\/.*\/.*|soundcloud\.com\/.*\/sets\/.*|soundcloud\.com\/groups\/.*|snd\.sc\/.*))|(https:\/\/(soundcloud\.com\/.*|soundcloud\.com\/.*\/.*|soundcloud\.com\/.*\/sets\/.*|soundcloud\.com\/groups\/.*)))/i
@@ -18,8 +21,8 @@ async function getInfo (url) {
   info.title = response.title
   info.format = 'digital file'
   info.attributes = ['streaming']
-  info.date = response.createdAt.split(' ')[0].replace(/\//g, '-')
-  info.source = response.permalinkUrl
+  info.date = response.created_at.split(' ')[0].replace(/\//g, '-')
+  info.source = response.permalink_url
 
   if (response.kind === 'track') {
     info.type = 'single'
