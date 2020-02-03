@@ -64,7 +64,6 @@ function modifyReleasePage () {
 async function importLink (url) {
   for (const importerName of Object.keys(importers)) {
     const importer = importers[importerName]
-    console.log(importerName, importer.test(url))
     if (importer.test(url)) {
       const info = await importer.info(url)
       fillInfo(info)
@@ -74,7 +73,6 @@ async function importLink (url) {
 }
 
 function fillInfo (info) {
-  console.log(info)
   fillType(info.type)
   fillDate(info.date)
   fillTitle(info.title)

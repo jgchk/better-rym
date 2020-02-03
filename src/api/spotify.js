@@ -18,9 +18,7 @@ function getInfo (url) {
       url: infoUrl(type, id),
       responseType: 'json',
       onload: result => {
-        console.log(result)
         if (result.status === 200) {
-          console.log(result.response.body)
           const info = parseResponse(result.response.body)
           resolve(info)
         } else {

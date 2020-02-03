@@ -15,7 +15,6 @@ function testUrl (url) {
 
 async function getInfo (url) {
   const response = await SC.resolve(url)
-  console.log(response)
 
   const info = {}
   info.title = response.title
