@@ -1,5 +1,7 @@
 # betterRYM
 [![JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-yellow?style=flat-square)](https://standardjs.com)
+[![RateYourMusic](https://img.shields.io/badge/rym-~CaptainMocha-blue?style=flat-square)](https://rateyourmusic.com/~CaptainMocha)
+[![Discord](https://img.shields.io/badge/discord-mocha%230024-lightgrey?style=flat-square)](https://discord.gg/TnDuvPW)
 
 Enhancements for [rateyourmusic.com](https://rateyourmusic.com/) 🎧
 
