@@ -1,4 +1,5 @@
 # betterRYM
+[![JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-yellow?style=flat-square)](https://standardjs.com)
 
 Enhancements for [rateyourmusic.com](https://rateyourmusic.com/) 🎧
 
