@@ -50,8 +50,8 @@ function modifyReleasePage () {
   $fieldContent.append($fieldDescription)
 
   const $linkbox = $('<div>')
-  const $input = $('<input>')
-  const $submit = $('<button>Submit</button>')
+  const $input = $('<input style="width: 400px;">')
+  const $submit = $('<button id="importSourceBtn" style="height: 22px; margin-left: 2px; padding-left: 2px; padding-right: 4px; cursor: pointer;">Submit</button>')
   $submit.on('click', () => importLink($input.val()))
   $linkbox.append($input)
   $linkbox.append($submit)
