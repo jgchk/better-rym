@@ -1,13 +1,13 @@
-import { ms_to_minutes_seconds } from '../../lib/time'
+import { msToMinutesSeconds } from '../lib/time'
 
-const info_url = (type, id) => `https://api.jake.cafe/spotify/${type}/${id}`
+const infoUrl = (type, id) => `https://api.jake.cafe/spotify/${type}/${id}`
 const regex = /((http:\/\/(open\.spotify\.com\/.*|spoti\.fi\/.*|play\.spotify\.com\/.*))|(https:\/\/(open\.spotify\.com\/.*|play\.spotify\.com\/.*)))(album|track)\/([a-zA-Z0-9]+)/
 
-function test_url (url) {
+function testUrl (url) {
   return regex.test(url)
 }
 
-function get_info (url) {
+function getInfo (url) {
   const match = url.match(regex)
   const type = match[6]
   const id = match[7]
@@ -15,13 +15,13 @@ function get_info (url) {
   return new Promise((resolve, reject) => {
     GM_xmlhttpRequest({
       method: 'GET',
-      url: info_url(type, id),
+      url: infoUrl(type, id),
       responseType: 'json',
       onload: result => {
         console.log(result)
         if (result.status === 200) {
           console.log(result.response.body)
-          const info = parse_response(result.response.body)
+          const info = parseResponse(result.response.body)
           resolve(info)
         } else {
           reject(result.status)
@@ -31,7 +31,7 @@ function get_info (url) {
     })
   })
 
-  function parse_response (response) {
+  function parseResponse (response) {
     const info = {}
     info.title = response.name
     info.format = 'digital file'
@@ -59,12 +59,12 @@ function get_info (url) {
     if (response.tracks) {
       info.tracks = response.tracks.items.map(track => ({
         title: track.name,
-        length: ms_to_minutes_seconds(track.duration_ms)
+        length: msToMinutesSeconds(track.duration_ms)
       }))
     } else {
       info.tracks = [{
         title: response.name,
-        length: ms_to_minutes_seconds(response.duration_ms)
+        length: msToMinutesSeconds(response.duration_ms)
       }]
     }
 
@@ -73,6 +73,6 @@ function get_info (url) {
 }
 
 export default {
-  test: test_url,
-  info: get_info
+  test: testUrl,
+  info: getInfo
 }

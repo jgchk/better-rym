@@ -1,7 +1,7 @@
-import { check_add_release_page } from './add-release'
+import { checkAddReleasePage } from './add-release'
 
 main()
 
 function main () {
-  if (check_add_release_page()) return
+  if (checkAddReleasePage()) return
 }

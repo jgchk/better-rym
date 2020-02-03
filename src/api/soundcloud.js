@@ -1,16 +1,16 @@
 import SC from 'soundcloud'
-import { ms_to_minutes_seconds } from '../lib/time'
+import { msToMinutesSeconds } from '../lib/time'
 
-const client_id = '52dec9c30f7ac67e36faed73a9892095'
-const redirect_uri = 'https://rateyourmusic.com/callback/soundcloud/'
-SC.initialize({ client_id, redirect_uri })
+const clientId = '52dec9c30f7ac67e36faed73a9892095'
+const redirectUri = 'https://rateyourmusic.com/callback/soundcloud/'
+SC.initialize({ clientId, redirectUri })
 
-function test_url (url) {
+function testUrl (url) {
   const regex = /((http:\/\/(soundcloud\.com\/.*|soundcloud\.com\/.*\/.*|soundcloud\.com\/.*\/sets\/.*|soundcloud\.com\/groups\/.*|snd\.sc\/.*))|(https:\/\/(soundcloud\.com\/.*|soundcloud\.com\/.*\/.*|soundcloud\.com\/.*\/sets\/.*|soundcloud\.com\/groups\/.*)))/i
   return regex.test(url)
 }
 
-async function get_info (url) {
+async function getInfo (url) {
   const response = await SC.resolve(url)
   console.log(response)
 
@@ -18,8 +18,8 @@ async function get_info (url) {
   info.title = response.title
   info.format = 'digital file'
   info.attributes = ['streaming']
-  info.date = response.created_at.split(' ')[0].replace(/\//g, '-')
-  info.source = response.permalink_url
+  info.date = response.createdAt.split(' ')[0].replace(/\//g, '-')
+  info.source = response.permalinkUrl
 
   if (response.kind === 'track') {
     info.type = 'single'
@@ -37,12 +37,12 @@ async function get_info (url) {
   if (response.tracks) {
     info.tracks = response.tracks.map(track => ({
       title: track.title,
-      length: ms_to_minutes_seconds(track.duration)
+      length: msToMinutesSeconds(track.duration)
     }))
   } else {
     info.tracks = [{
       title: response.title,
-      length: ms_to_minutes_seconds(response.duration)
+      length: msToMinutesSeconds(response.duration)
     }]
   }
 
@@ -50,6 +50,6 @@ async function get_info (url) {
 }
 
 export default {
-  test: test_url,
-  info: get_info
+  test: testUrl,
+  info: getInfo
 }
