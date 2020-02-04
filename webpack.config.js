@@ -17,11 +17,13 @@ module.exports = {
     new CleanWebpackPlugin(),
     new WebpackUserscript({
       headers: {
-        name: 'betterRYM',
+        name: 'BetterRYM',
         author: 'mocha',
+        license: 'MIT',
         version: dev ? '[version]-build.[buildTime]' : '[version]',
         grant: ['GM_xmlhttpRequest'],
-        connect: ['self', 'api.jake.cafe']
+        connect: ['self', 'api.jake.cafe'],
+        match: ['*://rateyourmusic.com/release/*', '*://rateyourmusic.com/releases/ac*']
       }
     })
   ],
