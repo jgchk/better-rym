@@ -16,7 +16,10 @@ function testUrl (url) {
 
 async function getInfo (url) {
   const response = await SC.resolve(url)
+  return parseObject(response)
+}
 
+function parseObject(response) {
   const info = {}
   info.title = response.title
   info.format = 'digital file'
@@ -27,7 +30,7 @@ async function getInfo (url) {
   if (response.kind === 'track') {
     info.type = 'single'
   } else {
-    const length = response.tracks.length
+    const length = response.tracks ? response.tracks.length : response.track_count
     if (length < 3) {
       info.type = 'single'
     } else if (length < 7) {
@@ -52,8 +55,24 @@ async function getInfo (url) {
   return info
 }
 
+async function search(title, artist, type) {
+  const query = `${artist} ${title}`
+  const endpoint = type === 'single' ? '/tracks' : '/playlists'
+  const response = await SC.get(endpoint, { q: query })
+  if (!response || response.length === 0) return
+
+  const artistPosts = response.filter(item => {
+    const username = item.user.username
+    return username.toLowerCase().includes(artist.toLowerCase()) || artist.toLowerCase().includes(username.toLowerCase())
+  })
+  if (artistPosts.length > 0) return parseObject(artistPosts[0])
+
+  return parseObject(response[0])
+}
+
 export default {
   test: testUrl,
   info: getInfo,
+  search,
   icon
 }
