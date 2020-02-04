@@ -1,4 +1,4 @@
-import { checkAddReleasePage } from './add-release'
+import checkAddReleasePage from './add-release'
 
 main()
 

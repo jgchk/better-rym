@@ -4,7 +4,7 @@ import '../res/css/add-release.css'
 
 const addReleaseUrl = 'https://rateyourmusic.com/releases/ac'
 
-export function checkAddReleasePage () {
+export default function checkAddReleasePage () {
   if (isAddReleasePage()) {
     modifyAddReleasePage()
     return true
