@@ -6,8 +6,8 @@
 Enhancements for [rateyourmusic.com](https://rateyourmusic.com/) 🎧
 
 ## Features
+- Add missing streaming links to Release pages
 - Auto-fill the Add Release form
-  > Just paste a link from SoundCloud or Spotify
 
 ## Installation
 1. Install a userscript manager such as [Violentmonkey](https://violentmonkey.github.io/) *(recommended)*, [Tampermonkey](https://www.tampermonkey.net/), or [Greasemonkey](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/)
