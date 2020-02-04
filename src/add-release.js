@@ -1,5 +1,5 @@
 import $ from 'jquery'
-import { importers } from './api'
+import apis from './api'
 import '../res/css/add-release.css'
 
 const addReleaseUrl = 'https://rateyourmusic.com/releases/ac'
@@ -53,7 +53,7 @@ function modifyReleasePage () {
   const $linkbox = $('<div>')
   const $input = $('<input id="import-source-input">')
   $input.on('input', () => {
-    const source = checkImporters($input.val())
+    const source = checkApis($input.val())
     $('.source-box').removeClass('active')
     $(`.source-box.${source}`).addClass('active')
   })
@@ -64,7 +64,7 @@ function modifyReleasePage () {
   $fieldContent.append($linkbox)
 
   const $sources = $('<div id="sources">')
-  Object.entries(importers).forEach(([name, importer]) => {
+  Object.entries(apis).forEach(([name, importer]) => {
     const $sourceBox = $('<div class="source-box">')
     $sourceBox.addClass(['source-box', name])
     const $sourceIcon = $(importer.icon)
@@ -78,14 +78,14 @@ function modifyReleasePage () {
   $step1Header.before($box)
 }
 
-function checkImporters (url) {
-  for (const [name, importer] of Object.entries(importers)) {
+function checkApis (url) {
+  for (const [name, importer] of Object.entries(apis)) {
     if (importer.test(url)) return name
   }
 }
 
 async function importLink (url) {
-  for (const importer of Object.values(importers)) {
+  for (const importer of Object.values(apis)) {
     if (importer.test(url)) {
       const info = await importer.info(url)
       fillInfo(info)

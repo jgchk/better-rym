@@ -1,7 +1,7 @@
 import soundcloud from './soundcloud'
 import spotify from './spotify'
 
-export const importers = {
+export default {
   soundcloud,
   spotify
 }
