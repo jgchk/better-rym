@@ -19,7 +19,7 @@ async function getInfo (url) {
   return parseObject(response)
 }
 
-function parseObject(response) {
+function parseObject (response) {
   const info = {}
   info.title = response.title
   info.format = 'digital file'
@@ -55,7 +55,7 @@ function parseObject(response) {
   return info
 }
 
-async function search(title, artist, type) {
+async function search (title, artist, type) {
   const query = `${artist} ${title}`
   const endpoint = type === 'single' ? '/tracks' : '/playlists'
   const response = await SC.get(endpoint, { q: query })

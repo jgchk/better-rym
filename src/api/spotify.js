@@ -72,7 +72,7 @@ function parseResponse (response) {
   return info
 }
 
-async function search(title, artist, type) {
+async function search (title, artist, type) {
   const query = `${artist} ${title}`
   return new Promise((resolve, reject) => {
     GM_xmlhttpRequest({

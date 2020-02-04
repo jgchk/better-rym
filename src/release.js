@@ -32,7 +32,7 @@ async function modifyReleasePage () {
   }
 }
 
-function makeSureStreamLinksBoxExists() {
+function makeSureStreamLinksBoxExists () {
   const $streamLinks = $('.ui_stream_links')
   if (!$streamLinks.length) {
     const $streamLinksBox = $(`
@@ -43,11 +43,11 @@ function makeSureStreamLinksBoxExists() {
   }
 }
 
-function getReleaseInfo() {
+function getReleaseInfo () {
   const title = $('meta[itemprop=name]').attr('content')
 
   const regexComment = /<!--\s*<meta\s*content="(.*)"\s*itemprop="byArtist"\s*\/>\s*-->/i
-  const targetElement = regexComment.exec($('div.release_page').html());
+  const targetElement = regexComment.exec($('div.release_page').html())
   const artist = targetElement[1]
 
   const type = $('table.album_info_outer > tbody > tr > td > table > tbody > tr:nth-child(2) > td').text().toLowerCase()
@@ -55,7 +55,7 @@ function getReleaseInfo() {
   return { title, artist, type }
 }
 
-function getMissingSources() {
+function getMissingSources () {
   const existingSources = getExistingSources()
   const apiSources = Object.keys(apis)
   return apiSources.filter(apiSource => !existingSources.includes(apiSource))
