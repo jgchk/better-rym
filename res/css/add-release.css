@@ -1,0 +1,52 @@
+:root {
+	--disabled: #eee;
+	--icon: #777;
+	--border: #ccc;
+}
+
+#import-source-input {
+	width: 400px;
+}
+
+#import-source-btn {
+	height: 22px;
+	margin-left: 4px;
+	padding-left: 2px;
+	padding-right: 4px;
+	cursor: pointer;
+}
+
+#sources {
+	margin-top: 4px;
+	margin-left: -4px;
+}
+
+.source-box {
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	padding: 4px;
+	margin-left: 4px;
+	border: 1px solid var(--border);
+	background: var(--disabled)
+}
+
+.source-box.active {
+	background: black;
+}
+
+.source-box.active.spotify {
+	background: #1ED760;
+}
+
+.source-box.active.soundcloud {
+	background: #FF3300;
+}
+
+.source-icon {
+	fill: var(--icon);
+}
+
+.source-box.active .source-icon {
+	fill: white;
+}

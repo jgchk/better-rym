@@ -1,4 +1,5 @@
 import { msToMinutesSeconds } from '../lib/time'
+import icon from '../../res/svg/spotify.svg'
 
 const infoUrl = (type, id) => `https://api.jake.cafe/spotify/${type}/${id}`
 const regex = /((http:\/\/(open\.spotify\.com\/.*|spoti\.fi\/.*|play\.spotify\.com\/.*))|(https:\/\/(open\.spotify\.com\/.*|play\.spotify\.com\/.*)))(album|track)\/([a-zA-Z0-9]+)/
@@ -72,5 +73,6 @@ function getInfo (url) {
 
 export default {
   test: testUrl,
-  info: getInfo
+  info: getInfo,
+  icon
 }

@@ -24,5 +24,17 @@ module.exports = {
         connect: ['self', 'api.jake.cafe']
       }
     })
-  ]
+  ],
+  module: {
+    rules: [
+      {
+        test: /\.svg$/,
+        use: 'svg-inline-loader?classPrefix'
+      },
+      {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader']
+      }
+    ]
+  }
 }

@@ -1,5 +1,6 @@
 import $ from 'jquery'
 import { importers } from './api'
+import '../res/css/add-release.css'
 
 const addReleaseUrl = 'https://rateyourmusic.com/releases/ac'
 
@@ -50,20 +51,41 @@ function modifyReleasePage () {
   $fieldContent.append($fieldDescription)
 
   const $linkbox = $('<div>')
-  const $input = $('<input style="width: 400px;">')
-  const $submit = $('<button id="importSourceBtn" style="height: 22px; margin-left: 2px; padding-left: 2px; padding-right: 4px; cursor: pointer;">Submit</button>')
+  const $input = $('<input id="import-source-input">')
+  $input.on('input', () => {
+    const source = checkImporters($input.val())
+    $('.source-box').removeClass('active')
+    $(`.source-box.${source}`).addClass('active')
+  })
+  const $submit = $('<button id="import-source-btn">Submit</button>')
   $submit.on('click', () => importLink($input.val()))
   $linkbox.append($input)
   $linkbox.append($submit)
   $fieldContent.append($linkbox)
 
+  const $sources = $('<div id="sources">')
+  Object.entries(importers).forEach(([name, importer]) => {
+    const $sourceBox = $('<div class="source-box">')
+    $sourceBox.addClass(['source-box', name])
+    const $sourceIcon = $(importer.icon)
+    $sourceIcon.addClass('source-icon')
+    $sourceBox.append($sourceIcon)
+    $sources.append($sourceBox)
+  })
+  $fieldContent.append($sources)
+
   $box.append($fieldContent)
   $step1Header.before($box)
 }
 
+function checkImporters (url) {
+  for (const [name, importer] of Object.entries(importers)) {
+    if (importer.test(url)) return name
+  }
+}
+
 async function importLink (url) {
-  for (const importerName of Object.keys(importers)) {
-    const importer = importers[importerName]
+  for (const importer of Object.values(importers)) {
     if (importer.test(url)) {
       const info = await importer.info(url)
       fillInfo(info)

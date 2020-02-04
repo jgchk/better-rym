@@ -1,5 +1,6 @@
 import SC from 'soundcloud'
 import { msToMinutesSeconds } from '../lib/time'
+import icon from '../../res/svg/soundcloud.svg'
 
 const clientId = 'f0sxU3Az3dcl0lS1M9wFJ00SqawVL72n'
 const redirectUri = 'https://rateyourmusic.com/callback/soundcloud/'
@@ -53,5 +54,6 @@ async function getInfo (url) {
 
 export default {
   test: testUrl,
-  info: getInfo
+  info: getInfo,
+  icon
 }
