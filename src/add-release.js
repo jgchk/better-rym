@@ -6,7 +6,7 @@ const addReleaseUrl = 'https://rateyourmusic.com/releases/ac'
 
 export function checkAddReleasePage () {
   if (isAddReleasePage()) {
-    modifyReleasePage()
+    modifyAddReleasePage()
     return true
   } else {
     return false
@@ -17,7 +17,7 @@ function isAddReleasePage () {
   return window.location.href.startsWith(addReleaseUrl)
 }
 
-function modifyReleasePage () {
+function modifyAddReleasePage () {
   const $step1Header = $('#release_ac > div.submit_step_header').first()
   const $step0Header = $(`
     <div class="submit_step_header">
