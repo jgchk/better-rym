@@ -4,8 +4,10 @@
   "description": "various improvements for rateyourmusic.com",
   "private": true,
   "scripts": {
-    "build:dev": "env NODE_ENV=development webpack-dev-server",
-    "build:prod": "env NODE_ENV=production webpack"
+	"start": "npm run start:dev",
+    "start:dev": "env NODE_ENV=development webpack-dev-server",
+    "build": "env NODE_ENV=production webpack",
+	"lint": "standard --fix --global GM_xmlhttpRequest"
   },
   "author": "Jake Cheek",
   "license": "MIT",
