@@ -83,7 +83,7 @@ async function search (title, artist, type) {
         if (result.status === 200) {
           const results = result.response.body.albums.items
           if (!results || results.length === 0) {
-            reject()
+            resolve(null)
           } else {
             const info = parseResponse(results[0])
             resolve(info)

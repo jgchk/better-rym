@@ -1,5 +1,6 @@
 import $ from 'jquery'
 import apis from './api'
+import { capitalize } from './lib/string'
 import '../res/css/add-release.css'
 
 const addReleaseUrl = 'https://rateyourmusic.com/releases/ac'
@@ -136,10 +137,6 @@ function fillDate (infoDate) {
   $day.val(day)
 }
 
-String.prototype.capitalize = function () {
-  return this.replace(/(?:^|\s)\S/g, function (a) { return a.toUpperCase() })
-}
-
 function fillTitle (infoTitle) {
   const title = capitalizeTitle(infoTitle)
   const $title = $('#title')
@@ -156,13 +153,13 @@ function capitalizeTitle (title) {
     if (noCapitalize.has(word)) {
       titleSplit[i] = word.toLowerCase()
     } else {
-      titleSplit[i] = word.capitalize()
+      titleSplit[i] = capitalize(word)
     }
   }
 
   // always capitalize first and last word
-  titleSplit[0] = titleSplit[0].capitalize()
-  titleSplit[titleSplit.length - 1] = titleSplit[titleSplit.length - 1].capitalize()
+  titleSplit[0] = capitalize(titleSplit[0])
+  titleSplit[titleSplit.length - 1] = capitalize(titleSplit[titleSplit.length - 1])
 
   return titleSplit.join(' ')
 }
