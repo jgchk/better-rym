@@ -4,16 +4,14 @@
   "description": "various improvements for rateyourmusic.com",
   "private": true,
   "scripts": {
-	"start": "npm run start:dev",
+    "start": "npm run start:dev",
     "start:dev": "env NODE_ENV=development webpack-dev-server",
     "build": "env NODE_ENV=production webpack",
-	"lint": "standard --fix --global GM_xmlhttpRequest"
+    "lint": "standard --fix --global GM_xmlhttpRequest --global $ --global SC"
   },
   "author": "Jake Cheek",
   "license": "MIT",
   "dependencies": {
-    "jquery": "^3.4.1",
-    "soundcloud": "^3.3.2",
     "spotify-web-api-node": "^4.0.0"
   },
   "devDependencies": {

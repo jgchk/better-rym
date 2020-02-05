@@ -1,4 +1,3 @@
-import SC from 'soundcloud'
 import { msToMinutesSeconds } from '../lib/time'
 import icon from '../../res/svg/soundcloud.svg'
 

@@ -1,4 +1,3 @@
-import $ from 'jquery'
 import apis from './api'
 import { capitalize } from './lib/string'
 import '../res/css/add-release.css'

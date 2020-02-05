@@ -1,4 +1,3 @@
-import $ from 'jquery'
 import apis from './api'
 import '../res/css/release.css'
 
