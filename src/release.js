@@ -26,7 +26,7 @@ async function modifyReleasePage () {
     const searchResult = await api.search(info.title, info.artist, info.type)
     if (!searchResult) continue
     makeSureStreamLinksBoxExists()
-    const $button = $(`<a target="_blank" rel="noopener nofollow" title="Spotify" class="ui_stream_link_btn ui_stream_link_btn_${missingSource}" href="${searchResult.source}"><i class="fa fa-${missingSource}"></i></a>`)
+    const $button = $(`<a target="_blank" rel="noopener nofollow" title="${missingSource}" class="ui_stream_link_btn ui_stream_link_btn_${missingSource.toLowerCase()}" href="${searchResult.source}"><i class="fa fa-${missingSource.toLowerCase()}"></i></a>`)
     $button.addClass('brym')
     $('.ui_stream_links').find('div[style^="clear:both;"]').before($button)
   }
@@ -58,7 +58,7 @@ function getReleaseInfo () {
 function getMissingSources () {
   const existingSources = getExistingSources()
   const apiSources = Object.keys(apis)
-  return apiSources.filter(apiSource => !existingSources.includes(apiSource))
+  return apiSources.filter(apiSource => !existingSources.includes(apiSource.toLowerCase()))
 }
 
 function getExistingSources () {

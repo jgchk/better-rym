@@ -56,7 +56,7 @@ function modifyAddReleasePage () {
   $input.on('input', () => {
     const source = checkApis($input.val())
     $('.source-box').removeClass('active')
-    $(`.source-box.${source}`).addClass('active')
+    $(`.source-box.${source.toLowerCase()}`).addClass('active')
   })
   const $submit = $('<button id="import-source-btn">Submit</button>')
   $submit.on('click', () => importLink($input.val()))
@@ -67,7 +67,7 @@ function modifyAddReleasePage () {
   const $sources = $('<div id="sources">')
   Object.entries(apis).forEach(([name, importer]) => {
     const $sourceBox = $('<div class="source-box">')
-    $sourceBox.addClass(['source-box', name])
+    $sourceBox.addClass(['source-box', name.toLowerCase()])
     const $sourceIcon = $(importer.icon)
     $sourceIcon.addClass('source-icon')
     $sourceBox.append($sourceIcon)
