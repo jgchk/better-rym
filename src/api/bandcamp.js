@@ -91,18 +91,18 @@ function search (title, artist, type) {
       onerror: error => reject(error)
     })
   })
+}
 
-  function getMostSimilarAlbum (title, artist, albums, threshold = 0) {
-    const name = `${artist} ${title}`.toLowerCase()
-    return albums.reduce((a, b) => {
-      const similarityA = (a && dice.compareTwoStrings(name, `${a.artist} ${a.name}`.toLowerCase())) || 0
-      const similarityB = (b && dice.compareTwoStrings(name, `${b.artist} ${b.name}`.toLowerCase())) || 0
+function getMostSimilarAlbum (title, artist, albums, threshold = 0) {
+  const name = `${artist} ${title}`.toLowerCase()
+  return albums.reduce((a, b) => {
+    const similarityA = (a && dice.compareTwoStrings(name, `${a.artist} ${a.name}`.toLowerCase())) || 0
+    const similarityB = (b && dice.compareTwoStrings(name, `${b.artist} ${b.name}`.toLowerCase())) || 0
 
-      const maxSimilarity = similarityA >= similarityB ? similarityA : similarityB
-      if (maxSimilarity < threshold) return null
-      return maxSimilarity === similarityA ? a : b
-    })
-  }
+    const maxSimilarity = similarityA >= similarityB ? similarityA : similarityB
+    if (maxSimilarity < threshold) return null
+    return maxSimilarity === similarityA ? a : b
+  })
 }
 
 export default {
