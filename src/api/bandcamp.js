@@ -1,4 +1,5 @@
 import icon from '../../res/svg/bandcamp.svg'
+import dice from 'string-similarity'
 
 const infoUrl = url => `https://api.jake.cafe/bandcamp/album?url=${encodeURIComponent(url)}`
 const searchUrl = query => `https://api.jake.cafe/bandcamp/search?query=${encodeURIComponent(query)}`
@@ -16,7 +17,6 @@ function getInfo (url) {
       responseType: 'json',
       onload: result => {
         if (result.status === 200) {
-          console.log('result', result)
           const info = parseAlbum(result.response)
           resolve(info)
         } else {
@@ -73,10 +73,17 @@ function search (title, artist, type) {
       onload: async result => {
         if (result.status === 200) {
           const albumResults = result.response.filter(result => result.type === 'album')
-          if (!albumResults || albumResults.length === 0) resolve(null)
-          const topUrl = albumResults[0].url
-          const topResult = await getInfo(topUrl)
-          resolve(topResult)
+          if (!albumResults || albumResults.length === 0) {
+            resolve(null)
+          } else {
+            const similarityThreshold = 0.5
+            const topResult = getMostSimilarAlbum(title, artist, albumResults, similarityThreshold)
+            if (!topResult) {
+              resolve(null)
+            } else {
+              resolve(await getInfo(topResult.url))
+            }
+          }
         } else {
           reject(result.status)
         }
@@ -84,6 +91,18 @@ function search (title, artist, type) {
       onerror: error => reject(error)
     })
   })
+
+  function getMostSimilarAlbum (title, artist, albums, threshold = 0) {
+    const name = `${artist} ${title}`.toLowerCase()
+    return albums.reduce((a, b) => {
+      const similarityA = (a && dice.compareTwoStrings(name, `${a.artist} ${a.name}`.toLowerCase())) || 0
+      const similarityB = (b && dice.compareTwoStrings(name, `${b.artist} ${b.name}`.toLowerCase())) || 0
+
+      const maxSimilarity = similarityA >= similarityB ? similarityA : similarityB
+      if (maxSimilarity < threshold) return null
+      return maxSimilarity === similarityA ? a : b
+    })
+  }
 }
 
 export default {
