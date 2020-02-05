@@ -11,9 +11,7 @@
   },
   "author": "Jake Cheek",
   "license": "MIT",
-  "dependencies": {
-    "spotify-web-api-node": "^4.0.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^3.4.2",
