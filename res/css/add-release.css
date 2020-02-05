@@ -43,6 +43,10 @@
 	background: #FF3300;
 }
 
+.source-box.active.bandcamp {
+	background: #408294;
+}
+
 .source-icon {
 	fill: var(--icon);
 }
