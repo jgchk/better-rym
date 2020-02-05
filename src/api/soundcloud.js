@@ -58,13 +58,21 @@ async function search (title, artist, type) {
   const query = `${artist} ${title}`
   const endpoint = type === 'single' ? '/tracks' : '/playlists'
   const response = await SC.get(endpoint, { q: query })
-  if (!response || response.length === 0) return
+  if (!response || response.length === 0) {
+    if (type === 'single') {
+      return
+    } else {
+      return search(title, artist, 'single') // album may be posted as a single long track
+    }
+  }
 
   const artistPosts = response.filter(item => {
     const username = item.user.username
     return username.toLowerCase().includes(artist.toLowerCase()) || artist.toLowerCase().includes(username.toLowerCase())
   })
-  if (artistPosts.length > 0) return parseObject(artistPosts[0])
+  if (artistPosts.length > 0) {
+    return parseObject(artistPosts[0])
+  }
 
   return parseObject(response[0])
 }
