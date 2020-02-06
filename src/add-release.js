@@ -65,6 +65,7 @@ function modifyAddReleasePage () {
 
   const $sources = $('<div id="sources">')
   Object.entries(apis).forEach(([name, importer]) => {
+    if (!importer.info) return
     const $sourceBox = $('<div class="source-box">')
     $sourceBox.addClass(['source-box', name.toLowerCase()])
     const $sourceIcon = $(importer.icon)
@@ -80,7 +81,7 @@ function modifyAddReleasePage () {
 
 function checkApis (url) {
   for (const [name, importer] of Object.entries(apis)) {
-    if (importer.test(url)) return name
+    if (importer.test && importer.test(url)) return name
   }
 }
 
