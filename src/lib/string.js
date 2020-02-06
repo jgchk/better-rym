@@ -13,6 +13,5 @@ export function getMostSimilar (mainString, targetStrings, thresholdSimilarity =
   })
 
   const similarity = safeSimilarity(mainString, mostSimilar)
-  if (similarity < thresholdSimilarity) return null
-  return mostSimilar
+  return similarity >= thresholdSimilarity ? mostSimilar : null
 }
