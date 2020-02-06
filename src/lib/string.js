@@ -5,12 +5,14 @@ export function capitalize (str) {
 }
 
 export function getMostSimilar (mainString, targetStrings, thresholdSimilarity = 0, key) {
-  return targetStrings.reduce((a, b) => {
-    const similarityA = (a && dice.compareTwoStrings(mainString.toLowerCase(), (key ? key(a) : a).toLowerCase())) || 0
-    const similarityB = (b && dice.compareTwoStrings(mainString.toLowerCase(), (key ? key(b) : b).toLowerCase())) || 0
-
-    const maxSimilarity = similarityA >= similarityB ? similarityA : similarityB
-    if (maxSimilarity < thresholdSimilarity) return null
-    return maxSimilarity === similarityA ? a : b
+  const safeSimilarity = (a, b) => (b && dice.compareTwoStrings(a.toLowerCase(), (key ? key(b) : b).toLowerCase())) || 0
+  const mostSimilar = targetStrings.reduce((a, b) => {
+    const similarityA = safeSimilarity(mainString, a)
+    const similarityB = safeSimilarity(mainString, b)
+    return similarityA >= similarityB ? a : b
   })
+
+  const similarity = safeSimilarity(mainString, mostSimilar)
+  if (similarity < thresholdSimilarity) return null
+  return mostSimilar
 }
