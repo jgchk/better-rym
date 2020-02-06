@@ -1,5 +1,6 @@
 import { msToMinutesSeconds } from '../lib/time'
 import icon from '../../res/svg/soundcloud.svg'
+import { getMostSimilar } from '../lib/string'
 
 const clientId = 'f0sxU3Az3dcl0lS1M9wFJ00SqawVL72n'
 const redirectUri = 'https://rateyourmusic.com/callback/soundcloud/'
@@ -66,15 +67,14 @@ async function search (title, artist, type) {
     }
   }
 
-  const artistPosts = response.filter(item => {
-    const username = item.user.username
-    return username.toLowerCase().includes(artist.toLowerCase()) || artist.toLowerCase().includes(username.toLowerCase())
-  })
-  if (artistPosts.length > 0) {
-    return parseObject(artistPosts[0])
-  }
+  const topResult = getBestMatch(title, artist, response)
+  if (topResult) return parseObject(topResult)
+}
 
-  return parseObject(response[0])
+function getBestMatch (title, artist, items) {
+  const mainString = `${artist} ${title}`
+  const thresholdSimilarity = 0.5
+  return getMostSimilar(mainString, items, thresholdSimilarity, item => `${item.user.username} ${item.title}`)
 }
 
 export default {

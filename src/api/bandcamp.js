@@ -1,5 +1,5 @@
 import icon from '../../res/svg/bandcamp.svg'
-import dice from 'string-similarity'
+import { getMostSimilar } from '../lib/string'
 
 const infoUrl = url => `https://api.jake.cafe/bandcamp/album?url=${encodeURIComponent(url)}`
 const searchUrl = query => `https://api.jake.cafe/bandcamp/search?query=${encodeURIComponent(query)}`
@@ -76,12 +76,11 @@ function search (title, artist, type) {
           if (!albumResults || albumResults.length === 0) {
             resolve(null)
           } else {
-            const similarityThreshold = 0.5
-            const topResult = getMostSimilarAlbum(title, artist, albumResults, similarityThreshold)
-            if (!topResult) {
-              resolve(null)
-            } else {
+            const topResult = getBestMatch(title, artist, albumResults)
+            if (topResult) {
               resolve(await getInfo(topResult.url))
+            } else {
+              resolve(null)
             }
           }
         } else {
@@ -93,16 +92,10 @@ function search (title, artist, type) {
   })
 }
 
-function getMostSimilarAlbum (title, artist, albums, threshold = 0) {
-  const name = `${artist} ${title}`.toLowerCase()
-  return albums.reduce((a, b) => {
-    const similarityA = (a && dice.compareTwoStrings(name, `${a.artist} ${a.name}`.toLowerCase())) || 0
-    const similarityB = (b && dice.compareTwoStrings(name, `${b.artist} ${b.name}`.toLowerCase())) || 0
-
-    const maxSimilarity = similarityA >= similarityB ? similarityA : similarityB
-    if (maxSimilarity < threshold) return null
-    return maxSimilarity === similarityA ? a : b
-  })
+function getBestMatch (title, artist, items) {
+  const mainString = `${artist} ${title}`
+  const thresholdSimilarity = 0.5
+  return getMostSimilar(mainString, items, thresholdSimilarity, item => `${item.artist} ${item.name}`)
 }
 
 export default {
