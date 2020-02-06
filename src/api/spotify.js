@@ -1,5 +1,6 @@
 import { msToMinutesSeconds } from '../lib/time'
 import icon from '../../res/svg/spotify.svg'
+import { getMostSimilar } from '../lib/string'
 
 const infoUrl = (type, id) => `https://api.jake.cafe/spotify/${type}/${id}`
 const searchUrl = (query, type) => `https://api.jake.cafe/spotify/search?q=${encodeURIComponent(query)}&type=${type}`
@@ -85,8 +86,12 @@ async function search (title, artist, type) {
           if (!results || results.length === 0) {
             resolve(null)
           } else {
-            const info = parseResponse(results[0])
-            resolve(info)
+            const topResult = getBestMatch(title, artist, results)
+            if (topResult) {
+              resolve(parseResponse(topResult))
+            } else {
+              resolve(null)
+            }
           }
         } else {
           reject(result.status)
@@ -95,6 +100,18 @@ async function search (title, artist, type) {
       onerror: error => reject(error)
     })
   })
+}
+
+function getBestMatch(title, artist, items) {
+  const mainString = `${artist} ${title}`
+  const thresholdSimilarity = 0.5
+  const key = item => {
+    const tokens = []
+    tokens.push(...item.artists.map(artist => artist.name))
+    tokens.push(item.name)
+    return tokens.join(' ')
+  }
+  return getMostSimilar(mainString, items, thresholdSimilarity, key)
 }
 
 export default {
