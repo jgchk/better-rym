@@ -1,5 +1,6 @@
 import icon from '../../res/svg/bandcamp.svg'
 import { getMostSimilar } from '../lib/string'
+import { formatDate } from '../lib/time'
 
 const infoUrl = url => `https://api.jake.cafe/bandcamp/album?url=${encodeURIComponent(url)}`
 const searchUrl = query => `https://api.jake.cafe/bandcamp/search?query=${encodeURIComponent(query)}`
@@ -34,12 +35,7 @@ function parseAlbum (albumInfo) {
   info.format = 'lossless digital'
   info.attributes = ['downloadable', 'streaming']
   info.source = albumInfo.url
-
-  const date = new Date(albumInfo.raw.album_release_date)
-  const year = date.getFullYear()
-  const month = (date.getMonth() + 1).toString().padStart(2, '0')
-  const day = (date.getDate() + 1).toString().padStart(2, '0')
-  info.date = `${year}-${month}-${day}`
+  info.date = formatDate(albumInfo.raw.album_release_date)
 
   const length = albumInfo.tracks.length
   if (length < 3) {

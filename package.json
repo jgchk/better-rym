@@ -8,13 +8,13 @@
     "start:dev": "env NODE_ENV=development webpack-dev-server",
     "build": "env NODE_ENV=production webpack",
     "lint": "standard --fix --global GM_xmlhttpRequest --global $ --global SC",
-	"test": "npm run lint"
+    "test": "npm run lint"
   },
   "husky": {
-	  "hooks": {
-		  "pre-commit": "npm test",
-		  "pre-push": "npm test"
-	  }
+    "hooks": {
+      "pre-commit": "npm test",
+      "pre-push": "npm test"
+    }
   },
   "author": "Jake Cheek",
   "license": "MIT",

@@ -7,3 +7,11 @@ export function msToMinutesSeconds (ms) {
   }
   return minutes + ':' + (seconds < 10 ? '0' : '') + seconds
 }
+
+export function formatDate (dateString) {
+  const date = new Date(dateString)
+  const year = date.getFullYear()
+  const month = (date.getMonth() + 1).toString().padStart(2, '0')
+  const day = (date.getDate() + 1).toString().padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
