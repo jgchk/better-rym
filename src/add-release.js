@@ -57,7 +57,7 @@ function modifyAddReleasePage () {
     $('.source-box').removeClass('active')
     $(`.source-box.${source.toLowerCase()}`).addClass('active')
   })
-  const $submit = $('<button id="import-source-btn">Submit</button>')
+  const $submit = $('<button id="import-source-btn">Fill</button>')
   $submit.on('click', () => importLink($input.val()))
   $linkbox.append($input)
   $linkbox.append($submit)
