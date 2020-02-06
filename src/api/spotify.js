@@ -102,7 +102,7 @@ async function search (title, artist, type) {
   })
 }
 
-function getBestMatch(title, artist, items) {
+function getBestMatch (title, artist, items) {
   const mainString = `${artist} ${title}`
   const thresholdSimilarity = 0.5
   const key = item => {
