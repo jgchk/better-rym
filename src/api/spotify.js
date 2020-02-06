@@ -1,6 +1,7 @@
 import { msToMinutesSeconds } from '../lib/time'
 import icon from '../../res/svg/spotify.svg'
 import { getMostSimilar } from '../lib/string'
+import { fetchUrl } from '../lib/fetch'
 
 const infoUrl = (type, id) => `https://api.jake.cafe/spotify/${type}/${id}`
 const searchUrl = (query, type) => `https://api.jake.cafe/spotify/search?q=${encodeURIComponent(query)}&type=${type}`
@@ -10,27 +11,16 @@ function testUrl (url) {
   return regex.test(url)
 }
 
-function getInfo (url) {
+async function getInfo (url) {
   const match = url.match(regex)
   const type = match[6]
   const id = match[7]
 
-  return new Promise((resolve, reject) => {
-    GM_xmlhttpRequest({
-      method: 'GET',
-      url: infoUrl(type, id),
-      responseType: 'json',
-      onload: result => {
-        if (result.status === 200) {
-          const info = parseResponse(result.response.body)
-          resolve(info)
-        } else {
-          reject(result.status)
-        }
-      },
-      onerror: error => reject(error)
-    })
-  })
+  const response = await fetchUrl(infoUrl(type, id))
+  if (!response) return null
+
+  const info = parseResponse(response.body)
+  return info
 }
 
 function parseResponse (response) {
@@ -75,31 +65,15 @@ function parseResponse (response) {
 
 async function search (title, artist, type) {
   const query = `${artist} ${title}`
-  return new Promise((resolve, reject) => {
-    GM_xmlhttpRequest({
-      method: 'GET',
-      url: searchUrl(query, 'album'),
-      responseType: 'json',
-      onload: result => {
-        if (result.status === 200) {
-          const results = result.response.body.albums.items
-          if (!results || results.length === 0) {
-            resolve(null)
-          } else {
-            const topResult = getBestMatch(title, artist, results)
-            if (topResult) {
-              resolve(parseResponse(topResult))
-            } else {
-              resolve(null)
-            }
-          }
-        } else {
-          reject(result.status)
-        }
-      },
-      onerror: error => reject(error)
-    })
-  })
+  const response = await fetchUrl(searchUrl(query, 'album'))
+  const results = response.body.albums.items
+  if (!results || results.length === 0) return null
+
+  const topResult = getBestMatch(title, artist, results)
+  if (!topResult) return null
+
+  const info = parseResponse(topResult)
+  return info
 }
 
 function getBestMatch (title, artist, items) {

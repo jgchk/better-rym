@@ -1,35 +1,20 @@
 import { getMostSimilar } from '../lib/string'
+import { fetchUrl } from '../lib/fetch'
 
 const searchUrl = query => `https://api.jake.cafe/youtube/search?q=${encodeURIComponent(query)}`
 const infoUrl = id => `https://api.jake.cafe/youtube/video/${id}`
 
-function search (title, artist, type) {
+async function search (title, artist, type) {
   const query = `${artist} ${title}`
-  return new Promise((resolve, reject) => {
-    GM_xmlhttpRequest({
-      method: 'GET',
-      url: searchUrl(query),
-      responseType: 'json',
-      onload: async result => {
-        if (result.status === 200) {
-          const results = result.response.videos
-          if (!results || results.length === 0) {
-            resolve(null)
-          } else {
-            const topResult = getBestMatch(title, artist, results)
-            if (topResult) {
-              resolve(await getInfo(topResult.videoId))
-            } else {
-              resolve(null)
-            }
-          }
-        } else {
-          reject(result.status)
-        }
-      },
-      onerror: error => reject(error)
-    })
-  })
+  const response = await fetchUrl(searchUrl(query))
+  const results = response.videos
+  if (!results || results.length === 0) return null
+
+  const topResult = getBestMatch(title, artist, results)
+  if (!topResult) return null
+
+  const info = await getInfo(topResult.videoId)
+  return info
 }
 
 function getBestMatch (title, artist, items) {
@@ -38,23 +23,12 @@ function getBestMatch (title, artist, items) {
   return getMostSimilar(mainString, items, thresholdSimilarity, item => `${item.title}`)
 }
 
-function getInfo (id) {
-  return new Promise((resolve, reject) => {
-    GM_xmlhttpRequest({
-      method: 'GET',
-      url: infoUrl(id),
-      responseType: 'json',
-      onload: result => {
-        if (result.status === 200) {
-          const info = parseObject(result.response)
-          resolve(info)
-        } else {
-          reject(result.status)
-        }
-      },
-      onerror: error => reject(error)
-    })
-  })
+async function getInfo (id) {
+  const response = await fetchUrl(infoUrl(id))
+  if (!response) return null
+
+  const info = parseObject(response)
+  return info
 }
 
 function parseObject (object) {
