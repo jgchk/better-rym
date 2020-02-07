@@ -87,7 +87,7 @@ function checkApis (url) {
 
 async function importLink (url) {
   for (const importer of Object.values(apis)) {
-    if (importer.test(url)) {
+    if (importer.test && importer.test(url)) {
       const info = await importer.info(url)
       fillInfo(info)
       break
@@ -167,7 +167,35 @@ function capitalizeTitle (title) {
 function fillFormat (infoFormat) {
   const formats = {
     'digital file': 58,
-    'lossless digital': 59
+    'lossless digital': 59,
+    'blu-ray': 88,
+    cd: 60,
+    'cd-r': 32,
+    dualdisc: 54,
+    dvd: 78,
+    'dvd-a': 77,
+    'dvd-r': 100,
+    hdad: 62,
+    hdcd: 83,
+    laserdisc: 89,
+    minidisc: 48,
+    sacd: 76,
+    umd: 81,
+    vcd: 79,
+    vinyl: 95,
+    shellac: 96,
+    '8 track': 21,
+    '4 track': 103,
+    acetate: 80,
+    beta: 41,
+    cassette: 66,
+    dat: 104,
+    dcc: 105,
+    microcassette: 101,
+    playtape: 102,
+    'reel-to-reel': 92,
+    vhs: 40,
+    'phonograph cylinder': 91
   }
 
   const format = formats[infoFormat]

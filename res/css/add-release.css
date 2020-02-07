@@ -47,6 +47,10 @@
 	background: #408294;
 }
 
+.source-box.active.discogs {
+	background: #333333;
+}
+
 .source-icon {
 	fill: var(--icon);
 }

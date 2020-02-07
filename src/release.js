@@ -88,7 +88,7 @@ function getReleaseInfo () {
 
 function getMissingSources () {
   const existingSources = getExistingSources()
-  const apiSources = Object.keys(apis)
+  const apiSources = Object.keys(apis).filter(api => !!apis[api].search)
   return apiSources.filter(apiSource => !existingSources.includes(apiSource.toLowerCase()))
 }
 
