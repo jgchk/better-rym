@@ -1,6 +1,6 @@
 import icon from '../../res/svg/bandcamp.svg'
 import { getMostSimilar } from '../lib/string'
-import { formatDate } from '../lib/time'
+import { formatDate, msToMinutesSeconds } from '../lib/time'
 import { fetchUrl } from '../lib/fetch'
 
 const infoUrl = url => `https://api.jake.cafe/bandcamp/album?url=${encodeURIComponent(url)}`
@@ -25,9 +25,9 @@ function parseAlbum (albumInfo) {
   info.format = 'lossless digital'
   info.attributes = ['downloadable', 'streaming']
   info.source = albumInfo.url
-  info.date = formatDate(albumInfo.raw.album_release_date)
+  info.date = formatDate(albumInfo.raw.album_release_date || albumInfo.raw.current.release_date)
 
-  const length = albumInfo.tracks.length
+  const length = albumInfo.raw.trackinfo.length
   if (length < 3) {
     info.type = 'single'
   } else if (length < 7) {
@@ -36,15 +36,10 @@ function parseAlbum (albumInfo) {
     info.type = 'album'
   }
 
-  info.tracks = albumInfo.tracks.map(track => {
-    const [min, sec] = track.duration.split(':')
-    const length = `${parseInt(min)}:${sec}`
-
-    return {
-      title: track.name,
-      length: length
-    }
-  })
+  info.tracks = albumInfo.raw.trackinfo.map(track => ({
+    title: track.title,
+    length: msToMinutesSeconds(track.duration * 1000)
+  }))
 
   return info
 }
