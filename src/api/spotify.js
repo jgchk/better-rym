@@ -24,7 +24,6 @@ async function getInfo (url) {
 }
 
 function parseResponse (response) {
-  console.log(response)
   const info = {}
   info.title = response.name
   info.format = 'digital file'
