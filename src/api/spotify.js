@@ -24,6 +24,7 @@ async function getInfo (url) {
 }
 
 function parseResponse (response) {
+  console.log(response)
   const info = {}
   info.title = response.name
   info.format = 'digital file'
@@ -31,11 +32,7 @@ function parseResponse (response) {
   info.date = response.release_date || response.album.release_date
   info.source = response.external_urls.spotify
 
-  if (response.type === 'track') {
-    info.type = 'single'
-  } else if (response.album_type === 'single') {
-    info.type = 'single'
-  } else if (response.album_type === 'compilation') {
+  if (response.album_type === 'compilation') {
     info.type = 'compilation'
   } else {
     const length = response.total_tracks
