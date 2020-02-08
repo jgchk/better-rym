@@ -50,10 +50,11 @@ function showStreamLinksBox (show) {
 
 function showLoading (show) {
   if (show) {
+    const releaseClass = 'release'
     const $spinContainer = $('<div>')
-    $spinContainer.addClass([spinnerClass, 'ui_stream_link_btn', 'brym'])
+    $spinContainer.addClass([spinnerClass, releaseClass, 'ui_stream_link_btn', 'brym'])
     const $spinner = $('<div>')
-    $spinner.addClass(`${spinnerClass}-icon`)
+    $spinner.addClass([`${spinnerClass}-icon`, releaseClass])
     $spinContainer.append($spinner)
     $('.ui_stream_links').find('div[style^="clear:both;"]').before($spinContainer)
   } else {

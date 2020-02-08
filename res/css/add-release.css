@@ -16,6 +16,28 @@
 	cursor: pointer;
 }
 
+.spinner.add-release {
+	position: relative;
+	top: 4px;
+	margin-left: 4px;
+	display: inline-flex;
+	width: 22px;
+	height: 22px;
+	align-items: center;
+	justify-content: center;
+}
+
+.spinner-icon.add-release {
+	border: 3px solid transparent;
+	border-top: 3px solid #666;
+	border-radius: 50%;
+	width: 18px;
+	height: 18px;
+	animation: spin 1.5s linear infinite;
+	display: inline-block;
+	box-sizing: border-box;
+}
+
 #sources {
 	margin-top: 4px;
 	margin-left: -4px;

@@ -3,6 +3,8 @@ import { capitalize } from './lib/string'
 import '../res/css/add-release.css'
 
 const addReleaseUrl = 'https://rateyourmusic.com/releases/ac'
+const spinnerClass = 'spinner'
+const importSourceId = 'import-source'
 
 export default function checkAddReleasePage () {
   if (isAddReleasePage()) {
@@ -50,7 +52,7 @@ function modifyAddReleasePage () {
     </div>`)
   $fieldContent.append($fieldDescription)
 
-  const $linkbox = $('<div>')
+  const $linkbox = $(`<div id="${importSourceId}">`)
   const $input = $('<input id="import-source-input">')
   $input.on('input', () => {
     const source = checkApis($input.val())
@@ -86,12 +88,28 @@ function checkApis (url) {
 }
 
 async function importLink (url) {
+  showLoading(true)
   for (const importer of Object.values(apis)) {
     if (importer.test && importer.test(url)) {
       const info = await importer.info(url)
       fillInfo(info)
       break
     }
+  }
+  showLoading(false)
+}
+
+function showLoading (show) {
+  if (show) {
+    const addReleaseClass = 'add-release'
+    const $spinContainer = $('<div>')
+    $spinContainer.addClass([spinnerClass, addReleaseClass])
+    const $spinner = $('<div>')
+    $spinner.addClass([`${spinnerClass}-icon`, addReleaseClass])
+    $spinContainer.append($spinner)
+    $(`#${importSourceId}`).append($spinContainer)
+  } else {
+    $(`#${importSourceId} .${spinnerClass}`).remove()
   }
 }
 

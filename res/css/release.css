@@ -2,7 +2,7 @@
 	opacity: 0.5;
 }
 
-.spinner {
+.spinner.release {
 	display: inline-flex;
 	width: 2em;
 	height: 2em;
@@ -11,7 +11,7 @@
 	cursor: default;
 }
 
-.spinner-icon {
+.spinner-icon.release {
 	border: 3px solid transparent;
 	border-top: 3px solid #666;
 	border-radius: 50%;
