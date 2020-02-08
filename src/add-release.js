@@ -96,6 +96,7 @@ async function importLink (url) {
 }
 
 function fillInfo (info) {
+  console.log(info)
   fillType(info.type)
   fillDate(info.date)
   fillTitle(info.title)
