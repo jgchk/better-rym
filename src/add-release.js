@@ -96,7 +96,6 @@ async function importLink (url) {
 }
 
 function fillInfo (info) {
-  console.log(info)
   fillType(info.type)
   fillDate(info.date)
   fillTitle(info.title)
@@ -145,22 +144,30 @@ function fillTitle (infoTitle) {
 }
 
 function capitalizeTitle (title) {
-  const titleSplit = title.split(' ')
+  let titleSplit = title.split(' ')
   if (titleSplit.length === 0) return
 
-  const noCapitalize = new Set(['a', 'an', 'the', 'and', 'but', 'or', 'nor', 'for', 'yet', 'be', 'as', 'at', 'by', 'for', 'in', 'of', 'on', 'to', 'versus', 'vs.', 'vs', 'v.', 'v', 'et cetera', 'etc', 'etc.'])
-  for (let i = 0; i < titleSplit.length; i++) {
-    const word = titleSplit[i]
-    if (noCapitalize.has(word)) {
-      titleSplit[i] = word.toLowerCase()
-    } else {
-      titleSplit[i] = capitalize(word)
-    }
-  }
+  const noInclude = ['ep', 'lp']
+  titleSplit = titleSplit.filter(token => !noInclude.includes(token.toLowerCase()))
 
-  // always capitalize first and last word
-  titleSplit[0] = capitalize(titleSplit[0])
-  titleSplit[titleSplit.length - 1] = capitalize(titleSplit[titleSplit.length - 1])
+  const noCapitalize = ['a', 'an', 'the', 'and', 'but', 'or', 'nor', 'for', 'yet', 'be', 'as', 'at', 'by', 'for', 'in', 'of', 'on', 'to', 'versus', 'vs.', 'vs', 'v.', 'v', 'et cetera', 'etc', 'etc.']
+  const romanNumeral = /^[I|V|X|L|C|D|M]+$/
+  const surroundRegex = /([(["']*)([^)\]]+)([)\]"']*)/
+  titleSplit = titleSplit.map((token, i) => {
+    let [, prefix, word, suffix] = token.match(surroundRegex)
+    if (romanNumeral.test(word)) {
+      word = word.toUpperCase()
+    } else if (prefix === '[' || suffix === ']') {
+      word = word.toLowerCase() // bracket editorial text should remain lowercase
+    } else if (i === 0 || i === titleSplit.length) {
+      word = capitalize(word) // always capitalize first and last word
+    } else if (noCapitalize.includes(word.toLowerCase())) {
+      word = word.toLowerCase()
+    } else {
+      word = capitalize(word)
+    }
+    return prefix + word + suffix
+  })
 
   return titleSplit.join(' ')
 }
@@ -221,7 +228,7 @@ function fillAttributes (infoAttributes) {
 
 function fillTracks (infoTracks) {
   const trackStrings = infoTracks.map((infoTrack, i) => {
-    const trackNum = i + 1
+    const trackNum = infoTrack.position || (i + 1)
     const title = capitalizeTitle(infoTrack.title)
     const length = infoTrack.length
     return `${trackNum}|${title}|${length}`

@@ -56,7 +56,8 @@ function parseResponse (response) {
   }
 
   if (response.tracklist) {
-    info.tracks = response.tracklist.map(track => ({
+    info.tracks = response.tracklist.map((track, i) => ({
+      position: track.position || (parseInt(response.tracklist[i - 1].position) + 1) || (i + 1),
       title: track.title,
       length: track.duration
     }))

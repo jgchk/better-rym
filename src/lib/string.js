@@ -1,7 +1,7 @@
 import dice from 'string-similarity'
 
 export function capitalize (str) {
-  return str.replace(/(?:^|\s)\S/g, function (a) { return a.toUpperCase() })
+  return str.toLowerCase().replace(/(?:^|\s)\S/g, a => a.toUpperCase())
 }
 
 export function getMostSimilar (mainString, targetStrings, thresholdSimilarity = 0, key) {

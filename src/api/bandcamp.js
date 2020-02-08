@@ -36,7 +36,8 @@ function parseAlbum (albumInfo) {
     info.type = 'album'
   }
 
-  info.tracks = albumInfo.raw.trackinfo.map(track => ({
+  info.tracks = albumInfo.raw.trackinfo.map((track, i) => ({
+    position: track.track_num || (parseInt(albumInfo.raw.trackinfo[i - 1].track_num) + 1) || (i + 1),
     title: track.title,
     length: msToMinutesSeconds(track.duration * 1000)
   }))
