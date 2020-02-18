@@ -9,5 +9,5 @@ export default {
   Spotify: spotify,
   Bandcamp: bandcamp,
   YouTube: youtube,
-  Discogs: discogs
+  Discogs: discogs,
 }

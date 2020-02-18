@@ -10,20 +10,12 @@ const searchUrl = query =>
     query
   )}`
 
-function testUrl (url) {
+function testUrl(url) {
   const regex = /((http:\/\/(.*\.bandcamp\.com\/|.*\.bandcamp\.com\/track\/.*|.*\.bandcamp\.com\/album\/.*))|(https:\/\/(.*\.bandcamp\.com\/|.*\.bandcamp\.com\/track\/.*|.*\.bandcamp\.com\/album\/.*)))/i
   return regex.test(url)
 }
 
-async function getInfo (url) {
-  const response = await fetchUrl(infoUrl(url))
-  if (!response) return null
-
-  const info = parseAlbum(response)
-  return info
-}
-
-function parseAlbum (albumInfo) {
+function parseAlbum(albumInfo) {
   const info = {}
   info.title = albumInfo.title
   info.format = 'lossless digital'
@@ -33,7 +25,7 @@ function parseAlbum (albumInfo) {
     albumInfo.raw.album_release_date || albumInfo.raw.current.release_date
   )
 
-  const length = albumInfo.raw.trackinfo.length
+  const { length } = albumInfo.raw.trackinfo
   if (length < 3) {
     info.type = 'single'
   } else if (length < 7) {
@@ -45,16 +37,35 @@ function parseAlbum (albumInfo) {
   info.tracks = albumInfo.raw.trackinfo.map((track, i) => ({
     position:
       track.track_num ||
-      parseInt(albumInfo.raw.trackinfo[i - 1].track_num) + 1 ||
+      parseInt(albumInfo.raw.trackinfo[i - 1].track_num, 10) + 1 ||
       i + 1,
     title: track.title,
-    length: msToMinutesSeconds(track.duration * 1000)
+    length: msToMinutesSeconds(track.duration * 1000),
   }))
 
   return info
 }
 
-async function search (title, artist, type) {
+async function getInfo(url) {
+  const response = await fetchUrl(infoUrl(url))
+  if (!response) return null
+
+  const info = parseAlbum(response)
+  return info
+}
+
+function getBestMatch(title, artist, items) {
+  const mainString = `${artist} ${title}`
+  const thresholdSimilarity = 0.5
+  return getMostSimilar(
+    mainString,
+    items,
+    thresholdSimilarity,
+    item => `${item.artist} ${item.name}`
+  )
+}
+
+async function search(title, artist) {
   const query = `${title} ${artist}`
   const results = await fetchUrl(searchUrl(query))
   const albumResults = results.filter(result => result.type === 'album')
@@ -67,20 +78,9 @@ async function search (title, artist, type) {
   return info
 }
 
-function getBestMatch (title, artist, items) {
-  const mainString = `${artist} ${title}`
-  const thresholdSimilarity = 0.5
-  return getMostSimilar(
-    mainString,
-    items,
-    thresholdSimilarity,
-    item => `${item.artist} ${item.name}`
-  )
-}
-
 export default {
   test: testUrl,
   info: getInfo,
   search,
-  icon
+  icon,
 }

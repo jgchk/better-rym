@@ -1,4 +1,5 @@
-export function fetchUrl (url, method = 'GET', responseType = 'json') {
+// eslint-disable-next-line import/prefer-default-export
+export function fetchUrl(url, method = 'GET', responseType = 'json') {
   return new Promise((resolve, reject) => {
     GM_xmlhttpRequest({
       method,
@@ -11,7 +12,7 @@ export function fetchUrl (url, method = 'GET', responseType = 'json') {
           reject(result.status)
         }
       },
-      onerror: error => reject(error)
+      onerror: error => reject(error),
     })
   })
 }

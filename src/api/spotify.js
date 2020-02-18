@@ -11,23 +11,11 @@ const searchUrl = (query, type) =>
   )}&type=${type}`
 const regex = /((http:\/\/(open\.spotify\.com\/.*|spoti\.fi\/.*|play\.spotify\.com\/.*))|(https:\/\/(open\.spotify\.com\/.*|play\.spotify\.com\/.*)))(album|track)\/([a-zA-Z0-9]+)/
 
-function testUrl (url) {
+function testUrl(url) {
   return regex.test(url)
 }
 
-async function getInfo (url) {
-  const match = url.match(regex)
-  const type = match[6]
-  const id = match[7]
-
-  const response = await fetchUrl(infoUrl(type, id))
-  if (!response) return null
-
-  const info = parseResponse(response)
-  return info
-}
-
-function parseResponse (response) {
+function parseResponse(response) {
   const info = {}
   info.title = response.name
   info.format = 'digital file'
@@ -52,24 +40,48 @@ function parseResponse (response) {
     info.tracks = response.tracks.items.map((track, i) => ({
       position:
         track.track_number ||
-        parseInt(response.tracks.items[i - 1].track_number) + 1 ||
+        parseInt(response.tracks.items[i - 1].track_number, 10) + 1 ||
         i + 1,
       title: track.name,
-      length: msToMinutesSeconds(track.duration_ms)
+      length: msToMinutesSeconds(track.duration_ms),
     }))
   } else {
     info.tracks = [
       {
         title: response.name,
-        length: msToMinutesSeconds(response.duration_ms)
-      }
+        length: msToMinutesSeconds(response.duration_ms),
+      },
     ]
   }
 
   return info
 }
 
-async function search (title, artist, type) {
+async function getInfo(url) {
+  const match = url.match(regex)
+  const type = match[6]
+  const id = match[7]
+
+  const response = await fetchUrl(infoUrl(type, id))
+  if (!response) return null
+
+  const info = parseResponse(response)
+  return info
+}
+
+function getBestMatch(title, artist, items) {
+  const mainString = `${artist} ${title}`
+  const thresholdSimilarity = 0.5
+  const key = item => {
+    const tokens = []
+    tokens.push(...item.artists.map(a => a.name))
+    tokens.push(item.name)
+    return tokens.join(' ')
+  }
+  return getMostSimilar(mainString, items, thresholdSimilarity, key)
+}
+
+async function search(title, artist) {
   const query = `${artist} ${title}`
   const response = await fetchUrl(searchUrl(query, 'album'))
   const results = response.albums.items
@@ -82,21 +94,9 @@ async function search (title, artist, type) {
   return info
 }
 
-function getBestMatch (title, artist, items) {
-  const mainString = `${artist} ${title}`
-  const thresholdSimilarity = 0.5
-  const key = item => {
-    const tokens = []
-    tokens.push(...item.artists.map(artist => artist.name))
-    tokens.push(item.name)
-    return tokens.join(' ')
-  }
-  return getMostSimilar(mainString, items, thresholdSimilarity, key)
-}
-
 export default {
   test: testUrl,
   info: getInfo,
   search,
-  icon
+  icon,
 }

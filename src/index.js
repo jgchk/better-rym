@@ -1,7 +1,3 @@
-import checkAddReleasePage from './add-release'
-import checkReleasePage from './release'
+import pages from './pages'
 
-(function main () {
-  if (checkAddReleasePage()) return
-  checkReleasePage()
-})()
+pages.some(page => page())

@@ -4,7 +4,27 @@ import { fetchUrl } from '../lib/fetch'
 const searchUrl = query =>
   `https://jake.cafe/api/music/youtube/search?q=${encodeURIComponent(query)}`
 
-async function search (title, artist, type) {
+function getBestMatch(title, artist, items) {
+  const mainString = `${artist} ${title}`
+  const thresholdSimilarity = 0.5
+  return getMostSimilar(
+    mainString,
+    items,
+    thresholdSimilarity,
+    item => `${item.title}`
+  )
+}
+
+function parseObject(object) {
+  const info = {}
+  info.title = object.title
+  info.format = 'digital file'
+  info.attributes = 'streaming'
+  info.source = object.link
+  return info
+}
+
+async function search(title, artist) {
   const query = `${artist} ${title}`
   const response = await fetchUrl(searchUrl(query))
   const results = response.items.filter(item => item.type === 'video')
@@ -17,26 +37,6 @@ async function search (title, artist, type) {
   return info
 }
 
-function getBestMatch (title, artist, items) {
-  const mainString = `${artist} ${title}`
-  const thresholdSimilarity = 0.5
-  return getMostSimilar(
-    mainString,
-    items,
-    thresholdSimilarity,
-    item => `${item.title}`
-  )
-}
-
-function parseObject (object) {
-  const info = {}
-  info.title = object.title
-  info.format = 'digital file'
-  info.attributes = 'streaming'
-  info.source = object.link
-  return info
-}
-
 export default {
-  search
+  search,
 }
