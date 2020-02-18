@@ -1,7 +1,8 @@
 import { fetchUrl } from '../lib/fetch'
 import icon from '../../res/svg/discogs.svg'
 
-const infoUrl = (type, id) => `https://api.jake.cafe/discogs/${type}/${id}`
+const infoUrl = (type, id) =>
+  `https://jake.cafe/api/music/discogs/${type}/${id}`
 const regex = /((http|https):\/\/)?(.*\.)?(discogs\.com)\/([a-zA-z-]+)\/(release|master)\/(\d+)/i
 
 function testUrl (url) {
@@ -31,7 +32,11 @@ function parseResponse (response) {
     const format = response.formats[0].name.toLowerCase()
     if (format === 'file') {
       const losslessFormats = ['FLAC', 'ALAC']
-      if (losslessFormats.some(format => response.formats[0].descriptions.includes(format))) {
+      if (
+        losslessFormats.some(format =>
+          response.formats[0].descriptions.includes(format)
+        )
+      ) {
         info.format = 'lossless digital'
       } else {
         info.format = 'digital file'
@@ -42,7 +47,10 @@ function parseResponse (response) {
     }
   }
 
-  if (response.formats && response.formats[0].descriptions.includes('Mixtape')) {
+  if (
+    response.formats &&
+    response.formats[0].descriptions.includes('Mixtape')
+  ) {
     info.type = 'mixtape'
   } else if (response.tracklist) {
     const length = response.tracklist.length
@@ -57,7 +65,10 @@ function parseResponse (response) {
 
   if (response.tracklist) {
     info.tracks = response.tracklist.map((track, i) => ({
-      position: track.position || (parseInt(response.tracklist[i - 1].position) + 1) || (i + 1),
+      position:
+        track.position ||
+        parseInt(response.tracklist[i - 1].position) + 1 ||
+        i + 1,
       title: track.title,
       length: track.duration
     }))

@@ -3,8 +3,12 @@ import { getMostSimilar } from '../lib/string'
 import { formatDate, msToMinutesSeconds } from '../lib/time'
 import { fetchUrl } from '../lib/fetch'
 
-const infoUrl = url => `https://api.jake.cafe/bandcamp/album?url=${encodeURIComponent(url)}`
-const searchUrl = query => `https://api.jake.cafe/bandcamp/search?query=${encodeURIComponent(query)}`
+const infoUrl = url =>
+  `https://jake.cafe/api/music/bandcamp/album?url=${encodeURIComponent(url)}`
+const searchUrl = query =>
+  `https://jake.cafe/api/music/bandcamp/search?query=${encodeURIComponent(
+    query
+  )}`
 
 function testUrl (url) {
   const regex = /((http:\/\/(.*\.bandcamp\.com\/|.*\.bandcamp\.com\/track\/.*|.*\.bandcamp\.com\/album\/.*))|(https:\/\/(.*\.bandcamp\.com\/|.*\.bandcamp\.com\/track\/.*|.*\.bandcamp\.com\/album\/.*)))/i
@@ -25,7 +29,9 @@ function parseAlbum (albumInfo) {
   info.format = 'lossless digital'
   info.attributes = ['downloadable', 'streaming']
   info.source = albumInfo.url
-  info.date = formatDate(albumInfo.raw.album_release_date || albumInfo.raw.current.release_date)
+  info.date = formatDate(
+    albumInfo.raw.album_release_date || albumInfo.raw.current.release_date
+  )
 
   const length = albumInfo.raw.trackinfo.length
   if (length < 3) {
@@ -37,7 +43,10 @@ function parseAlbum (albumInfo) {
   }
 
   info.tracks = albumInfo.raw.trackinfo.map((track, i) => ({
-    position: track.track_num || (parseInt(albumInfo.raw.trackinfo[i - 1].track_num) + 1) || (i + 1),
+    position:
+      track.track_num ||
+      parseInt(albumInfo.raw.trackinfo[i - 1].track_num) + 1 ||
+      i + 1,
     title: track.title,
     length: msToMinutesSeconds(track.duration * 1000)
   }))
@@ -61,7 +70,12 @@ async function search (title, artist, type) {
 function getBestMatch (title, artist, items) {
   const mainString = `${artist} ${title}`
   const thresholdSimilarity = 0.5
-  return getMostSimilar(mainString, items, thresholdSimilarity, item => `${item.artist} ${item.name}`)
+  return getMostSimilar(
+    mainString,
+    items,
+    thresholdSimilarity,
+    item => `${item.artist} ${item.name}`
+  )
 }
 
 export default {

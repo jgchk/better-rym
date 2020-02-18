@@ -3,8 +3,12 @@ import icon from '../../res/svg/spotify.svg'
 import { getMostSimilar } from '../lib/string'
 import { fetchUrl } from '../lib/fetch'
 
-const infoUrl = (type, id) => `https://api.jake.cafe/spotify/${type}/${id}`
-const searchUrl = (query, type) => `https://api.jake.cafe/spotify/search?q=${encodeURIComponent(query)}&type=${type}`
+const infoUrl = (type, id) =>
+  `https://jake.cafe/api/music/spotify/${type}/${id}`
+const searchUrl = (query, type) =>
+  `https://jake.cafe/api/music/spotify/search?q=${encodeURIComponent(
+    query
+  )}&type=${type}`
 const regex = /((http:\/\/(open\.spotify\.com\/.*|spoti\.fi\/.*|play\.spotify\.com\/.*))|(https:\/\/(open\.spotify\.com\/.*|play\.spotify\.com\/.*)))(album|track)\/([a-zA-Z0-9]+)/
 
 function testUrl (url) {
@@ -19,7 +23,7 @@ async function getInfo (url) {
   const response = await fetchUrl(infoUrl(type, id))
   if (!response) return null
 
-  const info = parseResponse(response.body)
+  const info = parseResponse(response)
   return info
 }
 
@@ -46,15 +50,20 @@ function parseResponse (response) {
 
   if (response.tracks) {
     info.tracks = response.tracks.items.map((track, i) => ({
-      position: track.track_number || (parseInt(response.tracks.items[i - 1].track_number) + 1) || (i + 1),
+      position:
+        track.track_number ||
+        parseInt(response.tracks.items[i - 1].track_number) + 1 ||
+        i + 1,
       title: track.name,
       length: msToMinutesSeconds(track.duration_ms)
     }))
   } else {
-    info.tracks = [{
-      title: response.name,
-      length: msToMinutesSeconds(response.duration_ms)
-    }]
+    info.tracks = [
+      {
+        title: response.name,
+        length: msToMinutesSeconds(response.duration_ms)
+      }
+    ]
   }
 
   return info
@@ -63,7 +72,7 @@ function parseResponse (response) {
 async function search (title, artist, type) {
   const query = `${artist} ${title}`
   const response = await fetchUrl(searchUrl(query, 'album'))
-  const results = response.body.albums.items
+  const results = response.albums.items
   if (!results || results.length === 0) return null
 
   const topResult = getBestMatch(title, artist, results)
