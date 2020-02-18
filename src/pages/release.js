@@ -1,4 +1,5 @@
 import apis from '../api'
+import { inPath } from '../lib/path'
 import '../../res/css/release.css'
 
 const spinnerClass = 'spinner'
@@ -121,7 +122,7 @@ async function modifyReleasePage() {
 }
 
 function isReleasePage() {
-  return window.location.pathname.startsWith('/release')
+  return inPath('release')
 }
 
 export default function checkReleasePage() {

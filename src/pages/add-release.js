@@ -1,8 +1,8 @@
 import apis from '../api'
 import { capitalize } from '../lib/string'
+import { inPath } from '../lib/path'
 import '../../res/css/add-release.css'
 
-const addReleaseUrl = 'https://rateyourmusic.com/releases/ac'
 const spinnerClass = 'spinner'
 const importSourceId = 'import-source'
 
@@ -14,7 +14,7 @@ function checkApis(url) {
 }
 
 function isAddReleasePage() {
-  return window.location.href.startsWith(addReleaseUrl)
+  return inPath('releases', 'ac')
 }
 
 function showLoading(show) {

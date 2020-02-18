@@ -1,13 +1,16 @@
 import { msToMinutesSeconds } from '../lib/time'
 import icon from '../../res/svg/soundcloud.svg'
 import { getMostSimilar } from '../lib/string'
+import { fetchUrl } from '../lib/fetch'
 
-const clientId = 'f0sxU3Az3dcl0lS1M9wFJ00SqawVL72n'
-const redirectUri = 'https://rateyourmusic.com/callback/soundcloud/'
-SC.initialize({
-  client_id: clientId,
-  redirect_uri: redirectUri,
-})
+const infoUrl = url =>
+  `https://jake.cafe/api/music/soundcloud/resolve?url=${encodeURIComponent(
+    url
+  )}`
+const searchUrl = (query, type) =>
+  `https://jake.cafe/api/music/soundcloud/search?q=${encodeURIComponent(
+    query
+  )}&type=${type}`
 
 function testUrl(url) {
   const regex = /((http:\/\/(soundcloud\.com\/.*|soundcloud\.com\/.*\/.*|soundcloud\.com\/.*\/sets\/.*|soundcloud\.com\/groups\/.*|snd\.sc\/.*))|(https:\/\/(soundcloud\.com\/.*|soundcloud\.com\/.*\/.*|soundcloud\.com\/.*\/sets\/.*|soundcloud\.com\/groups\/.*)))/i
@@ -55,7 +58,9 @@ function parseObject(response) {
 }
 
 async function getInfo(url) {
-  const response = await SC.resolve(url)
+  const response = await fetchUrl(infoUrl(url))
+  if (!response) return null
+
   return parseObject(response)
 }
 
@@ -72,13 +77,12 @@ function getBestMatch(title, artist, items) {
 
 async function search(title, artist, type) {
   const query = `${artist} ${title}`
-  const endpoint = type === 'single' ? '/tracks' : '/playlists'
-  const response = await SC.get(endpoint, { q: query })
-  if (!response || response.length === 0) {
+  const results = await fetchUrl(searchUrl(query, type))
+  if (!results || results.length === 0) {
     if (type !== 'single') return search(title, artist, 'single') // album may be posted as a single long track
   }
 
-  const topResult = getBestMatch(title, artist, response)
+  const topResult = getBestMatch(title, artist, results)
   if (!topResult) return null
 
   return parseObject(topResult)

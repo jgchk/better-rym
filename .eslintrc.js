@@ -5,7 +5,4 @@ module.exports = {
     jquery: true,
     greasemonkey: true,
   },
-  globals: {
-    SC: 'readonly',
-  },
 }

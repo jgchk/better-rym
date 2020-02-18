@@ -26,10 +26,7 @@ module.exports = {
           '*://rateyourmusic.com/release/*',
           '*://rateyourmusic.com/releases/ac*',
         ],
-        require: [
-          'https://code.jquery.com/jquery-3.4.1.slim.js',
-          'https://connect.soundcloud.com/sdk/sdk-3.3.2.js',
-        ],
+        require: ['https://code.jquery.com/jquery-3.4.1.slim.js'],
       },
     }),
   ],
