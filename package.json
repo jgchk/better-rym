@@ -7,7 +7,7 @@
     "dev": "env NODE_ENV=development webpack-dev-server",
     "build": "env NODE_ENV=production webpack",
     "lint": "eslint",
-    "fix": "eslint --cache --fix",
+    "fix": "eslint --cache --fix --ext .js ./src",
     "test": "yarn run lint"
   },
   "devDependencies": {

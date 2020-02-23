@@ -1,50 +1,35 @@
-import apis from '../api'
+import search from '../api/search'
 import { inPath } from '../lib/path'
 import '../../res/css/release.css'
 
 const spinnerClass = 'spinner'
 
-async function searchSource(source, title, artist, type) {
-  const api = apis[source]
-  const searchResult = await api.search(title, artist, type)
-  if (searchResult) {
-    const $button = $(
-      `<a target="_blank" rel="noopener nofollow" title="${source}" class="ui_stream_link_btn ui_stream_link_btn_${source.toLowerCase()}" href="${
-        searchResult.source
-      }"><i class="fa fa-${source.toLowerCase()}"></i></a>`
-    )
-    $button.addClass('brym')
-    $('.ui_stream_links')
-      .find(`.${spinnerClass}`)
-      .before($button)
-    return true
-  }
-  return false
+function addSourceButton(source, info) {
+  const $button = $(
+    `<a target="_blank" rel="noopener nofollow" title="${source}" class="ui_stream_link_btn ui_stream_link_btn_${source.toLowerCase()}" href="${
+      info.link
+    }"><i class="fa fa-${source.toLowerCase()}"></i></a>`
+  )
+  $button.addClass('brym')
+  $('.ui_stream_links')
+    .find(`.${spinnerClass}`)
+    .before($button)
+}
+
+function addSourceButtons(response) {
+  Object.entries(response).forEach(([source, info]) =>
+    addSourceButton(source, info[0])
+  )
 }
 
 function getExistingSources() {
   const $streamSources = $('.ui_stream_link_btn')
-  const existingSources = Array.from(
-    new Set(
-      Array.from(
-        // filter duplicates
-        $streamSources.map((_, el) =>
-          Array.from(el.classList)
-            .filter(value => value !== 'ui_stream_link_btn')[0]
-            .replace('ui_stream_link_btn_', '')
-        ) // extract streaming platform name from button class name
-      )
-    )
-  )
-  return existingSources
-}
-
-function getMissingSources() {
-  const existingSources = getExistingSources()
-  const apiSources = Object.keys(apis).filter(api => !!apis[api].search)
-  return apiSources.filter(
-    apiSource => !existingSources.includes(apiSource.toLowerCase())
-  )
+  const existingSources = $streamSources.map((_, el) => {
+    const regex = /ui_stream_link_btn_(\S+)/
+    const match = regex.exec(el.classList.toString())
+    return match ? match[1] : null
+  })
+  return Array.from(new Set(existingSources)) // remove duplicates
 }
 
 function getReleaseInfo() {
@@ -106,12 +91,9 @@ async function modifyReleasePage() {
   showLoading(true)
 
   const info = getReleaseInfo()
-  const missingSources = getMissingSources()
-
-  const promises = missingSources.map(source =>
-    searchSource(source, info.title, info.artist, info.type)
-  )
-  await Promise.all(promises)
+  const existingSources = getExistingSources()
+  const results = await search(info.title, info.artist, existingSources)
+  addSourceButtons(results)
 
   showLoading(false)
   const $streamLinkButtons = $('.ui_stream_link_btn')

@@ -4,6 +4,10 @@ export function capitalize(str) {
   return str.toLowerCase().replace(/(?:^|\s)\S/g, a => a.toUpperCase())
 }
 
+export function similarity(a, b) {
+  return dice.compareTwoStrings(a, b)
+}
+
 export function getMostSimilar(
   mainString,
   targetStrings,
@@ -23,6 +27,6 @@ export function getMostSimilar(
     return similarityA >= similarityB ? a : b
   })
 
-  const similarity = safeSimilarity(mainString, mostSimilar)
-  return similarity >= thresholdSimilarity ? mostSimilar : null
+  const sim = safeSimilarity(mainString, mostSimilar)
+  return sim >= thresholdSimilarity ? mostSimilar : null
 }
