@@ -1,82 +1,86 @@
 :root {
-	--disabled: #eee;
-	--icon: #777;
-	--border: #ccc;
+  --disabled: #eee;
+  --icon: #777;
+  --border: #ccc;
 }
 
 #import-source-input {
-	width: 400px;
+  width: 400px;
 }
 
 #import-source-btn {
-	height: 22px;
-	margin-left: 4px;
-	padding-left: 10px;
-	padding-right: 10px;
-	cursor: pointer;
+  height: 22px;
+  margin-left: 4px;
+  padding-left: 10px;
+  padding-right: 10px;
+  cursor: pointer;
 }
 
 .spinner.add-release {
-	position: relative;
-	top: 4px;
-	margin-left: 4px;
-	display: inline-flex;
-	width: 22px;
-	height: 22px;
-	align-items: center;
-	justify-content: center;
+  position: relative;
+  top: 4px;
+  margin-left: 4px;
+  display: inline-flex;
+  width: 22px;
+  height: 22px;
+  align-items: center;
+  justify-content: center;
 }
 
 .spinner-icon.add-release {
-	border: 3px solid transparent;
-	border-top: 3px solid #666;
-	border-radius: 50%;
-	width: 18px;
-	height: 18px;
-	animation: spin 1.5s linear infinite;
-	display: inline-block;
-	box-sizing: border-box;
+  border: 3px solid transparent;
+  border-top: 3px solid #666;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  animation: spin 1.5s linear infinite;
+  display: inline-block;
+  box-sizing: border-box;
 }
 
 #sources {
-	margin-top: 4px;
-	margin-left: -4px;
+  margin-top: 4px;
+  margin-left: -4px;
 }
 
 .source-box {
-	display: inline-block;
-	width: 24px;
-	height: 24px;
-	padding: 4px;
-	margin-left: 4px;
-	border: 1px solid var(--border);
-	background: var(--disabled)
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  padding: 4px;
+  margin-left: 4px;
+  border: 1px solid var(--border);
+  background: var(--disabled);
 }
 
 .source-box.active {
-	background: black;
+  background: black;
 }
 
 .source-box.active.spotify {
-	background: #1ED760;
+  background: #1ed760;
 }
 
 .source-box.active.soundcloud {
-	background: #FF3300;
+  background: #ff3300;
 }
 
 .source-box.active.bandcamp {
-	background: #408294;
+  background: #408294;
 }
 
 .source-box.active.discogs {
-	background: #333333;
+  background: #333333;
+}
+
+.source-box.active.youtube {
+  background: #ff0000;
 }
 
 .source-icon {
-	fill: var(--icon);
+  fill: var(--icon);
 }
 
 .source-box.active .source-icon {
-	fill: white;
+  fill: white;
 }

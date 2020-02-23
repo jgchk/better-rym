@@ -1,17 +1,10 @@
-import apis from '../api'
+import resolve, { sources, test } from '../api/resolve'
 import { capitalize } from '../lib/string'
 import { inPath } from '../lib/path'
 import '../../res/css/add-release.css'
 
 const spinnerClass = 'spinner'
 const importSourceId = 'import-source'
-
-function checkApis(url) {
-  return Object.keys(apis).find(api => {
-    const importer = apis[api]
-    return importer.test && importer.test(url)
-  })
-}
 
 function isAddReleasePage() {
   return inPath('releases', 'ac')
@@ -52,15 +45,19 @@ function fillType(infoType) {
 
 function fillDate(infoDate) {
   if (!infoDate) return
-  const [year, month, day] = infoDate.split('-')
+  const date = new Date(infoDate)
+  const year = date.getUTCFullYear()
+  const month = date.getUTCMonth() + 1
+  const day = date.getUTCDate()
 
   const $year = $('#year')
   const $month = $('#month')
   const $day = $('#day')
 
+  const pad = num => String(num).padStart(2, '0')
   $year.val(year)
-  $month.val(month)
-  $day.val(day)
+  $month.val(pad(month))
+  $day.val(pad(day))
 }
 
 function capitalizeTitle(title) {
@@ -183,11 +180,12 @@ function fillAttributes(infoAttributes) {
 }
 
 function fillTracks(infoTracks) {
+  if (!infoTracks) return
   const trackStrings = infoTracks.map((infoTrack, i) => {
     const trackNum = infoTrack.position || i + 1
     const title = capitalizeTitle(infoTrack.title)
-    const { length } = infoTrack
-    return `${trackNum}|${title}|${length}`
+    const { duration } = infoTrack
+    return `${trackNum}|${title}|${duration}`
   })
 
   const $advancedBtn = $('#goAdvancedBtn')
@@ -205,6 +203,7 @@ function fillSource(infoSource) {
   const $source = $('#notes')
   $source.val(infoSource)
 }
+
 function fillInfo(info) {
   fillType(info.type)
   fillDate(info.date)
@@ -212,19 +211,16 @@ function fillInfo(info) {
   fillFormat(info.format)
   fillAttributes(info.attributes)
   fillTracks(info.tracks)
-  fillSource(info.source)
+  fillSource(info.link)
 }
 
 async function importLink(url) {
   showLoading(true)
-  Object.values(apis).find(async importer => {
-    if (importer.test && importer.test(url)) {
-      const info = await importer.info(url)
-      fillInfo(info)
-      return true
-    }
-    return false
-  })
+  const result = await resolve(url)
+  console.log(result)
+  const info = Object.values(result)[0]
+  console.log(info)
+  fillInfo(info)
   showLoading(false)
 }
 
@@ -264,7 +260,7 @@ function modifyAddReleasePage() {
   const $linkbox = $(`<div id="${importSourceId}">`)
   const $input = $('<input id="import-source-input">')
   $input.on('input', () => {
-    const source = checkApis($input.val())
+    const source = test($input.val())
     $('.source-box').removeClass('active')
     $(`.source-box.${source.toLowerCase()}`).addClass('active')
   })
@@ -275,11 +271,10 @@ function modifyAddReleasePage() {
   $fieldContent.append($linkbox)
 
   const $sources = $('<div id="sources">')
-  Object.entries(apis).forEach(([name, importer]) => {
-    if (!importer.info) return
+  Object.entries(sources).forEach(([name, { icon }]) => {
     const $sourceBox = $('<div class="source-box">')
     $sourceBox.addClass(['source-box', name.toLowerCase()])
-    const $sourceIcon = $(importer.icon)
+    const $sourceIcon = $(icon)
     $sourceIcon.addClass('source-icon')
     $sourceBox.append($sourceIcon)
     $sources.append($sourceBox)
