@@ -271,12 +271,9 @@ function modifyAddReleasePage() {
   $fieldContent.append($linkbox)
 
   const $sources = $('<div id="sources">')
-  Object.entries(sources).forEach(([name, { icon }]) => {
+  Object.keys(sources).forEach(name => {
     const $sourceBox = $('<div class="source-box">')
     $sourceBox.addClass(['source-box', name.toLowerCase()])
-    const $sourceIcon = $(icon)
-    $sourceIcon.addClass('source-icon')
-    $sourceBox.append($sourceIcon)
     $sources.append($sourceBox)
   })
   $fieldContent.append($sources)

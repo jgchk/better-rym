@@ -44,43 +44,66 @@
 }
 
 .source-box {
+  position: relative;
   display: inline-block;
   width: 24px;
   height: 24px;
   padding: 4px;
   margin-left: 4px;
   border: 1px solid var(--border);
-  background: var(--disabled);
+  background-color: var(--disabled);
+}
+.source-box:before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  content: '';
+  background-size: 65%;
+  background-repeat: no-repeat;
+  background-position: center;
+  filter: invert() brightness(50%);
 }
 
 .source-box.active {
-  background: black;
+  background-color: black;
+}
+.source-box.active:before {
+  filter: invert() brightness(97%);
 }
 
+.source-box.spotify:before {
+  background-image: url('../svg/spotify.svg');
+}
 .source-box.active.spotify {
-  background: #1ed760;
+  background-color: #1ed760;
 }
 
+.source-box.soundcloud:before {
+  background-image: url('../svg/soundcloud.svg');
+}
 .source-box.active.soundcloud {
-  background: #ff3300;
+  background-color: #ff3300;
 }
 
+.source-box.bandcamp:before {
+  background-image: url('../svg/bandcamp.svg');
+}
 .source-box.active.bandcamp {
-  background: #408294;
+  background-color: #408294;
 }
 
+.source-box.discogs:before {
+  background-image: url('../svg/discogs.svg');
+}
 .source-box.active.discogs {
-  background: #333333;
+  background-color: #333333;
 }
 
+.source-box.youtube:before {
+  background-image: url('../svg/youtube.svg');
+}
 .source-box.active.youtube {
-  background: #ff0000;
-}
-
-.source-icon {
-  fill: var(--icon);
-}
-
-.source-box.active .source-icon {
-  fill: white;
+  background-color: #ff0000;
 }

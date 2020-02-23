@@ -2,7 +2,7 @@ import { fetchUrl } from '../lib/fetch'
 import { similarity } from '../lib/string'
 
 const searchUrl = (title, artist, limit, haveSources) => {
-  let url = `http://localhost:3000/api/music/search?title=${encodeURIComponent(
+  let url = `https://jake.cafe/api/music/search?title=${encodeURIComponent(
     title
   )}&artist=${encodeURIComponent(artist)}&limit=${encodeURIComponent(limit)}`
   haveSources.forEach(source => {

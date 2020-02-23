@@ -39,7 +39,7 @@ module.exports = {
       },
       {
         test: /\.svg$/,
-        use: 'svg-inline-loader?classPrefix',
+        use: 'url-loader',
       },
       {
         test: /\.css$/i,
