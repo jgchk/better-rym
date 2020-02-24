@@ -1,10 +1,13 @@
 import { fetchUrl } from '../lib/fetch'
 import { similarity } from '../lib/string'
 
-const searchUrl = (title, artist, limit, haveSources) => {
+const searchUrl = (title, artist, limit, sources, haveSources) => {
   let url = `https://jake.cafe/api/music/search?title=${encodeURIComponent(
     title
   )}&artist=${encodeURIComponent(artist)}&limit=${encodeURIComponent(limit)}`
+  sources.forEach(source => {
+    url += `&source=${source.toLowerCase()}`
+  })
   haveSources.forEach(source => {
     url += `&haveSource=${source.toLowerCase()}`
   })
@@ -14,11 +17,13 @@ const searchUrl = (title, artist, limit, haveSources) => {
 export default async function search(
   title,
   artist,
+  sources = [],
   haveSources = [],
   limit = 1,
   similarityThreshold = 0.5
 ) {
-  const url = searchUrl(title, artist, limit, haveSources)
+  const url = searchUrl(title, artist, limit, sources, haveSources)
+  console.log(url)
   const response = await fetchUrl(url)
   return Object.assign(
     {},

@@ -1,4 +1,5 @@
-import resolve, { sources, test } from '../api/resolve'
+import sources from '../api'
+import resolve, { test } from '../api/resolve'
 import { capitalize } from '../lib/string'
 import { inPath } from '../lib/path'
 import '../../res/css/add-release.css'

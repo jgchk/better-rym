@@ -5,4 +5,7 @@ module.exports = {
     jquery: true,
     greasemonkey: true,
   },
+  globals: {
+    Sortable: 'readonly',
+  },
 }

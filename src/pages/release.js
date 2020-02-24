@@ -1,14 +1,15 @@
 import search from '../api/search'
 import { inPath } from '../lib/path'
+import { sources, source } from '../settings'
 import '../../res/css/release.css'
 
 const spinnerClass = 'spinner'
 
-function addSourceButton(source, info) {
+function addSourceButton(src, info) {
   const $button = $(
-    `<a target="_blank" rel="noopener nofollow" title="${source}" class="ui_stream_link_btn ui_stream_link_btn_${source.toLowerCase()}" href="${
+    `<a target="_blank" rel="noopener nofollow" title="${src}" class="ui_stream_link_btn ui_stream_link_btn_${src.toLowerCase()}" href="${
       info.link
-    }"><i class="fa fa-${source.toLowerCase()}"></i></a>`
+    }"><i class="fa fa-${src.toLowerCase()}"></i></a>`
   )
   $button.addClass('brym')
   $('.ui_stream_links')
@@ -17,8 +18,12 @@ function addSourceButton(source, info) {
 }
 
 function addSourceButtons(response) {
-  Object.entries(response).forEach(([source, info]) =>
-    addSourceButton(source, info[0])
+  const responseSources = Object.keys(response)
+  const displaySources = sources().filter(src =>
+    responseSources.includes(src.toLowerCase())
+  )
+  displaySources.forEach(src =>
+    addSourceButton(src, response[src.toLowerCase()][0])
   )
 }
 
@@ -91,9 +96,18 @@ async function modifyReleasePage() {
   showLoading(true)
 
   const info = getReleaseInfo()
+  const enabledSources = sources()
+    .filter(src => source(src))
+    .map(src => src.toLowerCase())
   const existingSources = getExistingSources()
-  const results = await search(info.title, info.artist, existingSources)
-  addSourceButtons(results)
+  const searchSources = enabledSources.filter(
+    src => !existingSources.includes(src)
+  )
+  console.log('searchSources', searchSources)
+  if (searchSources.length > 0) {
+    const results = await search(info.title, info.artist, searchSources)
+    addSourceButtons(results)
+  }
 
   showLoading(false)
   const $streamLinkButtons = $('.ui_stream_link_btn')
