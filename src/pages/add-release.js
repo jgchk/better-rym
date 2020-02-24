@@ -1,4 +1,4 @@
-import sources from '../api'
+import { sources } from '../settings'
 import resolve, { test } from '../api/resolve'
 import { capitalize } from '../lib/string'
 import { inPath } from '../lib/path'
@@ -270,7 +270,7 @@ function modifyAddReleasePage() {
   $fieldContent.append($linkbox)
 
   const $sources = $('<div id="sources">')
-  Object.keys(sources).forEach(name => {
+  sources().forEach(name => {
     const $sourceBox = $('<div class="source-box">')
     $sourceBox.addClass(['source-box', name.toLowerCase()])
     $sources.append($sourceBox)
