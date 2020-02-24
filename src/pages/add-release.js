@@ -217,9 +217,7 @@ function fillInfo(info) {
 async function importLink(url) {
   showLoading(true)
   const result = await resolve(url)
-  console.log(result)
   const info = Object.values(result)[0]
-  console.log(info)
   fillInfo(info)
   showLoading(false)
 }
