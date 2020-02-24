@@ -1,7 +1,7 @@
 import search from '../api/search'
 import { inPath } from '../lib/path'
 import { sources, source } from '../settings'
-import '../../res/css/release.css'
+import '../../res/styles/release.less'
 
 const spinnerClass = 'spinner'
 

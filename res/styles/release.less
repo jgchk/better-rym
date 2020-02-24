@@ -1,0 +1,35 @@
+.ui_stream_link_btn.brym {
+	opacity: 0.5;
+}
+
+.ui_stream_link_btn_discogs {
+	background-image: url('../svg/discogs.svg');
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: 65%;
+}
+
+.spinner.release {
+	align-items: center;
+	cursor: default;
+	display: inline-flex;
+	height: 2em;
+	justify-content: center;
+	width: 2em;
+}
+
+.spinner-icon.release {
+	animation: spin 1.5s linear infinite;
+	border-radius: 50%;
+	border-top: 3px solid #666666;
+	border: 3px solid transparent;
+	box-sizing: border-box;
+	display: inline-block;
+	height: 1.3em;
+	width: 1.3em;
+}
+
+@keyframes spin {
+	0% { transform: rotate(0deg)}
+	100% { transform: rotate(360deg) }
+}

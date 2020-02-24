@@ -1,0 +1,93 @@
+@height: 22px;
+@border: #ccc;
+@disabled: #eee;
+@icon: #777;
+
+#import-source-input {
+	width: 400px;
+}
+
+#import-source-btn {
+	cursor: pointer;
+	height: @height;
+	margin-left: 4px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.spinner.add-release {
+	align-items: center;
+	display: inline-flex;
+	height: @height;
+	justify-content: center;
+	margin-left: 4px;
+	position: relative;
+	top: 4px;
+	width: 22px;
+}
+
+.spinner-icon.add-release {
+	animation: spin 1.5s linear infinite;
+	border-radius: 50%;
+	border-top: 3px solid #666666;
+	border: 3px solid transparent;
+	box-sizing: border-box;
+	display: inline-block;
+	height: 18px;
+	width: 18px;
+}
+
+#sources {
+	margin-left: -4px;
+	margin-top: 4px;
+}
+
+.source-box {
+	background-color: @disabled;
+	border: 1px solid @border;
+	display: inline-block;
+	height: 24px;
+	margin-left: 4px;
+	padding: 4px;
+	position: relative;
+	width: 24px;
+
+	&:before {
+		background-position: center;
+		background-repeat: no-repeat;
+		background-size: 65%;
+		content: '';
+		filter: invert() brightness(50%);
+		height: 100%;
+		left: 0;
+		position: absolute;
+		top: 0;
+		width: 100%;
+	}
+}
+
+.source-box.active {
+	background-color: black;
+	&:before { filter: invert() brightness(97%) }
+}
+
+.source-box.spotify {
+	&:before { background-image: url('../svg/spotify.svg') }
+	&.active { background-color: #1ed760 }
+}
+.source-box.soundcloud {
+	&:before { background-image: url('../svg/soundcloud.svg') }
+	&.active { background-color: #f30 }
+}
+.source-box.bandcamp {
+	&:before { background-image: url('../svg/bandcamp.svg') }
+	&.active { background-color: #408294 }
+}
+.source-box.discogs {
+	&:before { background-image: url('../svg/discogs.svg') }
+	&.active { background-color: #333 }
+}
+.source-box.youtube {
+	&:before { background-image: url('../svg/youtube.svg') }
+	&.active { background-color: #f00 }
+}
