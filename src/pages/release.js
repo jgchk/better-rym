@@ -103,7 +103,6 @@ async function modifyReleasePage() {
   const searchSources = enabledSources.filter(
     src => !existingSources.includes(src)
   )
-  console.log('searchSources', searchSources)
   if (searchSources.length > 0) {
     const results = await search(info.title, info.artist, searchSources)
     addSourceButtons(results)

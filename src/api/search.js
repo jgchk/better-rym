@@ -23,7 +23,6 @@ export default async function search(
   similarityThreshold = 0.5
 ) {
   const url = searchUrl(title, artist, limit, sources, haveSources)
-  console.log(url)
   const response = await fetchUrl(url)
   return Object.assign(
     {},
