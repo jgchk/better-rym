@@ -1,5 +1,5 @@
 import { sources, source } from '../settings'
-import '../../res/css/nav.css'
+import '../../res/styles/nav.less'
 
 const navtop = $('#navtop')
 

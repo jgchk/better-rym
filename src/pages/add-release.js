@@ -2,7 +2,7 @@ import { sources } from '../settings'
 import resolve, { test } from '../api/resolve'
 import { capitalize } from '../lib/string'
 import { inPath } from '../lib/path'
-import '../../res/css/add-release.css'
+import '../../res/styles/add-release.less'
 
 const spinnerClass = 'spinner'
 const importSourceId = 'import-source'
