@@ -110,16 +110,19 @@ async function modifyReleasePage() {
 
   if (searchSources.length > 0) {
     const historyResults = await getHistoryLinks(historyUrl, searchSources)
+    addSourceButtons(historyResults)
+
     const remainingSources = searchSources.filter(
       src => !(src in historyResults)
     )
-
-    let searchResults = {}
-    if (remainingSources.length > 0)
-      searchResults = await search(info.title, info.artist, remainingSources)
-
-    const results = { ...searchResults, ...historyResults } // prefer history results over search
-    addSourceButtons(results)
+    if (remainingSources.length > 0) {
+      const searchResults = await search(
+        info.title,
+        info.artist,
+        remainingSources
+      )
+      addSourceButtons(searchResults)
+    }
   }
 
   showLoading(false)
