@@ -22,7 +22,7 @@ function getLinksBySource(links, includedSources) {
 }
 
 export default async function getLinks(historyUrl, includedSources) {
-  const response = await fetchUrl(historyUrl, 'GET', 'html')
+  const response = await fetchUrl(historyUrl, 'GET', 'text')
   const $html = $(response)
   const $links = $html.find('a.normal_link')
   const links = deduplicate($links.map((i, link) => link.href).get())
