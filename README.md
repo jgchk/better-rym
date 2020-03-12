@@ -7,8 +7,9 @@ enhancements for [rateyourmusic.com](https://rateyourmusic.com/) 🎧
 
 ## Features
 
-* add missing streaming links to Release pages
-* auto-fill the Add Release form
+* add missing streaming links to Release pages - Spotify, SoundCloud, Bandcamp, and more
+* auto-fill the Add Release form - submit a new release in under 1 minute
+* filter your Collection by type - albums, eps, singles, etc.
 
 ## Installation
 
@@ -18,11 +19,8 @@ enhancements for [rateyourmusic.com](https://rateyourmusic.com/) 🎧
 
 ## Developing
 
-you can host a dev server with hot-reloading using:
-
-```bash
-yarn dev
-```
+* host a dev server with hot-reloading using `yarn dev`
+* generate a production build using `yarn build`
 
 ## License
 [GPL-3.0](https://choosealicense.com/licenses/gpl-3.0/)
