@@ -1,15 +1,14 @@
 import search from '../api/search'
+import getHistoryLinks from '../api/history'
 import { inPath } from '../lib/path'
 import { sources, source } from '../settings'
 import '../../res/styles/release.less'
 
 const spinnerClass = 'spinner'
 
-function addSourceButton(src, info) {
+function addSourceButton(src, link) {
   const $button = $(
-    `<a target="_blank" rel="noopener nofollow" title="${src}" class="ui_stream_link_btn ui_stream_link_btn_${src.toLowerCase()}" href="${
-      info.link
-    }"><i class="fa fa-${src.toLowerCase()}"></i></a>`
+    `<a target="_blank" rel="noopener nofollow" title="${src}" class="ui_stream_link_btn ui_stream_link_btn_${src.toLowerCase()}" href="${link}"><i class="fa fa-${src.toLowerCase()}"></i></a>`
   )
   $button.addClass('brym')
   $('.ui_stream_links')
@@ -22,9 +21,11 @@ function addSourceButtons(response) {
   const displaySources = sources().filter(src =>
     responseSources.includes(src.toLowerCase())
   )
-  displaySources.forEach(src =>
-    addSourceButton(src, response[src.toLowerCase()][0])
-  )
+  displaySources.forEach(src => {
+    const results = response[src.toLowerCase()]
+    const link = typeof results === 'string' ? results : results[0].link
+    addSourceButton(src, link)
+  })
 }
 
 function getExistingSources() {
@@ -103,8 +104,22 @@ async function modifyReleasePage() {
   const searchSources = enabledSources.filter(
     src => !existingSources.includes(src)
   )
+
+  const historyButton = $("a[href^='/admin/corq']")
+  const historyUrl = historyButton.attr('href')
+
   if (searchSources.length > 0) {
-    const results = await search(info.title, info.artist, searchSources)
+    const historyResults = await getHistoryLinks(historyUrl, searchSources)
+    const remainingSources = searchSources.filter(
+      src => !(src in historyResults)
+    )
+    const searchResults = await search(
+      info.title,
+      info.artist,
+      remainingSources
+    )
+    const results = { ...searchResults, ...historyResults } // prefer history results over search
+    console.log('results', results)
     addSourceButtons(results)
   }
 
