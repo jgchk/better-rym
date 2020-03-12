@@ -35,7 +35,7 @@ function makeButtons() {
     $button.addClass('brym')
     $button.addClass('printbutton')
     $button.addClass(name.toLowerCase())
-    $button.text(name)
+    $button.text(name.toLowerCase())
     $button.attr('href', makeUrl(modifier))
     $container.append($button)
   })
