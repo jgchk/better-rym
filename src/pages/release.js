@@ -119,7 +119,6 @@ async function modifyReleasePage() {
       remainingSources
     )
     const results = { ...searchResults, ...historyResults } // prefer history results over search
-    console.log('results', results)
     addSourceButtons(results)
   }
 
