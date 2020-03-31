@@ -22,3 +22,10 @@ const sources = {
 }
 
 export default sources
+
+export function test(url) {
+  return Object.keys(sources).find(source => {
+    const { regex } = sources[source]
+    return regex.test(url)
+  })
+}

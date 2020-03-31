@@ -22,7 +22,7 @@ module.exports = {
         version: dev ? '[version]-build.[buildTime]' : '[version]',
         grant: ['GM_xmlhttpRequest', 'GM_getValue', 'GM_setValue'],
         connect: ['self', 'jake.cafe'],
-        match: ['*://rateyourmusic.com/*'],
+        match: ['*://rateyourmusic.com/*', '*://soundcloud.com/*'],
         require: [
           'https://code.jquery.com/jquery-3.4.1.slim.js',
           'https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js',

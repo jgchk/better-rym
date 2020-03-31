@@ -34,6 +34,7 @@
     "webpack-userscript": "^2.5.1"
   },
   "dependencies": {
+    "bluebird": "^3.7.2",
     "string-similarity": "^4.0.1"
   },
   "husky": {

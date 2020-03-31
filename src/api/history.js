@@ -1,5 +1,5 @@
 import { fetchUrl } from '../lib/fetch'
-import sources from './index'
+import sources from './sources'
 import { deduplicate } from '../lib/array'
 
 function getSource(link, includedSources) {
