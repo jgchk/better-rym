@@ -1,6 +1,6 @@
 {
   "name": "better-rym",
-  "version": "3.5.4",
+  "version": "3.6.0",
   "description": "improvements for rateyourmusic.com",
   "private": true,
   "scripts": {
@@ -34,6 +34,7 @@
     "webpack-userscript": "^2.5.1"
   },
   "dependencies": {
+    "bluebird": "^3.7.2",
     "string-similarity": "^4.0.1"
   },
   "husky": {

@@ -6,11 +6,8 @@ export function fetchUrl(url, method = 'GET', responseType = 'json') {
       url,
       responseType,
       onload: result => {
-        if (result.status === 200) {
-          resolve(result.response)
-        } else {
-          reject(result.status)
-        }
+        if (result.status === 200) resolve(result.response)
+        else reject(new Error(`Received status code: ${result.status}`))
       },
       onerror: error => reject(error),
     })

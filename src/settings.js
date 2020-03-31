@@ -1,5 +1,5 @@
 import { get, set } from './lib/settings'
-import apiSources from './api'
+import apiSources from './api/sources'
 
 const defaultSources = Object.keys(apiSources)
 export function sources(value) {
