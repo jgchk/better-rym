@@ -2,6 +2,7 @@ import { sources } from '../settings'
 import resolve, { test } from '../api/resolve'
 import { capitalize } from '../lib/string'
 import { inPath } from '../lib/path'
+import { formatSourceName } from './common'
 import '../../res/styles/add-release.less'
 
 const spinnerClass = 'spinner'
@@ -261,7 +262,7 @@ function modifyAddReleasePage() {
   $input.on('input', () => {
     const source = test($input.val())
     $('.source-box').removeClass('active')
-    $(`.source-box.${source.toLowerCase()}`).addClass('active')
+    $(`.source-box.${formatSourceName(source)}`).addClass('active')
   })
   const $submit = $('<button id="import-source-btn">Fill</button>')
   $submit.on('click', () => importLink($input.val()))
@@ -272,7 +273,7 @@ function modifyAddReleasePage() {
   const $sources = $('<div id="sources">')
   sources().forEach(name => {
     const $sourceBox = $('<div class="source-box">')
-    $sourceBox.addClass(['source-box', name.toLowerCase()])
+    $sourceBox.addClass(['source-box', formatSourceName(name)])
     $sources.append($sourceBox)
   })
   $fieldContent.append($sources)

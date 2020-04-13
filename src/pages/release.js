@@ -2,13 +2,10 @@ import search from '../api/search'
 import getHistoryLinks from '../api/history'
 import { inPath } from '../lib/path'
 import { sources, source } from '../settings'
+import { formatSourceName } from './common'
 import '../../res/styles/release.less'
 
 const spinnerClass = 'spinner'
-
-function formatSourceName(src) {
-  return src.replace(/ /g, '').toLowerCase()
-}
 
 function addSourceButton(src, link) {
   const $button = $(
