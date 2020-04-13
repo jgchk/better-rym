@@ -2,13 +2,16 @@ import search from '../api/search'
 import getHistoryLinks from '../api/history'
 import { inPath } from '../lib/path'
 import { sources, source } from '../settings'
+import { formatSourceName } from './common'
 import '../../res/styles/release.less'
 
 const spinnerClass = 'spinner'
 
 function addSourceButton(src, link) {
   const $button = $(
-    `<a target="_blank" rel="noopener nofollow" title="${src}" class="ui_stream_link_btn ui_stream_link_btn_${src.toLowerCase()}" href="${link}"><i class="fa fa-${src.toLowerCase()}"></i></a>`
+    `<a target="_blank" rel="noopener nofollow" title="${src}" class="ui_stream_link_btn ui_stream_link_btn_${formatSourceName(
+      src
+    )}" href="${link}"><i class="fa fa-${formatSourceName(src)}"></i></a>`
   )
   $button.addClass('brym')
   $('.ui_stream_links')
@@ -19,10 +22,10 @@ function addSourceButton(src, link) {
 function addSourceButtons(response) {
   const responseSources = Object.keys(response)
   const displaySources = sources().filter(src =>
-    responseSources.includes(src.toLowerCase())
+    responseSources.includes(formatSourceName(src))
   )
   displaySources.forEach(src => {
-    const results = response[src.toLowerCase()]
+    const results = response[formatSourceName(src)]
     const link = typeof results === 'string' ? results : results[0].link
     addSourceButton(src, link)
   })
@@ -99,7 +102,7 @@ async function modifyReleasePage() {
   const info = getReleaseInfo()
   const enabledSources = sources()
     .filter(src => source(src))
-    .map(src => src.toLowerCase())
+    .map(src => formatSourceName(src))
   const existingSources = getExistingSources()
   const searchSources = enabledSources.filter(
     src => !existingSources.includes(src)

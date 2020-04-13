@@ -6,10 +6,10 @@ const searchUrl = (title, artist, limit, sources, haveSources) => {
     title
   )}&artist=${encodeURIComponent(artist)}&limit=${encodeURIComponent(limit)}`
   sources.forEach(source => {
-    url += `&source=${source.toLowerCase()}`
+    url += `&source=${source.replace(/ /g, '').toLowerCase()}`
   })
   haveSources.forEach(source => {
-    url += `&haveSource=${source.toLowerCase()}`
+    url += `&haveSource=${source.replace(/ /g, '').toLowerCase()}`
   })
   return url
 }

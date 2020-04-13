@@ -19,6 +19,10 @@ const sources = {
     regex: /((http|https):\/\/)?(.*\.)?(discogs\.com)?\/(.+)\/(release|master)\/(\d+)/i,
     icon: '../../res/svg/discogs.svg',
   },
+  'Apple Music': {
+    regex: /http(?:s)?:\/\/music\.apple\.com\/(\w{2,4})\/album\/([^/]*)\/([^?]+)[^/]*/,
+    icon: '../../res/svg/applemusic.svg',
+  },
 }
 
 export default sources
