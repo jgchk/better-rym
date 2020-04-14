@@ -218,9 +218,14 @@ function fillInfo(info) {
 
 async function importLink(url) {
   showLoading(true)
-  const result = await resolve(url)
-  const info = Object.values(result)[0]
-  fillInfo(info)
+  try {
+    const result = await resolve(url)
+    const info = Object.values(result)[0]
+    fillInfo(info)
+  } catch (e) {
+    /* eslint-disable-next-line no-console */
+    console.log(e)
+  }
   showLoading(false)
 }
 
