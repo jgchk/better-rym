@@ -27,6 +27,10 @@ const sources = {
     regex: /http(?:s)?:\/\/play\.google\.com\/store\/music\/album\/(.+)\?id=(.+)/,
     icon: '../../res/svg/googleplay.svg',
   },
+  Beatport: {
+    regex: /http(?:s)?:\/\/(?:(?:www|pro|classic)\.)?beatport\.com\/release\/(.*?)\/(\d+)/,
+    icon: '../../res/svg/beatport.svg',
+  },
 }
 
 export default sources
