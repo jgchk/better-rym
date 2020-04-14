@@ -23,6 +23,10 @@ const sources = {
     regex: /http(?:s)?:\/\/music\.apple\.com\/(\w{2,4})\/album\/([^/]*)\/([^?]+)[^/]*/,
     icon: '../../res/svg/applemusic.svg',
   },
+  'Google Play': {
+    regex: /http(?:s)?:\/\/play\.google\.com\/store\/music\/album\/(.+)\?id=(.+)/,
+    icon: '../../res/svg/googleplay.svg',
+  },
 }
 
 export default sources
