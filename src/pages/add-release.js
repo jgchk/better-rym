@@ -102,7 +102,9 @@ function capitalizeTitle(title) {
   const romanNumeral = /^[I|V|X|L|C|D|M]+$/
   const surroundRegex = /([(["']*)([^)\]]+)([)\]"']*)/
   titleSplit = titleSplit.map((token, i) => {
-    const [, prefix, , suffix] = token.match(surroundRegex)
+    const match = token.match(surroundRegex)
+    if (!match) return token
+    const [, prefix, , suffix] = match
     let [, , word] = token.match(surroundRegex)
     if (romanNumeral.test(word)) {
       word = word.toUpperCase()
@@ -187,7 +189,7 @@ function fillTracks(infoTracks) {
     const trackNum = infoTrack.position || i + 1
     const title = capitalizeTitle(infoTrack.title)
     const { duration } = infoTrack
-    return `${trackNum}|${title}|${duration}`
+    return `${trackNum}|${title}|${duration || ''}`
   })
 
   const $advancedBtn = $('#goAdvancedBtn')
