@@ -31,6 +31,18 @@ const sources = {
     regex: /http(?:s)?:\/\/(?:(?:www|pro|classic)\.)?beatport\.com\/release\/(.*?)\/(\d+)/,
     icon: '../../res/svg/beatport.svg',
   },
+  Mixcloud: {
+    regex: new RegExp(
+      'http(?:s)?://(?:(?:www|api).)?mixcloud.com/(.*?)/([^/]*)(?:/)?'
+    ),
+    icon: '../../res/svg/mixcloud.svg',
+  },
+  'NTS Radio': {
+    regex: new RegExp(
+      'http(?:s)?://(?:www.)?nts.live/shows/(.*?)/episodes/([^/]*)(?:/)?'
+    ),
+    icon: '../../res/svg/ntsradio.svg',
+  },
 }
 
 export default sources
