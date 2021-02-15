@@ -1,0 +1,65 @@
+.container {
+  position: relative;
+}
+
+.icon {
+  width: 32px;
+  height: 32px;
+  color: var(--mono-3);
+  transition: opacity 0.2s;
+}
+
+.status {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+}
+
+.container.initial .icon,
+.container.loading .icon,
+.container.failed .icon {
+  opacity: 0.2;
+}
+
+.container.searched .icon {
+  opacity: 0.5;
+}
+
+.container.existing .icon {
+  opacity: 0.8;
+}
+
+.container.initial .icon:hover,
+.container.loading .icon:hover,
+.container.failed .icon:hover {
+  opacity: 0.3;
+}
+
+.container.searched .icon:hover {
+  opacity: 0.65;
+}
+
+.container.existing .icon:hover {
+  opacity: 1;
+}
+
+.container.loading .status {
+  color: var(--mono-5);
+  animation: spin 1.5s linear infinite;
+}
+
+.container.failed .status {
+  color: var(--gen-text-red);
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

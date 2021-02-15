@@ -8,6 +8,9 @@ import dotenv from 'dotenv'
 import { chromeExtension, simpleReloader } from 'rollup-plugin-chrome-extension'
 import { emptyDir } from 'rollup-plugin-empty-dir'
 import { terser } from 'rollup-plugin-terser'
+import svgo from 'rollup-plugin-svgo'
+import postcss from 'rollup-plugin-postcss'
+import autoprefixer from 'autoprefixer'
 
 const production = process.env.NODE_ENV === 'production'
 const extensions = ['.js', '.jsx', '.ts', '.tsx']
@@ -24,6 +27,8 @@ const config = {
     simpleReloader(),
     resolve({ extensions, browser: true }),
     commonjs(),
+    svgo(),
+    postcss(),
     babel({ babelHelpers: 'bundled', extensions, exclude: [/\/core-js\//] }),
     replace({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),

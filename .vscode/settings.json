@@ -10,6 +10,7 @@
   "stylelint.stylelintPath": ".yarn/sdks/stylelint/lib/index.js",
 
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll.eslint": true,
+    "source.fixAll.stylelint": true
   }
 }

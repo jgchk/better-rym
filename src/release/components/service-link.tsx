@@ -14,8 +14,9 @@ import {
 import { PageDataState } from '../hooks/use-metadata'
 import { SearchFunction, Service } from '../services'
 import { Metadata } from '../utils/page-data'
+import Icon from './icon'
 
-type ServiceState = OneShot<Option<string>>
+type ServiceState = OneShot<{ searched: boolean; link: Option<string> }>
 
 const ServiceLink: Component<{
   service: Service
@@ -30,7 +31,11 @@ const ServiceLink: Component<{
       search(metadata),
       foldTE<Error, Option<string>, ServiceState>(
         (error) => task.of({ type: 'failed', error }),
-        (maybeLink) => task.of({ type: 'complete', data: maybeLink })
+        (maybeLink) =>
+          task.of({
+            type: 'complete',
+            data: { searched: true, link: maybeLink },
+          })
       )
     )()
     setState(nextState)
@@ -42,7 +47,11 @@ const ServiceLink: Component<{
         pageData.data.links[service],
         foldO(
           () => void fetch(pageData.data.metadata),
-          (link) => setState({ type: 'complete', data: of(link) })
+          (link) =>
+            setState({
+              type: 'complete',
+              data: { searched: false, link: of(link) },
+            })
         )
       )
     }
@@ -51,31 +60,32 @@ const ServiceLink: Component<{
   return (
     <Switch>
       <Match when={asInitial(state)}>
-        <div>{service}: initial</div>
+        <Icon service={service} state='initial' />
       </Match>
       <Match when={asLoading(state)}>
-        <div>{service}: loading</div>
+        <Icon service={service} state='loading' />
       </Match>
       <Match when={asComplete(state)}>
-        {({ data }) => (
+        {({ data: { searched, link } }) => (
           <Switch>
-            <Match when={asSome(data)}>
+            <Match when={asSome(link)}>
               {({ value }) => (
-                <div>
-                  <a href={value} target='_blank' rel='noreferrer'>
-                    {service}: complete
-                  </a>
-                </div>
+                <a href={value} target='_blank' rel='noreferrer'>
+                  <Icon
+                    service={service}
+                    state={searched ? 'searched' : 'existing'}
+                  />
+                </a>
               )}
             </Match>
-            <Match when={asNone(data)}>
-              <div>{service}: complete</div>
+            <Match when={asNone(link)}>
+              <Icon service={service} state='initial' />
             </Match>
           </Switch>
         )}
       </Match>
       <Match when={asFailed(state)}>
-        <div>{service}: failed</div>
+        <Icon service={service} state='failed' />
       </Match>
     </Switch>
   )

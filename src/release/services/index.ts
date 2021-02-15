@@ -1,5 +1,10 @@
 import { TaskEither } from 'fp-ts/lib/TaskEither'
 import { Option } from 'fp-ts/Option'
+import iconAppleMusic from '../../../res/applemusic.svg'
+import iconBandcamp from '../../../res/bandcamp.svg'
+import iconSoundcloud from '../../../res/soundcloud.svg'
+import iconSpotify from '../../../res/spotify.svg'
+import iconYoutube from '../../../res/youtube.svg'
 import { Metadata } from '../utils/page-data'
 import { search as searchAppleMusic } from './applemusic'
 import { search as searchBandcamp } from './bandcamp'
@@ -27,4 +32,12 @@ export const SEARCH_FUNCTIONS: Record<Service, SearchFunction> = {
   soundcloud: searchSoundcloud,
   spotify: searchSpotify,
   youtube: searchYoutube,
+}
+
+export const ICONS: Record<Service, string> = {
+  applemusic: iconAppleMusic,
+  bandcamp: iconBandcamp,
+  soundcloud: iconSoundcloud,
+  spotify: iconSpotify,
+  youtube: iconYoutube,
 }
