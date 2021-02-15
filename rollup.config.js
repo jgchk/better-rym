@@ -7,7 +7,9 @@ import replace from '@rollup/plugin-replace'
 import dotenv from 'dotenv'
 import { chromeExtension, simpleReloader } from 'rollup-plugin-chrome-extension'
 import { emptyDir } from 'rollup-plugin-empty-dir'
+import { terser } from 'rollup-plugin-terser'
 
+const production = process.env.NODE_ENV === 'production'
 const extensions = ['.js', '.jsx', '.ts', '.tsx']
 const environment = dotenv.parse(fs.readFileSync('.env'))
 
@@ -30,6 +32,7 @@ const config = {
         return accumulator
       }, {}),
     }),
+    production && terser(),
     emptyDir(),
   ],
 }

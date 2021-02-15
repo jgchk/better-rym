@@ -4,7 +4,7 @@
   "description": "improvements for rateyourmusic.com",
   "scripts": {
     "dev": "rollup -c -w",
-    "prod": "rollup -c"
+    "prod": "cross-env NODE_ENV=production rollup -c"
   },
   "dependencies": {
     "@types/firefox-webext-browser": "^82.0.0",
@@ -26,6 +26,7 @@
     "@typescript-eslint/eslint-plugin": "^4.15.0",
     "@typescript-eslint/parser": "^4.15.0",
     "babel-preset-solid": "^0.24.2",
+    "cross-env": "^7.0.3",
     "dotenv": "^8.2.0",
     "eslint": "^7.20.0",
     "eslint-config-prettier": "^7.2.0",
@@ -38,6 +39,7 @@
     "rollup": "^2.39.0",
     "rollup-plugin-chrome-extension": "^3.5.3",
     "rollup-plugin-empty-dir": "^1.0.4",
+    "rollup-plugin-terser": "^7.0.2",
     "stylelint": "^13.10.0",
     "stylelint-config-prettier": "^8.0.2",
     "stylelint-config-rational-order": "^0.1.2",
