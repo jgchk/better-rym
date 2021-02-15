@@ -3,11 +3,10 @@
   "version": "1.0.0",
   "description": "improvements for rateyourmusic.com",
   "scripts": {
-    "dev": "cross-env BROWSERSLIST='chrome >= 70' rollup -c -w",
-    "prod:chrome": "cross-env NODE_ENV=production BROWSERSLIST='chrome >= 70' rollup -c",
-    "prod:firefox": "cross-env NODE_ENV=production BROWSERSLIST='firefox >= 70' rollup -c",
-    "prod:edge": "cross-env NODE_ENV=production BROWSERSLIST='edge >= 15' rollup -c"
+    "dev": "rollup -c -w",
+    "prod": "cross-env NODE_ENV=production rollup -c"
   },
+  "browserslist": "chrome >= 70, firefox >= 70, edge >= 15, safari >= 10",
   "dependencies": {
     "@types/firefox-webext-browser": "^82.0.0",
     "@types/string-similarity": "^4.0.0",
