@@ -24,7 +24,7 @@ const config = {
     simpleReloader(),
     resolve({ extensions, browser: true }),
     commonjs(),
-    babel({ babelHelpers: 'bundled', extensions }),
+    babel({ babelHelpers: 'bundled', extensions, exclude: [/\/core-js\//] }),
     replace({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
       ...Object.entries(environment).reduce((accumulator, [key, value]) => {

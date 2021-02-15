@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "description": "improvements for rateyourmusic.com",
   "scripts": {
-    "dev": "rollup -c -w",
-    "prod": "cross-env NODE_ENV=production rollup -c"
+    "dev": "cross-env BROWSERSLIST='chrome >= 70' rollup -c -w",
+    "prod:chrome": "cross-env NODE_ENV=production BROWSERSLIST='chrome >= 70' rollup -c",
+    "prod:firefox": "cross-env NODE_ENV=production BROWSERSLIST='firefox >= 70' rollup -c",
+    "prod:edge": "cross-env NODE_ENV=production BROWSERSLIST='edge >= 15' rollup -c"
   },
   "dependencies": {
     "@types/firefox-webext-browser": "^82.0.0",
@@ -17,6 +19,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
+    "@babel/preset-env": "^7.12.16",
     "@babel/preset-typescript": "^7.12.16",
     "@rollup/plugin-babel": "^5.3.0",
     "@rollup/plugin-commonjs": "^17.1.0",
@@ -26,6 +29,7 @@
     "@typescript-eslint/eslint-plugin": "^4.15.0",
     "@typescript-eslint/parser": "^4.15.0",
     "babel-preset-solid": "^0.24.2",
+    "core-js": "^3.8.3",
     "cross-env": "^7.0.3",
     "dotenv": "^8.2.0",
     "eslint": "^7.20.0",
@@ -36,6 +40,7 @@
     "husky": "4",
     "lint-staged": "^10.5.4",
     "prettier": "^2.2.1",
+    "regenerator-runtime": "^0.13.7",
     "rollup": "^2.39.0",
     "rollup-plugin-chrome-extension": "^3.5.3",
     "rollup-plugin-empty-dir": "^1.0.4",
