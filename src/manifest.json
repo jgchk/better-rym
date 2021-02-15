@@ -2,7 +2,8 @@
   "content_scripts": [
     {
       "js": ["release/index.ts"],
-      "matches": ["*://*.rateyourmusic.com/release/*"]
+      "matches": ["*://*.rateyourmusic.com/release/*"],
+      "run_at": "document_start"
     }
   ],
   "background": {
