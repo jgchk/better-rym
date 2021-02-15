@@ -3,6 +3,7 @@ import usePageData from '../hooks/use-metadata'
 import { SEARCH_FUNCTIONS, SERVICES } from '../services'
 import css from './app.module.css'
 import ServiceLink from './service-link'
+import './app.css'
 
 const App: Component = () => {
   const pageData = usePageData()
