@@ -6,7 +6,7 @@
     "dev": "rollup -c -w",
     "prod": "cross-env NODE_ENV=production rollup -c"
   },
-  "browserslist": "chrome >= 70, firefox >= 70, edge >= 15, safari >= 10",
+  "browserslist": "chrome >= 70, firefox >= 70, edge >= 15, safari >= 12",
   "dependencies": {
     "@types/firefox-webext-browser": "^82.0.0",
     "@types/string-similarity": "^4.0.0",
