@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "lib": ["DOM", "ESNext"],
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+    "downlevelIteration": true,
+    "plugins": [{ "name": "typescript-eslint-language-service" }]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "content_scripts": [
+    {
+      "js": ["release/index.ts"],
+      "matches": ["*://*.rateyourmusic.com/release/*"]
+    }
+  ],
+  "background": {
+    "scripts": ["background/index.ts"]
+  },
+  "permissions": [
+    "*://*.soundcloud.com/*",
+    "*://*.youtube.com/*",
+    "*://*.bandcamp.com/*"
+  ]
+}
