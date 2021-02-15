@@ -66,6 +66,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["lint-staged", "npm:10.5.4"],
             ["nanoid", "npm:3.1.20"],
             ["postcss", "npm:8.2.6"],
+            ["postcss-nested", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:5.0.3"],
             ["prettier", "npm:2.2.1"],
             ["regenerator-runtime", "npm:0.13.7"],
             ["rollup", "npm:2.39.0"],
@@ -3244,6 +3245,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["lint-staged", "npm:10.5.4"],
             ["nanoid", "npm:3.1.20"],
             ["postcss", "npm:8.2.6"],
+            ["postcss-nested", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:5.0.3"],
             ["prettier", "npm:2.2.1"],
             ["regenerator-runtime", "npm:0.13.7"],
             ["rollup", "npm:2.39.0"],
@@ -9037,6 +9039,29 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/postcss", null],
             ["icss-utils", "virtual:ac79e98ab43770c2fbb59d2284c4f2693aa94d09a4b2f3df4748ea468ebeeda20ebe6821af2aff6234e735e1bb7e3326d68cccc60385d2b4ebc5d3b467531c93#npm:5.1.0"],
             ["postcss", "npm:8.2.6"]
+          ],
+          "packagePeers": [
+            "@types/postcss",
+            "postcss"
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["postcss-nested", [
+        ["npm:5.0.3", {
+          "packageLocation": "./.yarn/cache/postcss-nested-npm-5.0.3-39853dabd6-c5688d54ac.zip/node_modules/postcss-nested/",
+          "packageDependencies": [
+            ["postcss-nested", "npm:5.0.3"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:5.0.3", {
+          "packageLocation": "./.yarn/$$virtual/postcss-nested-virtual-a7f3e90754/0/cache/postcss-nested-npm-5.0.3-39853dabd6-c5688d54ac.zip/node_modules/postcss-nested/",
+          "packageDependencies": [
+            ["postcss-nested", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:5.0.3"],
+            ["@types/postcss", null],
+            ["postcss", "npm:8.2.6"],
+            ["postcss-selector-parser", "npm:6.0.4"]
           ],
           "packagePeers": [
             "@types/postcss",

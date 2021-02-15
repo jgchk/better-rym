@@ -41,6 +41,7 @@
     "husky": "4",
     "lint-staged": "^10.5.4",
     "postcss": "^8.2.6",
+    "postcss-nested": "^5.0.3",
     "prettier": "^2.2.1",
     "regenerator-runtime": "^0.13.7",
     "rollup": "^2.39.0",
