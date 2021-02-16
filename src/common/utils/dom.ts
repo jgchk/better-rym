@@ -25,7 +25,3 @@ export const waitForElement = <E extends Element>(query: string): Promise<E> =>
       subtree: true,
     })
   })
-
-export const insertAfter = (referenceNode: Node) => (node: Node): void => {
-  referenceNode.parentNode?.insertBefore(node, referenceNode.nextSibling)
-}

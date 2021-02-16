@@ -9,7 +9,7 @@ const main = async () => {
 
   const app = document.createElement('div')
   app.id = 'better-rym'
-  insertAfter(siblingElement)(app)
+  siblingElement.after(app)
 
   render(() => App({}), app)
 }
