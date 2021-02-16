@@ -1,5 +1,5 @@
+import { SERVICES, Service } from '../../common/services'
 import { waitForElement } from '../../common/utils/dom'
-import { SERVICES, Service } from '../services'
 
 const getTitle = async () => {
   const titleElement = await waitForElement<HTMLMetaElement>(

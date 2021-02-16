@@ -1,4 +1,5 @@
 import { Component, Match, Switch, createEffect, createState } from 'solid-js'
+import { Service, search } from '../../common/services'
 import { parseError } from '../../common/utils/error'
 import {
   OneShot,
@@ -9,7 +10,6 @@ import {
 } from '../../common/utils/one-shot'
 import { asDefined, isUndefined } from '../../common/utils/types'
 import { PageDataState } from '../hooks/use-metadata'
-import { SearchFunction, Service } from '../services'
 import { Metadata } from '../utils/page-data'
 import { Icon } from './icon'
 
@@ -18,14 +18,13 @@ type ServiceState = OneShot<{ searched: boolean; link: string | undefined }>
 export const ServiceLink: Component<{
   service: Service
   pageData: PageDataState
-  search: SearchFunction
-}> = ({ service, pageData, search }) => {
+}> = ({ service, pageData }) => {
   const [state, setState] = createState<ServiceState>({ type: 'initial' })
 
   const fetch = async (metadata: Metadata) => {
     setState({ type: 'loading' })
 
-    const nextState = await search(metadata)
+    const nextState = await search(metadata, service)
       .then(
         (link) =>
           ({

@@ -2,7 +2,7 @@ import clsx from 'clsx'
 import { Component, Match, Switch } from 'solid-js'
 import loadingIcon from '../../../res/loader.svg'
 import xIcon from '../../../res/x.svg'
-import { ICONS, Service } from '../services'
+import { ICONS, Service } from '../../common/services'
 import css from './icon.module.css'
 
 export const Icon: Component<{

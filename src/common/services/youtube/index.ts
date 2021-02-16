@@ -1,7 +1,7 @@
 import { SearchFunction } from '..'
-import { fetch } from '../../../common/utils/fetch'
-import { decode } from '../../../common/utils/io-ts'
-import { isDefined, isUndefined } from '../../../common/utils/types'
+import { fetch } from '../../utils/fetch'
+import { decode } from '../../utils/io-ts'
+import { isDefined, isUndefined } from '../../utils/types'
 import { SearchObject } from './codecs'
 
 export const search: SearchFunction = async ({ artist, title }) => {

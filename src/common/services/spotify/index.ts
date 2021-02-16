@@ -1,5 +1,5 @@
 import { SearchFunction } from '..'
-import { fetchJson } from '../../../common/utils/fetch'
+import { fetchJson } from '../../utils/fetch'
 import { AlbumSearchObject, TokenResponse } from './codecs'
 
 const client_id = process.env.SPOTIFY_ID || ''

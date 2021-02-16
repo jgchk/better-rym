@@ -1,6 +1,6 @@
 import { Component, For } from 'solid-js'
+import { SERVICES } from '../../common/services'
 import { usePageData } from '../hooks/use-metadata'
-import { SEARCH_FUNCTIONS, SERVICES } from '../services'
 import css from './app.module.css'
 import { ServiceLink } from './service-link'
 import './app.css'
@@ -11,13 +11,7 @@ export const App: Component = () => {
   return (
     <div className={css.app}>
       <For each={SERVICES}>
-        {(service) => (
-          <ServiceLink
-            service={service}
-            pageData={pageData}
-            search={SEARCH_FUNCTIONS[service]}
-          />
-        )}
+        {(service) => <ServiceLink service={service} pageData={pageData} />}
       </For>
     </div>
   )

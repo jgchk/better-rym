@@ -3,7 +3,7 @@ import iconBandcamp from '../../../res/bandcamp.svg'
 import iconSoundcloud from '../../../res/soundcloud.svg'
 import iconSpotify from '../../../res/spotify.svg'
 import iconYoutube from '../../../res/youtube.svg'
-import { Metadata } from '../utils/page-data'
+import { Metadata } from '../../release/utils/page-data'
 import { search as searchAppleMusic } from './applemusic'
 import { search as searchBandcamp } from './bandcamp'
 import { search as searchSoundcloud } from './soundcloud'
@@ -20,16 +20,6 @@ export const SERVICES = [
 
 export type Service = typeof SERVICES[number]
 
-export type SearchFunction = (metadata: Metadata) => Promise<string | undefined>
-
-export const SEARCH_FUNCTIONS: Record<Service, SearchFunction> = {
-  applemusic: searchAppleMusic,
-  bandcamp: searchBandcamp,
-  soundcloud: searchSoundcloud,
-  spotify: searchSpotify,
-  youtube: searchYoutube,
-}
-
 export const ICONS: Record<Service, string> = {
   applemusic: iconAppleMusic,
   bandcamp: iconBandcamp,
@@ -37,3 +27,16 @@ export const ICONS: Record<Service, string> = {
   spotify: iconSpotify,
   youtube: iconYoutube,
 }
+
+export type SearchFunction = (metadata: Metadata) => Promise<string | undefined>
+export const SEARCH_FUNCTIONS: Record<Service, SearchFunction> = {
+  applemusic: searchAppleMusic,
+  bandcamp: searchBandcamp,
+  soundcloud: searchSoundcloud,
+  spotify: searchSpotify,
+  youtube: searchYoutube,
+}
+export const search = (
+  metadata: Metadata,
+  service: Service
+): Promise<string | undefined> => SEARCH_FUNCTIONS[service](metadata)

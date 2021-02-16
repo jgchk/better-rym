@@ -1,7 +1,7 @@
 import { compareTwoStrings } from 'string-similarity'
 import { SearchFunction } from '..'
-import { fetchJson } from '../../../common/utils/fetch'
-import { Metadata } from '../../utils/page-data'
+import { Metadata } from '../../../release/utils/page-data'
+import { fetchJson } from '../../utils/fetch'
 import { MusicResult, SearchObject } from './codec'
 
 const compareResults = ({ artist, title }: Metadata) => (

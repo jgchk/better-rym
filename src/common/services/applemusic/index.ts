@@ -1,5 +1,5 @@
 import { SearchFunction } from '..'
-import { fetchJson } from '../../../common/utils/fetch'
+import { fetchJson } from '../../utils/fetch'
 import { SearchObject } from './codec'
 
 export const search: SearchFunction = async ({ artist, title }) => {

@@ -1,6 +1,6 @@
 import { SearchFunction } from '..'
-import { fetch, fetchJson } from '../../../common/utils/fetch'
-import { isDefined, isUndefined } from '../../../common/utils/types'
+import { fetch, fetchJson } from '../../utils/fetch'
+import { isDefined, isUndefined } from '../../utils/types'
 import { MusicObject, SearchObject } from './codecs'
 
 const getScriptUrls = async () => {
