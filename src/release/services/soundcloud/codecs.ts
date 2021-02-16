@@ -14,6 +14,7 @@ const PlaylistObject = t.type(
 
 export const MusicObject = t.union([TrackObject, PlaylistObject])
 
+export type SearchObject = t.TypeOf<typeof SearchObject>
 export const SearchObject = t.type(
   { collection: t.array(t.union([TrackObject, UserObject, PlaylistObject])) },
   'PagingObject'

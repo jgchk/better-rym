@@ -5,6 +5,7 @@
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
     "downlevelIteration": true,
+    "noUncheckedIndexedAccess": true,
     "plugins": [
       { "name": "typescript-plugin-css-modules" },
       { "name": "typescript-eslint-language-service" }

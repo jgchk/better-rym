@@ -1,4 +1,3 @@
-import { Option, fromNullable } from 'fp-ts/Option'
 import { waitForElement } from '../../common/utils/dom'
 import { SERVICES, Service } from '../services'
 
@@ -14,7 +13,7 @@ const getArtist = async () => {
   return artistElement.text
 }
 
-export type Links = Record<Service, Option<string>>
+export type Links = Record<Service, string | undefined>
 const getLinks = async (): Promise<Links> =>
   new Promise((resolve) => {
     new MutationObserver((mutations, observer) => {
@@ -32,12 +31,12 @@ const getLinks = async (): Promise<Links> =>
         const linkElement = element.querySelector<HTMLAnchorElement>(
           `a.ui_stream_link_btn_${service}`
         )
-        return fromNullable(linkElement?.href)
+        return linkElement?.href
       }
 
       const links = Object.fromEntries(
         SERVICES.map((service) => [service, getLink(service)])
-      ) as Record<Service, Option<string>>
+      ) as Record<Service, string | undefined>
       resolve(links)
 
       observer.disconnect()

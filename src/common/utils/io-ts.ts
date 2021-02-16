@@ -1,17 +1,15 @@
-import { Either, chain, mapLeft, parseJSON, toError } from 'fp-ts/Either'
-import { flow, pipe } from 'fp-ts/function'
+import { isLeft } from 'fp-ts/Either'
 import { Decoder } from 'io-ts'
 import { failure } from 'io-ts/PathReporter'
 
-export const decode = <T>(decoder: Decoder<unknown, T>) => (
-  dataString: string
-): Either<Error, T> =>
-  pipe(
-    parseJSON(dataString, toError),
-    chain(
-      flow(
-        (dataJson) => decoder.decode(dataJson),
-        mapLeft((errors) => new Error(failure(errors).join('\n')))
-      )
-    )
-  )
+export const decode = <B>(decoder: Decoder<unknown, B>) => (
+  data: string
+): B => {
+  const decoded = decoder.decode(JSON.parse(data))
+  if (isLeft(decoded)) {
+    const message = failure(decoded.left).join('\n')
+    throw new Error(`Decoding error: ${message}`)
+  } else {
+    return decoded.right
+  }
+}

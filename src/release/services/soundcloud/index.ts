@@ -1,88 +1,46 @@
-import { compact, filter, head, lookup, map as mapA } from 'fp-ts/Array'
-import { fromOption, map as mapE } from 'fp-ts/Either'
-import { flow, pipe } from 'fp-ts/function'
-import { toArray } from 'fp-ts/lib/ReadonlyArray'
-import {
-  chain as chainO,
-  fromNullable,
-  map as mapO,
-  sequenceArray as sequenceArrayO,
-} from 'fp-ts/Option'
-import { map as mapT, sequenceArray as sequenceArrayT } from 'fp-ts/Task'
-import { chain as chainTE } from 'fp-ts/TaskEither'
 import { SearchFunction } from '..'
-import fetch from '../../../common/utils/fetch'
-import { decode } from '../../../common/utils/io-ts'
+import { fetch, fetchJson } from '../../../common/utils/fetch'
+import { isDefined, isUndefined } from '../../../common/utils/types'
 import { MusicObject, SearchObject } from './codecs'
 
-const getScriptUrls = pipe(
-  fetch({ url: 'https://soundcloud.com' }),
-  mapT(
-    flow(
-      (response) => [
-        ...response.matchAll(
-          /<script crossorigin src="(https:\/\/a-v2\.sndcdn\.com\/assets\/[\da-z-]+\.js)"><\/script>/gm
-        ),
-      ],
-      mapA(lookup(1)),
-      sequenceArrayO,
-      mapO(toArray),
-      fromOption(() => new Error('Could not find script URLs'))
-    )
-  )
-)
+const getScriptUrls = async () => {
+  const response = await fetch({ url: 'https://soundcloud.com' })
+  return [
+    ...response.matchAll(
+      /<script crossorigin src="(https:\/\/a-v2\.sndcdn\.com\/assets\/[\da-z-]+\.js)"><\/script>/gm
+    ),
+  ]
+    .map((match) => match[1])
+    .filter(isDefined)
+}
 
-const fetchClientId = (url: string) =>
-  pipe(
-    fetch({ url }),
-    mapT(
-      flow(
-        (response) => /client_id:"([\dA-Za-z]+)"/.exec(response),
-        fromNullable,
-        chainO(lookup(1))
-      )
-    )
-  )
+const fetchClientId = async (url: string) => {
+  const response = await fetch({ url })
+  return [...(/client_id:"([\dA-Za-z]+)"/.exec(response) ?? [])][1]
+}
 
-const scrapeClientId = (urls: string[]) =>
-  pipe(
-    urls,
-    mapA(flow(fetchClientId)),
-    sequenceArrayT,
-    mapT(
-      flow(
-        toArray,
-        compact,
-        head,
-        fromOption(() => new Error('Could not find a client_id'))
-      )
-    )
+const scrapeClientId = async (urls: string[]) => {
+  const maybeClientIds = await Promise.all(
+    urls.map((url) => fetchClientId(url))
   )
+  return maybeClientIds.find(isDefined)
+}
 
-const requestToken = pipe(getScriptUrls, chainTE(scrapeClientId))
+const requestToken = async () => {
+  const scriptUrls = await getScriptUrls()
+  return scrapeClientId(scriptUrls)
+}
 
-export const search: SearchFunction = ({ artist, title }) =>
-  pipe(
-    requestToken,
-    chainTE((client_id) =>
-      pipe(
-        fetch({
-          url: 'https://api-v2.soundcloud.com/search',
-          urlParams: { q: `${artist} ${title}`, client_id },
-        }),
-        mapT(
-          flow(
-            decode(SearchObject),
-            mapE(
-              flow(
-                ({ collection }) => collection,
-                filter(MusicObject.is),
-                head,
-                mapO(({ permalink_url }) => permalink_url)
-              )
-            )
-          )
-        )
-      )
-    )
+export const search: SearchFunction = async ({ artist, title }) => {
+  const token = await requestToken()
+  if (isUndefined(token)) throw new Error('Could not find client id')
+
+  const response = await fetchJson(
+    {
+      url: 'https://api-v2.soundcloud.com/search',
+      urlParams: { q: `${artist} ${title}`, client_id: token },
+    },
+    SearchObject
   )
+  return response.collection.find(MusicObject.is)?.permalink_url
+}

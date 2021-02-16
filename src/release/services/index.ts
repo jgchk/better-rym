@@ -1,5 +1,3 @@
-import { TaskEither } from 'fp-ts/lib/TaskEither'
-import { Option } from 'fp-ts/Option'
 import iconAppleMusic from '../../../res/applemusic.svg'
 import iconBandcamp from '../../../res/bandcamp.svg'
 import iconSoundcloud from '../../../res/soundcloud.svg'
@@ -22,9 +20,7 @@ export const SERVICES = [
 
 export type Service = typeof SERVICES[number]
 
-export type SearchFunction = (
-  metadata: Metadata
-) => TaskEither<Error, Option<string>>
+export type SearchFunction = (metadata: Metadata) => Promise<string | undefined>
 
 export const SEARCH_FUNCTIONS: Record<Service, SearchFunction> = {
   applemusic: searchAppleMusic,

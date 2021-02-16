@@ -1,5 +1,6 @@
 import * as t from 'io-ts'
 
+export type TokenResponse = t.TypeOf<typeof TokenResponse>
 export const TokenResponse = t.type(
   {
     access_token: t.string,
@@ -17,6 +18,7 @@ const SimplifiedAlbumObject = t.type(
   'SimplifiedAlbumObject'
 )
 
+export type AlbumSearchObject = t.TypeOf<typeof AlbumSearchObject>
 export const AlbumSearchObject = t.type({
   albums: t.type(
     {

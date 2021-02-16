@@ -1,9 +1,5 @@
-import { pipe } from 'fp-ts/function'
-import { task } from 'fp-ts/lib/Task'
-import { Option, fold as foldO, of } from 'fp-ts/Option'
-import { fold as foldTE } from 'fp-ts/TaskEither'
 import { Component, Match, Switch, createEffect, createState } from 'solid-js'
-import { asNone, asSome } from '../../common/utils/fp-ts'
+import { parseError } from '../../common/utils/error'
 import {
   OneShot,
   asComplete,
@@ -11,12 +7,13 @@ import {
   asInitial,
   asLoading,
 } from '../../common/utils/one-shot'
+import { asDefined, isUndefined } from '../../common/utils/types'
 import { PageDataState } from '../hooks/use-metadata'
 import { SearchFunction, Service } from '../services'
 import { Metadata } from '../utils/page-data'
 import Icon from './icon'
 
-type ServiceState = OneShot<{ searched: boolean; link: Option<string> }>
+type ServiceState = OneShot<{ searched: boolean; link: string | undefined }>
 
 const ServiceLink: Component<{
   service: Service
@@ -27,33 +24,34 @@ const ServiceLink: Component<{
 
   const fetch = async (metadata: Metadata) => {
     setState({ type: 'loading' })
-    const nextState = await pipe(
-      search(metadata),
-      foldTE<Error, Option<string>, ServiceState>(
-        (error) => task.of({ type: 'failed', error }),
-        (maybeLink) =>
-          task.of({
+
+    const nextState = await search(metadata)
+      .then(
+        (link) =>
+          ({
             type: 'complete',
-            data: { searched: true, link: maybeLink },
-          })
+            data: { searched: true, link },
+          } as const)
       )
-    )()
+      .catch(
+        (error) =>
+          ({
+            type: 'failed',
+            error: parseError(error),
+          } as const)
+      )
+
     setState(nextState)
   }
 
   createEffect(() => {
     if (pageData.type === 'complete') {
-      pipe(
-        pageData.data.links[service],
-        foldO(
-          () => void fetch(pageData.data.metadata),
-          (link) =>
-            setState({
-              type: 'complete',
-              data: { searched: false, link: of(link) },
-            })
-        )
-      )
+      const link = pageData.data.links[service]
+      if (link) {
+        setState({ type: 'complete', data: { searched: false, link } })
+      } else {
+        void fetch(pageData.data.metadata)
+      }
     }
   })
 
@@ -68,9 +66,9 @@ const ServiceLink: Component<{
       <Match when={asComplete(state)}>
         {({ data: { searched, link } }) => (
           <Switch>
-            <Match when={asSome(link)}>
-              {({ value }) => (
-                <a href={value} target='_blank' rel='noreferrer'>
+            <Match when={asDefined(link)}>
+              {(link) => (
+                <a href={link} target='_blank' rel='noreferrer'>
                   <Icon
                     service={service}
                     state={searched ? 'searched' : 'existing'}
@@ -78,7 +76,7 @@ const ServiceLink: Component<{
                 </a>
               )}
             </Match>
-            <Match when={asNone(link)}>
+            <Match when={isUndefined(link)}>
               <Icon service={service} state='initial' />
             </Match>
           </Switch>

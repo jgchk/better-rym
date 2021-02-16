@@ -1,5 +1,6 @@
-import { Task } from 'fp-ts/Task'
+import { Decoder } from 'io-ts'
 import { nanoid } from 'nanoid'
+import { decode } from './io-ts'
 
 export type Request = {
   id: string
@@ -17,7 +18,7 @@ export interface Response {
   body: string
 }
 
-const fetch = (request: Omit<Request, 'id'>): Task<string> => () =>
+export const fetch = (request: Omit<Request, 'id'>): Promise<string> =>
   new Promise((resolve) => {
     const requestId = nanoid()
 
@@ -32,4 +33,10 @@ const fetch = (request: Omit<Request, 'id'>): Task<string> => () =>
     void browser.runtime.sendMessage({ id: requestId, ...request })
   })
 
-export default fetch
+export const fetchJson = async <B>(
+  request: Omit<Request, 'id'>,
+  decoder: Decoder<unknown, B>
+): Promise<B> => {
+  const response = await fetch(request)
+  return decode(decoder)(response)
+}
