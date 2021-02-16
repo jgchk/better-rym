@@ -1,5 +1,5 @@
 import { render } from 'solid-js/web'
-import { insertAfter, waitForElement } from '../common/utils/dom'
+import { waitForElement } from '../common/utils/dom'
 import App from './components/app'
 
 const main = async () => {
