@@ -40,3 +40,9 @@ export const search = (
   metadata: Metadata,
   service: Service
 ): Promise<string | undefined> => SEARCH_FUNCTIONS[service](metadata)
+
+export type ResolveData = { title: string }
+export type ResolveFunction = (url: string) => Promise<ResolveData>
+export const RESOLVE_FUNCTIONS: Record<Service, ResolveFunction> = {}
+export const resolve = (url: string, service: Service): Promise<ResolveData> =>
+  RESOLVE_FUNCTIONS[service](url)
