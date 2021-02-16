@@ -1,6 +1,6 @@
 import { render } from 'solid-js/web'
 import { waitForElement } from '../common/utils/dom'
-import App from './components/app'
+import { App } from './components/app'
 
 const main = async () => {
   const siblingElement = await waitForElement(

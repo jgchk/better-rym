@@ -5,7 +5,7 @@ import xIcon from '../../../res/x.svg'
 import { ICONS, Service } from '../services'
 import css from './icon.module.css'
 
-const Icon: Component<{
+export const Icon: Component<{
   service: Service
   state: 'initial' | 'loading' | 'failed' | 'searched' | 'existing'
 }> = ({ service, state }) => (
@@ -21,5 +21,3 @@ const Icon: Component<{
     </Switch>
   </div>
 )
-
-export default Icon

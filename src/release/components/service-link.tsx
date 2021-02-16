@@ -11,11 +11,11 @@ import { asDefined, isUndefined } from '../../common/utils/types'
 import { PageDataState } from '../hooks/use-metadata'
 import { SearchFunction, Service } from '../services'
 import { Metadata } from '../utils/page-data'
-import Icon from './icon'
+import { Icon } from './icon'
 
 type ServiceState = OneShot<{ searched: boolean; link: string | undefined }>
 
-const ServiceLink: Component<{
+export const ServiceLink: Component<{
   service: Service
   pageData: PageDataState
   search: SearchFunction
@@ -88,5 +88,3 @@ const ServiceLink: Component<{
     </Switch>
   )
 }
-
-export default ServiceLink

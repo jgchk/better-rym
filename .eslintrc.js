@@ -22,6 +22,7 @@ module.exports = {
     browser: true,
   },
   rules: {
+    'import/no-default-export': 'error',
     'import/order': [
       'warn',
       { alphabetize: { order: 'asc', caseInsensitive: true } },

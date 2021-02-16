@@ -1,7 +1,7 @@
 import { Component, createSignal } from 'solid-js'
-import autoFill from '../utils/form'
+import { autoFill } from '../utils/form'
 
-const App: Component = () => {
+export const App: Component = () => {
   const [getUrl, setUrl] = createSignal('')
 
   return (
@@ -28,5 +28,3 @@ const App: Component = () => {
     </>
   )
 }
-
-export default App

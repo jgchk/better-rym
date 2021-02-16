@@ -4,7 +4,7 @@ import { PageData, getPageData } from '../utils/page-data'
 
 export type PageDataState = OneShot<PageData>
 
-const usePageData = (): PageDataState => {
+export const usePageData = (): PageDataState => {
   const [state, setState] = createState<PageDataState>({ type: 'initial' })
 
   const fetch = async () => {
@@ -21,5 +21,3 @@ const usePageData = (): PageDataState => {
 
   return state
 }
-
-export default usePageData
