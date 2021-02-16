@@ -4,6 +4,11 @@
       "js": ["release/index.ts"],
       "matches": ["*://*.rateyourmusic.com/release/*"],
       "run_at": "document_start"
+    },
+    {
+      "js": ["import/index.ts"],
+      "matches": ["*://*.rateyourmusic.com/releases/ac*"],
+      "run_at": "document_start"
     }
   ],
   "background": {
