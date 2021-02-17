@@ -16,7 +16,7 @@ import {
   resolve as resolveSoundcloud,
   search as searchSoundcloud,
 } from './soundcloud'
-import { search as searchSpotify } from './spotify'
+import { resolve as resolveSpotify, search as searchSpotify } from './spotify'
 import { search as searchYoutube } from './youtube'
 
 export const SERVICES = [
@@ -187,7 +187,7 @@ export const RESOLVE_FUNCTIONS: Record<Service, ResolveFunction> = {
   applemusic: resolveAppleMusic,
   bandcamp: resolveBandcamp,
   soundcloud: resolveSoundcloud,
-  spotify: resolveAppleMusic,
+  spotify: resolveSpotify,
   youtube: resolveAppleMusic,
 }
 export const resolve = (url: string, service: Service): Promise<ResolveData> =>
