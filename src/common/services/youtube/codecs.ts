@@ -62,3 +62,22 @@ export const Contents = t.type(
 
 export type SearchObject = t.TypeOf<typeof SearchObject>
 export const SearchObject = t.type({ contents: Contents }, 'SearchObject')
+
+export const Video = t.type(
+  {
+    items: t.tuple([
+      t.type({
+        kind: t.literal('youtube#video'),
+        id: t.string,
+        snippet: t.type({
+          publishedAt: t.string,
+          title: t.string,
+        }),
+        contentDetails: t.type({
+          duration: t.string,
+        }),
+      }),
+    ]),
+  },
+  'Video'
+)

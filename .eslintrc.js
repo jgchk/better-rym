@@ -29,5 +29,6 @@ module.exports = {
     ],
     'sort-imports': ['warn', { ignoreDeclarationSort: true }],
     'unicorn/no-array-callback-reference': 'off',
+    'unicorn/no-array-reduce': 'off',
   },
 }
