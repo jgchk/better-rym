@@ -1,4 +1,5 @@
 import { ResolveFunction } from '..'
+import { stringToDate } from '../../utils/datetime'
 import { fetch } from '../../utils/fetch'
 import { getReleaseType } from '../../utils/music'
 import { isUndefined } from '../../utils/types'
@@ -13,14 +14,7 @@ const getDate = (document_: Document) => {
   const dateString = document_.querySelector<HTMLMetaElement>(
     'meta[property="music:release_date"]'
   )?.content
-  if (isUndefined(dateString)) return
-
-  const date = new Date(dateString)
-  return {
-    year: date.getFullYear(),
-    month: date.getMonth() + 1,
-    day: date.getDate() + 1,
-  }
+  return isUndefined(dateString) ? undefined : stringToDate(dateString)
 }
 
 const getTracks = (document_: Document) =>

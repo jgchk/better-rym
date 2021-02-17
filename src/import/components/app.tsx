@@ -1,14 +1,16 @@
-import { Component, createSignal } from 'solid-js'
-import { resolve } from '../../common/services'
+import { Component, For, createSignal } from 'solid-js'
+import { SERVICES, Service, resolve } from '../../common/services'
 import { fill } from '../utils/fillers'
-
-const autoFill = async (url: string) => {
-  const info = await resolve(url, 'applemusic')
-  fill(info)
-}
 
 export const App: Component = () => {
   const [getUrl, setUrl] = createSignal('')
+  const [getService, setService] = createSignal<Service>(SERVICES[0])
+
+  const autoFill = async (url: string) => {
+    const info = await resolve(url, getService())
+    console.log(info)
+    fill(info)
+  }
 
   return (
     <>
@@ -28,6 +30,14 @@ export const App: Component = () => {
             required
             onChange={(event) => setUrl(event.target.value)}
           />
+          <select
+            value={getService()}
+            onChange={(event) => setService(event.target.value as Service)}
+          >
+            <For each={SERVICES}>
+              {(service) => <option value={service}>{service}</option>}
+            </For>
+          </select>
           <input type='submit' value='Import' />
         </form>
       </div>

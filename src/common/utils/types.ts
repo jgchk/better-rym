@@ -8,3 +8,4 @@ export const asDefined = <T>(t: T | undefined): T | false =>
   isDefined(t) ? t : false
 
 export const isNull = <T>(t: T | null): t is null => t === null
+export const isNotNull = <T>(t: T | null): t is T => t !== null
