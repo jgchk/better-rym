@@ -1,5 +1,11 @@
 import { Component, createSignal } from 'solid-js'
-import { autoFill } from '../utils/form'
+import { resolve } from '../../common/services'
+import { fill } from '../utils/fillers'
+
+const autoFill = async (url: string) => {
+  const info = await resolve(url, 'applemusic')
+  fill(info)
+}
 
 export const App: Component = () => {
   const [getUrl, setUrl] = createSignal('')
@@ -13,7 +19,7 @@ export const App: Component = () => {
         <form
           onSubmit={(event) => {
             event.preventDefault()
-            autoFill(getUrl())
+            void autoFill(getUrl())
           }}
         >
           <input

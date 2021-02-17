@@ -17,6 +17,7 @@
   "permissions": [
     "*://*.soundcloud.com/*",
     "*://*.youtube.com/*",
-    "*://*.bandcamp.com/*"
+    "*://*.bandcamp.com/*",
+    "*://*.music.apple.com/*"
   ]
 }

@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "strict": true,
-    "lib": ["DOM", "ESNext"],
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
     "downlevelIteration": true,

@@ -6,3 +6,5 @@ export const asUndefined = <T>(t: T | undefined): undefined | false =>
 export const isDefined = <T>(t: T | undefined): t is T => t !== undefined
 export const asDefined = <T>(t: T | undefined): T | false =>
   isDefined(t) ? t : false
+
+export const isNull = <T>(t: T | null): t is null => t === null

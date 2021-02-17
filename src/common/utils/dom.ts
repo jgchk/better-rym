@@ -1,3 +1,5 @@
+import { isNull } from './types'
+
 export const waitForDocumentReady = (): Promise<void> =>
   new Promise((resolve) => {
     if (
@@ -25,3 +27,11 @@ export const waitForElement = <E extends Element>(query: string): Promise<E> =>
       subtree: true,
     })
   })
+
+export const forceQuerySelector = <E extends Element = Element>(
+  node: ParentNode
+) => (query: string): E => {
+  const element = node.querySelector<E>(query)
+  if (isNull(element)) throw new Error(`Could not find element: ${query}`)
+  return element
+}
