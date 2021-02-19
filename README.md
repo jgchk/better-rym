@@ -1,4 +1,4 @@
-# betterRYM
+# BetterRYM
 
 Enhancements for [rateyourmusic.com](https://rateyourmusic.com/) 🎧
 
