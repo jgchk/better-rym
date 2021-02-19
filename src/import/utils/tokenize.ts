@@ -52,8 +52,8 @@ const tokenizePhrase = (text: string): Token[] => {
 }
 
 const PUNCTUATION = new Set(['.', '!', ':'])
-const OPENING_BRACKETS = new Set(['('])
-const CLOSING_BRACKETS = new Set([')'])
+const OPENING_BRACKETS = new Set(['(', '[', '{'])
+const CLOSING_BRACKETS = new Set([')', ']', '}'])
 
 const DONT_SPLIT = ['vs.', 'v.', 'etc.']
 

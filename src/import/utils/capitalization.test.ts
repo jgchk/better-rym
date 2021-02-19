@@ -62,6 +62,13 @@ describe('capitalization', () => {
     // 'IV V I IV',
     // 'VIXIVI',
     // 'VIIth Temple',
+    'Forty Second (Alpha Remix)',
+    'Forty Second [Alpha Remix]',
+    'Forty Second {Alpha Remix}',
+    'I See The',
+    'Who Goes There (The Fiftieth Time The) Fiftieth Time',
+    'Who Goes There [The Fiftieth Time The] Fiftieth Time',
+    'Who Goes There {The Fiftieth Time The} Fiftieth Time',
   ]
   test.each(titles)('correctly capitalizes %p', (input) => {
     expect(capitalize(input)).toBe(input)
