@@ -1,7 +1,0 @@
-{
-  "presets": [
-    ["@babel/preset-env", { "useBuiltIns": "usage", "corejs": "3.8" }],
-    "@babel/preset-typescript",
-    "solid"
-  ]
-}

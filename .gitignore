@@ -5,7 +5,4 @@
 !.yarn/sdks
 !.yarn/versions
 
-output/
-
-.env
 .eslintcache
