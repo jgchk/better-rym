@@ -8,6 +8,7 @@ import {
 } from '../../common/services'
 import { forceQuerySelector } from '../../common/utils/dom'
 import { isDefined } from '../../common/utils/types'
+import { capitalize } from './capitalization'
 
 const TYPE_IDS: Record<ReleaseType, string> = {
   album: 's',
@@ -164,7 +165,7 @@ const fillDate = (date: ReleaseDate) => {
 
 const fillTitle = (title: string) => {
   const element = forceQuerySelector<HTMLInputElement>(document)('input#title')
-  element.value = title
+  element.value = capitalize(title)
 }
 
 const fillFormat = (format: ReleaseFormat) => {
@@ -191,7 +192,7 @@ const fillTracks = (tracks: Track[]) => {
   const tracksString = tracks
     .map((track, index) => {
       const position = track.position ?? index + 1
-      const title = track.title ?? ''
+      const title = capitalize(track.title ?? '')
       const duration = track.duration ?? ''
       return `${position}|${title}|${duration}`
     })
