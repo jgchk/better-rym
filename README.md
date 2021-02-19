@@ -39,4 +39,4 @@ yarn build
 
 ## License
 
-[GPL-3.0](#readme)
+[GPL-3.0](https://github.com/jgchk/betterRYM/blob/main/LICENSE)
