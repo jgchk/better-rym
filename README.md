@@ -1,11 +1,11 @@
 # betterRYM
 
-enhancements for [rateyourmusic.com](https://rateyourmusic.com/) 🎧
+Enhancements for [rateyourmusic.com](https://rateyourmusic.com/) 🎧
 
 ## Features
 
-- add missing streaming links to Release pages
-- auto-fill the Add Release form - submit a new release in under 1 minute
+- Add missing streaming links to Release pages
+- Auto-fill the Add Release form
 
 ## Workflows
 
