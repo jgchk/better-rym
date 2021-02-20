@@ -1,20 +1,26 @@
 import { createEffect, createState } from 'solid-js'
-import { OneShot } from '../../common/utils/one-shot'
+import {
+  OneShot,
+  complete,
+  initial,
+  isInitial,
+  loading,
+} from '../../common/utils/one-shot'
 import { PageData, getPageData } from '../utils/page-data'
 
 export type PageDataState = OneShot<PageData>
 
 export const usePageData = (): PageDataState => {
-  const [state, setState] = createState<PageDataState>({ type: 'initial' })
+  const [state, setState] = createState<PageDataState>(initial())
 
   const fetch = async () => {
-    setState({ type: 'loading' })
+    setState(loading())
     const pageData = await getPageData()
-    setState({ type: 'complete', data: pageData })
+    setState(complete(pageData))
   }
 
   createEffect(() => {
-    if (state.type === 'initial') {
+    if (isInitial(state)) {
       void fetch()
     }
   })

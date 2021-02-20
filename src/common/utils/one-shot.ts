@@ -5,8 +5,8 @@ export type Failed = { type: 'failed'; error: Error }
 
 export type OneShot<T> = Initial | Loading | Complete<T> | Failed
 
-export const initial: Initial = { type: 'initial' }
-export const loading: Loading = { type: 'loading' }
+export const initial = (): Initial => ({ type: 'initial' })
+export const loading = (): Loading => ({ type: 'loading' })
 export const complete = <T>(data: T): Complete<T> => ({
   type: 'complete',
   data,

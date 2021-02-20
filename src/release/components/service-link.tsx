@@ -7,8 +7,13 @@ import {
   asFailed,
   asInitial,
   asLoading,
+  complete,
+  failed,
+  initial,
+  isComplete,
+  loading,
 } from '../../common/utils/one-shot'
-import { asDefined, isUndefined } from '../../common/utils/types'
+import { asDefined, isDefined, isUndefined } from '../../common/utils/types'
 import { PageDataState } from '../hooks/use-metadata'
 import { Metadata } from '../utils/page-data'
 import { Icon } from './icon'
@@ -19,35 +24,23 @@ export const ServiceLink: Component<{
   service: Service
   pageData: PageDataState
 }> = ({ service, pageData }) => {
-  const [state, setState] = createState<ServiceState>({ type: 'initial' })
+  const [state, setState] = createState<ServiceState>(initial())
 
   const fetch = async (metadata: Metadata) => {
-    setState({ type: 'loading' })
+    setState(loading())
 
     const nextState = await search(metadata, service)
-      .then(
-        (link) =>
-          ({
-            type: 'complete',
-            data: { searched: true, link },
-          } as const)
-      )
-      .catch(
-        (error) =>
-          ({
-            type: 'failed',
-            error: parseError(error),
-          } as const)
-      )
+      .then((link) => complete({ searched: true, link }))
+      .catch((error) => failed(parseError(error)))
 
     setState(nextState)
   }
 
   createEffect(() => {
-    if (pageData.type === 'complete') {
+    if (isComplete(pageData)) {
       const link = pageData.data.links[service]
-      if (link) {
-        setState({ type: 'complete', data: { searched: false, link } })
+      if (isDefined(link)) {
+        setState(complete({ searched: false, link }))
       } else {
         void fetch(pageData.data.metadata)
       }
