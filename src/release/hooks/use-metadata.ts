@@ -2,6 +2,7 @@ import { createEffect, createState } from 'solid-js'
 import {
   OneShot,
   complete,
+  failed,
   initial,
   isInitial,
   loading,
@@ -15,8 +16,12 @@ export const usePageData = (): PageDataState => {
 
   const fetch = async () => {
     setState(loading())
-    const pageData = await getPageData()
-    setState(complete(pageData))
+
+    const nextState = await getPageData()
+      .then((data) => complete(data))
+      .catch((error) => failed(error))
+
+    setState(nextState)
   }
 
   createEffect(() => {
