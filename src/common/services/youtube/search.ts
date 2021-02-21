@@ -6,7 +6,7 @@ import { SearchObject } from './codecs'
 
 export const search: SearchFunction = async ({ artist, title }) => {
   const response = await fetch({
-    url: 'https://youtube.com/resultss',
+    url: 'https://youtube.com/results',
     urlParams: {
       search_query: `${artist} ${title}`,
     },
