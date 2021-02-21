@@ -1,8 +1,9 @@
 /* eslint-disable import/no-default-export */
 
 declare module '*.svg' {
-  const svg: string
-  export default svg
+  import { FunctionComponent, JSX } from 'preact'
+  const value: FunctionComponent<JSX.SVGAttributes<SVGSVGElement>>
+  export default value
 }
 
 declare module '*.module.css' {

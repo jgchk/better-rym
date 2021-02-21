@@ -1,18 +1,18 @@
-import { Component, For } from 'solid-js'
+import { FunctionComponent, h } from 'preact'
 import { SERVICES } from '../../common/services'
-import { usePageData } from '../hooks/use-metadata'
-import css from './app.module.css'
-import { ServiceLink } from './service-link'
+import { usePageData } from '../hooks/use-page-data'
 import './app.css'
+import styles from './app.module.css'
+import { ServiceLink } from './service-link'
 
-export const App: Component = () => {
+export const App: FunctionComponent = () => {
   const pageData = usePageData()
 
   return (
-    <div className={css.app}>
-      <For each={SERVICES}>
-        {(service) => <ServiceLink service={service} pageData={pageData} />}
-      </For>
+    <div className={styles.app}>
+      {SERVICES.map((service) => (
+        <ServiceLink key={service} service={service} pageData={pageData} />
+      ))}
     </div>
   )
 }

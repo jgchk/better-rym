@@ -1,3 +1,4 @@
+import { FunctionComponent, JSX } from 'preact'
 import iconAppleMusic from '../../../res/applemusic.svg'
 import iconBandcamp from '../../../res/bandcamp.svg'
 import iconSoundcloud from '../../../res/soundcloud.svg'
@@ -29,7 +30,10 @@ export const SERVICES = [
 
 export type Service = typeof SERVICES[number]
 
-export const ICONS: Record<Service, string> = {
+export const ICONS: Record<
+  Service,
+  FunctionComponent<JSX.SVGAttributes<SVGSVGElement>>
+> = {
   applemusic: iconAppleMusic,
   bandcamp: iconBandcamp,
   soundcloud: iconSoundcloud,
