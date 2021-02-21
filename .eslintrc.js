@@ -41,5 +41,6 @@ module.exports = {
     'unicorn/no-array-callback-reference': 'off',
     'unicorn/no-array-reduce': 'off',
     'unicorn/no-useless-undefined': 'off',
+    'unicorn/no-null': 'off',
   },
 }

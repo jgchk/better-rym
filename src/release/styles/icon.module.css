@@ -16,6 +16,7 @@
 
 .container {
   position: relative;
+  line-height: 0;
 
   &.initial {
     .icon {
@@ -33,20 +34,6 @@
         opacity: 0.3;
       }
     }
-
-    .status {
-      color: var(--mono-5);
-      animation: spin 1.5s linear infinite;
-
-      @keyframes spin {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(360deg);
-        }
-      }
-    }
   }
 
   &.failed {
@@ -55,10 +42,6 @@
       &:hover {
         opacity: 0.3;
       }
-    }
-
-    .status {
-      color: var(--gen-text-red);
     }
   }
 

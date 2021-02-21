@@ -1,6 +1,5 @@
-import { pipe } from 'fp-ts/function'
 import { FunctionComponent, h } from 'preact'
-import { useCallback, useEffect, useState } from 'preact/hooks'
+import { useCallback, useEffect, useMemo, useState } from 'preact/hooks'
 import { ServiceId, search } from '../../common/services'
 import { parseError } from '../../common/utils/error'
 import * as oneShot from '../../common/utils/one-shot'
@@ -9,13 +8,11 @@ import { PageDataState } from '../hooks/use-page-data'
 import { Metadata } from '../utils/page-data'
 import { Icon } from './icon'
 
-type ServiceState = oneShot.OneShot<
-  Error,
-  {
-    searched: boolean
-    link: string | undefined
-  }
->
+export type ServiceData = {
+  searched: boolean
+  link: string | undefined
+}
+export type ServiceState = oneShot.OneShot<Error, ServiceData>
 
 export const ServiceLink: FunctionComponent<{
   serviceId: ServiceId
@@ -47,23 +44,18 @@ export const ServiceLink: FunctionComponent<{
     }
   }, [fetch, pageData, service])
 
-  return pipe(
+  const icon = useMemo(() => <Icon service={service} state={state} />, [
+    service,
     state,
-    oneShot.fold(
-      () => <Icon service={service} state='initial' />,
-      () => <Icon service={service} state='loading' />,
-      () => <Icon service={service} state='failed' />,
-      ({ searched, link }) =>
-        isDefined(link) ? (
-          <a href={link} target='_blank' rel='noreferrer'>
-            <Icon
-              service={service}
-              state={searched ? 'searched' : 'existing'}
-            />
-          </a>
-        ) : (
-          <Icon service={service} state='initial' />
-        )
+  ])
+
+  // if we have a link available, wrap in an anchor element
+  if (oneShot.isComplete(state) && isDefined(state.data.link))
+    return (
+      <a href={state.data.link} target='_blank' rel='noreferrer'>
+        {icon}
+      </a>
     )
-  )
+
+  return icon
 }

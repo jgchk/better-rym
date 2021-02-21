@@ -10,10 +10,11 @@ import {
 } from '../../common/utils/one-shot'
 import { fill } from '../utils/fillers'
 
+export type InfoState = OneShot<Error, ResolveData>
 export type FillFunction = (url: string, serviceId: ServiceId) => Promise<void>
 
-export const useAutoFill = (): FillFunction => {
-  const [info, setInfo] = useState<OneShot<Error, ResolveData>>(initial)
+export const useAutoFill = (): { info: InfoState; autoFill: FillFunction } => {
+  const [info, setInfo] = useState<InfoState>(initial)
 
   useEffect(() => {
     if (isComplete(info)) {
@@ -29,5 +30,5 @@ export const useAutoFill = (): FillFunction => {
     setInfo(nextInfo)
   }, [])
 
-  return autoFill
+  return { info, autoFill }
 }
