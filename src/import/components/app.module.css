@@ -46,5 +46,7 @@
 }
 
 .submit {
-  cursor: pointer;
+  &:not(:disabled) {
+    cursor: pointer;
+  }
 }

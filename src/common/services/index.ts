@@ -21,6 +21,7 @@ export type Service = {
   id: ServiceId
   name: string
   icon: FunctionComponent<JSX.SVGAttributes<SVGSVGElement>>
+  regex: RegExp
   search: SearchFunction
   resolve: ResolveFunction
 }

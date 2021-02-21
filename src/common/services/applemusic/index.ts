@@ -6,6 +6,7 @@ import { search } from './search'
 export const AppleMusic: Service = {
   id: 'applemusic',
   name: 'Apple Music',
+  regex: /https?:\/\/music\.apple\.com\/(\w{2,4})\/album\/([^/]*)\/([^?]+)[^/]*/,
   icon,
   search,
   resolve,

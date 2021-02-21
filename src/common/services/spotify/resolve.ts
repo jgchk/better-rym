@@ -11,6 +11,7 @@ import {
   SimplifiedTrackObject,
   TrackObject,
 } from './codecs'
+import { regex } from './regex'
 
 type LinkType = 'track' | 'album'
 const isValidLinkType = (type: string): type is LinkType =>
@@ -128,9 +129,7 @@ const resolveTrack = async (
 }
 
 export const resolve: ResolveFunction = async (url) => {
-  const match = /https?:\/\/open.spotify.com\/(?:embed\/)?(track|album)\/(\w{22})/.exec(
-    url
-  )
+  const match = regex.exec(url)
   if (isNull(match)) throw new Error('Invalid Spotify URL')
 
   const type = match[1]

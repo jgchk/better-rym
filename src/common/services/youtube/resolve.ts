@@ -4,6 +4,7 @@ import { fetchJson } from '../../utils/fetch'
 import { isNull, isUndefined } from '../../utils/types'
 import { YOUTUBE_KEY } from './auth'
 import { Video } from './codecs'
+import { regex } from './regex'
 
 const parseDuration = (durationString: string) => {
   const seconds = /PT(?:(\d*)H)?(?:(\d*)M)?(?:(\d*)S)?/
@@ -16,9 +17,7 @@ const parseDuration = (durationString: string) => {
 }
 
 export const resolve: ResolveFunction = async (url) => {
-  const match = /(?:youtube(?:-nocookie)?\.com\/(?:[^\s/]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[&?]v=)|youtu\.be\/)([\w-]{11})/.exec(
-    url
-  )
+  const match = regex.exec(url)
   if (isNull(match)) throw new Error('Invalid Spotify URL')
 
   const id = match[1]

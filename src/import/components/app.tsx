@@ -1,21 +1,34 @@
 import clsx from 'clsx'
 import { FunctionComponent, h } from 'preact'
-import { useState } from 'preact/hooks'
+import { useCallback, useEffect, useState } from 'preact/hooks'
 import {
   SERVICES,
   SERVICE_IDS,
   ServiceId,
   resolve,
 } from '../../common/services'
+import { isDefined, isUndefined } from '../../common/utils/types'
 import { fill } from '../utils/fillers'
 import styles from './app.module.css'
 
 export const App: FunctionComponent = () => {
   const [url, setUrl] = useState('')
-  const [selectedServiceId, setServiceId] = useState<ServiceId>(SERVICE_IDS[0])
+  const [selectedServiceId, setServiceId] = useState<ServiceId | undefined>(
+    undefined
+  )
 
-  const autoFill = async (url: string) => {
-    const info = await resolve(url, selectedServiceId)
+  const guessService = useCallback((url: string) => {
+    const service = Object.values(SERVICES).find((service) =>
+      service.regex.test(url)
+    )
+    if (isDefined(service)) {
+      setServiceId(service.id)
+    }
+  }, [])
+  useEffect(() => guessService(url), [guessService, url])
+
+  const autoFill = async (url: string, serviceId: ServiceId) => {
+    const info = await resolve(url, serviceId)
     console.log(info)
     fill(info)
   }
@@ -30,7 +43,11 @@ export const App: FunctionComponent = () => {
           className={styles.form}
           onSubmit={(event) => {
             event.preventDefault()
-            void autoFill(url)
+            if (isDefined(selectedServiceId)) {
+              void autoFill(url, selectedServiceId)
+            } else {
+              throw new Error('Must select a service')
+            }
           }}
         >
           <div className={styles.input}>
@@ -58,7 +75,12 @@ export const App: FunctionComponent = () => {
               ))}
             </div>
           </div>
-          <input type='submit' value='Import' className={styles.submit} />
+          <input
+            type='submit'
+            value='Import'
+            disabled={isUndefined(selectedServiceId)}
+            className={styles.submit}
+          />
         </form>
       </div>
     </>
