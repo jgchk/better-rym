@@ -4,7 +4,12 @@
 }
 
 .input {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
   width: 384px;
+
   & > input {
     width: 100%;
   }
@@ -14,7 +19,6 @@
   display: flex;
   gap: 4px;
   justify-content: center;
-  margin-top: 4px;
 }
 
 .icon {
@@ -43,6 +47,10 @@
       opacity: 1;
     }
   }
+}
+
+.error {
+  color: var(--gen-text-red);
 }
 
 .submit {

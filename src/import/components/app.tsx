@@ -7,7 +7,7 @@ import {
   ServiceId,
   resolve,
 } from '../../common/services'
-import { isDefined, isUndefined } from '../../common/utils/types'
+import { isDefined } from '../../common/utils/types'
 import { fill } from '../utils/fillers'
 import styles from './app.module.css'
 
@@ -16,6 +16,8 @@ export const App: FunctionComponent = () => {
   const [selectedServiceId, setServiceId] = useState<ServiceId | undefined>(
     undefined
   )
+
+  const [error, setError] = useState<string | undefined>(undefined)
 
   const guessService = useCallback((url: string) => {
     const service = Object.values(SERVICES).find((service) =>
@@ -26,11 +28,18 @@ export const App: FunctionComponent = () => {
     }
   }, [])
   useEffect(() => guessService(url), [guessService, url])
+  useEffect(() => {
+    if (isDefined(selectedServiceId)) setError(undefined)
+  }, [selectedServiceId])
 
-  const autoFill = async (url: string, serviceId: ServiceId) => {
-    const info = await resolve(url, serviceId)
-    console.log(info)
-    fill(info)
+  const autoFill = async () => {
+    if (isDefined(selectedServiceId)) {
+      const info = await resolve(url, selectedServiceId)
+      console.log(info)
+      fill(info)
+    } else {
+      setError('Select an import source')
+    }
   }
 
   return (
@@ -43,11 +52,7 @@ export const App: FunctionComponent = () => {
           className={styles.form}
           onSubmit={(event) => {
             event.preventDefault()
-            if (isDefined(selectedServiceId)) {
-              void autoFill(url, selectedServiceId)
-            } else {
-              throw new Error('Must select a service')
-            }
+            void autoFill()
           }}
         >
           <div className={styles.input}>
@@ -74,13 +79,9 @@ export const App: FunctionComponent = () => {
                 </button>
               ))}
             </div>
+            {error && <div className={styles.error}>{error}</div>}
           </div>
-          <input
-            type='submit'
-            value='Import'
-            disabled={isUndefined(selectedServiceId)}
-            className={styles.submit}
-          />
+          <input type='submit' value='Import' className={styles.submit} />
         </form>
       </div>
     </>
