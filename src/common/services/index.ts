@@ -1,5 +1,7 @@
 import { FunctionComponent, JSX } from 'preact'
 import { Metadata } from '../../release/utils/page-data'
+import * as cache from '../utils/cache'
+import { isDefined } from '../utils/types'
 import { AppleMusic } from './applemusic'
 import { Bandcamp } from './bandcamp'
 import { Soundcloud } from './soundcloud'
@@ -34,14 +36,36 @@ export const SERVICES: Record<ServiceId, Service> = {
   youtube: YouTube,
 }
 
-export const search = (
+export const search = async (
   metadata: Metadata,
   service: ServiceId
-): Promise<string | undefined> => SERVICES[service].search(metadata)
-export const resolve = (
+): Promise<string | undefined> => {
+  const key = JSON.stringify({ metadata, service })
+  const cached = await cache.get<string>(key)
+  if (isDefined(cached)) {
+    return cached
+  }
+
+  const result = await SERVICES[service].search(metadata)
+  if (isDefined(result)) {
+    void cache.set(key, result)
+  }
+  return result
+}
+export const resolve = async (
   url: string,
   service: ServiceId
-): Promise<ResolveData> => SERVICES[service].resolve(url)
+): Promise<ResolveData> => {
+  const key = JSON.stringify({ url, service })
+  const cached = await cache.get<ResolveData>(key)
+  if (isDefined(cached)) {
+    return cached
+  }
+
+  const result = await SERVICES[service].resolve(url)
+  void cache.set(key, result)
+  return result
+}
 export const getMatchingService = (url: string): Service | undefined =>
   Object.values(SERVICES).find((service) => service.regex.test(url))
 
