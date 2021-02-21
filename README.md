@@ -21,7 +21,7 @@ yarn
 yarn dev
 ```
 
-Load the unpacked extension from `./output` into your browser ([Chrome](https://developer.chrome.com/docs/extensions/mv3/getstarted/#manifest), [Firefox](https://extensionworkshop.com/documentation/develop/temporary-installation-in-firefox/))
+Load the unpacked extension from `./output` into your browser ([Chrome](https://developer.chrome.com/docs/extensions/mv3/getstarted/#manifest), [Firefox](https://extensionworkshop.com/documentation/develop/temporary-installation-in-firefox/), [Edge](https://docs.microsoft.com/en-us/microsoft-edge/extensions-chromium/getting-started/extension-sideloading))
 
 ### Production
 
@@ -29,8 +29,13 @@ Load the unpacked extension from `./output` into your browser ([Chrome](https://
 # Install dependencies
 yarn
 
-# Build
-yarn build
+# Build for all browsers
+yarn prod
+
+# Build for individual browsers
+yarn prod:chrome
+yarn prod:firefox
+yarn prod:edge
 ```
 
 ## License
