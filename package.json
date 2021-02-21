@@ -30,6 +30,11 @@
     "string-similarity": "^4.0.4",
     "webextension-polyfill": "^0.7.0"
   },
+  "dependenciesMeta": {
+    "webextension-polyfill@0.7.0": {
+      "unplugged": true
+    }
+  },
   "devDependencies": {
     "@babel/core": "^7.12.16",
     "@babel/plugin-transform-react-jsx": "^7.12.17",
@@ -80,10 +85,5 @@
     "webpack-extension-reloader": "^1.1.4",
     "webpack-merge": "^5.7.3",
     "webpack-modules": "^1.0.0"
-  },
-  "dependenciesMeta": {
-    "webextension-polyfill@0.7.0": {
-      "unplugged": true
-    }
   }
 }
