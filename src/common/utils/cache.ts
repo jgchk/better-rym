@@ -41,7 +41,6 @@ export const set = async <T>(
   value: T,
   ttl = 3600000
 ): Promise<void> => {
-  console.log('store!!!', value)
   const storedValue: StoredValue<T> = { expire: Date.now() + ttl, data: value }
   await browser.storage.local.set({ [key]: storedValue })
 }
