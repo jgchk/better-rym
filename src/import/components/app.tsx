@@ -1,42 +1,49 @@
-import { Component, For, createSignal } from 'solid-js'
+import { FunctionComponent, h } from 'preact'
+import { useState } from 'preact/hooks'
 import { SERVICES, Service, resolve } from '../../common/services'
 import { fill } from '../utils/fillers'
 
-export const App: Component = () => {
-  const [getUrl, setUrl] = createSignal('')
-  const [getService, setService] = createSignal<Service>(SERVICES[0])
+export const App: FunctionComponent = () => {
+  const [url, setUrl] = useState('')
+  const [service, setService] = useState<Service>(SERVICES[0])
 
   const autoFill = async (url: string) => {
-    const info = await resolve(url, getService())
+    const info = await resolve(url, service)
     console.log(info)
     fill(info)
   }
 
   return (
     <>
-      <div class='submit_step_header'>
-        Step 0: <span class='submit_step_header_title'>Import</span>
+      <div className='submit_step_header'>
+        Step 0: <span className='submit_step_header_title'>Import</span>
       </div>
-      <div class='submit_step_box'>
+      <div className='submit_step_box'>
         <form
           onSubmit={(event) => {
             event.preventDefault()
-            void autoFill(getUrl())
+            void autoFill(url)
           }}
         >
           <input
             type='url'
-            value={getUrl()}
+            value={url}
             required
-            onChange={(event) => setUrl(event.target.value)}
+            onInput={(event) =>
+              setUrl((event.target as HTMLInputElement).value)
+            }
           />
           <select
-            value={getService()}
-            onChange={(event) => setService(event.target.value as Service)}
+            value={service}
+            onInput={(event) =>
+              setService((event.target as HTMLSelectElement).value as Service)
+            }
           >
-            <For each={SERVICES}>
-              {(service) => <option value={service}>{service}</option>}
-            </For>
+            {SERVICES.map((service) => (
+              <option key={service} value={service}>
+                {service}
+              </option>
+            ))}
           </select>
           <input type='submit' value='Import' />
         </form>

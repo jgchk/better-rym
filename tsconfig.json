@@ -3,7 +3,7 @@
     "strict": true,
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "jsx": "preserve",
-    "jsxImportSource": "solid-js",
+    "jsxFactory": "h",
     "downlevelIteration": true,
     "noUncheckedIndexedAccess": true,
     "plugins": [

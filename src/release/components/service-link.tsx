@@ -1,82 +1,66 @@
-import { Component, Match, Switch, createEffect, createState } from 'solid-js'
+import { pipe } from 'fp-ts/function'
+import { FunctionComponent, h } from 'preact'
+import { useCallback, useEffect, useState } from 'preact/hooks'
 import { Service, search } from '../../common/services'
 import { parseError } from '../../common/utils/error'
-import {
-  OneShot,
-  asComplete,
-  asFailed,
-  asInitial,
-  asLoading,
-  complete,
-  failed,
-  initial,
-  isComplete,
-  loading,
-} from '../../common/utils/one-shot'
-import { asDefined, isDefined, isUndefined } from '../../common/utils/types'
-import { PageDataState } from '../hooks/use-metadata'
+import * as oneShot from '../../common/utils/one-shot'
+import { isDefined } from '../../common/utils/types'
+import { PageDataState } from '../hooks/use-page-data'
 import { Metadata } from '../utils/page-data'
 import { Icon } from './icon'
 
-type ServiceState = OneShot<{ searched: boolean; link: string | undefined }>
+type ServiceState = oneShot.OneShot<{
+  searched: boolean
+  link: string | undefined
+}>
 
-export const ServiceLink: Component<{
+export const ServiceLink: FunctionComponent<{
   service: Service
   pageData: PageDataState
 }> = ({ service, pageData }) => {
-  const [state, setState] = createState<ServiceState>(initial())
+  const [state, setState] = useState<ServiceState>(oneShot.initial)
 
-  const fetch = async (metadata: Metadata) => {
-    setState(loading())
+  const fetch = useCallback(
+    async (metadata: Metadata) => {
+      setState(oneShot.loading)
 
-    const nextState = await search(metadata, service)
-      .then((link) => complete({ searched: true, link }))
-      .catch((error) => failed(parseError(error)))
+      const nextState = await search(metadata, service)
+        .then((link) => oneShot.complete({ searched: true, link }))
+        .catch((error) => oneShot.failed(parseError(error)))
 
-    setState(nextState)
-  }
+      setState(nextState)
+    },
+    [service]
+  )
 
-  createEffect(() => {
-    if (isComplete(pageData)) {
+  useEffect(() => {
+    if (oneShot.isComplete(pageData)) {
       const link = pageData.data.links[service]
       if (isDefined(link)) {
-        setState(complete({ searched: false, link }))
+        setState(oneShot.complete({ searched: false, link }))
       } else {
         void fetch(pageData.data.metadata)
       }
     }
-  })
+  }, [fetch, pageData, service])
 
-  return (
-    <Switch>
-      <Match when={asInitial(state)}>
-        <Icon service={service} state='initial' />
-      </Match>
-      <Match when={asLoading(state)}>
-        <Icon service={service} state='loading' />
-      </Match>
-      <Match when={asComplete(state)}>
-        {({ data: { searched, link } }) => (
-          <Switch>
-            <Match when={asDefined(link)}>
-              {(link) => (
-                <a href={link} target='_blank' rel='noreferrer'>
-                  <Icon
-                    service={service}
-                    state={searched ? 'searched' : 'existing'}
-                  />
-                </a>
-              )}
-            </Match>
-            <Match when={isUndefined(link)}>
-              <Icon service={service} state='initial' />
-            </Match>
-          </Switch>
-        )}
-      </Match>
-      <Match when={asFailed(state)}>
-        <Icon service={service} state='failed' />
-      </Match>
-    </Switch>
+  return pipe(
+    state,
+    oneShot.fold(
+      () => <Icon service={service} state='initial' />,
+      () => <Icon service={service} state='loading' />,
+      () => <Icon service={service} state='failed' />,
+      ({ searched, link }) =>
+        isDefined(link) ? (
+          <a href={link} target='_blank' rel='noreferrer'>
+            <Icon
+              service={service}
+              state={searched ? 'searched' : 'existing'}
+            />
+          </a>
+        ) : (
+          <Icon service={service} state='initial' />
+        )
+    )
   )
 }

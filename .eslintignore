@@ -1,6 +1,6 @@
 .yarn/
 output/
 .eslintrc.js
-rollup.config.js
+webpack.config.js
 postcss.config.js
 jest.config.js
