@@ -91,6 +91,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["webextension-polyfill-ts", "npm:0.25.0"],
             ["webpack", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:5.23.0"],
             ["webpack-cli", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:4.5.0"],
+            ["webpack-merge", "npm:5.7.3"],
             ["webpack-modules", "npm:1.0.0"]
           ],
           "linkType": "SOFT",
@@ -5691,6 +5692,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["webextension-polyfill-ts", "npm:0.25.0"],
             ["webpack", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:5.23.0"],
             ["webpack-cli", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:4.5.0"],
+            ["webpack-merge", "npm:5.7.3"],
             ["webpack-modules", "npm:1.0.0"]
           ],
           "linkType": "SOFT",
