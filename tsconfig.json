@@ -6,6 +6,8 @@
     "jsxFactory": "h",
     "downlevelIteration": true,
     "noUncheckedIndexedAccess": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
     "plugins": [
       { "name": "typescript-plugin-css-modules" },
       { "name": "typescript-eslint-language-service" }
