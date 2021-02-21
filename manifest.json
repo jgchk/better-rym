@@ -1,27 +1,19 @@
 {
-  "manifest_version": 2,
-
-  "name": "better-rym",
-  "description": "improvements for rateyourmusic.com",
-  "version": "4.0.0",
-
   "content_scripts": [
     {
-      "js": ["browser-polyfill.js", "release.js"],
-      "css": ["release.css"],
+      "js": ["./src/release/index.tsx"],
       "matches": ["*://*.rateyourmusic.com/release/*"],
       "run_at": "document_start"
     },
     {
-      "js": ["browser-polyfill.js", "import.js"],
-      "css": ["import.css"],
+      "js": ["./src/import/index.tsx"],
       "matches": ["*://*.rateyourmusic.com/releases/ac*"],
       "run_at": "document_start"
     }
   ],
 
   "background": {
-    "scripts": ["browser-polyfill.js", "background.js"]
+    "scripts": ["./src/background/index.ts"]
   },
 
   "permissions": [
@@ -31,7 +23,5 @@
     "*://*.bandcamp.com/*",
     "*://*.music.apple.com/*",
     "https://youtube.googleapis.com/youtube/v3/*"
-  ],
-
-  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+  ]
 }

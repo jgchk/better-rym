@@ -3,8 +3,7 @@ const common = require('./webpack.common')
 const CopyPlugin = require('copy-webpack-plugin')
 const ExtensionReloader = require('webpack-extension-reloader')
 
-module.exports = merge(common, {
-  mode: 'development',
+module.exports = merge(common('development'), {
   devtool: 'eval-cheap-module-source-map',
   plugins: [
     new CopyPlugin({

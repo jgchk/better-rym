@@ -3,8 +3,7 @@ const common = require('./webpack.common')
 const CssoWebpackPlugin = require('csso-webpack-plugin').default
 const CopyPlugin = require('copy-webpack-plugin')
 
-module.exports = merge(common, {
-  mode: 'production',
+module.exports = merge(common('production'), {
   plugins: [
     new CssoWebpackPlugin(),
     new CopyPlugin({
