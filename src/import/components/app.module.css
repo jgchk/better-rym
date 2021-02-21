@@ -1,0 +1,50 @@
+.form {
+  display: flex;
+  gap: 8px;
+}
+
+.input {
+  width: 384px;
+  & > input {
+    width: 100%;
+  }
+}
+
+.icons {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  margin-top: 4px;
+}
+
+.icon {
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  color: var(--mono-3);
+  font-size: 0;
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  opacity: 0.2;
+  transition: opacity 0.2s;
+
+  &:hover,
+  &:focus {
+    opacity: 0.3;
+  }
+
+  &.selected {
+    opacity: 0.8;
+
+    &:hover,
+    &:focus {
+      opacity: 1;
+    }
+  }
+}
+
+.submit {
+  cursor: pointer;
+}
