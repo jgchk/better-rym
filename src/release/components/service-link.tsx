@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/function'
 import { FunctionComponent, h } from 'preact'
 import { useCallback, useEffect, useState } from 'preact/hooks'
-import { Service, search } from '../../common/services'
+import { ServiceId, search } from '../../common/services'
 import { parseError } from '../../common/utils/error'
 import * as oneShot from '../../common/utils/one-shot'
 import { isDefined } from '../../common/utils/types'
@@ -15,7 +15,7 @@ type ServiceState = oneShot.OneShot<{
 }>
 
 export const ServiceLink: FunctionComponent<{
-  service: Service
+  service: ServiceId
   pageData: PageDataState
 }> = ({ service, pageData }) => {
   const [state, setState] = useState<ServiceState>(oneShot.initial)

@@ -1,26 +1,12 @@
 import { FunctionComponent, JSX } from 'preact'
-import iconAppleMusic from '../../../res/applemusic.svg'
-import iconBandcamp from '../../../res/bandcamp.svg'
-import iconSoundcloud from '../../../res/soundcloud.svg'
-import iconSpotify from '../../../res/spotify.svg'
-import iconYoutube from '../../../res/youtube.svg'
 import { Metadata } from '../../release/utils/page-data'
-import {
-  resolve as resolveAppleMusic,
-  search as searchAppleMusic,
-} from './applemusic'
-import {
-  resolve as resolveBandcamp,
-  search as searchBandcamp,
-} from './bandcamp'
-import {
-  resolve as resolveSoundcloud,
-  search as searchSoundcloud,
-} from './soundcloud'
-import { resolve as resolveSpotify, search as searchSpotify } from './spotify'
-import { resolve as resolveYoutube, search as searchYoutube } from './youtube'
+import { AppleMusic } from './applemusic'
+import { Bandcamp } from './bandcamp'
+import { Soundcloud } from './soundcloud'
+import { Spotify } from './spotify'
+import { YouTube } from './youtube'
 
-export const SERVICES = [
+export const SERVICE_IDS = [
   'applemusic',
   'bandcamp',
   'soundcloud',
@@ -28,31 +14,33 @@ export const SERVICES = [
   'youtube',
 ] as const
 
-export type Service = typeof SERVICES[number]
-
-export const ICONS: Record<
-  Service,
-  FunctionComponent<JSX.SVGAttributes<SVGSVGElement>>
-> = {
-  applemusic: iconAppleMusic,
-  bandcamp: iconBandcamp,
-  soundcloud: iconSoundcloud,
-  spotify: iconSpotify,
-  youtube: iconYoutube,
-}
-
+export type ServiceId = typeof SERVICE_IDS[number]
 export type SearchFunction = (metadata: Metadata) => Promise<string | undefined>
-export const SEARCH_FUNCTIONS: Record<Service, SearchFunction> = {
-  applemusic: searchAppleMusic,
-  bandcamp: searchBandcamp,
-  soundcloud: searchSoundcloud,
-  spotify: searchSpotify,
-  youtube: searchYoutube,
+export type ResolveFunction = (url: string) => Promise<ResolveData>
+export type Service = {
+  id: ServiceId
+  name: string
+  icon: FunctionComponent<JSX.SVGAttributes<SVGSVGElement>>
+  search: SearchFunction
+  resolve: ResolveFunction
 }
+
+export const SERVICES: Record<ServiceId, Service> = {
+  applemusic: AppleMusic,
+  bandcamp: Bandcamp,
+  soundcloud: Soundcloud,
+  spotify: Spotify,
+  youtube: YouTube,
+}
+
 export const search = (
   metadata: Metadata,
-  service: Service
-): Promise<string | undefined> => SEARCH_FUNCTIONS[service](metadata)
+  service: ServiceId
+): Promise<string | undefined> => SERVICES[service].search(metadata)
+export const resolve = (
+  url: string,
+  service: ServiceId
+): Promise<ResolveData> => SERVICES[service].resolve(url)
 
 export type ReleaseDate = {
   year?: number
@@ -186,13 +174,3 @@ export type ResolveData = {
   attributes?: ReleaseAttribute[]
   tracks?: Track[]
 }
-export type ResolveFunction = (url: string) => Promise<ResolveData>
-export const RESOLVE_FUNCTIONS: Record<Service, ResolveFunction> = {
-  applemusic: resolveAppleMusic,
-  bandcamp: resolveBandcamp,
-  soundcloud: resolveSoundcloud,
-  spotify: resolveSpotify,
-  youtube: resolveYoutube,
-}
-export const resolve = (url: string, service: Service): Promise<ResolveData> =>
-  RESOLVE_FUNCTIONS[service](url)

@@ -1,4 +1,4 @@
-import { SERVICES, Service } from '../../common/services'
+import { SERVICE_IDS, ServiceId } from '../../common/services'
 import { waitForElement } from '../../common/utils/dom'
 
 const getTitle = async () => {
@@ -13,7 +13,7 @@ const getArtist = async () => {
   return artistElement.text
 }
 
-export type Links = Record<Service, string | undefined>
+export type Links = Record<ServiceId, string | undefined>
 const getLinks = async (): Promise<Links> =>
   new Promise((resolve) => {
     new MutationObserver((mutations, observer) => {
@@ -27,7 +27,7 @@ const getLinks = async (): Promise<Links> =>
       const complete = !!element.querySelector('a[href^="/submit_media_link"]')
       if (!complete) return
 
-      const getLink = (service: Service) => {
+      const getLink = (service: ServiceId) => {
         const linkElement = element.querySelector<HTMLAnchorElement>(
           `a.ui_stream_link_btn_${service}`
         )
@@ -35,8 +35,8 @@ const getLinks = async (): Promise<Links> =>
       }
 
       const links = Object.fromEntries(
-        SERVICES.map((service) => [service, getLink(service)])
-      ) as Record<Service, string | undefined>
+        SERVICE_IDS.map((service) => [service, getLink(service)])
+      ) as Record<ServiceId, string | undefined>
       resolve(links)
 
       observer.disconnect()

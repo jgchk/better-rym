@@ -1,11 +1,11 @@
 import { FunctionComponent, h } from 'preact'
 import { useState } from 'preact/hooks'
-import { SERVICES, Service, resolve } from '../../common/services'
+import { SERVICE_IDS, ServiceId, resolve } from '../../common/services'
 import { fill } from '../utils/fillers'
 
 export const App: FunctionComponent = () => {
   const [url, setUrl] = useState('')
-  const [service, setService] = useState<Service>(SERVICES[0])
+  const [service, setService] = useState<ServiceId>(SERVICE_IDS[0])
 
   const autoFill = async (url: string) => {
     const info = await resolve(url, service)
@@ -36,10 +36,10 @@ export const App: FunctionComponent = () => {
           <select
             value={service}
             onInput={(event) =>
-              setService((event.target as HTMLSelectElement).value as Service)
+              setService((event.target as HTMLSelectElement).value as ServiceId)
             }
           >
-            {SERVICES.map((service) => (
+            {SERVICE_IDS.map((service) => (
               <option key={service} value={service}>
                 {service}
               </option>
