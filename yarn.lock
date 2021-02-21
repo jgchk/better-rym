@@ -2253,7 +2253,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/webpack@npm:^4.4.31":
+"@types/webpack-sources@npm:^0.1.5":
+  version: 0.1.8
+  resolution: "@types/webpack-sources@npm:0.1.8"
+  dependencies:
+    "@types/node": "*"
+    "@types/source-list-map": "*"
+    source-map: ^0.6.1
+  checksum: b9b5293b62f77f4625b03a543ac9625a037d7eca2e41e84bacbae14acbacdb1e2399f97710647986fd93f13423106c7acb747bda4f1ba42b0d55a398f7900c7c
+  languageName: node
+  linkType: hard
+
+"@types/webpack@npm:^4.39.8, @types/webpack@npm:^4.4.31":
   version: 4.41.26
   resolution: "@types/webpack@npm:4.41.26"
   dependencies:
@@ -3206,6 +3217,7 @@ __metadata:
     webextension-polyfill-ts: ^0.25.0
     webpack: ^5.23.0
     webpack-cli: ^4.5.0
+    webpack-extension-reloader: ^1.1.4
     webpack-merge: ^5.7.3
     webpack-modules: ^1.0.0
   languageName: unknown
@@ -3759,6 +3771,13 @@ __metadata:
   version: 1.2.1
   resolution: "colorette@npm:1.2.1"
   checksum: 1cc21ad4b84777a424794f78b6bb6a44b614ae17dcea91762199339f8047598e6d981249eeef7ea588c99eaf062be8fcdcd4866c112998922ed854db6dde96f9
+  languageName: node
+  linkType: hard
+
+"colors@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "colors@npm:1.4.0"
+  checksum: a0f266ac041a9774d92cc9624a984707678d2eeec125d54e8d8231075ce36c24c5352fb5d0f90c6ee420d0f63e354417cec716386ad341309334aad18e32b933
   languageName: node
   linkType: hard
 
@@ -7623,6 +7642,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lru-cache@npm:4.1.x":
+  version: 4.1.5
+  resolution: "lru-cache@npm:4.1.5"
+  dependencies:
+    pseudomap: ^1.0.2
+    yallist: ^2.1.2
+  checksum: 6a098d23629357451d4324e1e4fefccdd6df316df29e25571c6148220ced923258381ebeafdf919f90e28c780b650427390582618c1d5fe097873e656d062511
+  languageName: node
+  linkType: hard
+
 "lru-cache@npm:^6.0.0":
   version: 6.0.0
   resolution: "lru-cache@npm:6.0.0"
@@ -8456,6 +8485,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"os-tmpdir@npm:~1.0.2":
+  version: 1.0.2
+  resolution: "os-tmpdir@npm:1.0.2"
+  checksum: ca158a3c2e48748adc7736cdbe4c593723f8ed8581d2aae2f2a30fdb9417d4ba14bed1cd487d47561898a7b1ece88bce69745e9ce0303e1dea9ea7d22d1f1082
+  languageName: node
+  linkType: hard
+
 "p-each-series@npm:^2.1.0":
   version: 2.2.0
   resolution: "p-each-series@npm:2.2.0"
@@ -9222,6 +9258,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"pseudomap@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "pseudomap@npm:1.0.2"
+  checksum: 1ad1802645e830d99f9c1db97efc6902d2316b660454633229f636dd59e751d00498dd325d3b18d49f2be990a2c9d28f8bfe6f9b544a8220a5faa2bfb4694bb7
+  languageName: node
+  linkType: hard
+
 "psl@npm:^1.1.28":
   version: 1.8.0
   resolution: "psl@npm:1.8.0"
@@ -9670,7 +9713,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"request@npm:^2.88.2":
+"request@npm:^2.88.0, request@npm:^2.88.2":
   version: 2.88.2
   resolution: "request@npm:2.88.2"
   dependencies:
@@ -9992,6 +10035,15 @@ __metadata:
   bin:
     semver: ./bin/semver
   checksum: 06ff0ed753ebf741b7602be8faad620d6e160a2cb3f61019d00d919c8bca141638aa23c34da779b8595afdc9faa3678bfbb5f60366b6a4f65f98cf86605bbcdb
+  languageName: node
+  linkType: hard
+
+"semver@npm:5.5.x":
+  version: 5.5.1
+  resolution: "semver@npm:5.5.1"
+  bin:
+    semver: ./bin/semver
+  checksum: a23c07ab2747c6e0fa5a606fc82b735d96d906f9640b33eaa0f90dac4d9e772ef3a507d2606d85f74821ec703dfd8e7d3ac4547364150c2d8d960ccdc43d804c
   languageName: node
   linkType: hard
 
@@ -11029,6 +11081,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tmp@npm:0.0.x":
+  version: 0.0.33
+  resolution: "tmp@npm:0.0.33"
+  dependencies:
+    os-tmpdir: ~1.0.2
+  checksum: 77666ca424a78fcfcc27a6576f24f01aa1300b10d22e4f1808809e560777672dd2d4a112604ab2ad86ec7cafd24472b9ccc41373c2b5b83797f27e6aff06cbe5
+  languageName: node
+  linkType: hard
+
 "tmpl@npm:1.0.x":
   version: 1.0.4
   resolution: "tmpl@npm:1.0.4"
@@ -11542,6 +11603,16 @@ typescript@^4.1.5:
   languageName: node
   linkType: hard
 
+"useragent@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "useragent@npm:2.3.0"
+  dependencies:
+    lru-cache: 4.1.x
+    tmp: 0.0.x
+  checksum: 3d4843ff0638331d8f9e14f33def1a6f68ce029482dd98971d17e3ce7bd446f1283281dde3a824b943b57238677e23d9a0a8dbc1b64544c9b6e07070967cec96
+  languageName: node
+  linkType: hard
+
 "util-deprecate@npm:^1.0.1, util-deprecate@npm:^1.0.2, util-deprecate@npm:~1.0.1":
   version: 1.0.2
   resolution: "util-deprecate@npm:1.0.2"
@@ -11714,6 +11785,13 @@ typescript@^4.1.5:
   languageName: node
   linkType: hard
 
+"webextension-polyfill@npm:^0.5.0":
+  version: 0.5.0
+  resolution: "webextension-polyfill@npm:0.5.0"
+  checksum: eb4ae3ecac2a40bdae44fd7507e8dc9b6ed564f3bfdada1416dc3eedb753bc62ac64bfecce308c7e828154ce0cb38b3aea4aeb299fcaddd6e16bb4bcb15846de
+  languageName: node
+  linkType: hard
+
 "webextension-polyfill@npm:^0.7.0":
   version: 0.7.0
   resolution: "webextension-polyfill@npm:0.7.0"
@@ -11772,6 +11850,27 @@ typescript@^4.1.5:
   languageName: node
   linkType: hard
 
+"webpack-extension-reloader@npm:^1.1.4":
+  version: 1.1.4
+  resolution: "webpack-extension-reloader@npm:1.1.4"
+  dependencies:
+    "@types/webpack": ^4.39.8
+    "@types/webpack-sources": ^0.1.5
+    colors: ^1.4.0
+    lodash: ^4.17.15
+    minimist: ^1.2.0
+    useragent: ^2.3.0
+    webextension-polyfill: ^0.5.0
+    webpack-sources: ^1.4.3
+    ws: ^7.2.0
+  peerDependencies:
+    webpack: ^4
+  bin:
+    webpack-extension-reloader: ./dist/webpack-extension-reloader-cli.js
+  checksum: ba6b2d774d86ebfa885eeee5d6ec56045bc69e812f565b8ad71c2e971738e95e8386507af8a2eeb0eccdede3b6c5d390efe14953577c476e7a8af3ae1905b11b
+  languageName: node
+  linkType: hard
+
 "webpack-merge@npm:^5.7.3":
   version: 5.7.3
   resolution: "webpack-merge@npm:5.7.3"
@@ -11789,7 +11888,7 @@ typescript@^4.1.5:
   languageName: node
   linkType: hard
 
-"webpack-sources@npm:^1.0.1, webpack-sources@npm:^1.1.0":
+"webpack-sources@npm:^1.0.1, webpack-sources@npm:^1.1.0, webpack-sources@npm:^1.4.3":
   version: 1.4.3
   resolution: "webpack-sources@npm:1.4.3"
   dependencies:
@@ -11981,7 +12080,7 @@ typescript@^4.1.5:
   languageName: node
   linkType: hard
 
-"ws@npm:^7.2.3":
+"ws@npm:^7.2.0, ws@npm:^7.2.3":
   version: 7.4.3
   resolution: "ws@npm:7.4.3"
   peerDependencies:
@@ -12031,6 +12130,13 @@ typescript@^4.1.5:
   languageName: node
   linkType: hard
 
+"yallist@npm:^2.1.2":
+  version: 2.1.2
+  resolution: "yallist@npm:2.1.2"
+  checksum: f83e3d18eeba68a0276be2ab09260be3f2a300307e84b1565c620ef71f03f106c3df9bec4c3a91e5fa621a038f8826c19b3786804d3795dd4f999e5b6be66ea3
+  languageName: node
+  linkType: hard
+
 "yallist@npm:^4.0.0":
   version: 4.0.0
   resolution: "yallist@npm:4.0.0"
@@ -12042,6 +12148,13 @@ typescript@^4.1.5:
   version: 1.10.0
   resolution: "yaml@npm:1.10.0"
   checksum: d4cc9f9724f8d0aebc2cf52e4e6aa7059f12d50deb54b5225d103462fb2af36e5c0bb419101ca4b1f0cd3b4db9e4139cf2c690e863ac6227648d39d6f4e2522c
+  languageName: node
+  linkType: hard
+
+"yamlparser@npm:0.0.x":
+  version: 0.0.2
+  resolution: "yamlparser@npm:0.0.2"
+  checksum: a78930d28579f2f03537223e34ebd6a0d503d7aef14fc0c188116bba1b08e3ba7d006887913364757c79d28f80bf9c91bb2c897db6baf872dd9ae6e72b223cf6
   languageName: node
   linkType: hard
 

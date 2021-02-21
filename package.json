@@ -27,7 +27,8 @@
     "nanoid": "^3.1.20",
     "preact": "^10.5.12",
     "string-similarity": "^4.0.4",
-    "webextension-polyfill-ts": "^0.25.0"
+    "webextension-polyfill-ts": "^0.25.0",
+    "webpack-extension-reloader": "^1.1.4"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
