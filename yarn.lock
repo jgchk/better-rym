@@ -2044,6 +2044,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/firefox-webext-browser@npm:^82.0.0":
+  version: 82.0.0
+  resolution: "@types/firefox-webext-browser@npm:82.0.0"
+  checksum: 0edd3f30d59a559f9c30a5d8adbfbb10620442b436248300b4ec52ebef3a5483a56ab7b2ddb64848621f770a922f9179b528cbb2182b3150a1d408cf059712e7
+  languageName: node
+  linkType: hard
+
 "@types/glob@npm:^7.1.1":
   version: 7.1.3
   resolution: "@types/glob@npm:7.1.3"
@@ -3168,6 +3175,7 @@ __metadata:
     "@babel/preset-env": ^7.12.16
     "@babel/preset-typescript": ^7.12.16
     "@svgr/webpack": ^5.5.0
+    "@types/firefox-webext-browser": ^82.0.0
     "@types/jest": ^26.0.20
     "@types/node": ^14.14.31
     "@types/string-similarity": ^4.0.0
@@ -3214,12 +3222,15 @@ __metadata:
     typescript: ^4.1.5
     typescript-eslint-language-service: ^4.1.3
     typescript-plugin-css-modules: ^3.2.0
-    webextension-polyfill-ts: ^0.25.0
+    webextension-polyfill: ^0.7.0
     webpack: ^5.23.0
     webpack-cli: ^4.5.0
     webpack-extension-reloader: ^1.1.4
     webpack-merge: ^5.7.3
     webpack-modules: ^1.0.0
+  dependenciesMeta:
+    webextension-polyfill@0.7.0:
+      unplugged: true
   languageName: unknown
   linkType: soft
 
@@ -11773,15 +11784,6 @@ typescript@^4.1.5:
     glob-to-regexp: ^0.4.1
     graceful-fs: ^4.1.2
   checksum: 1aa185936b2e3ec29a41a65776f4e002da95206a14f5cca0856fbddf157f025dc29191598508082bab4cfc026e69ad8e7774f34680e9c479b5a25bbf9d9f1a1c
-  languageName: node
-  linkType: hard
-
-"webextension-polyfill-ts@npm:^0.25.0":
-  version: 0.25.0
-  resolution: "webextension-polyfill-ts@npm:0.25.0"
-  dependencies:
-    webextension-polyfill: ^0.7.0
-  checksum: e48181987d78447adaf646e7ad316b7a84edd276329ff11cee7a3f237f16ce81147d2214a998a1f0b29a0ce7324788ab3f353c4ab4818e160ab32e6f70c571f4
   languageName: node
   linkType: hard
 

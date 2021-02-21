@@ -1,6 +1,5 @@
 import { Decoder } from 'io-ts'
 import { nanoid } from 'nanoid'
-import { browser } from 'webextension-polyfill-ts'
 import { decode } from './io-ts'
 
 export type Request = {

@@ -1,4 +1,3 @@
-import { browser } from 'webextension-polyfill-ts'
 import { Request, Response } from '../common/utils/fetch'
 
 browser.runtime.onMessage.addListener(

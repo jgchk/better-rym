@@ -42,6 +42,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@babel/preset-env", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:7.12.16"],
             ["@babel/preset-typescript", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:7.12.16"],
             ["@svgr/webpack", "npm:5.5.0"],
+            ["@types/firefox-webext-browser", "npm:82.0.0"],
             ["@types/jest", "npm:26.0.20"],
             ["@types/node", "npm:14.14.31"],
             ["@types/string-similarity", "npm:4.0.0"],
@@ -88,7 +89,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["typescript", "patch:typescript@npm%3A4.1.5#builtin<compat/typescript>::version=4.1.5&hash=cc6730"],
             ["typescript-eslint-language-service", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:4.1.3"],
             ["typescript-plugin-css-modules", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:3.2.0"],
-            ["webextension-polyfill-ts", "npm:0.25.0"],
+            ["webextension-polyfill", "npm:0.7.0"],
             ["webpack", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:5.23.0"],
             ["webpack-cli", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:4.5.0"],
             ["webpack-extension-reloader", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:1.1.4"],
@@ -4205,6 +4206,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@types/firefox-webext-browser", [
+        ["npm:82.0.0", {
+          "packageLocation": "./.yarn/cache/@types-firefox-webext-browser-npm-82.0.0-89605e32e8-0edd3f30d5.zip/node_modules/@types/firefox-webext-browser/",
+          "packageDependencies": [
+            ["@types/firefox-webext-browser", "npm:82.0.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["@types/glob", [
         ["npm:7.1.3", {
           "packageLocation": "./.yarn/cache/@types-glob-npm-7.1.3-44516e2aab-633bf1dda9.zip/node_modules/@types/glob/",
@@ -5654,6 +5664,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@babel/preset-env", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:7.12.16"],
             ["@babel/preset-typescript", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:7.12.16"],
             ["@svgr/webpack", "npm:5.5.0"],
+            ["@types/firefox-webext-browser", "npm:82.0.0"],
             ["@types/jest", "npm:26.0.20"],
             ["@types/node", "npm:14.14.31"],
             ["@types/string-similarity", "npm:4.0.0"],
@@ -5700,7 +5711,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["typescript", "patch:typescript@npm%3A4.1.5#builtin<compat/typescript>::version=4.1.5&hash=cc6730"],
             ["typescript-eslint-language-service", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:4.1.3"],
             ["typescript-plugin-css-modules", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:3.2.0"],
-            ["webextension-polyfill-ts", "npm:0.25.0"],
+            ["webextension-polyfill", "npm:0.7.0"],
             ["webpack", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:5.23.0"],
             ["webpack-cli", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:4.5.0"],
             ["webpack-extension-reloader", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:1.1.4"],
@@ -15545,18 +15556,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }],
         ["npm:0.7.0", {
-          "packageLocation": "./.yarn/cache/webextension-polyfill-npm-0.7.0-a96c1bf3b3-e040196a73.zip/node_modules/webextension-polyfill/",
+          "packageLocation": "./.yarn/unplugged/webextension-polyfill-npm-0.7.0-a96c1bf3b3/node_modules/webextension-polyfill/",
           "packageDependencies": [
-            ["webextension-polyfill", "npm:0.7.0"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
-      ["webextension-polyfill-ts", [
-        ["npm:0.25.0", {
-          "packageLocation": "./.yarn/cache/webextension-polyfill-ts-npm-0.25.0-3df1811b97-e48181987d.zip/node_modules/webextension-polyfill-ts/",
-          "packageDependencies": [
-            ["webextension-polyfill-ts", "npm:0.25.0"],
             ["webextension-polyfill", "npm:0.7.0"]
           ],
           "linkType": "HARD",

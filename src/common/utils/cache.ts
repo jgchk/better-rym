@@ -1,4 +1,3 @@
-import { browser } from 'webextension-polyfill-ts'
 import { isDefined, isNotNull, isUndefined } from './types'
 
 interface StoredValue<T> {
