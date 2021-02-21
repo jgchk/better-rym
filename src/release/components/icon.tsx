@@ -3,7 +3,7 @@ import { FunctionComponent, h } from 'preact'
 import LoadingIcon from '../../../res/loader.svg'
 import XIcon from '../../../res/x.svg'
 import { SERVICES, ServiceId } from '../../common/services'
-import css from './icon.module.css'
+import css from '../styles/icon.module.css'
 
 export const Icon: FunctionComponent<{
   service: ServiceId

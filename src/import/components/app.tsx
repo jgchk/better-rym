@@ -9,7 +9,7 @@ import {
 } from '../../common/services'
 import { isDefined } from '../../common/utils/types'
 import { useAutoFill } from '../hooks/use-auto-fill'
-import styles from './app.module.css'
+import styles from '../styles/app.module.css'
 
 export const App: FunctionComponent = () => {
   const autoFill = useAutoFill()

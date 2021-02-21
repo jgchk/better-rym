@@ -1,8 +1,8 @@
 import { FunctionComponent, h } from 'preact'
 import { SERVICE_IDS } from '../../common/services'
 import { usePageData } from '../hooks/use-page-data'
-import './app.css'
-import styles from './app.module.css'
+import '../styles/app.css'
+import styles from '../styles/app.module.css'
 import { ServiceLink } from './service-link'
 
 export const App: FunctionComponent = () => {
