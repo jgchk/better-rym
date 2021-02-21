@@ -9,10 +9,13 @@ import { PageDataState } from '../hooks/use-page-data'
 import { Metadata } from '../utils/page-data'
 import { Icon } from './icon'
 
-type ServiceState = oneShot.OneShot<{
-  searched: boolean
-  link: string | undefined
-}>
+type ServiceState = oneShot.OneShot<
+  Error,
+  {
+    searched: boolean
+    link: string | undefined
+  }
+>
 
 export const ServiceLink: FunctionComponent<{
   serviceId: ServiceId

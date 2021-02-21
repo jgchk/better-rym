@@ -42,6 +42,8 @@ export const resolve = (
   url: string,
   service: ServiceId
 ): Promise<ResolveData> => SERVICES[service].resolve(url)
+export const getMatchingService = (url: string): Service | undefined =>
+  Object.values(SERVICES).find((service) => service.regex.test(url))
 
 export type ReleaseDate = {
   year?: number

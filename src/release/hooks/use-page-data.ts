@@ -9,7 +9,7 @@ import {
 } from '../../common/utils/one-shot'
 import { PageData, getPageData } from '../utils/page-data'
 
-export type PageDataState = OneShot<PageData>
+export type PageDataState = OneShot<Error, PageData>
 
 export const usePageData = (): PageDataState => {
   const [state, setState] = useState<PageDataState>(initial)

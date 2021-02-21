@@ -1,46 +1,37 @@
 import clsx from 'clsx'
 import { FunctionComponent, h } from 'preact'
-import { useCallback, useEffect, useState } from 'preact/hooks'
+import { useEffect, useState } from 'preact/hooks'
 import {
   SERVICES,
   SERVICE_IDS,
   ServiceId,
-  resolve,
+  getMatchingService,
 } from '../../common/services'
 import { isDefined } from '../../common/utils/types'
-import { fill } from '../utils/fillers'
+import { useAutoFill } from '../hooks/use-auto-fill'
 import styles from './app.module.css'
 
 export const App: FunctionComponent = () => {
+  const autoFill = useAutoFill()
+
   const [url, setUrl] = useState('')
   const [selectedServiceId, setServiceId] = useState<ServiceId | undefined>(
     undefined
   )
+  const [showMissingServiceError, setShowMissingServiceError] = useState(false)
 
-  const [error, setError] = useState<string | undefined>(undefined)
-
-  const guessService = useCallback((url: string) => {
-    const service = Object.values(SERVICES).find((service) =>
-      service.regex.test(url)
-    )
+  useEffect(() => {
+    const service = getMatchingService(url)
     if (isDefined(service)) {
       setServiceId(service.id)
     }
-  }, [])
-  useEffect(() => guessService(url), [guessService, url])
-  useEffect(() => {
-    if (isDefined(selectedServiceId)) setError(undefined)
-  }, [selectedServiceId])
+  }, [url])
 
-  const autoFill = async () => {
+  useEffect(() => {
     if (isDefined(selectedServiceId)) {
-      const info = await resolve(url, selectedServiceId)
-      console.log(info)
-      fill(info)
-    } else {
-      setError('Select an import source')
+      setShowMissingServiceError(false)
     }
-  }
+  }, [selectedServiceId])
 
   return (
     <>
@@ -52,7 +43,11 @@ export const App: FunctionComponent = () => {
           className={styles.form}
           onSubmit={(event) => {
             event.preventDefault()
-            void autoFill()
+            if (isDefined(selectedServiceId)) {
+              void autoFill(url, selectedServiceId)
+            } else {
+              setShowMissingServiceError(true)
+            }
           }}
         >
           <div className={styles.input}>
@@ -79,7 +74,9 @@ export const App: FunctionComponent = () => {
                 </button>
               ))}
             </div>
-            {error && <div className={styles.error}>{error}</div>}
+            {showMissingServiceError && (
+              <div className={styles.error}>Select an import source</div>
+            )}
           </div>
           <input type='submit' value='Import' className={styles.submit} />
         </form>

@@ -1,42 +1,34 @@
 export type Initial = { type: 'initial' }
 export type Loading = { type: 'loading' }
-export type Failed = { type: 'failed'; error: Error }
+export type Failed<E> = { type: 'failed'; error: E }
 export type Complete<T> = { type: 'complete'; data: T }
 
-export type OneShot<T> = Initial | Loading | Failed | Complete<T>
+export type OneShot<E, T> = Initial | Loading | Failed<E> | Complete<T>
 
 export const initial: Initial = { type: 'initial' }
 export const loading: Loading = { type: 'loading' }
-export const failed = (error: Error): Failed => ({ type: 'failed', error })
+export const failed = <E>(error: E): Failed<E> => ({ type: 'failed', error })
 export const complete = <T>(data: T): Complete<T> => ({
   type: 'complete',
   data,
 })
 
-export const isInitial = <T>(oneShot: OneShot<T>): oneShot is Initial =>
+export const isInitial = <E, T>(oneShot: OneShot<E, T>): oneShot is Initial =>
   oneShot.type === 'initial'
-export const isLoading = <T>(oneShot: OneShot<T>): oneShot is Loading =>
+export const isLoading = <E, T>(oneShot: OneShot<E, T>): oneShot is Loading =>
   oneShot.type === 'loading'
-export const isFailed = <T>(oneShot: OneShot<T>): oneShot is Failed =>
+export const isFailed = <E, T>(oneShot: OneShot<E, T>): oneShot is Failed<E> =>
   oneShot.type === 'failed'
-export const isComplete = <T>(oneShot: OneShot<T>): oneShot is Complete<T> =>
-  oneShot.type === 'complete'
+export const isComplete = <E, T>(
+  oneShot: OneShot<E, T>
+): oneShot is Complete<T> => oneShot.type === 'complete'
 
-export const asInitial = <T>(oneShot: OneShot<T>): Initial | false =>
-  isInitial(oneShot) ? oneShot : false
-export const asLoading = <T>(oneShot: OneShot<T>): Loading | false =>
-  isLoading(oneShot) ? oneShot : false
-export const asFailed = <T>(oneShot: OneShot<T>): Failed | false =>
-  isFailed(oneShot) ? oneShot : false
-export const asComplete = <T>(oneShot: OneShot<T>): Complete<T> | false =>
-  isComplete(oneShot) ? oneShot : false
-
-export const fold = <A, B>(
+export const fold = <E, A, B>(
   onInitial: () => B,
   onLoading: () => B,
-  onFailed: (error: Error) => B,
+  onFailed: (error: E) => B,
   onComplete: (data: A) => B
-) => (oneShot: OneShot<A>): B => {
+) => (oneShot: OneShot<E, A>): B => {
   switch (oneShot.type) {
     case 'initial':
       return onInitial()
