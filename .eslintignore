@@ -1,6 +1,5 @@
 .yarn/
 output/
 .eslintrc.js
-webpack.*.js
 postcss.config.js
 jest.config.js
