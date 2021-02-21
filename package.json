@@ -15,10 +15,7 @@
     }
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "eslint --cache --fix",
-      "stylelint --fix --syntax css-in-js"
-    ],
+    "*.{js,jsx,ts,tsx}": "eslint --cache --fix",
     "*.css": "stylelint --fix",
     "*": "prettier --write --ignore-unknown"
   },
