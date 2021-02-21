@@ -10,8 +10,8 @@ export const App: FunctionComponent = () => {
 
   return (
     <div className={styles.app}>
-      {SERVICE_IDS.map((service) => (
-        <ServiceLink key={service} service={service} pageData={pageData} />
+      {SERVICE_IDS.map((id) => (
+        <ServiceLink key={id} serviceId={id} pageData={pageData} />
       ))}
     </div>
   )

@@ -15,9 +15,9 @@ type ServiceState = oneShot.OneShot<{
 }>
 
 export const ServiceLink: FunctionComponent<{
-  service: ServiceId
+  serviceId: ServiceId
   pageData: PageDataState
-}> = ({ service, pageData }) => {
+}> = ({ serviceId: service, pageData }) => {
   const [state, setState] = useState<ServiceState>(oneShot.initial)
 
   const fetch = useCallback(
