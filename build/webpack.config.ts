@@ -5,9 +5,6 @@ import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'
 import DotEnvironment from 'dotenv-webpack'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import { Configuration } from 'webpack'
-import ExtensionReloader, {
-  ExtensionReloader as ExtensionReloaderType,
-} from 'webpack-extension-reloader'
 import { merge } from 'webpack-merge'
 import { browsers, browserslist } from './browserlist'
 import {
@@ -109,16 +106,6 @@ const development = merge<Configuration>(
     name: 'dev',
     watch: true,
     devtool: 'eval-cheap-module-source-map',
-    plugins: [
-      new (ExtensionReloader as ExtensionReloaderType)({
-        port: 9090,
-        reloadPage: true,
-        entries: {
-          contentScript: ['release', 'import'],
-          background: 'background',
-        },
-      }),
-    ],
   },
   isFirefox
     ? {}
