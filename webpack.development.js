@@ -14,11 +14,6 @@ module.exports = merge(common, {
             './.yarn/unplugged/**/node_modules/webextension-polyfill/dist/browser-polyfill.js',
           to: 'browser-polyfill.js',
         },
-        {
-          from:
-            './.yarn/unplugged/**/node_modules/webextension-polyfill/dist/browser-polyfill.js.map',
-          to: 'browser-polyfill.js.map',
-        },
       ],
     }),
     new ExtensionReloader({
