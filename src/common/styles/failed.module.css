@@ -1,3 +1,15 @@
 .failed {
   color: var(--gen-text-red);
 }
+
+.tooltip {
+  position: absolute;
+  max-width: 20vw;
+  padding: 4px;
+  color: var(--mono-6);
+  word-wrap: break-word;
+  background: var(--mono-f8);
+  border: 1px var(--mono-d) solid;
+  transform: translate(-50%, -150%);
+  pointer-events: none;
+}
