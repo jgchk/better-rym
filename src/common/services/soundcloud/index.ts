@@ -1,5 +1,6 @@
 import { Service } from '..'
 import icon from '../../../../res/soundcloud.svg'
+import { embed } from './embed'
 import { resolve } from './resolve'
 import { search } from './search'
 
@@ -10,4 +11,5 @@ export const Soundcloud: Service = {
   icon,
   search,
   resolve,
+  embed,
 }

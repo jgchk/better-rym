@@ -20,7 +20,7 @@ export const App: FunctionComponent = () => {
         Step 0: <span className='submit_step_header_title'>Import</span>
       </div>
       <div className={'submit_step_box'}>
-        <StatusForm submitText='Import' info={info} fetchInfo={fetchInfo} />
+        <StatusForm submitText='Import' data={info} onSubmit={fetchInfo} />
       </div>
     </>
   )

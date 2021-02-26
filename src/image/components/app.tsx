@@ -30,7 +30,7 @@ export const App: FunctionComponent = () => {
     <>
       <h4>Download Cover Art</h4>
       <div className={styles.container}>
-        <StatusForm submitText='Download' info={info} fetchInfo={fetchInfo} />
+        <StatusForm submitText='Download' data={info} onSubmit={fetchInfo} />
       </div>
     </>
   )

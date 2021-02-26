@@ -1,14 +1,9 @@
-import clsx from 'clsx'
 import { FunctionComponent, h } from 'preact'
 import { useEffect, useState } from 'preact/hooks'
-import {
-  SERVICES,
-  SERVICE_IDS,
-  ServiceId,
-  getMatchingService,
-} from '../services'
+import { ServiceId, getMatchingService } from '../services'
 import styles from '../styles/form.module.css'
 import { isDefined } from '../utils/types'
+import { ServiceSelector } from './service-selector'
 
 export const Form: FunctionComponent<{
   submitText: string
@@ -52,21 +47,10 @@ export const Form: FunctionComponent<{
           required
           onInput={(event) => setUrl((event.target as HTMLInputElement).value)}
         />
-        <div className={styles.icons}>
-          {SERVICE_IDS.map((id) => SERVICES[id]).map((service) => (
-            <button
-              key={service.id}
-              type='button'
-              onClick={() => setServiceId(service.id)}
-              className={clsx(
-                styles.icon,
-                service.id === selectedServiceId && styles.selected
-              )}
-            >
-              {service.icon({})}
-            </button>
-          ))}
-        </div>
+        <ServiceSelector
+          serviceId={selectedServiceId}
+          onSelect={setServiceId}
+        />
         {showMissingServiceError && (
           <div className={styles.error}>Select an import source</div>
         )}

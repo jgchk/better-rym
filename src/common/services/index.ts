@@ -19,6 +19,7 @@ export const SERVICE_IDS = [
 export type ServiceId = typeof SERVICE_IDS[number]
 export type SearchFunction = (metadata: Metadata) => Promise<string | undefined>
 export type ResolveFunction = (url: string) => Promise<ResolveData>
+export type EmbedFunction = (url: string) => Promise<string | undefined>
 export type Service = {
   id: ServiceId
   name: string
@@ -26,6 +27,7 @@ export type Service = {
   regex: RegExp
   search: SearchFunction
   resolve: ResolveFunction
+  embed?: EmbedFunction
 }
 
 export const SERVICES: Record<ServiceId, Service> = {
