@@ -26,6 +26,7 @@
     "@types/firefox-webext-browser": "^82.0.0",
     "@types/string-similarity": "^4.0.0",
     "clsx": "^1.1.1",
+    "filenamify": "^4.2.0",
     "fp-ts": "^2.9.5",
     "io-ts": "^2.2.14",
     "nanoid": "^3.1.20",

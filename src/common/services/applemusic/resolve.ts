@@ -27,6 +27,25 @@ const getTracks = (document_: Document) =>
     return { position, title, duration }
   })
 
+const getCoverArt = (document_: Document) => {
+  const element = document_.querySelector<HTMLSourceElement>(
+    '.product-lockup picture source[type="image/jpeg"]'
+  )
+  const sources = element?.srcset
+    .split(', ')
+    .map((source) => {
+      const [url, widthString] = source.split(' ')
+      if (isUndefined(url) || isUndefined(widthString))
+        throw new Error(`Invalid image source: ${source}`)
+      return {
+        url,
+        width: Number.parseInt(widthString),
+      }
+    })
+    .sort((a, b) => b.width - a.width)
+  return sources?.[0]?.url
+}
+
 export const resolve: ResolveFunction = async (url) => {
   const response = await fetch({ url })
   const document_ = new DOMParser().parseFromString(response, 'text/html')
@@ -36,6 +55,7 @@ export const resolve: ResolveFunction = async (url) => {
   const date = getDate(document_)
   const tracks = getTracks(document_)
   const type = getReleaseType(tracks.length)
+  const coverArt = getCoverArt(document_)
 
   return {
     url: url_,
@@ -45,5 +65,6 @@ export const resolve: ResolveFunction = async (url) => {
     format: 'digital file',
     attributes: ['downloadable', 'streaming'],
     tracks,
+    coverArt,
   }
 }

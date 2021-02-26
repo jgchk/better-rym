@@ -66,6 +66,11 @@ const parseType = (type: AlbumType, numberOfTracks: number) =>
     ? type
     : getReleaseType(numberOfTracks)
 
+const getCoverArt = (data: AlbumObject | TrackObject) => {
+  const images = AlbumObject.is(data) ? data.images : data.album.images
+  return images.sort((a, b) => b.width * b.height - a.width * a.height)[0]?.url
+}
+
 const resolveAlbum = async (
   id: string,
   token: string
@@ -83,6 +88,7 @@ const resolveAlbum = async (
   const date = parseDate(response.release_date)
   const tracks = await getTracks(response.tracks, token)
   const type = parseType(response.album_type, tracks.length)
+  const coverArt = getCoverArt(response)
 
   return {
     url,
@@ -92,6 +98,7 @@ const resolveAlbum = async (
     format: 'digital file',
     attributes: ['streaming'],
     tracks,
+    coverArt,
   }
 }
 
@@ -116,6 +123,7 @@ const resolveTrack = async (
       duration: secondsToString(response.duration_ms / 1000),
     },
   ]
+  const coverArt = getCoverArt(response)
 
   return {
     url,
@@ -125,6 +133,7 @@ const resolveTrack = async (
     format: 'digital file',
     attributes: ['streaming'],
     tracks,
+    coverArt,
   }
 }
 

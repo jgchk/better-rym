@@ -37,6 +37,13 @@ const getTracks = (data: ReleaseData): Track[] | undefined => {
   }
 }
 
+const getCoverArt = (document_: Document) => {
+  const element = document_.querySelector<HTMLAnchorElement>(
+    '#tralbumArt a.popupImage'
+  )
+  return element?.href
+}
+
 export const resolve: ResolveFunction = async (url) => {
   const response = await fetch({ url })
   const document_ = new DOMParser().parseFromString(response, 'text/html')
@@ -47,6 +54,7 @@ export const resolve: ResolveFunction = async (url) => {
   const date = isDefined(data) ? getDate(data) : undefined
   const tracks = isDefined(data) ? getTracks(data) : undefined
   const type = isDefined(tracks) ? getReleaseType(tracks.length) : undefined
+  const coverArt = getCoverArt(document_)
 
   return {
     url: url_,
@@ -56,5 +64,6 @@ export const resolve: ResolveFunction = async (url) => {
     format: 'lossless digital',
     attributes: ['downloadable', 'streaming'],
     tracks,
+    coverArt,
   }
 }

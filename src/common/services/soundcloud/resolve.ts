@@ -33,7 +33,7 @@ const getTracks = async (
           fetchJson(
             {
               url: 'https://api-v2.soundcloud.com/tracks',
-              urlParams: { ids: ids.join(','), client_id: token },
+              urlParameters: { ids: ids.join(','), client_id: token },
             },
             array(TrackObject)
           )
@@ -59,7 +59,7 @@ const getTracks = async (
               : fetchJson(
                   {
                     url: `https://api-v2.soundcloud.com/tracks/${id}`,
-                    urlParams: { client_id: token },
+                    urlParameters: { client_id: token },
                   },
                   TrackObject
                 )
@@ -69,6 +69,9 @@ const getTracks = async (
   }
 }
 
+const getCoverArt = (data: MusicObject) =>
+  data.artwork_url?.replace('-large', '-t500x500')
+
 export const resolve: ResolveFunction = async (url) => {
   const token = await requestToken()
   if (isUndefined(token)) throw new Error('Could not find client id')
@@ -76,7 +79,7 @@ export const resolve: ResolveFunction = async (url) => {
   const response = await fetchJson(
     {
       url: 'https://api-v2.soundcloud.com/resolve',
-      urlParams: { url, client_id: token },
+      urlParameters: { url, client_id: token },
     },
     MusicObject
   )
@@ -86,6 +89,7 @@ export const resolve: ResolveFunction = async (url) => {
   const date = stringToDate(response.display_date)
   const tracks = await getTracks(response, token)
   const type = getReleaseType(tracks.length)
+  const coverArt = getCoverArt(response)
 
   return {
     url: url_,
@@ -95,5 +99,6 @@ export const resolve: ResolveFunction = async (url) => {
     format: 'digital file',
     attributes: ['streaming'],
     tracks,
+    coverArt,
   }
 }

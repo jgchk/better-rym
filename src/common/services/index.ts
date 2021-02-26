@@ -195,6 +195,7 @@ export type Track = { position?: string; title?: string; duration?: string }
 export type ResolveData = {
   url?: string
   title?: string
+  coverArt?: string
   date?: ReleaseDate
   type?: ReleaseType
   format?: ReleaseFormat

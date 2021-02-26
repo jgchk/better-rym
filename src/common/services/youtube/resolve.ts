@@ -28,7 +28,7 @@ export const resolve: ResolveFunction = async (url) => {
   } = await fetchJson(
     {
       url: 'https://youtube.googleapis.com/youtube/v3/videos',
-      urlParams: { id, part: 'snippet,contentDetails', key: YOUTUBE_KEY },
+      urlParameters: { id, part: 'snippet,contentDetails', key: YOUTUBE_KEY },
     },
     Video
   )
@@ -39,6 +39,7 @@ export const resolve: ResolveFunction = async (url) => {
   const tracks = [
     { title, duration: parseDuration(response.contentDetails.duration) },
   ]
+  const coverArt = `https://img.youtube.com/vi/${id}/maxresdefault.jpg`
 
   return {
     url: url_,
@@ -47,5 +48,6 @@ export const resolve: ResolveFunction = async (url) => {
     format: 'digital file',
     attributes: ['streaming'],
     tracks,
+    coverArt,
   }
 }

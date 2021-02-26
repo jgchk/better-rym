@@ -13,8 +13,21 @@ export const TokenResponse = t.type(
 
 const ExternalUrlObject = t.type({ spotify: t.string }, 'ExternalUrlObject')
 
+const ImageObject = t.type(
+  {
+    width: t.Int,
+    height: t.Int,
+    url: t.string,
+  },
+  'ImageObject'
+)
+
 const SimplifiedAlbumObject = t.type(
-  { external_urls: ExternalUrlObject, release_date: t.string },
+  {
+    external_urls: ExternalUrlObject,
+    images: t.array(ImageObject),
+    release_date: t.string,
+  },
   'SimplifiedAlbumObject'
 )
 
@@ -59,10 +72,12 @@ const AlbumType = t.union([
 export type AlbumTracks = t.TypeOf<typeof AlbumTracks>
 export const AlbumTracks = PagingObject(SimplifiedTrackObject)
 
+export type AlbumObject = t.TypeOf<typeof AlbumObject>
 export const AlbumObject = t.type(
   {
     album_type: AlbumType,
     external_urls: ExternalUrlObject,
+    images: t.array(ImageObject),
     name: t.string,
     release_date: t.string,
     tracks: AlbumTracks,
@@ -70,6 +85,7 @@ export const AlbumObject = t.type(
   'AlbumObject'
 )
 
+export type TrackObject = t.TypeOf<typeof TrackObject>
 export const TrackObject = t.type(
   {
     album: SimplifiedAlbumObject,

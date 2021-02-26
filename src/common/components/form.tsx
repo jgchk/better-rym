@@ -6,13 +6,14 @@ import {
   SERVICE_IDS,
   ServiceId,
   getMatchingService,
-} from '../../common/services'
-import { isDefined } from '../../common/utils/types'
+} from '../services'
 import styles from '../styles/form.module.css'
+import { isDefined } from '../utils/types'
 
 export const Form: FunctionComponent<{
+  submitText: string
   onSubmit: (url: string, serviceId: ServiceId) => void
-}> = ({ onSubmit }) => {
+}> = ({ submitText, onSubmit }) => {
   const [url, setUrl] = useState('')
   const [selectedServiceId, setServiceId] = useState<ServiceId | undefined>(
     undefined
@@ -70,7 +71,7 @@ export const Form: FunctionComponent<{
           <div className={styles.error}>Select an import source</div>
         )}
       </div>
-      <input type='submit' value='Import' className={styles.submit} />
+      <input type='submit' value={submitText} className={styles.submit} />
     </form>
   )
 }

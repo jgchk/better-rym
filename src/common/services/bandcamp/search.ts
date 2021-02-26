@@ -23,7 +23,7 @@ export const search: SearchFunction = async ({ artist, title }) => {
   const response = await fetchJson(
     {
       url: 'https://bandcamp.com/api/nusearch/2/autocomplete',
-      urlParams: { q: `${artist} ${title}` },
+      urlParameters: { q: `${artist} ${title}` },
       headers: {
         'User-Agent':
           'android-async-http/1.4.1 (http://loopj.com/android-async-http)',

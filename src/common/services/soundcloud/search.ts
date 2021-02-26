@@ -11,7 +11,7 @@ export const search: SearchFunction = async ({ artist, title }) => {
   const response = await fetchJson(
     {
       url: 'https://api-v2.soundcloud.com/search',
-      urlParams: { q: `${artist} ${title}`, client_id: token },
+      urlParameters: { q: `${artist} ${title}`, client_id: token },
     },
     SearchObject
   )

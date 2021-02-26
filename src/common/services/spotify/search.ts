@@ -8,7 +8,7 @@ export const search: SearchFunction = async ({ artist, title }) => {
   const response = await fetchJson(
     {
       url: 'https://api.spotify.com/v1/search',
-      urlParams: { q: `${artist} ${title}`, type: 'album' },
+      urlParameters: { q: `${artist} ${title}`, type: 'album' },
       headers: { Authorization: `Bearer ${token.access_token}` },
     },
     AlbumSearchObject

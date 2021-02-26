@@ -1,0 +1,5 @@
+.container {
+  padding: 8px;
+  background: var(--mono-f4);
+  border: 1px solid var(--mono-e8);
+}

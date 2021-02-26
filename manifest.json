@@ -9,6 +9,11 @@
       "js": ["./src/import/index.tsx"],
       "matches": ["*://*.rateyourmusic.com/releases/ac*"],
       "run_at": "document_start"
+    },
+    {
+      "js": ["./src/image/index.tsx"],
+      "matches": ["*://rateyourmusic.com/images/upload*"],
+      "run_at": "document_start"
     }
   ],
 
@@ -18,6 +23,7 @@
 
   "permissions": [
     "storage",
+    "downloads",
     "*://*.soundcloud.com/*",
     "*://*.youtube.com/*",
     "*://*.bandcamp.com/*",

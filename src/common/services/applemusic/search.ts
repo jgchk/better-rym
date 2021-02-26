@@ -6,7 +6,7 @@ export const search: SearchFunction = async ({ artist, title }) => {
   const response = await fetchJson(
     {
       url: 'https://itunes.apple.com/search',
-      urlParams: {
+      urlParameters: {
         term: `${artist} ${title}`,
         media: 'music',
         entity: 'album',
