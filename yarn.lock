@@ -3039,6 +3039,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"audio-extensions@npm:0.0.0":
+  version: 0.0.0
+  resolution: "audio-extensions@npm:0.0.0"
+  checksum: 077a582b01397b2a9e41a3c67d1c32593476f1d24020dcf5ec5fb0b8bc2ac76cae35686b1c24b3259152b3c58805f0186aa8297cba306630b97af8834c2b320c
+  languageName: node
+  linkType: hard
+
 "autoprefixer@npm:^9.0.0, autoprefixer@npm:^9.6.1, autoprefixer@npm:^9.8.6":
   version: 9.8.6
   resolution: "autoprefixer@npm:9.8.6"
@@ -3264,6 +3271,7 @@ __metadata:
     eslint-plugin-unicorn: ^28.0.0
     filenamify: ^4.2.0
     fp-ts: ^2.9.5
+    get-artist-title: ^1.3.1
     husky: 4
     io-ts: ^2.2.14
     jest: ^26.6.3
@@ -5779,6 +5787,18 @@ __metadata:
   version: 1.0.0-beta.2
   resolution: "gensync@npm:1.0.0-beta.2"
   checksum: d523437689c97b3aba9c5cdeca4677d5fff9a29d620db693fea40d852bad63563110f16979d0170248439dbcd2ecee0780fb2533d3f0519f019081aa10767c60
+  languageName: node
+  linkType: hard
+
+"get-artist-title@npm:^1.3.1":
+  version: 1.3.1
+  resolution: "get-artist-title@npm:1.3.1"
+  dependencies:
+    audio-extensions: 0.0.0
+    video-extensions: ^1.1.0
+  bin:
+    format-artist-title: cli.js
+  checksum: 6af42fdbcad16006485b09e498f70ae1fc60540f3e13c3460d8fe5162c18fb9f57863ce7972a5d3c3677bd4543fe93f86f84ef326d9037903a3c4ef4d22e74c7
   languageName: node
   linkType: hard
 
@@ -12948,6 +12968,13 @@ typescript@^4.1.5:
     unist-util-stringify-position: ^2.0.0
     vfile-message: ^2.0.0
   checksum: ee33bee7fb29cae493c3263c4298a28319ab6383ad2f017c036e7213911c6ca6e25d38e6347e59ab8fd0470b123b5522d1d2f6872e418c2e08fd3216fb160e39
+  languageName: node
+  linkType: hard
+
+"video-extensions@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "video-extensions@npm:1.1.0"
+  checksum: 6ddbb9412c12a87736d918b0d644d4a45ace75ad4b0bbb79e0df0335926bd50fc7c4c457666a02e15e94bdb9f1dff592713a7e954dbd6b62637a6d865edb53b6
   languageName: node
   linkType: hard
 

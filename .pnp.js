@@ -72,6 +72,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-plugin-unicorn", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:28.0.0"],
             ["filenamify", "npm:4.2.0"],
             ["fp-ts", "npm:2.9.5"],
+            ["get-artist-title", "npm:1.3.1"],
             ["husky", "npm:4.3.8"],
             ["io-ts", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:2.2.14"],
             ["jest", "npm:26.6.3"],
@@ -5468,6 +5469,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["audio-extensions", [
+        ["npm:0.0.0", {
+          "packageLocation": "./.yarn/cache/audio-extensions-npm-0.0.0-5bfa778d25-077a582b01.zip/node_modules/audio-extensions/",
+          "packageDependencies": [
+            ["audio-extensions", "npm:0.0.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["autoprefixer", [
         ["npm:9.8.6", {
           "packageLocation": "./.yarn/cache/autoprefixer-npm-9.8.6-852792fe00-b406d8047a.zip/node_modules/autoprefixer/",
@@ -5767,6 +5777,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-plugin-unicorn", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:28.0.0"],
             ["filenamify", "npm:4.2.0"],
             ["fp-ts", "npm:2.9.5"],
+            ["get-artist-title", "npm:1.3.1"],
             ["husky", "npm:4.3.8"],
             ["io-ts", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:2.2.14"],
             ["jest", "npm:26.6.3"],
@@ -8665,6 +8676,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/gensync-npm-1.0.0-beta.2-224666d72f-d523437689.zip/node_modules/gensync/",
           "packageDependencies": [
             ["gensync", "npm:1.0.0-beta.2"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["get-artist-title", [
+        ["npm:1.3.1", {
+          "packageLocation": "./.yarn/cache/get-artist-title-npm-1.3.1-d4c13d7e62-6af42fdbca.zip/node_modules/get-artist-title/",
+          "packageDependencies": [
+            ["get-artist-title", "npm:1.3.1"],
+            ["audio-extensions", "npm:0.0.0"],
+            ["video-extensions", "npm:1.1.0"]
           ],
           "linkType": "HARD",
         }]
@@ -16862,6 +16884,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["vfile-message", "npm:2.0.4"],
             ["@types/unist", "npm:2.0.3"],
             ["unist-util-stringify-position", "npm:2.0.3"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["video-extensions", [
+        ["npm:1.1.0", {
+          "packageLocation": "./.yarn/cache/video-extensions-npm-1.1.0-1d47fd02f2-6ddbb9412c.zip/node_modules/video-extensions/",
+          "packageDependencies": [
+            ["video-extensions", "npm:1.1.0"]
           ],
           "linkType": "HARD",
         }]

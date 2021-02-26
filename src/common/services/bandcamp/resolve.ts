@@ -1,4 +1,5 @@
 import { ReleaseDate, ResolveFunction, Track } from '..'
+import { asArray } from '../../utils/array'
 import { secondsToString, stringToDate } from '../../utils/datetime'
 import { fetch } from '../../utils/fetch'
 import { decode } from '../../utils/io-ts'
@@ -50,7 +51,8 @@ export const resolve: ResolveFunction = async (url) => {
   const data = getData(document_)
 
   const url_ = isDefined(data) ? data.url : url
-  const title = isDefined(data) ? data.current.title : undefined
+  const title = data?.current.title
+  const artists = asArray(data?.artist)
   const date = isDefined(data) ? getDate(data) : undefined
   const tracks = isDefined(data) ? getTracks(data) : undefined
   const type = isDefined(tracks) ? getReleaseType(tracks.length) : undefined
@@ -59,6 +61,7 @@ export const resolve: ResolveFunction = async (url) => {
   return {
     url: url_,
     title,
+    artists,
     date,
     type,
     format: 'lossless digital',

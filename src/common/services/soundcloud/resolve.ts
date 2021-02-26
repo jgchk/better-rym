@@ -1,6 +1,6 @@
 import { array } from 'io-ts'
 import { ResolveFunction, Track } from '..'
-import { chunkArray } from '../../utils/array'
+import { asArray, chunkArray } from '../../utils/array'
 import { secondsToString, stringToDate } from '../../utils/datetime'
 import { fetchJson } from '../../utils/fetch'
 import { getReleaseType } from '../../utils/music'
@@ -86,6 +86,7 @@ export const resolve: ResolveFunction = async (url) => {
 
   const url_ = response.permalink_url
   const title = response.title
+  const artists = asArray(response.user.username)
   const date = stringToDate(response.display_date)
   const tracks = await getTracks(response, token)
   const type = getReleaseType(tracks.length)
@@ -94,6 +95,7 @@ export const resolve: ResolveFunction = async (url) => {
   return {
     url: url_,
     title,
+    artists,
     date,
     type,
     format: 'digital file',

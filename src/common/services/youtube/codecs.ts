@@ -63,6 +63,7 @@ export const Contents = t.type(
 export type SearchObject = t.TypeOf<typeof SearchObject>
 export const SearchObject = t.type({ contents: Contents }, 'SearchObject')
 
+export type Video = t.TypeOf<typeof Video>
 export const Video = t.type(
   {
     items: t.tuple([
@@ -72,6 +73,7 @@ export const Video = t.type(
         snippet: t.type({
           publishedAt: t.string,
           title: t.string,
+          channelTitle: t.string,
         }),
         contentDetails: t.type({
           duration: t.string,

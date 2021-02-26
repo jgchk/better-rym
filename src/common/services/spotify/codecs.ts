@@ -62,6 +62,8 @@ export const SimplifiedTrackObject = t.type(
   'SimplifiedTrackObject'
 )
 
+const ArtistObject = t.type({ name: t.string }, 'ArtistObject')
+
 export type AlbumType = t.TypeOf<typeof AlbumType>
 const AlbumType = t.union([
   t.literal('album'),
@@ -76,6 +78,7 @@ export type AlbumObject = t.TypeOf<typeof AlbumObject>
 export const AlbumObject = t.type(
   {
     album_type: AlbumType,
+    artists: t.array(ArtistObject),
     external_urls: ExternalUrlObject,
     images: t.array(ImageObject),
     name: t.string,
@@ -89,6 +92,7 @@ export type TrackObject = t.TypeOf<typeof TrackObject>
 export const TrackObject = t.type(
   {
     album: SimplifiedAlbumObject,
+    artists: t.array(ArtistObject),
     duration_ms: t.Int,
     external_urls: ExternalUrlObject,
     name: t.string,

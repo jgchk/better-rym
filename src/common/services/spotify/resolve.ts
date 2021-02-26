@@ -85,6 +85,7 @@ const resolveAlbum = async (
 
   const url = response.external_urls.spotify
   const title = response.name
+  const artists = response.artists.map((artist) => artist.name)
   const date = parseDate(response.release_date)
   const tracks = await getTracks(response.tracks, token)
   const type = parseType(response.album_type, tracks.length)
@@ -93,6 +94,7 @@ const resolveAlbum = async (
   return {
     url,
     title,
+    artists,
     date,
     type,
     format: 'digital file',
@@ -116,6 +118,7 @@ const resolveTrack = async (
 
   const url = response.external_urls.spotify
   const title = response.name
+  const artists = response.artists.map((artist) => artist.name)
   const date = parseDate(response.album.release_date)
   const tracks = [
     {
@@ -128,6 +131,7 @@ const resolveTrack = async (
   return {
     url,
     title,
+    artists,
     date,
     type: 'single',
     format: 'digital file',

@@ -7,7 +7,7 @@ import {
   Track,
 } from '../../common/services'
 import { forceQuerySelector } from '../../common/utils/dom'
-import { isDefined } from '../../common/utils/types'
+import { isDefined, isNotNull } from '../../common/utils/types'
 import { capitalize } from './capitalization'
 
 const TYPE_IDS: Record<ReleaseType, string> = {
@@ -133,6 +133,59 @@ const ATTRIBUTE_IDS: Record<ReleaseAttribute, number> = {
   'video game soundtrack': 56,
 }
 
+const waitForResult = (
+  iframe: HTMLIFrameElement
+): Promise<HTMLDivElement | undefined> =>
+  new Promise((resolve) => {
+    const listener = () => {
+      const firstResult = iframe.contentDocument?.querySelector<HTMLDivElement>(
+        'div.result'
+      )
+      if (isNotNull(firstResult) && isDefined(firstResult)) {
+        resolve(firstResult)
+      } else {
+        resolve(undefined)
+      }
+
+      iframe.removeEventListener('load', listener)
+    }
+    iframe.addEventListener('load', listener)
+  })
+
+const fillArtist = async (artist: string) => {
+  // Enter search term
+  const input = forceQuerySelector<HTMLInputElement>(document)(
+    'input#filed_under_searchterm'
+  )
+  input.value = artist
+
+  // Click search button
+  const submitButton = forceQuerySelector<HTMLInputElement>(document)(
+    '#section_filed_under .gosearch input.button'
+  )
+  submitButton.click()
+
+  // Wait for results
+  const iframe = forceQuerySelector<HTMLIFrameElement>(document)(
+    'iframe#filed_underlist'
+  )
+  const topResult = await waitForResult(iframe)
+
+  // Click the top result if there is one
+  topResult?.click()
+}
+
+const fillArtists = async (artists: string[]) => {
+  const alreadyFilled = isNotNull(
+    document.querySelector('.sortable_filed_under')
+  )
+  if (alreadyFilled) return
+
+  for (const artist of artists) {
+    await fillArtist(artist)
+  }
+}
+
 const fillType = (type: ReleaseType) => {
   const element = forceQuerySelector<HTMLInputElement>(document)(
     `input#category${TYPE_IDS[type]}`
@@ -221,7 +274,8 @@ const fillSource = (url: string) => {
   element.value = url
 }
 
-export const fill = ({
+export const fill = async ({
+  artists,
   type,
   date,
   title,
@@ -229,7 +283,8 @@ export const fill = ({
   attributes,
   tracks,
   url,
-}: ResolveData): void => {
+}: ResolveData): Promise<void> => {
+  if (isDefined(artists)) await fillArtists(artists)
   if (isDefined(type)) fillType(type)
   if (isDefined(date)) fillDate(date)
   if (isDefined(title)) fillTitle(title)

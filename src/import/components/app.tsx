@@ -10,7 +10,7 @@ export const App: FunctionComponent = () => {
 
   useEffect(() => {
     if (isComplete(info)) {
-      fill(info.data)
+      void fill(info.data)
     }
   }, [info])
 

@@ -1,7 +1,8 @@
+import getArtistTitle from 'get-artist-title'
 import { ResolveFunction } from '..'
 import { secondsToString, stringToDate } from '../../utils/datetime'
 import { fetchJson } from '../../utils/fetch'
-import { isNull, isUndefined } from '../../utils/types'
+import { isDefined, isNull, isUndefined } from '../../utils/types'
 import { YOUTUBE_KEY } from './auth'
 import { Video } from './codecs'
 import { regex } from './regex'
@@ -14,6 +15,13 @@ const parseDuration = (durationString: string) => {
     .reverse()
     .reduce((accumulator, v, k) => (accumulator += v * 60 ** k), 0)
   return seconds ? secondsToString(seconds) : undefined
+}
+
+const parseTitle = (data: Video['items'][number]) => {
+  const artistTitle = getArtistTitle(data.snippet.title)
+  return isDefined(artistTitle)
+    ? { artists: [artistTitle[0]], title: artistTitle[1] }
+    : { artists: [data.snippet.channelTitle], title: data.snippet.title }
 }
 
 export const resolve: ResolveFunction = async (url) => {
@@ -34,7 +42,7 @@ export const resolve: ResolveFunction = async (url) => {
   )
 
   const url_ = `https://www.youtube.com/watch?v=${response.id}`
-  const title = response.snippet.title
+  const { title, artists } = parseTitle(response)
   const date = stringToDate(response.snippet.publishedAt)
   const tracks = [
     { title, duration: parseDuration(response.contentDetails.duration) },
@@ -44,6 +52,7 @@ export const resolve: ResolveFunction = async (url) => {
   return {
     url: url_,
     title,
+    artists,
     date,
     format: 'digital file',
     attributes: ['streaming'],

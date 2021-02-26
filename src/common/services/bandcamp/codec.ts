@@ -41,6 +41,7 @@ export const SearchObject = t.type(
 export const TrackData = t.type(
   {
     album_release_date: t.union([t.string, t.null]),
+    artist: t.string,
     current: t.type({
       release_date: t.union([t.string, t.null]),
       title: t.string,
@@ -60,6 +61,7 @@ export const TrackData = t.type(
 export const AlbumData = t.type(
   {
     album_release_date: t.union([t.string, t.null]),
+    artist: t.string,
     current: t.type({
       release_date: t.union([t.string, t.null]),
       title: t.string,

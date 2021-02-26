@@ -12,6 +12,9 @@ export const TrackObject = t.type(
     permalink_url: t.string,
     title: t.string,
     artwork_url: t.union([t.string, t.null]),
+    user: t.type({
+      username: t.string,
+    }),
   },
   'TrackObject'
 )
@@ -29,6 +32,9 @@ export const PlaylistObject = t.type(
     display_date: t.string,
     tracks: t.array(t.union([TrackObject, SimplifiedTrackObject])),
     artwork_url: t.union([t.string, t.null]),
+    user: t.type({
+      username: t.string,
+    }),
   },
   'PlaylistObject'
 )
