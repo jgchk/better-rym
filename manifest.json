@@ -12,7 +12,7 @@
     },
     {
       "js": ["./src/image/index.tsx"],
-      "matches": ["*://rateyourmusic.com/images/upload*"],
+      "matches": ["*://*.rateyourmusic.com/images/upload*"],
       "run_at": "document_start"
     }
   ],
