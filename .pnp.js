@@ -74,6 +74,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["fp-ts", "npm:2.9.5"],
             ["get-artist-title", "npm:1.3.1"],
             ["husky", "npm:4.3.8"],
+            ["image-extensions", "npm:1.1.0"],
             ["io-ts", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:2.2.14"],
             ["jest", "npm:26.6.3"],
             ["lint-staged", "npm:10.5.4"],
@@ -5779,6 +5780,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["fp-ts", "npm:2.9.5"],
             ["get-artist-title", "npm:1.3.1"],
             ["husky", "npm:4.3.8"],
+            ["image-extensions", "npm:1.1.0"],
             ["io-ts", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:2.2.14"],
             ["jest", "npm:26.6.3"],
             ["lint-staged", "npm:10.5.4"],
@@ -9281,6 +9283,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/ignore-npm-5.1.8-aa9a49ada4-b08e3d5b5d.zip/node_modules/ignore/",
           "packageDependencies": [
             ["ignore", "npm:5.1.8"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["image-extensions", [
+        ["npm:1.1.0", {
+          "packageLocation": "./.yarn/cache/image-extensions-npm-1.1.0-1a51760fc0-d611bdcc9a.zip/node_modules/image-extensions/",
+          "packageDependencies": [
+            ["image-extensions", "npm:1.1.0"]
           ],
           "linkType": "HARD",
         }]
