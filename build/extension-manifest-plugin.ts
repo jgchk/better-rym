@@ -57,7 +57,7 @@ export const ExtensionManifestPlugin = ({
 
       const output: { [key: string]: unknown } = {
         manifest_version: 2,
-        name: packageInfo.name,
+        name: manifest.name || packageInfo.name,
         description: packageInfo.description,
         version: packageInfo.version,
         permissions: permissions || [],

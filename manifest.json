@@ -1,4 +1,6 @@
 {
+  "name": "BetterRYM",
+
   "content_scripts": [
     {
       "js": ["./src/release/index.tsx"],

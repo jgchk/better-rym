@@ -1,7 +1,7 @@
 {
   "name": "better-rym",
   "version": "4.0.0",
-  "description": "improvements for rateyourmusic.com",
+  "description": "Improvements for RateYourMusic",
   "license": "GPL-3.0-or-later",
   "scripts": {
     "dev": "wp --config.dev build/webpack.config.ts",
