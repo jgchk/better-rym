@@ -9,6 +9,7 @@
     "prod:chrome": "wp --config.prod build/webpack.config.ts --browser chrome",
     "prod:firefox": "wp --config.prod build/webpack.config.ts --browser firefox",
     "prod:edge": "wp --config.prod build/webpack.config.ts --browser edge",
+    "zip": "cd output && atool -a ../brym.zip *",
     "test": "jest --watch"
   },
   "browserslist": "chrome >= 79, firefox >= 79, edge >= 79",
