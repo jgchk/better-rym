@@ -33,5 +33,11 @@
     "scripts": ["./src/background/index.ts"]
   },
 
-  "permissions": ["storage", "downloads", "*://*/*"]
+  "permissions": ["storage", "downloads", "*://*/*"],
+
+  "icons": {
+    "16": "sonemic-16.png",
+    "48": "sonemic-48.png",
+    "128": "sonemic-128.png"
+  }
 }

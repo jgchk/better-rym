@@ -96,6 +96,9 @@ const common = (mode: 'development' | 'production') => {
       new DotEnvironment(),
       new MiniCssExtractPlugin({ filename: '[name].css' }),
       ExtensionManifestPlugin({ isDevelopment, isFirefox }),
+      new CopyPlugin({
+        patterns: [{ from: './res/icons/*', to: '[name].[ext]' }],
+      }),
     ],
   }
 }
