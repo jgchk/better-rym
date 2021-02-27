@@ -19,6 +19,11 @@
       "js": ["./src/links/index.tsx"],
       "matches": ["*://*.rateyourmusic.com/submit_media_link*"],
       "run_at": "document_start"
+    },
+    {
+      "js": ["./src/collection/index.tsx"],
+      "matches": ["*://*.rateyourmusic.com/collection*"],
+      "run_at": "document_start"
     }
   ],
 
