@@ -12,11 +12,18 @@ Enhancements for [RateYourMusic](https://rateyourmusic.com/) 🎧
 
 ## Workflows
 
-Prerequisites:
+### Prerequisites
 
 1. Install [yarn](https://yarnpkg.com)
-2. Create a Spotify client ID and secret by following these [instructions](https://developer.spotify.com/documentation/general/guides/app-settings/#register-your-app). Enter them in the `.env` file at the root of this repo.
-3. Create a YouTube API key by following these [instructions](https://developers.google.com/youtube/v3/getting-started#before-you-start). Enter it in the `.env` file as well.
+2. Create a `.env` file at the project root with the following format:
+
+```
+SPOTIFY_ID=FJEIjfeiwqn342163nfowiqnefJ
+SPOTIFY_SECRET=j3821r0nowJFDASEIQ8931ho
+YOUTUBE_KEY=jf2138fFJ_432jf8f198flasj8
+```
+
+3. Create a [Spotify client ID/secret](https://developer.spotify.com/documentation/general/guides/app-settings/#register-your-app) and a [YouTube API key](https://developers.google.com/youtube/v3/getting-started#before-you-start) and place them in the `.env` file.
 
 ### Development
 
