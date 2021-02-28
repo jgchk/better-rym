@@ -42,7 +42,7 @@ const getCoverArt = (document_: Document) => {
   const element = document_.querySelector<HTMLAnchorElement>(
     '#tralbumArt a.popupImage'
   )
-  return element?.href
+  return element?.href.replace('10.jpg', '0')
 }
 
 export const resolve: ResolveFunction = async (url) => {

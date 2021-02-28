@@ -35,19 +35,10 @@ const getCoverArt = (document_: Document) => {
   const element = document_.querySelector<HTMLSourceElement>(
     '.product-lockup picture source[type="image/jpeg"]'
   )
-  const sources = element?.srcset
-    .split(', ')
-    .map((source) => {
-      const [url, widthString] = source.split(' ')
-      if (isUndefined(url) || isUndefined(widthString))
-        throw new Error(`Invalid image source: ${source}`)
-      return {
-        url,
-        width: Number.parseInt(widthString),
-      }
-    })
-    .sort((a, b) => b.width - a.width)
-  return sources?.[0]?.url
+  return element?.srcset
+    .split(', ')[0]
+    ?.split(' ')[0]
+    ?.replace(/\d+x\d+/, '2400x2400')
 }
 
 export const resolve: ResolveFunction = async (url) => {

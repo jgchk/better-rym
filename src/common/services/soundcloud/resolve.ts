@@ -70,7 +70,7 @@ const getTracks = async (
 }
 
 const getCoverArt = (data: MusicObject) =>
-  data.artwork_url?.replace('-large', '-t500x500')
+  data.artwork_url?.replace('-large', '-original')
 
 export const resolve: ResolveFunction = async (url) => {
   const token = await requestToken()
