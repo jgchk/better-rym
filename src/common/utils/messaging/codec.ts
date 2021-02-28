@@ -34,10 +34,7 @@ export const DownloadRequest = t.type(
   {
     id: t.string,
     type: t.literal('download'),
-    data: t.intersection([
-      t.type({ url: t.string }),
-      t.partial({ filename: t.string }),
-    ]),
+    data: t.type({ url: t.string, filename: t.string }),
   },
   'DownloadRequest'
 )

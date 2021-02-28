@@ -1,6 +1,3 @@
-// eslint-disable-next-line import/no-unresolved
-import filenamify from 'filenamify/browser'
-import imageExtensions from 'image-extensions'
 import { FunctionComponent, h } from 'preact'
 import { useEffect } from 'preact/hooks'
 import { StatusForm } from '../../common/components/status-form'
@@ -11,7 +8,7 @@ import { isComplete } from '../../common/utils/one-shot'
 import { isDefined } from '../../common/utils/types'
 import styles from '../styles/app.module.css'
 
-const getFilename = ({ coverArt, title, artists }: ResolveData) => {
+const getFilename = ({ title, artists }: ResolveData) => {
   let filename = ''
   if (isDefined(artists)) {
     filename += artists.join(', ')
@@ -23,13 +20,9 @@ const getFilename = ({ coverArt, title, artists }: ResolveData) => {
     filename += title
   }
   if (filename.length === 0) {
-    filename = 'cover'
+    return 'cover'
   }
-  const extension = coverArt?.split('.').pop()
-  if (isDefined(extension) && imageExtensions.includes(extension)) {
-    filename += `.${extension}`
-  }
-  return filenamify(filename)
+  return filename
 }
 
 export const App: FunctionComponent = () => {

@@ -1,37 +1,11 @@
 import {
   BackgroundResponse,
   DownloadRequest,
-  DownloadResponse,
   FetchRequest,
-  FetchResponse,
 } from '../common/utils/messaging/codec'
 import { isUndefined } from '../common/utils/types'
-
-const backgroundFetch = async ({
-  id,
-  data: { url, method = 'GET', urlParameters = {}, headers },
-}: FetchRequest): Promise<FetchResponse> => {
-  const urlObject = new URL(url)
-  if (urlParameters) {
-    for (const [key, value] of Object.entries(urlParameters))
-      urlObject.searchParams.append(key, value)
-  }
-
-  const responseBody = await fetch(urlObject.toString(), {
-    method,
-    headers,
-  }).then((response) => response.text())
-
-  return { id, type: 'fetch', data: { body: responseBody } }
-}
-
-const download = async ({
-  id,
-  data,
-}: DownloadRequest): Promise<DownloadResponse> => {
-  const downloadId = await browser.downloads.download(data)
-  return { id, type: 'download', data: { id: downloadId } }
-}
+import { download } from './download'
+import { backgroundFetch } from './fetch'
 
 const getResponse = (message: unknown): Promise<BackgroundResponse> => {
   if (FetchRequest.is(message)) {
