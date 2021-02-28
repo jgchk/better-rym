@@ -1,4 +1,4 @@
-import { isDefined, isUndefined } from './types'
+import { isDefined } from './types'
 
 export const chunkArray = <T>(array: T[], size: number): T[][] => {
   const result: T[][] = []

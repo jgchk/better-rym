@@ -3,7 +3,7 @@ import { asArray } from '../../utils/array'
 import { stringToDate } from '../../utils/datetime'
 import { fetch } from '../../utils/fetch'
 import { getReleaseType } from '../../utils/music'
-import { isDefined, isUndefined } from '../../utils/types'
+import { isUndefined } from '../../utils/types'
 
 const getUrl = (document_: Document) =>
   document_.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.href
