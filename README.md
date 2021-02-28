@@ -6,10 +6,17 @@ Enhancements for [RateYourMusic](https://rateyourmusic.com/) 🎧
 
 - Add missing streaming links to Release pages
 - Auto-fill the Add Release form
+- Download hi-res cover art
+- Filter your collection by release type
+- Convert stream links to embed codes
 
 ## Workflows
 
-Prerequisite: [Yarn](https://yarnpkg.com)
+Prerequisites:
+
+1. Install [yarn](https://yarnpkg.com)
+2. Create a Spotify client ID and secret by following these [instructions](https://developer.spotify.com/documentation/general/guides/app-settings/#register-your-app). Enter them in the `.env` file at the root of this repo.
+3. Create a YouTube API key by following these [instructions](https://developers.google.com/youtube/v3/getting-started#before-you-start). Enter it in the `.env` file as well.
 
 ### Development
 
