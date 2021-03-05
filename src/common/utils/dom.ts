@@ -1,4 +1,3 @@
-import { rejects } from 'assert'
 import { isNull } from './types'
 
 const isDocumentReady = () =>
