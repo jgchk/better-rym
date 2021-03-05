@@ -25,7 +25,7 @@ export const Button: FunctionComponent<{
 }> = ({ name, modifier }) => {
   const url = useMemo(() => makeUrl(modifier), [modifier])
   return (
-    <a className='printbutton' href={url}>
+    <a className='btn' href={url}>
       {name.toLowerCase()}
     </a>
   )
