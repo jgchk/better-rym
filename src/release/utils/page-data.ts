@@ -29,7 +29,7 @@ const getLinks = async (): Promise<Links> =>
 
       const getLink = (service: ServiceId) => {
         const linkElement = element.querySelector<HTMLAnchorElement>(
-          `a.ui_stream_link_btn_${service}`
+          `a.ui_media_link_btn_${service}`
         )
         return linkElement?.href
       }
