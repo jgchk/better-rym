@@ -1,13 +1,17 @@
 import * as t from 'io-ts'
 
 export type TokenResponse = t.TypeOf<typeof TokenResponse>
-export const TokenResponse = t.type(
-  {
-    access_token: t.string,
-    expires_in: t.number,
-    scope: t.string,
-    token_type: t.string,
-  },
+export const TokenResponse = t.intersection(
+  [
+    t.type({
+      access_token: t.string,
+      expires_in: t.number,
+      token_type: t.string,
+    }),
+    t.partial({
+      scope: t.string,
+    }),
+  ],
   'TokenResponse'
 )
 
