@@ -216,9 +216,9 @@ const fillDate = (date: ReleaseDate) => {
   if (isDefined(date.day)) fillDay(date.day)
 }
 
-const fillTitle = (title: string) => {
+const fillTitle = (title: string, autoCapitalize: boolean) => {
   const element = forceQuerySelector<HTMLInputElement>(document)('input#title')
-  element.value = capitalize(title)
+  element.value = autoCapitalize ? capitalize(title) : title
 }
 
 const fillFormat = (format: ReleaseFormat) => {
@@ -241,11 +241,13 @@ const fillAttributes = (attributes: ReleaseAttribute[]) => {
   }
 }
 
-const fillTracks = (tracks: Track[]) => {
+const fillTracks = (tracks: Track[], autoCapitalize: boolean) => {
   const tracksString = tracks
     .map((track, index) => {
       const position = track.position ?? index + 1
-      const title = capitalize(track.title ?? '')
+      const title = autoCapitalize
+        ? capitalize(track.title ?? '')
+        : track.title ?? ''
       const duration = track.duration ?? ''
       return `${position}|${title}|${duration}`
     })
@@ -274,22 +276,16 @@ const fillSource = (url: string) => {
   element.value = url
 }
 
-export const fill = async ({
-  artists,
-  type,
-  date,
-  title,
-  format,
-  attributes,
-  tracks,
-  url,
-}: ResolveData): Promise<void> => {
+export const fill = async (
+  { artists, type, date, title, format, attributes, tracks, url }: ResolveData,
+  autoCapitalize: boolean
+): Promise<void> => {
   if (isDefined(artists)) await fillArtists(artists)
   if (isDefined(type)) fillType(type)
   if (isDefined(date)) fillDate(date)
-  if (isDefined(title)) fillTitle(title)
+  if (isDefined(title)) fillTitle(title, autoCapitalize)
   if (isDefined(format)) fillFormat(format)
   if (isDefined(attributes)) fillAttributes(attributes)
-  if (isDefined(tracks)) fillTracks(tracks)
+  if (isDefined(tracks)) fillTracks(tracks, autoCapitalize)
   if (isDefined(url)) fillSource(url)
 }

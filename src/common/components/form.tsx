@@ -5,15 +5,19 @@ import styles from '../styles/form.module.css'
 import { isDefined } from '../utils/types'
 import { ServiceSelector } from './service-selector'
 
+const CAPITALIZE_ID = 'brym-capitalize'
+
 export const Form: FunctionComponent<{
   submitText: string
-  onSubmit: (url: string, serviceId: ServiceId) => void
-}> = ({ submitText, onSubmit }) => {
+  onSubmit: (url: string, serviceId: ServiceId, autoCapitalize: boolean) => void
+  showAutoCapitalize?: boolean
+}> = ({ submitText, onSubmit, showAutoCapitalize = false }) => {
   const [url, setUrl] = useState('')
   const [selectedServiceId, setServiceId] = useState<ServiceId | undefined>(
     undefined
   )
   const [showMissingServiceError, setShowMissingServiceError] = useState(false)
+  const [autoCapitalize, setAutoCapitalize] = useState(true)
 
   useEffect(() => {
     const service = getMatchingService(url)
@@ -34,7 +38,7 @@ export const Form: FunctionComponent<{
       onSubmit={(event) => {
         event.preventDefault()
         if (isDefined(selectedServiceId)) {
-          onSubmit(url, selectedServiceId)
+          onSubmit(url, selectedServiceId, autoCapitalize)
         } else {
           setShowMissingServiceError(true)
         }
@@ -53,6 +57,19 @@ export const Form: FunctionComponent<{
         />
         {showMissingServiceError && (
           <div className={styles.error}>Select an import source</div>
+        )}
+        {showAutoCapitalize && (
+          <label htmlFor={CAPITALIZE_ID}>
+            <input
+              id={CAPITALIZE_ID}
+              type='checkbox'
+              checked={autoCapitalize}
+              onInput={(event) =>
+                setAutoCapitalize((event.target as HTMLInputElement).checked)
+              }
+            />{' '}
+            Auto-capitalize
+          </label>
         )}
       </div>
       <input type='submit' value={submitText} className={styles.submit} />
