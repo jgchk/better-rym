@@ -1,11 +1,12 @@
+import { rejects } from 'assert'
 import { isNull } from './types'
+
+const isDocumentReady = () =>
+  document.readyState === 'complete' || document.readyState === 'interactive'
 
 export const waitForDocumentReady = (): Promise<void> =>
   new Promise((resolve) => {
-    if (
-      document.readyState === 'complete' ||
-      document.readyState === 'interactive'
-    ) {
+    if (isDocumentReady()) {
       resolve()
     } else {
       document.addEventListener('DOMContentLoaded', () => resolve())
@@ -13,15 +14,21 @@ export const waitForDocumentReady = (): Promise<void> =>
   })
 
 export const waitForElement = <E extends Element>(query: string): Promise<E> =>
-  new Promise((resolve) => {
+  new Promise((resolve, reject) => {
     new MutationObserver((mutations, observer) => {
       if (!document.body) return
 
       const element = document.querySelector<E>(query)
-      if (!element) return
+      if (element) {
+        resolve(element)
+        observer.disconnect()
+      }
 
-      resolve(element)
-      observer.disconnect()
+      // Document is fully loaded and we didn't find what we were looking for
+      if (isDocumentReady()) {
+        reject(new Error(`Could not find element: ${query}`))
+        observer.disconnect()
+      }
     }).observe(document, {
       childList: true,
       subtree: true,
