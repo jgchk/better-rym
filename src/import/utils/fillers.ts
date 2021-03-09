@@ -161,7 +161,7 @@ const fillArtist = async (artist: string) => {
 
   // Click search button
   const submitButton = forceQuerySelector<HTMLInputElement>(document)(
-    '#section_filed_under .gosearch input.button'
+    '#section_filed_under .gosearch input[type=button]'
   )
   submitButton.click()
 
@@ -176,13 +176,22 @@ const fillArtist = async (artist: string) => {
 }
 
 const fillArtists = async (artists: string[]) => {
-  const alreadyFilled = isNotNull(
-    document.querySelector('.sortable_filed_under')
-  )
-  if (alreadyFilled) return
+  if (artists[0]?.toLowerCase() === 'various artists') {
+    // Various Artists release
+    const element = forceQuerySelector<HTMLInputElement>(document)(
+      `input#cat_va`
+    )
+    element.click()
+  } else {
+    // Regular release
+    const alreadyFilled = isNotNull(
+      document.querySelector('.sortable_filed_under')
+    )
+    if (alreadyFilled) return
 
-  for (const artist of artists) {
-    await fillArtist(artist)
+    for (const artist of artists) {
+      await fillArtist(artist)
+    }
   }
 }
 
