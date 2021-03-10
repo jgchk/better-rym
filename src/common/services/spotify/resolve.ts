@@ -1,4 +1,5 @@
 import { ReleaseDate, ResolveData, ResolveFunction, Track } from '..'
+import { asArray } from '../../utils/array'
 import { secondsToString } from '../../utils/datetime'
 import { fetchJson } from '../../utils/fetch'
 import { getReleaseType } from '../../utils/music'
@@ -87,7 +88,7 @@ const resolveAlbum = async (
   const date = parseDate(response.release_date)
   const tracks = await getTracks(response.tracks, token)
   const type = parseType(response.album_type, tracks.length)
-  const coverArt = getCoverArt(response)
+  const coverArt = asArray(getCoverArt(response))
 
   return {
     url,
@@ -124,7 +125,7 @@ const resolveTrack = async (
       duration: secondsToString(response.duration_ms / 1000),
     },
   ]
-  const coverArt = getCoverArt(response)
+  const coverArt = asArray(getCoverArt(response))
 
   return {
     url,

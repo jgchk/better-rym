@@ -9,7 +9,6 @@ import { isDefined } from '../../common/utils/types'
 import styles from '../styles/app.module.css'
 
 const getFilename = ({ title, artists }: ResolveData) => {
-  console.log('info', title, artists)
   let filename = ''
   if (isDefined(artists)) {
     filename += artists.join(', ')
@@ -33,7 +32,8 @@ export const App: FunctionComponent = () => {
     if (isComplete(info)) {
       const { coverArt } = info.data
       if (isDefined(coverArt)) {
-        void download({ url: coverArt, filename: getFilename(info.data) })
+        const filename = getFilename(info.data)
+        void download(coverArt.map((url) => ({ url, filename })))
       }
     }
   }, [info])

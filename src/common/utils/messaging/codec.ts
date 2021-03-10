@@ -34,7 +34,7 @@ export const DownloadRequest = t.type(
   {
     id: t.string,
     type: t.literal('download'),
-    data: t.type({ url: t.string, filename: t.string }),
+    data: t.array(t.type({ url: t.string, filename: t.string })),
   },
   'DownloadRequest'
 )

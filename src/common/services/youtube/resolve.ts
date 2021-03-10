@@ -47,7 +47,7 @@ export const resolve: ResolveFunction = async (url) => {
   const tracks = [
     { title, duration: parseDuration(response.contentDetails.duration) },
   ]
-  const coverArt = `https://img.youtube.com/vi/${id}/maxresdefault.jpg`
+  const coverArt = [`https://img.youtube.com/vi/${id}/maxresdefault.jpg`]
 
   return {
     url: url_,

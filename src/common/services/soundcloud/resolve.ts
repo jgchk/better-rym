@@ -4,7 +4,7 @@ import { asArray, chunkArray } from '../../utils/array'
 import { secondsToString, stringToDate } from '../../utils/datetime'
 import { fetchJson } from '../../utils/fetch'
 import { getReleaseType } from '../../utils/music'
-import { isDefined, isUndefined } from '../../utils/types'
+import { isDefined, isNotNull, isUndefined } from '../../utils/types'
 import { requestToken } from './auth'
 import { MusicObject, TrackObject } from './codecs'
 
@@ -70,7 +70,9 @@ const getTracks = async (
 }
 
 const getCoverArt = (data: MusicObject) =>
-  data.artwork_url?.replace('-large', '-original')
+  [data.artwork_url?.replace('-large', '-original'), data.artwork_url]
+    .filter(isDefined)
+    .filter(isNotNull)
 
 export const resolve: ResolveFunction = async (url) => {
   const token = await requestToken()

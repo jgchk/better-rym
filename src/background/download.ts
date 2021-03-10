@@ -12,16 +12,32 @@ export const download = async ({
   id,
   data,
 }: DownloadRequest): Promise<DownloadResponse> => {
-  const blob = await fetch(data.url).then((response) => response.blob())
-  const fileType = await fromBlob(blob)
+  for (const { url, filename } of data) {
+    try {
+      const blob = await fetch(url).then((response) => {
+        if (response.ok) {
+          return response.blob()
+        } else {
+          throw new Error(`Status code: ${response.status}`)
+        }
+      })
+      const fileType = await fromBlob(blob)
 
-  const extension = isDefined(fileType) ? `.${fileType.ext}` : ''
-  const name = data.filename.slice(0, 100 - extension.length)
-  const filename = filenamify(`${name}${extension}`)
+      const extension = isDefined(fileType) ? `.${fileType.ext}` : ''
+      const formattedFilename = filename.slice(0, 100 - extension.length)
+      const filenameWithExtension = filenamify(
+        `${formattedFilename}${extension}`
+      )
 
-  const downloadId = await browser.downloads.download({
-    url: URL.createObjectURL(blob),
-    filename,
-  })
-  return { id, type: 'download', data: { id: downloadId } }
+      const downloadId = await browser.downloads.download({
+        url: URL.createObjectURL(blob),
+        filename: filenameWithExtension,
+      })
+      return { id, type: 'download', data: { id: downloadId } }
+    } catch {
+      // ignore
+    }
+  }
+
+  throw new Error('None of the links worked')
 }

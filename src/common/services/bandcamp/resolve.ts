@@ -56,7 +56,7 @@ export const resolve: ResolveFunction = async (url) => {
   const date = isDefined(data) ? getDate(data) : undefined
   const tracks = isDefined(data) ? getTracks(data) : undefined
   const type = isDefined(tracks) ? getReleaseType(tracks.length) : undefined
-  const coverArt = getCoverArt(document_)
+  const coverArt = asArray(getCoverArt(document_))
 
   return {
     url: url_,

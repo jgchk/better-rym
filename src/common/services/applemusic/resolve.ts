@@ -1,4 +1,5 @@
 import { ResolveFunction } from '..'
+import { asArray } from '../../utils/array'
 import { stringToDate } from '../../utils/datetime'
 import { fetch } from '../../utils/fetch'
 import { getReleaseType } from '../../utils/music'
@@ -50,7 +51,7 @@ export const resolve: ResolveFunction = async (url) => {
   const artists = getArtists(document_)
   const date = getDate(document_)
   const tracks = getTracks(document_)
-  const coverArt = getCoverArt(document_)
+  const coverArt = asArray(getCoverArt(document_))
 
   let title = getTitle(document_)
   let type = getReleaseType(tracks.length)
