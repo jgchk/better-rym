@@ -62,9 +62,7 @@ const getTracks = async (
 }
 
 const parseType = (type: AlbumType, numberOfTracks: number) =>
-  type === 'compilation' || type === 'single'
-    ? type
-    : getReleaseType(numberOfTracks)
+  type === 'compilation' ? type : getReleaseType(numberOfTracks)
 
 const getCoverArt = (data: AlbumObject | TrackObject) => {
   const images = AlbumObject.is(data) ? data.images : data.album.images
