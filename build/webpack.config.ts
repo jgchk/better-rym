@@ -3,6 +3,7 @@ import { CleanWebpackPlugin as CleanPlugin } from 'clean-webpack-plugin'
 import CopyPlugin from 'copy-webpack-plugin'
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'
 import DotEnvironment from 'dotenv-webpack'
+import ForkTsCheckerPlugin from 'fork-ts-checker-webpack-plugin'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import { Configuration } from 'webpack'
 import { merge } from 'webpack-merge'
@@ -92,6 +93,12 @@ const common = (mode: 'development' | 'production') => {
       },
     },
     plugins: [
+      new ForkTsCheckerPlugin({
+        eslint: {
+          enabled: true,
+          files: './src/**/*.{ts,tsx,js,jsx}',
+        },
+      }),
       new CleanPlugin(),
       new DotEnvironment(),
       new MiniCssExtractPlugin({ filename: '[name].css' }),
