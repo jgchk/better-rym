@@ -47,12 +47,20 @@ export const resolve: ResolveFunction = async (url) => {
   const document_ = new DOMParser().parseFromString(response, 'text/html')
 
   const url_ = getUrl(document_) || url
-  const title = getTitle(document_)
   const artists = getArtists(document_)
   const date = getDate(document_)
   const tracks = getTracks(document_)
-  const type = getReleaseType(tracks.length)
   const coverArt = getCoverArt(document_)
+
+  let title = getTitle(document_)
+  let type = getReleaseType(tracks.length)
+  if (title?.includes(' - EP')) {
+    title = title.replace(' - EP', '')
+    type = 'ep'
+  } else if (title?.includes(' - Single')) {
+    title = title.replace(' - Single', '')
+    type = 'single'
+  }
 
   return {
     url: url_,
