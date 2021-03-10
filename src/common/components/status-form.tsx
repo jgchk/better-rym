@@ -14,7 +14,7 @@ export type Properties<E extends Error, T> = {
     url: string,
     serviceId: ServiceId,
     autoCapitalize: boolean
-  ) => Promise<void>
+  ) => void | Promise<void>
   submitText?: string
   showAutoCapitalize?: boolean
 }

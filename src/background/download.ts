@@ -15,9 +15,9 @@ export const download = async ({
   const blob = await fetch(data.url).then((response) => response.blob())
   const fileType = await fromBlob(blob)
 
-  const filename = filenamify(
-    `${data.filename}${isDefined(fileType) ? `.${fileType.ext}` : ''}`
-  )
+  const extension = isDefined(fileType) ? `.${fileType.ext}` : ''
+  const name = data.filename.slice(0, 100 - extension.length)
+  const filename = filenamify(`${name}${extension}`)
 
   const downloadId = await browser.downloads.download({
     url: URL.createObjectURL(blob),

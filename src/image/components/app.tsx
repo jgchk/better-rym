@@ -9,6 +9,7 @@ import { isDefined } from '../../common/utils/types'
 import styles from '../styles/app.module.css'
 
 const getFilename = ({ title, artists }: ResolveData) => {
+  console.log('info', title, artists)
   let filename = ''
   if (isDefined(artists)) {
     filename += artists.join(', ')
@@ -41,7 +42,11 @@ export const App: FunctionComponent = () => {
     <>
       <h4>Download Cover Art</h4>
       <div className={styles.container}>
-        <StatusForm submitText='Download' data={info} onSubmit={fetchInfo} />
+        <StatusForm
+          submitText='Download'
+          data={info}
+          onSubmit={(url, serviceId) => void fetchInfo(url, serviceId)}
+        />
       </div>
     </>
   )
