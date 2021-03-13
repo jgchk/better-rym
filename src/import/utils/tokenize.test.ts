@@ -1,4 +1,4 @@
-import { splitPhrases } from './tokenize'
+import { splitPhrases, tokenizePhrase } from './tokenize'
 
 describe('split phrases', () => {
   const tests = [
@@ -19,5 +19,31 @@ describe('split phrases', () => {
 
   test.each(tests)('correctly splits %p', (input, output) =>
     expect(splitPhrases(input)).toEqual(output)
+  )
+})
+
+describe('tokenize', () => {
+  const tests = [
+    ['A', [{ text: 'A', type: 'word' }]],
+    [
+      'One Two',
+      [
+        { text: 'One', type: 'word' },
+        { text: ' ', type: 'whitespace' },
+        { text: 'Two', type: 'word' },
+      ],
+    ],
+    [
+      'I’m Ready',
+      [
+        { text: 'I’m', type: 'word' },
+        { text: ' ', type: 'whitespace' },
+        { text: 'Ready', type: 'word' },
+      ],
+    ],
+  ] as const
+
+  test.each(tests)('correctly tokenizes %p', (input, output) =>
+    expect(tokenizePhrase(input)).toEqual(output)
   )
 })

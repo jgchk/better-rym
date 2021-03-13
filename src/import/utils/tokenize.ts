@@ -1,5 +1,5 @@
 const parsers = {
-  word: /(?!'.*')\b[\w']+\b/,
+  word: /(?!'.*')\b[\w'’]+\b/,
   whitespace: /\s+/,
   punctuation: /[^\s\w]/,
 }
@@ -16,7 +16,7 @@ export type Phrase = Token[]
 export const tokenize = (text: string): Phrase[] =>
   splitPhrases(text).map(tokenizePhrase)
 
-const tokenizePhrase = (text: string): Token[] => {
+export const tokenizePhrase = (text: string): Token[] => {
   const tokens: Token[] = []
   while (text) {
     let t: Token | undefined
