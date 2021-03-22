@@ -4,6 +4,7 @@ import * as cache from '../utils/cache'
 import { isDefined } from '../utils/types'
 import { AppleMusic } from './applemusic'
 import { Bandcamp } from './bandcamp'
+import { Discogs } from './discogs'
 import { Soundcloud } from './soundcloud'
 import { Spotify } from './spotify'
 import { YouTube } from './youtube'
@@ -11,6 +12,7 @@ import { YouTube } from './youtube'
 export const SERVICE_IDS = [
   'applemusic',
   'bandcamp',
+  'discogs',
   'soundcloud',
   'spotify',
   'youtube',
@@ -19,7 +21,6 @@ export const SERVICE_IDS = [
 export type ServiceId = typeof SERVICE_IDS[number]
 export type SearchFunction = (metadata: Metadata) => Promise<string | undefined>
 export type ResolveFunction = (url: string) => Promise<ResolveData>
-export type EmbedFunction = (url: string) => Promise<string | undefined>
 export type Service = {
   id: ServiceId
   name: string
@@ -27,12 +28,20 @@ export type Service = {
   regex: RegExp
   search: SearchFunction
   resolve: ResolveFunction
-  embed?: EmbedFunction
+}
+
+export type EmbedFunction = (url: string) => Promise<string | undefined>
+export const isEmbeddable = (
+  service: Service | (Service & Embeddable)
+): service is Service & Embeddable => 'embed' in service && !!service.embed
+export type Embeddable = {
+  embed: EmbedFunction
 }
 
 export const SERVICES: Record<ServiceId, Service> = {
   applemusic: AppleMusic,
   bandcamp: Bandcamp,
+  discogs: Discogs,
   soundcloud: Soundcloud,
   spotify: Spotify,
   youtube: YouTube,
