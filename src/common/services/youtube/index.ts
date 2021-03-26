@@ -1,4 +1,5 @@
 import icon from '../../../../res/youtube.svg'
+import { withCache } from '../../utils/cache'
 import { Resolvable, Searchable, Service } from '../types'
 import { regex } from './regex'
 import { resolve } from './resolve'
@@ -9,6 +10,6 @@ export const YouTube: Service & Searchable & Resolvable = {
   name: 'YouTube',
   regex,
   icon,
-  search,
-  resolve,
+  search: withCache('youtube', search),
+  resolve: withCache('youtube', resolve),
 }

@@ -1,4 +1,5 @@
 import icon from '../../../../res/spotify.svg'
+import { withCache } from '../../utils/cache'
 import { Resolvable, Searchable, Service } from '../types'
 import { regex } from './regex'
 import { resolve } from './resolve'
@@ -9,6 +10,6 @@ export const Spotify: Service & Searchable & Resolvable = {
   name: 'Spotify',
   regex,
   icon,
-  search,
-  resolve,
+  search: withCache('spotify', search),
+  resolve: withCache('spotify', resolve),
 }
