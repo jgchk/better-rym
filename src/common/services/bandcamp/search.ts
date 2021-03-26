@@ -1,5 +1,5 @@
 import { compareTwoStrings } from 'string-similarity'
-import { Metadata } from '../../../release/utils/page-data'
+import { Metadata } from '../../../find-stream-links/utils/page-data'
 import { fetchJson } from '../../utils/fetch'
 import { SearchFunction } from '../types'
 import { MusicResult, SearchObject } from './codec'

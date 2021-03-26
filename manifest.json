@@ -3,17 +3,17 @@
 
   "content_scripts": [
     {
-      "js": ["./src/release/index.tsx"],
+      "js": ["./src/find-stream-links/index.tsx"],
       "matches": ["*://*.rateyourmusic.com/release/*"],
       "run_at": "document_start"
     },
     {
-      "js": ["./src/import/index.tsx"],
+      "js": ["./src/release-submission/index.tsx"],
       "matches": ["*://*.rateyourmusic.com/releases/ac*"],
       "run_at": "document_start"
     },
     {
-      "js": ["./src/image/index.tsx"],
+      "js": ["./src/cover-art/index.tsx"],
       "matches": ["*://*.rateyourmusic.com/images/upload*"],
       "run_at": "document_start"
     },
