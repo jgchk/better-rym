@@ -1,6 +1,6 @@
 import { FunctionComponent, h } from 'preact'
 import { useCallback, useEffect, useMemo, useState } from 'preact/hooks'
-import { ServiceId, search } from '../../common/services'
+import { Searchable, Service } from '../../common/services/types'
 import { parseError } from '../../common/utils/error'
 import * as oneShot from '../../common/utils/one-shot'
 import { isDefined } from '../../common/utils/types'
@@ -15,16 +15,17 @@ export type ServiceData = {
 export type ServiceState = oneShot.OneShot<Error, ServiceData>
 
 export const ServiceLink: FunctionComponent<{
-  serviceId: ServiceId
+  service: Service & Searchable
   pageData: PageDataState
-}> = ({ serviceId: service, pageData }) => {
+}> = ({ service, pageData }) => {
   const [state, setState] = useState<ServiceState>(oneShot.initial)
 
   const fetch = useCallback(
     async (metadata: Metadata) => {
       setState(oneShot.loading)
 
-      const nextState = await search(metadata, service)
+      const nextState = await service
+        .search(metadata)
         .then((link) => oneShot.complete({ searched: true, link }))
         .catch((error) => oneShot.failed(parseError(error)))
 
@@ -35,7 +36,7 @@ export const ServiceLink: FunctionComponent<{
 
   useEffect(() => {
     if (oneShot.isComplete(pageData)) {
-      const link = pageData.data.links[service]
+      const link = pageData.data.links[service.id]
       if (isDefined(link)) {
         setState(oneShot.complete({ searched: false, link }))
       } else {

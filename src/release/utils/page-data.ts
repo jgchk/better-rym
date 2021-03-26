@@ -1,4 +1,5 @@
-import { SERVICE_IDS, ServiceId } from '../../common/services'
+import { SEARCHABLES } from '../../common/services'
+import { ServiceId } from '../../common/services/types'
 import { waitForElement } from '../../common/utils/dom'
 
 const getTitle = async () => {
@@ -35,7 +36,7 @@ const getLinks = async (): Promise<Links> =>
       }
 
       const links = Object.fromEntries(
-        SERVICE_IDS.map((service) => [service, getLink(service)])
+        SEARCHABLES.map(({ id }) => [id, getLink(id)])
       ) as Record<ServiceId, string | undefined>
       resolve(links)
 

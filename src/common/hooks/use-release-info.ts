@@ -1,11 +1,11 @@
 import { useCallback, useState } from 'preact/hooks'
-import { ResolveData, ServiceId, resolve } from '../services'
+import { Resolvable, ResolveData, Service } from '../services/types'
 import { OneShot, complete, failed, initial, loading } from '../utils/one-shot'
 
 export type InfoState = OneShot<Error, ResolveData>
 export type FetchFunction = (
   url: string,
-  serviceId: ServiceId
+  service: Service & Resolvable
 ) => Promise<InfoState>
 export type UseReleaseInfoValue = {
   info: InfoState
@@ -15,9 +15,10 @@ export type UseReleaseInfoValue = {
 export const useReleaseInfo = (): UseReleaseInfoValue => {
   const [info, setInfo] = useState<InfoState>(initial)
 
-  const fetchInfo: FetchFunction = useCallback(async (url, serviceId) => {
+  const fetchInfo: FetchFunction = useCallback(async (url, service) => {
     setInfo(loading)
-    const nextInfo = await resolve(url, serviceId)
+    const nextInfo = await service
+      .resolve(url)
       .then((info) => complete(info))
       .catch((error) => failed(error))
     setInfo(nextInfo)

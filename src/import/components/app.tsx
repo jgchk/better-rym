@@ -2,7 +2,8 @@ import { FunctionComponent, h } from 'preact'
 import { useCallback } from 'preact/hooks'
 import { StatusForm } from '../../common/components/status-form'
 import { useReleaseInfo } from '../../common/hooks/use-release-info'
-import { ServiceId } from '../../common/services'
+import { RESOLVABLES } from '../../common/services'
+import { Resolvable, Service } from '../../common/services/types'
 import { isComplete } from '../../common/utils/one-shot'
 import { fill } from '../utils/fillers'
 
@@ -10,8 +11,12 @@ export const App: FunctionComponent = () => {
   const { info, fetchInfo } = useReleaseInfo()
 
   const fetchInfoOuter = useCallback(
-    async (url: string, serviceId: ServiceId, autoCapitalize: boolean) => {
-      const info = await fetchInfo(url, serviceId)
+    async (
+      url: string,
+      service: Service & Resolvable,
+      autoCapitalize: boolean
+    ) => {
+      const info = await fetchInfo(url, service)
       if (isComplete(info)) {
         void fill(info.data, autoCapitalize)
       }
@@ -26,6 +31,7 @@ export const App: FunctionComponent = () => {
       </div>
       <div className={'submit_step_box'}>
         <StatusForm
+          services={RESOLVABLES}
           submitText='Import'
           data={info}
           onSubmit={fetchInfoOuter}

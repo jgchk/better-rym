@@ -1,10 +1,10 @@
 import { array } from 'io-ts'
-import { ResolveFunction, Track } from '..'
 import { asArray, chunkArray } from '../../utils/array'
 import { secondsToString, stringToDate } from '../../utils/datetime'
 import { fetchJson } from '../../utils/fetch'
 import { getReleaseType } from '../../utils/music'
 import { isDefined, isNotNull, isUndefined } from '../../utils/types'
+import { ResolveFunction, Track } from '../types'
 import { requestToken } from './auth'
 import { MusicObject, TrackObject } from './codecs'
 

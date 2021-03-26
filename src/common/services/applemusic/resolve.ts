@@ -1,9 +1,9 @@
-import { ResolveFunction } from '..'
 import { asArray } from '../../utils/array'
 import { stringToDate } from '../../utils/datetime'
 import { fetch } from '../../utils/fetch'
 import { getReleaseType } from '../../utils/music'
 import { isDefined, isUndefined } from '../../utils/types'
+import { ResolveFunction } from '../types'
 
 const getUrl = (document_: Document) =>
   document_.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.href

@@ -1,9 +1,9 @@
-import { ReleaseDate, ResolveData, ResolveFunction, Track } from '..'
 import { asArray } from '../../utils/array'
 import { secondsToString } from '../../utils/datetime'
 import { fetchJson } from '../../utils/fetch'
 import { getReleaseType } from '../../utils/music'
 import { isNotNull, isNull, isUndefined } from '../../utils/types'
+import { ReleaseDate, ResolveData, ResolveFunction, Track } from '../types'
 import { requestToken } from './auth'
 import {
   AlbumObject,

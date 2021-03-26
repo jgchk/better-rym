@@ -1,6 +1,6 @@
-import { SearchFunction } from '..'
 import { fetchJson } from '../../utils/fetch'
 import { isUndefined } from '../../utils/types'
+import { SearchFunction } from '../types'
 import { requestToken } from './auth'
 import { MusicObject, SearchObject } from './codecs'
 

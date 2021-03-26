@@ -1,21 +1,28 @@
 import clsx from 'clsx'
-import { FunctionComponent, h } from 'preact'
-import { SERVICES, SERVICE_IDS, ServiceId } from '../services'
+import { VNode, h } from 'preact'
+import { Service } from '../services/types'
 import styles from '../styles/service-selector.module.css'
 
-export const ServiceSelector: FunctionComponent<{
-  serviceId: ServiceId | undefined
-  onSelect: (id: ServiceId) => void
-}> = ({ serviceId, onSelect }) => (
+type ServiceSelectorProperties<S extends Service> = {
+  services: S[]
+  selected: S | undefined
+  onSelect: (service: S) => void
+}
+
+export const ServiceSelector = <S extends Service>({
+  services,
+  selected,
+  onSelect,
+}: ServiceSelectorProperties<S>): VNode => (
   <div className={styles.icons}>
-    {SERVICE_IDS.map((id) => SERVICES[id]).map((service) => (
+    {services.map((service) => (
       <button
         key={service.id}
         type='button'
-        onClick={() => onSelect(service.id)}
+        onClick={() => onSelect(service)}
         className={clsx(
           styles.icon,
-          service.id === serviceId && styles.selected
+          service.id === selected?.id && styles.selected
         )}
       >
         {service.icon({})}
