@@ -18,7 +18,7 @@
       "run_at": "document_start"
     },
     {
-      "js": ["./src/links/index.tsx"],
+      "js": ["./src/submit-stream-links/index.tsx"],
       "matches": ["*://*.rateyourmusic.com/submit_media_link*"],
       "run_at": "document_start"
     },
