@@ -23,7 +23,7 @@
       "run_at": "document_start"
     },
     {
-      "js": ["./src/collection/index.tsx"],
+      "js": ["./src/filter-collection/index.tsx"],
       "matches": ["*://*.rateyourmusic.com/collection*"],
       "run_at": "document_start"
     }
