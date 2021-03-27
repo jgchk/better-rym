@@ -1,5 +1,5 @@
-import { SearchFunction } from '..'
 import { fetchJson } from '../../utils/fetch'
+import { SearchFunction } from '../types'
 import { requestToken } from './auth'
 import { AlbumSearchObject } from './codecs'
 

@@ -1,5 +1,5 @@
 import { FunctionComponent, h } from 'preact'
-import { SERVICE_IDS } from '../../common/services'
+import { SEARCHABLES } from '../../common/services'
 import { usePageData } from '../hooks/use-page-data'
 import '../styles/app.css'
 import styles from '../styles/app.module.css'
@@ -10,8 +10,8 @@ export const App: FunctionComponent = () => {
 
   return (
     <div className={styles.app}>
-      {SERVICE_IDS.map((id) => (
-        <ServiceLink key={id} serviceId={id} pageData={pageData} />
+      {SEARCHABLES.map((service) => (
+        <ServiceLink key={service.id} service={service} pageData={pageData} />
       ))}
     </div>
   )

@@ -1,6 +1,6 @@
-import { EmbedFunction } from '..'
 import { fetch } from '../../utils/fetch'
 import { isUndefined } from '../../utils/types'
+import { EmbedFunction } from '../types'
 
 export const embed: EmbedFunction = async (url) => {
   const response = await fetch({ url })

@@ -1,10 +1,10 @@
-import { ReleaseDate, ResolveFunction, Track } from '..'
 import { asArray } from '../../utils/array'
 import { secondsToString, stringToDate } from '../../utils/datetime'
 import { fetch } from '../../utils/fetch'
 import { decode } from '../../utils/io-ts'
 import { getReleaseType } from '../../utils/music'
 import { isDefined, isNotNull } from '../../utils/types'
+import { ReleaseDate, ResolveFunction, Track } from '../types'
 import { AlbumData, ReleaseData, TrackData } from './codec'
 
 const getData = (document_: Document) => {

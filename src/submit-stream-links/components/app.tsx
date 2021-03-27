@@ -1,11 +1,12 @@
 import { pipe } from 'fp-ts/function'
 import { FunctionComponent, h } from 'preact'
-import { useCallback, useEffect, useMemo, useState } from 'preact/hooks'
+import { useCallback, useEffect, useState } from 'preact/hooks'
 import { Complete } from '../../common/components/complete'
 import { Failed } from '../../common/components/failed'
 import { Loader } from '../../common/components/loader'
 import { ServiceSelector } from '../../common/components/service-selector'
-import { SERVICES, ServiceId, getMatchingService } from '../../common/services'
+import { EMBEDDABLES, getMatchingService } from '../../common/services'
+import { Embeddable, Service } from '../../common/services/types'
 import {
   OneShot,
   complete,
@@ -30,16 +31,14 @@ export const App: FunctionComponent<{ input: HTMLInputElement }> = ({
 }) => {
   const [url, setUrl] = useControlledInput(input)
 
-  const [serviceId, setServiceId] = useState<ServiceId | undefined>(undefined)
-  const embedFunction = useMemo(
-    () => (isDefined(serviceId) ? SERVICES[serviceId].embed : undefined),
-    [serviceId]
+  const [service, setService] = useState<(Service & Embeddable) | undefined>(
+    undefined
   )
 
   useEffect(() => {
-    const service = getMatchingService(url)
-    if (isDefined(service)) {
-      setServiceId(service.id)
+    const matchingService = getMatchingService(EMBEDDABLES)(url)
+    if (isDefined(matchingService)) {
+      setService(matchingService)
     }
   }, [url])
 
@@ -48,19 +47,20 @@ export const App: FunctionComponent<{ input: HTMLInputElement }> = ({
   >(initial)
 
   const fetchEmbedCode = useCallback(async () => {
-    if (isUndefined(embedFunction)) {
+    if (isUndefined(service)) {
       setEmbedCode(
-        failed(new Error(`Cannot create embed codes for ${String(serviceId)}`))
+        failed(new Error(`Cannot create embed codes for ${String(service)}`))
       )
       return
     }
 
     setEmbedCode(loading)
-    const nextEmbedCode = await embedFunction(url)
+    const nextEmbedCode = await service
+      .embed(url)
       .then((info) => complete(info))
       .catch((error) => failed(error))
     setEmbedCode(nextEmbedCode)
-  }, [embedFunction, serviceId, url])
+  }, [service, url])
 
   useEffect(() => {
     if (isComplete(embedCode) && isDefined(embedCode.data)) {
@@ -70,11 +70,15 @@ export const App: FunctionComponent<{ input: HTMLInputElement }> = ({
 
   return (
     <div className={styles.container}>
-      <ServiceSelector serviceId={serviceId} onSelect={setServiceId} />
+      <ServiceSelector
+        services={EMBEDDABLES}
+        selected={service}
+        onSelect={setService}
+      />
       <input
         type='button'
         value='Convert to Embed'
-        disabled={isUndefined(embedFunction)}
+        disabled={isUndefined(service)}
         onClick={fetchEmbedCode}
       />
       {pipe(

@@ -1,3 +1,4 @@
+import { ServiceId } from '../services/types'
 import { isDefined, isNotNull, isUndefined } from './types'
 
 interface StoredValue<T> {
@@ -54,4 +55,27 @@ export const clean = async (): Promise<void> => {
         await browser.storage.local.remove(key)
     })
   )
+}
+
+export const withCache = <A, T>(
+  serviceId: ServiceId,
+  function_: (...arguments_: A[]) => T | Promise<T>
+) => async (...arguments_: A[]): Promise<T> => {
+  const key = JSON.stringify({
+    service: serviceId,
+    func: function_.name,
+    params: arguments_,
+  })
+  const cached = await get<T>(key)
+  if (isDefined(cached)) {
+    return cached
+  }
+
+  const result = await function_(...arguments_)
+
+  if (isDefined(result)) {
+    void set(key, result)
+  }
+
+  return result
 }

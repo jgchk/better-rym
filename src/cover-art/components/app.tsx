@@ -2,7 +2,8 @@ import { FunctionComponent, h } from 'preact'
 import { useEffect } from 'preact/hooks'
 import { StatusForm } from '../../common/components/status-form'
 import { useReleaseInfo } from '../../common/hooks/use-release-info'
-import { ResolveData } from '../../common/services'
+import { RESOLVABLES } from '../../common/services'
+import { ResolveData } from '../../common/services/types'
 import { download } from '../../common/utils/download'
 import { isComplete } from '../../common/utils/one-shot'
 import { isDefined } from '../../common/utils/types'
@@ -43,9 +44,10 @@ export const App: FunctionComponent = () => {
       <h4>Download Cover Art</h4>
       <div className={styles.container}>
         <StatusForm
+          services={RESOLVABLES}
           submitText='Download'
           data={info}
-          onSubmit={(url, serviceId) => void fetchInfo(url, serviceId)}
+          onSubmit={(url, service) => void fetchInfo(url, service)}
         />
       </div>
     </>

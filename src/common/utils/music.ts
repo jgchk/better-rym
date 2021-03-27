@@ -1,4 +1,4 @@
-import { ReleaseType } from '../services'
+import { ReleaseType } from '../services/types'
 
 export const getReleaseType = (numberOfTracks: number): ReleaseType => {
   if (numberOfTracks <= 3) {

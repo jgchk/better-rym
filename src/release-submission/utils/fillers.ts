@@ -1,11 +1,12 @@
 import {
+  DiscSize,
   ReleaseAttribute,
   ReleaseDate,
   ReleaseFormat,
   ReleaseType,
   ResolveData,
   Track,
-} from '../../common/services'
+} from '../../common/services/types'
 import { forceQuerySelector } from '../../common/utils/dom'
 import { isDefined, isNotNull } from '../../common/utils/types'
 import { capitalize } from './capitalization'
@@ -52,6 +53,21 @@ const FORMAT_IDS: Record<ReleaseFormat, number> = {
   'reel-to-reel': 92,
   vhs: 40,
   'phonograph cylinder': 91,
+}
+
+const DISC_SIZE_IDS: Record<DiscSize, number> = {
+  '16': 93,
+  '12': 88,
+  '11': 94,
+  '10': 89,
+  '9': 95,
+  '8': 96,
+  '7': 90,
+  '6': 97,
+  '5': 91,
+  '4': 98,
+  '3': 92,
+  'non-standard': 99,
 }
 
 const ATTRIBUTE_IDS: Record<ReleaseAttribute, number> = {
@@ -237,6 +253,13 @@ const fillFormat = (format: ReleaseFormat) => {
   element.checked = true
 }
 
+const fillDiscSize = (discSize: DiscSize) => {
+  const element = forceQuerySelector<HTMLInputElement>(document)(
+    `input#disc_size${DISC_SIZE_IDS[discSize]}`
+  )
+  element.checked = true
+}
+
 const fillAttribute = (attribute: ReleaseAttribute) => {
   const element = forceQuerySelector<HTMLInputElement>(document)(
     `input#attrib${ATTRIBUTE_IDS[attribute]}`
@@ -286,7 +309,17 @@ const fillSource = (url: string) => {
 }
 
 export const fill = async (
-  { artists, type, date, title, format, attributes, tracks, url }: ResolveData,
+  {
+    artists,
+    type,
+    date,
+    title,
+    format,
+    discSize,
+    attributes,
+    tracks,
+    url,
+  }: ResolveData,
   autoCapitalize: boolean
 ): Promise<void> => {
   if (isDefined(artists)) await fillArtists(artists)
@@ -294,6 +327,7 @@ export const fill = async (
   if (isDefined(date)) fillDate(date)
   if (isDefined(title)) fillTitle(title, autoCapitalize)
   if (isDefined(format)) fillFormat(format)
+  if (isDefined(discSize)) fillDiscSize(discSize)
   if (isDefined(attributes)) fillAttributes(attributes)
   if (isDefined(tracks)) fillTracks(tracks, autoCapitalize)
   if (isDefined(url)) fillSource(url)

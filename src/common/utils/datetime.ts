@@ -1,4 +1,4 @@
-import { ReleaseDate } from '../services'
+import { ReleaseDate } from '../services/types'
 
 export const stringToDate = (dateString: string): ReleaseDate => {
   const date = new Date(dateString)

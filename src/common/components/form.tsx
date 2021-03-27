@@ -1,44 +1,53 @@
-import { FunctionComponent, h } from 'preact'
+import { VNode, h } from 'preact'
 import { useEffect, useState } from 'preact/hooks'
-import { ServiceId, getMatchingService } from '../services'
+import { getMatchingService } from '../services'
+import { Service } from '../services/types'
 import styles from '../styles/form.module.css'
 import { isDefined } from '../utils/types'
 import { ServiceSelector } from './service-selector'
 
 const CAPITALIZE_ID = 'brym-capitalize'
 
-export const Form: FunctionComponent<{
+export type Properties<S extends Service> = {
+  services: S[]
   submitText: string
-  onSubmit: (url: string, serviceId: ServiceId, autoCapitalize: boolean) => void
+  onSubmit: (url: string, service: S, autoCapitalize: boolean) => void
   showAutoCapitalize?: boolean
-}> = ({ submitText, onSubmit, showAutoCapitalize = false }) => {
+}
+
+export const Form = <S extends Service>({
+  services,
+  submitText,
+  onSubmit,
+  showAutoCapitalize = false,
+}: Properties<S>): VNode => {
   const [url, setUrl] = useState('')
-  const [selectedServiceId, setServiceId] = useState<ServiceId | undefined>(
+  const [selectedService, setSelectedService] = useState<S | undefined>(
     undefined
   )
   const [showMissingServiceError, setShowMissingServiceError] = useState(false)
   const [autoCapitalize, setAutoCapitalize] = useState(true)
 
   useEffect(() => {
-    const service = getMatchingService(url)
+    const service = getMatchingService(services)(url)
     if (isDefined(service)) {
-      setServiceId(service.id)
+      setSelectedService(service)
     }
-  }, [url])
+  }, [services, url])
 
   useEffect(() => {
-    if (isDefined(selectedServiceId)) {
+    if (isDefined(selectedService)) {
       setShowMissingServiceError(false)
     }
-  }, [selectedServiceId])
+  }, [selectedService])
 
   return (
     <form
       className={styles.form}
       onSubmit={(event) => {
         event.preventDefault()
-        if (isDefined(selectedServiceId)) {
-          onSubmit(url, selectedServiceId, autoCapitalize)
+        if (isDefined(selectedService)) {
+          onSubmit(url, selectedService, autoCapitalize)
         } else {
           setShowMissingServiceError(true)
         }
@@ -52,8 +61,9 @@ export const Form: FunctionComponent<{
           onInput={(event) => setUrl((event.target as HTMLInputElement).value)}
         />
         <ServiceSelector
-          serviceId={selectedServiceId}
-          onSelect={setServiceId}
+          services={services}
+          selected={selectedService}
+          onSelect={setSelectedService}
         />
         {showMissingServiceError && (
           <div className={styles.error}>Select an import source</div>

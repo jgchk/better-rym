@@ -81,6 +81,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["io-ts", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:2.2.14"],
             ["jest", "npm:26.6.3"],
             ["lint-staged", "npm:10.5.4"],
+            ["merge-anything", "npm:4.0.1"],
             ["mini-css-extract-plugin", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:1.3.8"],
             ["nanoid", "npm:3.1.20"],
             ["postcss", "npm:8.2.6"],
@@ -5837,6 +5838,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["io-ts", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:2.2.14"],
             ["jest", "npm:26.6.3"],
             ["lint-staged", "npm:10.5.4"],
+            ["merge-anything", "npm:4.0.1"],
             ["mini-css-extract-plugin", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:1.3.8"],
             ["nanoid", "npm:3.1.20"],
             ["postcss", "npm:8.2.6"],
@@ -10181,6 +10183,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["is-what", "npm:3.12.0"]
           ],
           "linkType": "HARD",
+        }],
+        ["npm:3.14.1", {
+          "packageLocation": "./.yarn/cache/is-what-npm-3.14.1-7260378616-a7e2470aa9.zip/node_modules/is-what/",
+          "packageDependencies": [
+            ["is-what", "npm:3.14.1"]
+          ],
+          "linkType": "HARD",
         }]
       ]],
       ["is-whitespace-character", [
@@ -11657,6 +11666,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["trim-newlines", "npm:3.0.0"],
             ["type-fest", "npm:0.18.1"],
             ["yargs-parser", "npm:20.2.5"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["merge-anything", [
+        ["npm:4.0.1", {
+          "packageLocation": "./.yarn/cache/merge-anything-npm-4.0.1-e5175d13a1-28f037bc32.zip/node_modules/merge-anything/",
+          "packageDependencies": [
+            ["merge-anything", "npm:4.0.1"],
+            ["is-what", "npm:3.14.1"],
+            ["ts-toolbelt", "npm:9.6.0"]
           ],
           "linkType": "HARD",
         }]
@@ -16511,6 +16531,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packagePeers": [
             "@types/typescript",
             "typescript"
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["ts-toolbelt", [
+        ["npm:9.6.0", {
+          "packageLocation": "./.yarn/cache/ts-toolbelt-npm-9.6.0-a95699c8d0-c21a84624f.zip/node_modules/ts-toolbelt/",
+          "packageDependencies": [
+            ["ts-toolbelt", "npm:9.6.0"]
           ],
           "linkType": "HARD",
         }]

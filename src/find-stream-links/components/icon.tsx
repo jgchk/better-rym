@@ -4,14 +4,14 @@ import { FunctionComponent, h } from 'preact'
 import { useMemo } from 'preact/hooks'
 import { Failed } from '../../common/components/failed'
 import { Loader } from '../../common/components/loader'
-import { SERVICES, ServiceId } from '../../common/services'
+import { Service } from '../../common/services/types'
 import { fold, isFailed, isLoading } from '../../common/utils/one-shot'
 import { isDefined } from '../../common/utils/types'
 import css from '../styles/icon.module.css'
 import { ServiceData, ServiceState } from './service-link'
 
 export const Icon: FunctionComponent<{
-  service: ServiceId
+  service: Service
   state: ServiceState
 }> = ({ service, state }) => {
   const stateClass = useMemo(
@@ -31,7 +31,7 @@ export const Icon: FunctionComponent<{
 
   return (
     <div className={clsx(css.container, css[stateClass])}>
-      {SERVICES[service].icon({ className: css.icon })}
+      {service.icon({ className: css.icon })}
       {isLoading(state) && <Loader className={css.status} />}
       {isFailed(state) && <Failed error={state.error} className={css.status} />}
     </div>
