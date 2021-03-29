@@ -1,5 +1,5 @@
 const parsers = {
-  word: /(?!'.*')\b[\w'’]+\b/,
+  word: /(?!'.*')\b[\d'A-Za-zÀ-ž’]+\b/,
   whitespace: /\s+/,
   punctuation: /[^\s\w]/,
 }
