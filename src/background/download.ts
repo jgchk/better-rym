@@ -34,8 +34,8 @@ export const download = async ({
         filename: filenameWithExtension,
       })
       return { id, type: 'download', data: { id: downloadId } }
-    } catch {
-      // ignore
+    } catch (error) {
+      console.error(error)
     }
   }
 

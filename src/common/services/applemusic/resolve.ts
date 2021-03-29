@@ -37,10 +37,14 @@ const getCoverArt = (document_: Document) => {
   const element = document_.querySelector<HTMLSourceElement>(
     '.product-lockup picture source[type="image/jpeg"]'
   )
-  return element?.srcset
-    .split(', ')[0]
-    ?.split(' ')[0]
-    ?.replace(/\d+x\d+/, '2400x2400')
+  const firstLink = element?.srcset.split(', ')[0]?.split(' ')[0]
+  if (isUndefined(firstLink)) return undefined
+
+  // replace the last occurrence of 000x000 with 2400x2400
+  const splits = firstLink.split('/')
+  splits[splits.length - 1] =
+    splits[splits.length - 1]?.replace(/\d+x\d+/, '2400x2400') ?? ''
+  return splits.join('/')
 }
 
 export const resolve: ResolveFunction = async (url) => {

@@ -11,11 +11,11 @@ import styles from '../styles/app.module.css'
 
 const getFilename = ({ title, artists }: ResolveData) => {
   let filename = ''
-  if (isDefined(artists)) {
+  if (isDefined(artists) && artists.length > 0) {
     filename += artists.join(', ')
   }
   if (isDefined(title)) {
-    if (isDefined(artists)) {
+    if (isDefined(artists) && artists.length > 0) {
       filename += ' - '
     }
     filename += title
