@@ -41,6 +41,7 @@ describe('tokenize', () => {
         { text: 'Ready', type: 'word' },
       ],
     ],
+    ['Howžy', [{ text: 'Howžy', type: 'word' }]],
   ] as const
 
   test.each(tests)('correctly tokenizes %p', (input, output) =>
