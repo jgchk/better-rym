@@ -307,7 +307,7 @@ const resolveRelease = async (id: string): Promise<ResolveData> => {
   const artists = response.artists.map((artist) => artist.name)
   const date = parseDate(response.released)
   const tracks = response.tracklist.map((track) => ({
-    position: track.position,
+    position: track.position.replace('-', '.').replace(/(CD|DVD)\D?/, ''), // CD1-1 -> 1.1
     title: track.title,
     duration: track.duration,
   }))
