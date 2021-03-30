@@ -1,10 +1,14 @@
-const parsers = {
-  word: /(?!'.*')\b[\d'A-Za-zÀ-ž’]+\b/,
-  whitespace: /\s+/,
-  punctuation: /[^\s\w]/,
-}
+export type TokenType = 'word' | 'romanNumeral' | 'whitespace' | 'punctuation'
 
-export type TokenType = 'word' | 'whitespace' | 'punctuation'
+const parsers: [TokenType, RegExp][] = [
+  [
+    'romanNumeral',
+    /(?=[cdilmvx])m*(c[dm]|d?c*)(x[cl]|l?x*)(i[vx]|v?i*)(?=\s|$)/i,
+  ],
+  ['word', /(?!'.*')\b[\d'A-Za-zÀ-ž’]+\b/],
+  ['whitespace', /\s+/],
+  ['punctuation', /[^\s\w]/],
+]
 
 export type Token = {
   text: string
@@ -21,7 +25,7 @@ export const tokenizePhrase = (text: string): Token[] => {
   while (text) {
     let t: Token | undefined
     let matchIndex = text.length
-    for (const [key, value] of Object.entries(parsers)) {
+    for (const [key, value] of parsers) {
       const match = value.exec(text)
       const matchText = match?.[0]
       // try to choose the best match if there are several
@@ -29,7 +33,7 @@ export const tokenizePhrase = (text: string): Token[] => {
       if (matchText && match && match.index < matchIndex) {
         t = {
           text: matchText,
-          type: key as keyof typeof parsers,
+          type: key,
         }
         matchIndex = match.index
       }
