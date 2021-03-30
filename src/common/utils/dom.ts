@@ -1,6 +1,6 @@
-import { isNull } from './types'
+import { isDefined, isNull } from './types'
 
-const isDocumentReady = () =>
+export const isDocumentReady = (): boolean =>
   document.readyState === 'complete' || document.readyState === 'interactive'
 
 export const waitForDocumentReady = (): Promise<void> =>
@@ -13,25 +13,37 @@ export const waitForDocumentReady = (): Promise<void> =>
   })
 
 export const waitForElement = <E extends Element>(query: string): Promise<E> =>
+  waitForCallback(() => document.querySelector<E>(query) ?? undefined)
+
+export const waitForCallback = <T>(callback: () => T | undefined): Promise<T> =>
   new Promise((resolve, reject) => {
-    new MutationObserver((mutations, observer) => {
-      if (!document.body) return
-
-      const element = document.querySelector<E>(query)
-      if (element) {
-        resolve(element)
-        observer.disconnect()
+    if (isDocumentReady()) {
+      const result = callback()
+      if (isDefined(result)) {
+        resolve(result)
+      } else {
+        reject(new Error(`Callback never resolved`))
       }
+    } else {
+      new MutationObserver((mutations, observer) => {
+        if (!document.body) return
 
-      // Document is fully loaded and we didn't find what we were looking for
-      if (isDocumentReady()) {
-        reject(new Error(`Could not find element: ${query}`))
-        observer.disconnect()
-      }
-    }).observe(document, {
-      childList: true,
-      subtree: true,
-    })
+        const result = callback()
+        if (isDefined(result)) {
+          resolve(result)
+          observer.disconnect()
+        }
+
+        // Document is fully loaded and we didn't find what we were looking for
+        if (isDocumentReady()) {
+          reject(new Error(`Callback never resolved`))
+          observer.disconnect()
+        }
+      }).observe(document, {
+        childList: true,
+        subtree: true,
+      })
+    }
   })
 
 export const forceQuerySelector = <E extends Element = Element>(

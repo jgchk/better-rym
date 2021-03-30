@@ -1,6 +1,11 @@
 import { SEARCHABLES } from '../../common/services'
 import { ServiceId } from '../../common/services/types'
-import { waitForElement } from '../../common/utils/dom'
+import {
+  isDocumentReady,
+  waitForCallback,
+  waitForElement,
+} from '../../common/utils/dom'
+import { isNotNull, isNull } from '../../common/utils/types'
 
 const getTitle = async () => {
   const titleElement = await waitForElement<HTMLMetaElement>(
@@ -16,35 +21,28 @@ const getArtist = async () => {
 
 export type Links = Record<ServiceId, string | undefined>
 const getLinks = async (): Promise<Links> =>
-  new Promise((resolve) => {
-    new MutationObserver((mutations, observer) => {
-      if (!document.body) return
+  waitForCallback(() => {
+    const element = document.querySelector(
+      '.release_left_column .hide-for-small'
+    )
+    if (isNull(element)) return
 
-      const element = document.querySelector(
-        '.release_left_column .hide-for-small'
+    const complete =
+      isNotNull(element.querySelector('a[href^="/submit_media_link"]')) ||
+      isDocumentReady()
+    if (!complete) return
+
+    const getLink = (service: ServiceId) => {
+      const linkElement = element.querySelector<HTMLAnchorElement>(
+        `a.ui_media_link_btn_${service}`
       )
-      if (!element) return
+      return linkElement?.href
+    }
 
-      const complete = !!element.querySelector('a[href^="/submit_media_link"]')
-      if (!complete) return
-
-      const getLink = (service: ServiceId) => {
-        const linkElement = element.querySelector<HTMLAnchorElement>(
-          `a.ui_media_link_btn_${service}`
-        )
-        return linkElement?.href
-      }
-
-      const links = Object.fromEntries(
-        SEARCHABLES.map(({ id }) => [id, getLink(id)])
-      ) as Record<ServiceId, string | undefined>
-      resolve(links)
-
-      observer.disconnect()
-    }).observe(document, {
-      childList: true,
-      subtree: true,
-    })
+    const links = Object.fromEntries(
+      SEARCHABLES.map(({ id }) => [id, getLink(id)])
+    ) as Record<ServiceId, string | undefined>
+    return links
   })
 
 export type Metadata = { artist: string; title: string }
