@@ -71,8 +71,9 @@ describe('capitalization', () => {
     'Who Goes There {The Fiftieth Time The} Fiftieth Time',
     'I’m Ready',
     'Howžy',
+    'Grand Theft Auto IV',
   ]
   test.each(titles)('correctly capitalizes %p', (input) => {
-    expect(capitalize(input)).toBe(input)
+    expect(capitalize(input.toLowerCase())).toBe(input)
   })
 })
