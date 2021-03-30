@@ -59,11 +59,12 @@ export const clean = async (): Promise<void> => {
 
 export const withCache = <A, T>(
   serviceId: ServiceId,
+  functionName: string,
   function_: (...arguments_: A[]) => T | Promise<T>
 ) => async (...arguments_: A[]): Promise<T> => {
   const key = JSON.stringify({
     service: serviceId,
-    func: function_.name,
+    func: functionName,
     params: arguments_,
   })
   const cached = await get<T>(key)

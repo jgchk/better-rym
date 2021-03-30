@@ -9,6 +9,6 @@ export const AppleMusic: Service & Searchable & Resolvable = {
   name: 'Apple Music',
   regex: /https?:\/\/music\.apple\.com\/(\w{2,4})\/album\/([^/]*)\/([^?]+)[^/]*/,
   icon,
-  search: withCache('applemusic', search),
-  resolve: withCache('applemusic', resolve),
+  search: withCache('applemusic', 'search', search),
+  resolve: withCache('applemusic', 'resolve', resolve),
 }

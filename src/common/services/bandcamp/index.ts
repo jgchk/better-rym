@@ -10,7 +10,7 @@ export const Bandcamp: Service & Searchable & Resolvable & Embeddable = {
   name: 'Bandcamp',
   regex: /https?:\/\/.*\.bandcamp\.com\/(track|album)\/.*/,
   icon,
-  search: withCache('bandcamp', search),
-  resolve: withCache('bandcamp', resolve),
-  embed: withCache('bandcamp', embed),
+  search: withCache('bandcamp', 'search', search),
+  resolve: withCache('bandcamp', 'resolve', resolve),
+  embed: withCache('bandcamp', 'embed', embed),
 }

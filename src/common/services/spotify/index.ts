@@ -10,6 +10,6 @@ export const Spotify: Service & Searchable & Resolvable = {
   name: 'Spotify',
   regex,
   icon,
-  search: withCache('spotify', search),
-  resolve: withCache('spotify', resolve),
+  search: withCache('spotify', 'search', search),
+  resolve: withCache('spotify', 'resolve', resolve),
 }

@@ -10,7 +10,7 @@ export const Soundcloud: Service & Searchable & Resolvable & Embeddable = {
   name: 'Soundcloud',
   regex: /((http:\/\/(soundcloud\.com\/.*|soundcloud\.com\/.*\/.*|soundcloud\.com\/.*\/sets\/.*|soundcloud\.com\/groups\/.*|snd\.sc\/.*))|(https:\/\/(soundcloud\.com\/.*|soundcloud\.com\/.*\/.*|soundcloud\.com\/.*\/sets\/.*|soundcloud\.com\/groups\/.*)))/,
   icon,
-  search: withCache('soundcloud', search),
-  resolve: withCache('soundcloud', resolve),
-  embed: withCache('soundcloud', embed),
+  search: withCache('soundcloud', 'search', search),
+  resolve: withCache('soundcloud', 'resolve', resolve),
+  embed: withCache('soundcloud', 'embed', embed),
 }
