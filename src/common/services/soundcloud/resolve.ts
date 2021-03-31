@@ -6,7 +6,7 @@ import { getReleaseType } from '../../utils/music'
 import { isDefined, isNotNull, isUndefined } from '../../utils/types'
 import { ResolveFunction, Track } from '../types'
 import { requestToken } from './auth'
-import { MusicObject, TrackObject } from './codecs'
+import { MusicObject, PlaylistObject, TrackObject } from './codecs'
 
 const formatTrack = ({ title, duration }: TrackObject) => ({
   title,
@@ -70,7 +70,22 @@ const getTracks = async (
 }
 
 const getCoverArt = (data: MusicObject) =>
-  [data.artwork_url?.replace('-large', '-original'), data.artwork_url]
+  [
+    data.artwork_url?.replace('-large', '-original'),
+    data.artwork_url,
+    ...(PlaylistObject.is(data)
+      ? data.tracks
+          .flatMap((track) =>
+            TrackObject.is(track)
+              ? [
+                  track.artwork_url?.replace('-large', '-original'),
+                  track.artwork_url,
+                ]
+              : undefined
+          )
+          .filter(isDefined)
+      : []),
+  ]
     .filter(isDefined)
     .filter(isNotNull)
 
