@@ -42,5 +42,6 @@ module.exports = {
     'unicorn/no-array-reduce': 'off',
     'unicorn/no-useless-undefined': 'off',
     'unicorn/no-null': 'off',
+    'unicorn/prefer-query-selector': 'off',
   },
 }
