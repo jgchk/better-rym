@@ -1,6 +1,6 @@
 import { capitalize } from './capitalization'
 
-describe('capitalization', () => {
+describe('title caps', () => {
   const titles = [
     'You Can Leave Your Hat On',
     'One Is For',
@@ -74,6 +74,18 @@ describe('capitalization', () => {
     'Grand Theft Auto IV',
   ]
   test.each(titles)('correctly capitalizes %p', (input) => {
-    expect(capitalize(input.toLowerCase())).toBe(input)
+    expect(capitalize(input.toLowerCase(), 'title-case')).toBe(input)
   })
+})
+
+describe('sentence caps', () => {
+  const titles = [
+    ['You Can Leave Your Hat On', 'You can leave your hat on'],
+    ['One Is For', 'One is for'],
+    ['Grand Theft Auto IV', 'Grand theft auto IV'],
+  ]
+
+  test.each(titles)('correctly capitalizes %p', (input, output) =>
+    expect(capitalize(input.toLowerCase(), 'sentence-case')).toEqual(output)
+  )
 })

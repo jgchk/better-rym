@@ -5,6 +5,7 @@ import { useReleaseInfo } from '../../common/hooks/use-release-info'
 import { RESOLVABLES } from '../../common/services'
 import { Resolvable, Service } from '../../common/services/types'
 import { isComplete } from '../../common/utils/one-shot'
+import { CapitalizationType } from '../utils/capitalization'
 import { fill } from '../utils/fillers'
 
 export const App: FunctionComponent = () => {
@@ -14,11 +15,11 @@ export const App: FunctionComponent = () => {
     async (
       url: string,
       service: Service & Resolvable,
-      autoCapitalize: boolean
+      capitalization: CapitalizationType
     ) => {
       const info = await fetchInfo(url, service)
       if (isComplete(info)) {
-        void fill(info.data, autoCapitalize)
+        void fill(info.data, capitalization)
       }
     },
     [fetchInfo]

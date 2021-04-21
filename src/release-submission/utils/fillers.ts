@@ -9,7 +9,7 @@ import {
 } from '../../common/services/types'
 import { forceQuerySelector } from '../../common/utils/dom'
 import { isDefined, isNotNull } from '../../common/utils/types'
-import { capitalize } from './capitalization'
+import { CapitalizationType, capitalize } from './capitalization'
 
 const TYPE_IDS: Record<ReleaseType, string> = {
   album: 's',
@@ -241,9 +241,9 @@ const fillDate = (date: ReleaseDate) => {
   if (isDefined(date.day)) fillDay(date.day)
 }
 
-const fillTitle = (title: string, autoCapitalize: boolean) => {
+const fillTitle = (title: string, capitalization: CapitalizationType) => {
   const element = forceQuerySelector<HTMLInputElement>(document)('input#title')
-  element.value = autoCapitalize ? capitalize(title) : title
+  element.value = capitalize(title, capitalization)
 }
 
 const fillFormat = (format: ReleaseFormat) => {
@@ -273,13 +273,11 @@ const fillAttributes = (attributes: ReleaseAttribute[]) => {
   }
 }
 
-const fillTracks = (tracks: Track[], autoCapitalize: boolean) => {
+const fillTracks = (tracks: Track[], capitalization: CapitalizationType) => {
   const tracksString = tracks
     .map((track, index) => {
       const position = track.position ?? index + 1
-      const title = autoCapitalize
-        ? capitalize(track.title ?? '')
-        : track.title ?? ''
+      const title = capitalize(track.title ?? '', capitalization)
       const duration = track.duration ?? ''
       return `${position}|${title}|${duration}`
     })
@@ -320,15 +318,15 @@ export const fill = async (
     tracks,
     url,
   }: ResolveData,
-  autoCapitalize: boolean
+  capitalization: CapitalizationType
 ): Promise<void> => {
   if (isDefined(artists)) await fillArtists(artists)
   if (isDefined(type)) fillType(type)
   if (isDefined(date)) fillDate(date)
-  if (isDefined(title)) fillTitle(title, autoCapitalize)
+  if (isDefined(title)) fillTitle(title, capitalization)
   if (isDefined(format)) fillFormat(format)
   if (isDefined(discSize)) fillDiscSize(discSize)
   if (isDefined(attributes)) fillAttributes(attributes)
-  if (isDefined(tracks)) fillTracks(tracks, autoCapitalize)
+  if (isDefined(tracks)) fillTracks(tracks, capitalization)
   if (isDefined(url)) fillSource(url)
 }
