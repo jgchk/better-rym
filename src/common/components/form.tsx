@@ -1,5 +1,9 @@
 import { VNode, h } from 'preact'
 import { useEffect, useState } from 'preact/hooks'
+import {
+  CAPITALIZATION_TYPES,
+  CapitalizationType,
+} from '../../release-submission/utils/capitalization'
 import { getMatchingService } from '../services'
 import { Service } from '../services/types'
 import styles from '../styles/form.module.css'
@@ -8,10 +12,20 @@ import { ServiceSelector } from './service-selector'
 
 const CAPITALIZE_ID = 'brym-capitalize'
 
+const CAPITALIZATION_TYPE_MAP: Record<CapitalizationType, string> = {
+  'title-case': 'Title Case',
+  'sentence-case': 'Sentence case',
+  'as-is': 'Keep as-is',
+}
+
 export type Properties<S extends Service> = {
   services: S[]
   submitText: string
-  onSubmit: (url: string, service: S, autoCapitalize: boolean) => void
+  onSubmit: (
+    url: string,
+    service: S,
+    capitalization: CapitalizationType
+  ) => void
   showAutoCapitalize?: boolean
 }
 
@@ -26,7 +40,9 @@ export const Form = <S extends Service>({
     undefined
   )
   const [showMissingServiceError, setShowMissingServiceError] = useState(false)
-  const [autoCapitalize, setAutoCapitalize] = useState(true)
+  const [capitalization, setCapitalization] = useState<CapitalizationType>(
+    'title-case'
+  )
 
   useEffect(() => {
     const service = getMatchingService(services)(url)
@@ -47,7 +63,7 @@ export const Form = <S extends Service>({
       onSubmit={(event) => {
         event.preventDefault()
         if (isDefined(selectedService)) {
-          onSubmit(url, selectedService, autoCapitalize)
+          onSubmit(url, selectedService, capitalization)
         } else {
           setShowMissingServiceError(true)
         }
@@ -70,15 +86,22 @@ export const Form = <S extends Service>({
         )}
         {showAutoCapitalize && (
           <label htmlFor={CAPITALIZE_ID}>
-            <input
-              id={CAPITALIZE_ID}
-              type='checkbox'
-              checked={autoCapitalize}
-              onInput={(event) =>
-                setAutoCapitalize((event.target as HTMLInputElement).checked)
+            Capitalization{' '}
+            <select
+              value={capitalization}
+              onChange={(event) =>
+                setCapitalization(
+                  (event.target as HTMLSelectElement)
+                    .value as CapitalizationType
+                )
               }
-            />{' '}
-            Auto-capitalize
+            >
+              {CAPITALIZATION_TYPES.map((capType) => (
+                <option value={capType} key={capType}>
+                  {CAPITALIZATION_TYPE_MAP[capType]}
+                </option>
+              ))}
+            </select>
           </label>
         )}
       </div>
