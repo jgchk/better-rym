@@ -368,13 +368,13 @@ export const resolve: ResolveFunction = async (url) => {
   const match = regex.exec(url)
   if (isNull(match)) throw new Error('Invalid Discogs URL')
 
-  const type = match[4]
+  const type = match[5]
   if (isUndefined(type) || !isValidLinkType(type))
     throw new Error(
       `Expected link to be release/master. Received: ${String(type)}`
     )
 
-  const id = match[5]
+  const id = match[6]
   if (isUndefined(id)) throw new Error('Could not find ID in link')
 
   const releaseId =
