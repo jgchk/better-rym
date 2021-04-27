@@ -24,12 +24,16 @@ const getDate = (document_: Document) => {
 }
 
 const getTracks = (document_: Document) =>
-  [...document_.querySelectorAll('.songs-list .song')].map((element) => {
+  [...document_.querySelectorAll('.songs-list-row')].map((element) => {
     const position = element
-      .querySelector('.song-index .column-data')
+      .querySelector('.songs-list-row__column-data')
       ?.textContent?.trim()
-    const title = element.querySelector('.song-name')?.textContent?.trim()
-    const duration = element.querySelector('.time-data')?.textContent?.trim()
+    const title = element
+      .querySelector('.songs-list-row__song-name')
+      ?.textContent?.trim()
+    const duration = element
+      .querySelector('.songs-list-row__length')
+      ?.textContent?.trim()
     return { position, title, duration }
   })
 
