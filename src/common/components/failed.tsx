@@ -1,9 +1,9 @@
-import clsx from 'clsx'
 import { FunctionComponent, JSX, h } from 'preact'
 import { createPortal } from 'preact/compat'
 import { useState } from 'preact/hooks'
 import Icon from '../../../res/x.svg'
 import styles from '../styles/failed.module.css'
+import { clsx } from '../utils/clsx'
 
 export const Failed: FunctionComponent<
   { error: Error } & JSX.SVGAttributes<SVGSVGElement>

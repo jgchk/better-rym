@@ -56,7 +56,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["babel-loader", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:8.2.2"],
             ["buffer", "npm:6.0.3"],
             ["clean-webpack-plugin", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:3.0.0"],
-            ["clsx", "npm:1.1.1"],
             ["copy-webpack-plugin", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:7.0.0"],
             ["core-js", "npm:3.9.1"],
             ["cross-env", "npm:7.0.3"],
@@ -75,7 +74,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["file-type", "npm:16.2.0"],
             ["filenamify", "npm:4.2.0"],
             ["fork-ts-checker-webpack-plugin", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:6.1.1"],
-            ["fp-ts", "npm:2.9.5"],
             ["get-artist-title", "npm:1.3.1"],
             ["husky", "npm:4.3.8"],
             ["io-ts", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:2.2.14"],
@@ -5813,7 +5811,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["babel-loader", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:8.2.2"],
             ["buffer", "npm:6.0.3"],
             ["clean-webpack-plugin", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:3.0.0"],
-            ["clsx", "npm:1.1.1"],
             ["copy-webpack-plugin", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:7.0.0"],
             ["core-js", "npm:3.9.1"],
             ["cross-env", "npm:7.0.3"],
@@ -5832,7 +5829,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["file-type", "npm:16.2.0"],
             ["filenamify", "npm:4.2.0"],
             ["fork-ts-checker-webpack-plugin", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:6.1.1"],
-            ["fp-ts", "npm:2.9.5"],
             ["get-artist-title", "npm:1.3.1"],
             ["husky", "npm:4.3.8"],
             ["io-ts", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:2.2.14"],
@@ -6441,15 +6437,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["clone-regexp", "npm:2.2.0"],
             ["is-regexp", "npm:2.1.0"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
-      ["clsx", [
-        ["npm:1.1.1", {
-          "packageLocation": "./.yarn/cache/clsx-npm-1.1.1-362bec0598-d8ae10ac05.zip/node_modules/clsx/",
-          "packageDependencies": [
-            ["clsx", "npm:1.1.1"]
           ],
           "linkType": "HARD",
         }]
@@ -8721,10 +8708,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["fp-ts", [
-        ["npm:2.9.5", {
-          "packageLocation": "./.yarn/cache/fp-ts-npm-2.9.5-2058b93e83-de7dfc2106.zip/node_modules/fp-ts/",
+        ["npm:2.10.5", {
+          "packageLocation": "./.yarn/cache/fp-ts-npm-2.10.5-3ae9fe0386-7a5fd244e8.zip/node_modules/fp-ts/",
           "packageDependencies": [
-            ["fp-ts", "npm:2.9.5"]
+            ["fp-ts", "npm:2.10.5"]
           ],
           "linkType": "HARD",
         }]
@@ -9649,11 +9636,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["io-ts", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:2.2.14"],
             ["@types/fp-ts", null],
-            ["fp-ts", "npm:2.9.5"]
+            ["fp-ts", "npm:2.10.5"]
           ],
           "packagePeers": [
-            "@types/fp-ts",
-            "fp-ts"
+            "@types/fp-ts"
           ],
           "linkType": "HARD",
         }]

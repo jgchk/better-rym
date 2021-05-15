@@ -1,7 +1,7 @@
-import clsx from 'clsx'
 import { VNode, h } from 'preact'
 import { Service } from '../services/types'
 import styles from '../styles/service-selector.module.css'
+import { clsx } from '../utils/clsx'
 
 type ServiceSelectorProperties<S extends Service> = {
   services: S[]

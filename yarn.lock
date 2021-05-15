@@ -3293,7 +3293,6 @@ __metadata:
     babel-loader: ^8.2.2
     buffer: ^6.0.3
     clean-webpack-plugin: ^3.0.0
-    clsx: ^1.1.1
     copy-webpack-plugin: ^7.0.0
     core-js: ^3.8.3
     cross-env: ^7.0.3
@@ -3312,7 +3311,6 @@ __metadata:
     file-type: ^16.2.0
     filenamify: ^4.2.0
     fork-ts-checker-webpack-plugin: ^6.1.1
-    fp-ts: ^2.9.5
     get-artist-title: ^1.3.1
     husky: 4
     io-ts: ^2.2.14
@@ -3859,13 +3857,6 @@ __metadata:
   dependencies:
     is-regexp: ^2.0.0
   checksum: 9a613954e000b1f95dc9d1e98f93124b830746d35844ac663c1f02e59d11d0d3c49e2156f25d3115cb744f462d9645ca9642693af7930549d5b557a06d7ec7b8
-  languageName: node
-  linkType: hard
-
-"clsx@npm:^1.1.1":
-  version: 1.1.1
-  resolution: "clsx@npm:1.1.1"
-  checksum: d8ae10ac0546da19fe8c9516886f6582a64a382cf4d09ea7d36d5287cafbdab1192ab249adc2cdf0310e0b0aeac4f4142cf7c738c98d9cb68c19ba24b6f673d5
   languageName: node
   linkType: hard
 
@@ -5799,10 +5790,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fp-ts@npm:^2.9.5":
-  version: 2.9.5
-  resolution: "fp-ts@npm:2.9.5"
-  checksum: de7dfc21068ad4254b05f558c67b3abafc442b7756933b0932d0de593cf172c0d52a38bd8eab4c19ab1a7c33ac6c3a1d4f8723dcf3cdbee01c3f7e1d3199b793
+"fp-ts@npm:*":
+  version: 2.10.5
+  resolution: "fp-ts@npm:2.10.5"
+  checksum: 7a5fd244e8a0c6fd221a417ba3f3c5508b4c1fcaaf17e8a2d3cffe3766c31c2073065c5158266e848d8cb9e89ec2f62857da514c8cf4d8da75c17182dc00a28f
   languageName: node
   linkType: hard
 

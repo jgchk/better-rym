@@ -1,4 +1,3 @@
-import { pipe } from 'fp-ts/function'
 import { FunctionComponent, h } from 'preact'
 import { useCallback, useEffect, useState } from 'preact/hooks'
 import { Complete } from '../../common/components/complete'
@@ -16,6 +15,7 @@ import {
   isComplete,
   loading,
 } from '../../common/utils/one-shot'
+import { pipe } from '../../common/utils/pipe'
 import { isDefined, isUndefined } from '../../common/utils/types'
 import { useControlledInput } from '../hooks/use-controlled-input'
 import styles from '../styles/app.module.css'
@@ -31,9 +31,8 @@ export const App: FunctionComponent<{ input: HTMLInputElement }> = ({
 }) => {
   const [url, setUrl] = useControlledInput(input)
 
-  const [service, setService] = useState<(Service & Embeddable) | undefined>(
-    undefined
-  )
+  const [service, setService] =
+    useState<(Service & Embeddable) | undefined>(undefined)
 
   useEffect(() => {
     const matchingService = getMatchingService(EMBEDDABLES)(url)
@@ -42,9 +41,8 @@ export const App: FunctionComponent<{ input: HTMLInputElement }> = ({
     }
   }, [url])
 
-  const [embedCode, setEmbedCode] = useState<
-    OneShot<Error, string | undefined>
-  >(initial)
+  const [embedCode, setEmbedCode] =
+    useState<OneShot<Error, string | undefined>>(initial)
 
   const fetchEmbedCode = useCallback(async () => {
     if (isUndefined(service)) {
