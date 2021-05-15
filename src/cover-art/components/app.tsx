@@ -1,4 +1,3 @@
-import { pipe } from 'fp-ts/function'
 import { FunctionComponent, h } from 'preact'
 import { useEffect, useState } from 'preact/hooks'
 import { StatusForm } from '../../common/components/status-form'
@@ -14,6 +13,7 @@ import {
   initial,
   loading,
 } from '../../common/utils/one-shot'
+import { pipe } from '../../common/utils/pipe'
 import { isDefined, isNotNull } from '../../common/utils/types'
 import styles from '../styles/app.module.css'
 
