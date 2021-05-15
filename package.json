@@ -26,7 +26,6 @@
   "dependencies": {
     "@types/firefox-webext-browser": "^82.0.0",
     "@types/string-similarity": "^4.0.0",
-    "clsx": "^1.1.1",
     "file-type": "^16.2.0",
     "filenamify": "^4.2.0",
     "fp-ts": "^2.9.5",
