@@ -83,3 +83,43 @@ export const Video = t.type(
   },
   'Video'
 )
+
+export type Playlist = t.TypeOf<typeof Playlist>
+export const Playlist = t.type(
+  {
+    items: t.tuple([
+      t.type({
+        kind: t.literal('youtube#playlist'),
+        id: t.string,
+        snippet: t.type({
+          publishedAt: t.string,
+          title: t.string,
+          channelTitle: t.string,
+          thumbnails: t.record(
+            t.string,
+            t.type({ url: t.string, width: t.Int, height: t.Int })
+          ),
+        }),
+      }),
+    ]),
+  },
+  'Playlist'
+)
+
+export type PlaylistItems = t.TypeOf<typeof PlaylistItems>
+export const PlaylistItems = t.intersection(
+  [
+    t.type({
+      items: t.array(
+        t.type({
+          kind: t.literal('youtube#playlistItem'),
+          contentDetails: t.type({
+            videoId: t.string,
+          }),
+        })
+      ),
+    }),
+    t.partial({ nextPageToken: t.string }),
+  ],
+  'PlaylistItems'
+)
