@@ -1,8 +1,21 @@
 .icon {
-  width: 32px;
-  height: 32px;
   color: var(--mono-3);
   transition: opacity 0.2s;
+}
+
+.empty {
+  opacity: 0.15;
+}
+
+.full {
+  opacity: 0.8;
+}
+.full:hover {
+  opacity: 1;
+}
+
+.container {
+  position: relative;
 }
 
 .status {
@@ -11,54 +24,4 @@
   bottom: 0;
   width: 16px;
   height: 16px;
-}
-
-.container {
-  position: relative;
-  line-height: 0;
-
-  &.initial {
-    .icon {
-      opacity: 0.2;
-      &:hover {
-        opacity: 0.3;
-      }
-    }
-  }
-
-  &.loading {
-    .icon {
-      opacity: 0.2;
-      &:hover {
-        opacity: 0.3;
-      }
-    }
-  }
-
-  &.failed {
-    .icon {
-      opacity: 0.2;
-      &:hover {
-        opacity: 0.3;
-      }
-    }
-  }
-
-  &.searched {
-    .icon {
-      opacity: 0.5;
-      &:hover {
-        opacity: 0.65;
-      }
-    }
-  }
-
-  &.existing {
-    .icon {
-      opacity: 0.8;
-      &:hover {
-        opacity: 1;
-      }
-    }
-  }
 }

@@ -14,12 +14,17 @@ export type ServiceId = typeof SERVICE_IDS[number]
 export type Service = {
   id: ServiceId
   name: string
-  icon: FunctionComponent<JSX.SVGAttributes<SVGSVGElement>>
+  icon: Icon
   regex: RegExp
 }
+export type Icon = FunctionComponent<JSX.SVGAttributes<SVGSVGElement>>
 
 export type SearchFunction = (metadata: Metadata) => Promise<string | undefined>
-export type Searchable = { search: SearchFunction }
+export type Searchable = {
+  search: SearchFunction
+  foundIcon: Icon
+  notFoundIcon: Icon
+}
 export const isSearchable = (
   service: Service | (Service & Searchable)
 ): service is Service & Searchable => 'search' in service

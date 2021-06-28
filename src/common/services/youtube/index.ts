@@ -1,4 +1,6 @@
-import icon from '../../../../res/youtube.svg'
+import FoundIcon from '../../../../res/youtube-found.svg'
+import NotFoundIcon from '../../../../res/youtube-notfound.svg'
+import Icon from '../../../../res/youtube.svg'
 import { withCache } from '../../utils/cache'
 import { Resolvable, Searchable, Service } from '../types'
 import { regex } from './regex'
@@ -9,7 +11,9 @@ export const YouTube: Service & Searchable & Resolvable = {
   id: 'youtube',
   name: 'YouTube',
   regex,
-  icon,
+  icon: Icon,
+  foundIcon: FoundIcon,
+  notFoundIcon: NotFoundIcon,
   search: withCache('youtube', 'search', search),
   resolve: withCache('youtube', 'resolve', resolve),
 }
