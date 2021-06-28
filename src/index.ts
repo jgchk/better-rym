@@ -1,4 +1,4 @@
-if (location.pathname.startsWith('/release')) {
+if (location.pathname.startsWith('/release/')) {
   void import('./find-stream-links')
 } else if (location.pathname.startsWith('/releases/ac')) {
   void import('./release-submission')
