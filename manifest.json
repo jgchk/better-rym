@@ -3,28 +3,8 @@
 
   "content_scripts": [
     {
-      "js": ["./src/find-stream-links/index.tsx"],
-      "matches": ["*://*.rateyourmusic.com/release/*"],
-      "run_at": "document_start"
-    },
-    {
-      "js": ["./src/release-submission/index.tsx"],
-      "matches": ["*://*.rateyourmusic.com/releases/ac*"],
-      "run_at": "document_start"
-    },
-    {
-      "js": ["./src/cover-art/index.tsx"],
-      "matches": ["*://*.rateyourmusic.com/images/upload*"],
-      "run_at": "document_start"
-    },
-    {
-      "js": ["./src/submit-stream-links/index.tsx"],
-      "matches": ["*://*.rateyourmusic.com/submit_media_link*"],
-      "run_at": "document_start"
-    },
-    {
-      "js": ["./src/filter-collection/index.tsx"],
-      "matches": ["*://*.rateyourmusic.com/collection*"],
+      "js": ["./src/index.ts"],
+      "matches": ["*://*.rateyourmusic.com/*"],
       "run_at": "document_start"
     }
   ],
