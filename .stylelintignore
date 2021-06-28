@@ -4,6 +4,5 @@ yarn.lock
 package.json
 tsconfig.json
 manifest.json
-babel.config.json
 LICENSE
 README.md

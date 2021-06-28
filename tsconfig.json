@@ -2,8 +2,8 @@
   "compilerOptions": {
     "strict": true,
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "jsx": "preserve",
-    "jsxFactory": "h",
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact",
     "downlevelIteration": true,
     "noUncheckedIndexedAccess": true,
     "esModuleInterop": true,

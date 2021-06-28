@@ -5,7 +5,6 @@ import {
   DownloadResponse,
 } from '../common/utils/messaging/codec'
 import { isDefined } from '../common/utils/types'
-import './buffer-polyfill'
 
 const mimeTypes: Record<string, string | undefined> = {
   'image/bmp': 'bmp',
