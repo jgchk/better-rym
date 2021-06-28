@@ -6,7 +6,7 @@ import DotEnvironment from 'dotenv-webpack'
 import ForkTsCheckerPlugin from 'fork-ts-checker-webpack-plugin'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 import { Configuration } from 'webpack'
-import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
+// import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import { merge } from 'webpack-merge'
 import { browsers, browserslist } from './browserlist'
 import {
@@ -86,7 +86,7 @@ const common = (mode: 'development' | 'production') => {
       new CopyPlugin({
         patterns: [{ from: './res/icons/*', to: '[name].[ext]' }],
       }),
-      new BundleAnalyzerPlugin() as any,
+      // new BundleAnalyzerPlugin() as any,
     ],
   }
 }
