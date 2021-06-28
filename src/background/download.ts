@@ -1,4 +1,3 @@
-import { fromBlob } from 'file-type/browser'
 // eslint-disable-next-line import/no-unresolved
 import filenamify from 'filenamify/browser'
 import {
@@ -7,6 +6,17 @@ import {
 } from '../common/utils/messaging/codec'
 import { isDefined } from '../common/utils/types'
 import './buffer-polyfill'
+
+const mimeTypes: Record<string, string | undefined> = {
+  'image/bmp': 'bmp',
+  'image/gif': 'gif',
+  'image/vnd.microsoft.icon': 'ico',
+  'image/jpeg': 'jpg',
+  'image/png': 'png',
+  'image/svg+xml': 'svg',
+  'image/tiff': 'tiff',
+  'image/webp': 'webp',
+}
 
 export const download = async ({
   id,
@@ -21,9 +31,14 @@ export const download = async ({
           throw new Error(`Status code: ${response.status}`)
         }
       })
-      const fileType = await fromBlob(blob)
+      const mimeTypeExtension = mimeTypes[blob.type]
+      const urlExtension = url.split('.').pop()
 
-      const extension = isDefined(fileType) ? `.${fileType.ext}` : ''
+      const extension = isDefined(mimeTypeExtension)
+        ? `.${mimeTypeExtension}`
+        : isDefined(urlExtension)
+        ? `.${urlExtension}`
+        : ''
       const formattedFilename = filename.slice(0, 100 - extension.length)
       const filenameWithExtension = filenamify(
         `${formattedFilename}${extension}`
