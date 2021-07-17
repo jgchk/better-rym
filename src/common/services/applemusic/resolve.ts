@@ -77,7 +77,7 @@ export const resolve: ResolveFunction = async (url) => {
     artists,
     date,
     type,
-    format: 'digital file',
+    format: 'lossless digital',
     attributes: ['downloadable', 'streaming'],
     tracks,
     coverArt,
