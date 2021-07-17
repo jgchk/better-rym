@@ -273,8 +273,10 @@ const parseAttribute = (
 
 const parseAttributes = (
   format: Format
-): readonly [ReleaseAttribute[], Partial<ResolveData>] => {
-  return format.descriptions.reduce<[ReleaseAttribute[], Partial<ResolveData>]>(
+): readonly [ReleaseAttribute[], Partial<ResolveData>] =>
+  (format.descriptions ?? []).reduce<
+    [ReleaseAttribute[], Partial<ResolveData>]
+  >(
     ([attributes, resolveData], desc) => {
       const [descAttribute, descResolveData] = parseAttribute(desc)
       const descAttributeArray: ReleaseAttribute[] = descAttribute
@@ -288,7 +290,6 @@ const parseAttributes = (
     },
     [[], {}]
   )
-}
 
 const resolveRelease = async (id: string): Promise<ResolveData> => {
   const response = await fetchJson(
@@ -305,7 +306,8 @@ const resolveRelease = async (id: string): Promise<ResolveData> => {
   const url = response.uri
   const title = response.title
   const artists = response.artists.map((artist) => artist.name)
-  const date = parseDate(response.released)
+  const date =
+    response.released === undefined ? undefined : parseDate(response.released)
   const tracks = response.tracklist.map((track) => ({
     position: track.position.replace('-', '.').replace(/(CD|DVD)\D?/, ''), // CD1-1 -> 1.1
     title: track.title,
@@ -329,6 +331,11 @@ const resolveRelease = async (id: string): Promise<ResolveData> => {
     format = undefined
     attributes = []
     partialResolveData = {}
+  }
+
+  // special case: demos are indicated in the "text" property of the format
+  if (response.formats[0]?.text?.toLowerCase() === 'demo') {
+    attributes.push('demo')
   }
 
   const resolveData = mergeAndConcat(

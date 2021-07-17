@@ -252,21 +252,28 @@ export const FormatDescription = t.keyof(
 )
 
 export type Format = t.TypeOf<typeof Format>
-export const Format = t.type(
-  { name: FormatName, descriptions: t.array(FormatDescription) },
+export const Format = t.intersection(
+  [
+    t.type({ name: FormatName }),
+    t.partial({ descriptions: t.array(FormatDescription), text: t.string }),
+  ],
   'Format'
 )
 
-export const Release = t.type(
-  {
-    uri: t.string,
-    title: t.string,
-    artists: t.array(Artist),
-    released: t.string,
-    tracklist: t.array(Track),
-    images: t.array(Image),
-    formats: t.array(Format),
-  },
+export const Release = t.intersection(
+  [
+    t.type({
+      uri: t.string,
+      title: t.string,
+      artists: t.array(Artist),
+      tracklist: t.array(Track),
+      images: t.array(Image),
+      formats: t.array(Format),
+    }),
+    t.partial({
+      released: t.string,
+    }),
+  ],
   'Release'
 )
 
