@@ -74,6 +74,9 @@ describe('title caps', () => {
     'Grand Theft Auto IV',
     'This Thing - Vocal Mix',
     'Mi Padre',
+    'B$&@h Made',
+    'B!@#h Made',
+    'B$%^h Made',
   ]
   test.each(titles)('correctly capitalizes %p', (input) => {
     expect(capitalize(input.toLowerCase(), 'title-case')).toBe(input)
