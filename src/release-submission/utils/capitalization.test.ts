@@ -77,6 +77,8 @@ describe('title caps', () => {
     'B$&@h Made',
     'B!@#h Made',
     'B$%^h Made',
+    '"Incalls Only"',
+    '“Incalls Only “',
   ]
   test.each(titles)('correctly capitalizes %p', (input) => {
     expect(capitalize(input.toLowerCase(), 'title-case')).toBe(input)

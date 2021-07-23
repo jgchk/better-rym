@@ -5,7 +5,7 @@ const parsers: [TokenType, RegExp][] = [
     'romanNumeral',
     /(?!mi)(?=[cdilmvx])m*(c[dm]|d?c*)(x[cl]|l?x*)(i[vx]|v?i*)(?=\s|$)/i,
   ],
-  ['word', /[^\s()[\]{}-]+/],
+  ['word', /[^\s"()[\]{}“”-]+/],
   ['whitespace', /\s+/],
   ['punctuation', /[^\s\w]/],
 ]
