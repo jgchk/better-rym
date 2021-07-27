@@ -33,9 +33,9 @@ export const Button: FunctionComponent<{
   modifier: string
 }> = ({ name, base, modifier }) => {
   const url = useMemo(() => makeUrl(base, modifier), [modifier])
-  const applied = (filterApplied(modifier)) ? "style='background: var(--mono-b)'" : ""
+  const applied = (filterApplied(modifier)) ? 'background: var(--mono-b)' : ''
   return (
-    <a className='btn' {applied} href={url}>
+    <a className='btn' style={applied} href={url}>
       {name.toLowerCase()}
     </a>
   )
