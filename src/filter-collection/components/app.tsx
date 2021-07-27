@@ -40,14 +40,12 @@ export const App: FunctionComponent = () => {
       {STATUS.map(([name, modifier]) => (
         <Button key={name} name={name} base='o' modifier={modifier} />
       ))}
-    </div>
-    <div>
+      <br/>
       Rating:
       {RATINGS.map(([name, modifier]) => (
         <Button key={name} name={name} base='r' modifier={modifier} />
       ))}
-    </div>
-    <div>
+      <br/>
       Type:
       {RELEASE_TYPES.map(([name, modifier]) => (
         <Button key={name} name={name} base='typ' modifier={modifier} />
