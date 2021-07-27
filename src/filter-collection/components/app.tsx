@@ -35,18 +35,18 @@ const STATUS = [
 
 export const App: FunctionComponent = () => {
   return (
-    <div>
-      Status:
+    <div style='line-height: 2.5em'>
+      Status:&nbsp;
       {STATUS.map(([name, modifier]) => (
         <Button key={name} name={name} base='o' modifier={modifier} />
       ))}
       <br/>
-      Rating:
+      Rating:&nbsp;
       {RATINGS.map(([name, modifier]) => (
         <Button key={name} name={name} base='r' modifier={modifier} />
       ))}
       <br/>
-      Type:
+      Type:&nbsp;
       {RELEASE_TYPES.map(([name, modifier]) => (
         <Button key={name} name={name} base='typ' modifier={modifier} />
       ))}
