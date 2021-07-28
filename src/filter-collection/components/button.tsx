@@ -1,7 +1,15 @@
 import { FunctionComponent, h } from 'preact'
 import { useMemo } from 'preact/hooks'
 
-const makeUrl = (modifier: string) => {
+const filterApplied = (modifier: string) => {
+  const path = window.location.pathname.split('/')
+  const collectionIndex = path.findIndex(
+    (element) => element.toLowerCase() === 'collection'
+  )
+  return (path[collectionIndex + 2] || '').split(/\s*,\s*/).includes(modifier)
+}
+
+const makeUrl = (base: string, modifier: string) => {
   const path = window.location.pathname.split('/')
   const collectionIndex = path.findIndex(
     (element) => element.toLowerCase() === 'collection'
@@ -9,8 +17,8 @@ const makeUrl = (modifier: string) => {
   const modifiers = [
     ...(path[collectionIndex + 2] || '')
       .split(/\s*,\s*/)
-      .filter((module) => !module.startsWith('typ')),
-    modifier,
+      .filter((module) => !module.startsWith(base)),
+    ((filterApplied(modifier)) ? "" : modifier),
   ]
     .filter((s) => s.length > 0)
     .join(',')
@@ -21,11 +29,13 @@ const makeUrl = (modifier: string) => {
 
 export const Button: FunctionComponent<{
   name: string
+  base: string
   modifier: string
-}> = ({ name, modifier }) => {
-  const url = useMemo(() => makeUrl(modifier), [modifier])
+}> = ({ name, base, modifier }) => {
+  const url = useMemo(() => makeUrl(base, modifier), [base, modifier])
+  const applied = (filterApplied(modifier)) ? 'background: var(--mono-7)' : ''
   return (
-    <a className='btn' href={url}>
+    <a className='btn' style={applied} href={url}>
       {name.toLowerCase()}
     </a>
   )
