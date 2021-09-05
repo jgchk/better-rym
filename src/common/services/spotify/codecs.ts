@@ -35,6 +35,8 @@ const SimplifiedAlbumObject = t.type(
   'SimplifiedAlbumObject'
 )
 
+const CopyrightObject = t.type({ text: t.string }, 'CopyrightObject')
+
 const PagingObject = <C extends t.Mixed>(item: C) =>
   t.type(
     {
@@ -83,6 +85,7 @@ export const AlbumObject = t.type(
   {
     album_type: AlbumType,
     artists: t.array(ArtistObject),
+    copyrights: t.array(CopyrightObject),
     external_urls: ExternalUrlObject,
     images: t.array(ImageObject),
     name: t.string,

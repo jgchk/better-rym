@@ -3,6 +3,7 @@ import {
   ReleaseAttribute,
   ReleaseDate,
   ReleaseFormat,
+  ReleaseLabel,
   ReleaseType,
   ResolveData,
   Track,
@@ -299,6 +300,25 @@ const fillTracks = (tracks: Track[], capitalization: CapitalizationType) => {
   simpleButton.click()
 }
 
+const fillLabel = (label: ReleaseLabel) => {
+  const input = forceQuerySelector<HTMLInputElement>(document)(
+    '#label~table input#searchterm'
+  )
+  input.value = label.name ?? ''
+
+  if (!label.name) {
+    const submit = forceQuerySelector<HTMLInputElement>(document)(
+      '#label~table .gosearch .btn'
+    )
+    submit.click()
+  }
+
+  const catalogElement = forceQuerySelector<HTMLInputElement>(document)(
+    'input#catalog_no'
+  )
+  catalogElement.value = label.catno ?? ''
+}
+
 const fillSource = (url: string) => {
   const element = forceQuerySelector<HTMLTextAreaElement>(document)(
     'textarea#notes'
@@ -317,6 +337,7 @@ export const fill = async (
     attributes,
     tracks,
     url,
+    label,
   }: ResolveData,
   capitalization: CapitalizationType
 ): Promise<void> => {
@@ -329,4 +350,5 @@ export const fill = async (
   if (isDefined(attributes)) fillAttributes(attributes)
   if (isDefined(tracks)) fillTracks(tracks, capitalization)
   if (isDefined(url)) fillSource(url)
+  if (isDefined(label)) fillLabel(label)
 }

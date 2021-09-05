@@ -1,15 +1,14 @@
 import { asArray } from '../../utils/array'
 import { stringToDate } from '../../utils/datetime'
 import { fetch } from '../../utils/fetch'
+import { decode } from '../../utils/io-ts'
 import { getReleaseType } from '../../utils/music'
 import { isDefined, isUndefined } from '../../utils/types'
 import { ResolveFunction } from '../types'
+import { ReleaseHolder } from './codec'
 
 const getUrl = (document_: Document) =>
   document_.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.href
-
-const getTitle = (document_: Document) =>
-  document_.querySelector('.product-name')?.textContent?.trim()
 
 const getArtists = (document_: Document) =>
   [...document_.querySelectorAll('.product-creator a')]
@@ -51,17 +50,39 @@ const getCoverArt = (document_: Document) => {
   return splits.join('/')
 }
 
+const getReleaseData = (document_: Document) => {
+  const shoebox = document_
+    .querySelector<HTMLScriptElement>(
+      'script#shoebox-media-api-cache-amp-music'
+    )
+    ?.text?.replace('\uF8FF', 'apple')
+  if (!isUndefined(shoebox)) {
+    const base: [string, string][] = Object.entries(JSON.parse(shoebox))
+    if (
+      !isUndefined(base) &&
+      !isUndefined(base[1]) &&
+      !isUndefined(base[1][1])
+    ) {
+      const holder = decode(ReleaseHolder)(base[1][1])
+      return holder?.d[0]
+    }
+  }
+  return undefined
+}
+
 export const resolve: ResolveFunction = async (url) => {
   const response = await fetch({ url })
   const document_ = new DOMParser().parseFromString(response, 'text/html')
+  const release = getReleaseData(document_)
 
   const url_ = getUrl(document_) || url
   const artists = getArtists(document_)
   const date = getDate(document_)
   const tracks = getTracks(document_)
   const coverArt = asArray(getCoverArt(document_))
+  const label = { name: release?.attributes.recordLabel, catno: '' }
 
-  let title = getTitle(document_)
+  let title = release?.attributes.name
   let type = getReleaseType(tracks.length)
   if (title?.includes(' - EP')) {
     title = title.replace(' - EP', '')
@@ -81,5 +102,6 @@ export const resolve: ResolveFunction = async (url) => {
     attributes: ['downloadable', 'streaming'],
     tracks,
     coverArt,
+    label,
   }
 }

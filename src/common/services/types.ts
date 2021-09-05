@@ -177,6 +177,7 @@ export type ReleaseAttribute =
   | 'songs inspired by'
   | 'television soundtrack'
   | 'video game soundtrack'
+export type ReleaseLabel = { name?: string; catno?: string }
 export type Track = { position?: string; title?: string; duration?: string }
 export type ResolveData = {
   url?: string
@@ -185,6 +186,7 @@ export type ResolveData = {
   coverArt?: string[]
   date?: ReleaseDate
   type?: ReleaseType
+  label?: ReleaseLabel
   format?: ReleaseFormat
   discSize?: DiscSize
   attributes?: ReleaseAttribute[]

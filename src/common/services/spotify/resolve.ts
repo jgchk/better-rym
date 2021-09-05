@@ -89,6 +89,7 @@ const resolveAlbum = async (
   const tracks = await getTracks(response.tracks, token)
   const type = parseType(response.album_type, tracks.length)
   const coverArt = asArray(getCoverArt(response))
+  const label = { name: response.copyrights[0]?.text, catno: '' }
 
   return {
     url,
@@ -100,6 +101,7 @@ const resolveAlbum = async (
     attributes: ['streaming'],
     tracks,
     coverArt,
+    label,
   }
 }
 
