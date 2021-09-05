@@ -155,9 +155,8 @@ const waitForResult = (
 ): Promise<HTMLDivElement | undefined> =>
   new Promise((resolve) => {
     const listener = () => {
-      const firstResult = iframe.contentDocument?.querySelector<HTMLDivElement>(
-        'div.result'
-      )
+      const firstResult =
+        iframe.contentDocument?.querySelector<HTMLDivElement>('div.result')
       if (isNotNull(firstResult) && isDefined(firstResult)) {
         resolve(firstResult)
       } else {
@@ -195,9 +194,8 @@ const fillArtist = async (artist: string) => {
 const fillArtists = async (artists: string[]) => {
   if (artists[0]?.toLowerCase() === 'various artists') {
     // Various Artists release
-    const element = forceQuerySelector<HTMLInputElement>(document)(
-      `input#cat_va`
-    )
+    const element =
+      forceQuerySelector<HTMLInputElement>(document)(`input#cat_va`)
     element.click()
   } else {
     // Regular release
@@ -225,9 +223,8 @@ const fillYear = (year: number) => {
 }
 
 const fillMonth = (month: number) => {
-  const element = forceQuerySelector<HTMLSelectElement>(document)(
-    'select#month'
-  )
+  const element =
+    forceQuerySelector<HTMLSelectElement>(document)('select#month')
   element.value = month.toString().padStart(2, '0')
 }
 
@@ -284,9 +281,8 @@ const fillTracks = (tracks: Track[], capitalization: CapitalizationType) => {
     })
     .join('\n')
 
-  const advancedButton = forceQuerySelector<HTMLAnchorElement>(document)(
-    'a#goAdvancedBtn'
-  )
+  const advancedButton =
+    forceQuerySelector<HTMLAnchorElement>(document)('a#goAdvancedBtn')
   advancedButton.click()
 
   const advancedInput = forceQuerySelector<HTMLTextAreaElement>(document)(
@@ -294,9 +290,8 @@ const fillTracks = (tracks: Track[], capitalization: CapitalizationType) => {
   )
   advancedInput.value = tracksString
 
-  const simpleButton = forceQuerySelector<HTMLAnchorElement>(document)(
-    'a#goSimpleBtn'
-  )
+  const simpleButton =
+    forceQuerySelector<HTMLAnchorElement>(document)('a#goSimpleBtn')
   simpleButton.click()
 }
 
@@ -306,23 +301,21 @@ const fillLabel = (label: ReleaseLabel) => {
   )
   input.value = label.name ?? ''
 
-  if (!label.name) {
+  if (label.name) {
     const submit = forceQuerySelector<HTMLInputElement>(document)(
       '#label~table .gosearch .btn'
     )
     submit.click()
   }
 
-  const catalogElement = forceQuerySelector<HTMLInputElement>(document)(
-    'input#catalog_no'
-  )
+  const catalogElement =
+    forceQuerySelector<HTMLInputElement>(document)('input#catalog_no')
   catalogElement.value = label.catno ?? ''
 }
 
 const fillSource = (url: string) => {
-  const element = forceQuerySelector<HTMLTextAreaElement>(document)(
-    'textarea#notes'
-  )
+  const element =
+    forceQuerySelector<HTMLTextAreaElement>(document)('textarea#notes')
   element.value = url
 }
 
