@@ -315,6 +315,7 @@ const resolveRelease = async (id: string): Promise<ResolveData> => {
   }))
   const type = getReleaseType(tracks.length)
   const coverArt = response.images.map((image) => image.resource_url)
+  const label = response.labels[0]
 
   let format: ReleaseFormat | undefined,
     attributes: ReleaseAttribute[],
@@ -349,6 +350,7 @@ const resolveRelease = async (id: string): Promise<ResolveData> => {
       attributes,
       tracks,
       coverArt,
+      label,
     },
     partialResolveData
   )

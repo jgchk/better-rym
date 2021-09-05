@@ -9,6 +9,8 @@ const Track = t.type(
 
 const Image = t.type({ resource_url: t.string }, 'Image')
 
+const Label = t.type({ name: t.string, catno: t.string }, 'Label')
+
 const FormatName = t.keyof(
   {
     Vinyl: true,
@@ -269,6 +271,7 @@ export const Release = t.intersection(
       tracklist: t.array(Track),
       images: t.array(Image),
       formats: t.array(Format),
+      labels: t.array(Label),
     }),
     t.partial({
       released: t.string,
