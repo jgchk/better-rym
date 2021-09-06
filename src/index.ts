@@ -8,4 +8,6 @@ if (location.pathname.startsWith('/release/')) {
   void import('./submit-stream-links')
 } else if (location.pathname.startsWith('/collection')) {
   void import('./filter-collection')
+} else if (location.pathname.startsWith('/~')) {
+  void import('./user-page')
 }
