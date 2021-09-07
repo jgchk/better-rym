@@ -1,6 +1,6 @@
 import { fetch } from './fetch'
 
-const parseMarkup = async (markup: string) => {
+export const parseMarkup = async (markup: string): Promise<HTMLSpanElement> => {
   const output = await fetch({
     url: 'https://rateyourmusic.com/go/processpreview',
     method: 'POST',
@@ -10,6 +10,7 @@ const parseMarkup = async (markup: string) => {
     },
   })
 
-  return new DOMParser().parseFromString(output.slice(33, -2), 'text/html')
-    .firstChild as HTMLSpanElement
+  return new DOMParser()
+    .parseFromString(output.slice(33, -2), 'text/html')
+    .querySelector('.rendered_text') as HTMLSpanElement
 }

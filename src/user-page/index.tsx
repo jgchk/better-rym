@@ -1,7 +1,8 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { h, render } from 'preact'
+import { Loader } from '../common/components/loader'
 import { forceQuerySelector, waitForElement } from '../common/utils/dom'
 import { fetch } from '../common/utils/fetch'
+import { parseMarkup } from '../common/utils/markup'
 import { isNull, isUndefined } from '../common/utils/types'
 
 let headerArray = new Array<Element>()
@@ -18,16 +19,16 @@ const getHeader = (alias: string) => {
   )
   if (isUndefined(header))
     throw "Couldn't find the requested header with alias " + alias
-  return header
+  return header as HTMLDivElement
 }
 
-const getCorrespondingContent = (header: Element) => {
+const getCorrespondingContent = (header: HTMLDivElement) => {
   const content = [...document.querySelectorAll('.bubble_content')][
     headerArray.indexOf(header)
   ]
   if (isUndefined(content))
     throw "Couldn't find the content corresponding to the specified header!"
-  return content
+  return content as HTMLDivElement
 }
 
 const createEditButton = (alias: string, field: string) => {
@@ -45,29 +46,23 @@ const createEditButton = (alias: string, field: string) => {
 const editClick = (event: MouseEvent) => {
   const button = event.target as HTMLAnchorElement
   if (
-    !button.hidden &&
+    button.style.display != 'none' &&
     !isUndefined(button.dataset['alias']) &&
     !isUndefined(button.dataset['field'])
   ) {
-    button.hidden = true
+    button.style.display = 'none'
 
     const contentBox = forceQuerySelector(
       getCorrespondingContent(getHeader(button.dataset['alias']))
     )('div')
-    const contentRendered = forceQuerySelector<HTMLSpanElement>(contentBox)(
+    forceQuerySelector<HTMLSpanElement>(contentBox)(
       '.rendered_text'
-    )
-    const contentBackup = contentRendered.cloneNode(true) as HTMLSpanElement
-    contentBackup.className = 'brym-backup'
-    contentBackup.hidden = true
-    contentRendered.hidden = true
-    contentBox?.prepend(contentBackup)
+    ).outerHTML = ''
 
     const contentText = document.createElement('textarea')
-    contentText.textContent = forceQuerySelector(currentPreferences)(
-      `#${button.dataset['field']}`
-    ).textContent
-    contentText.rows = 5
+    contentText.textContent = getParameter(`#${button.dataset['field']}`)
+    contentText.style.resize = 'vertical'
+    contentText.rows = 6
 
     const contentButtons = document.createElement('div')
     render(
@@ -77,6 +72,8 @@ const editClick = (event: MouseEvent) => {
           className='btn btn_small flat_btn brym_save'
           style={OTHER_STYLE}
           onClick={saveClick}
+          data-alias={button.dataset['alias']}
+          data-field={button.dataset['field']}
         >
           save
         </a>
@@ -84,6 +81,9 @@ const editClick = (event: MouseEvent) => {
           href='javascript:void(0)'
           className='btn btn_small flat_btn brym_preview'
           style={OTHER_STYLE}
+          onClick={previewClick}
+          data-alias={button.dataset['alias']}
+          data-field={button.dataset['field']}
         >
           preview
         </a>
@@ -91,7 +91,9 @@ const editClick = (event: MouseEvent) => {
           href='javascript:void(0)'
           className='btn btn_small flat_btn brym_cancel'
           style={OTHER_STYLE}
-          onClick={closeUpShop}
+          onClick={cancelClick}
+          data-alias={button.dataset['alias']}
+          data-field={button.dataset['field']}
         >
           cancel
         </a>
@@ -99,17 +101,174 @@ const editClick = (event: MouseEvent) => {
       contentButtons
     )
     contentButtons.prepend(contentText)
-
     contentBox?.append(contentButtons)
   }
 }
 
 const saveClick = (event: MouseEvent) => {
-  closeUpShop(event)
+  const button = event.target as HTMLAnchorElement
+  if (
+    !isUndefined(button.dataset['alias']) &&
+    !isUndefined(button.dataset['field']) &&
+    button.style.cursor != 'default'
+  ) {
+    const container = getCorrespondingContent(
+      getHeader(button.dataset['alias'])
+    )
+    if (isNull(container.querySelector('svg[class*="loader"]')))
+      lockAndLoad(button)
+
+    forceQuerySelector<HTMLTextAreaElement>(currentPreferences)(
+      `#${button.dataset['field']}`
+    ).value = container.querySelector('textarea')?.value || ''
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    void updateProfile().then((_value) => {
+      closeUpShop(button)
+    })
+  }
 }
 
-const closeUpShop = (event: MouseEvent) => {
+const previewClick = (event: MouseEvent) => {
   const button = event.target as HTMLAnchorElement
+  if (
+    !isUndefined(button.dataset['alias']) &&
+    !isUndefined(button.dataset['field']) &&
+    button.style.cursor != 'default'
+  ) {
+    const container = forceQuerySelector(
+      getCorrespondingContent(getHeader(button.dataset['alias']))
+    )('div')
+    if (isNull(container.querySelector('svg[class*="loader"]')))
+      lockAndLoad(button)
+
+    const existing = container.querySelector('.rendered_text')
+    if (!isNull(existing)) existing.outerHTML = ''
+
+    void parseMarkup(
+      forceQuerySelector<HTMLTextAreaElement>(container)('textarea').value || ''
+    ).then((value) => {
+      const line = document.createElement('hr')
+      line.style.margin = '1em 0'
+      value.prepend(line)
+      container.append(value)
+      forceQuerySelector(container)('svg[class*="loader"]').outerHTML = ''
+      unlock(button)
+    })
+  }
+}
+
+const cancelClick = (event: MouseEvent) => {
+  const button = event.target as HTMLAnchorElement
+  if (button.style.cursor != 'default') closeUpShop(button)
+}
+
+const closeUpShop = (button: HTMLAnchorElement) => {
+  if (
+    !isUndefined(button.dataset['alias']) &&
+    !isUndefined(button.dataset['field'])
+  ) {
+    const container = getCorrespondingContent(
+      getHeader(button.dataset['alias'])
+    )
+    const field = button.dataset['field']
+    if (isNull(container.querySelector('svg[class*="loader"]')))
+      lockAndLoad(button)
+
+    void parseMarkup(
+      forceQuerySelector<HTMLTextAreaElement>(currentPreferences)(`#${field}`)
+        .value || ''
+    ).then((value) => {
+      container.innerHTML = `<div style="padding:14px;">${value.outerHTML}</div><div class="clear"></div>`
+      forceQuerySelector<HTMLElement>(document)(
+        `.bubble_header a[data-field=${field}]`
+      ).style.display = 'inline-block'
+    })
+  }
+}
+
+const lockAndLoad = (button: HTMLAnchorElement) => {
+  if (
+    isNull(button.parentElement) ||
+    isUndefined(button.parentElement.children)
+  )
+    throw 'Unexpected null or undefined'
+
+  for (const element of button.parentElement.children) {
+    const anchor = element as HTMLElement
+    anchor.style.color = 'var(--btn-secondary-text-disabled)'
+    anchor.style.background = 'var(--btn-seconary-background-disabled)'
+    anchor.style.cursor = 'default'
+  }
+
+  const loaderContainer = document.createElement('div')
+  render(<Loader />, loaderContainer)
+  const loader = forceQuerySelector<SVGSVGElement>(loaderContainer)('svg')
+  loader.style.cssText =
+    'margin-right: 1em; vertical-align: middle; position: relative; top: 35%'
+  loader.classList.add('.loader')
+  button.parentElement.prepend(loader)
+}
+
+const unlock = (button: HTMLAnchorElement) => {
+  if (
+    isNull(button.parentElement) ||
+    isUndefined(button.parentElement.children)
+  )
+    throw 'Unexpected null or undefined'
+
+  for (const element of button.parentElement.children) {
+    const anchor = element as HTMLElement
+    anchor.style.color = ''
+    anchor.style.background = ''
+    anchor.style.cursor = ''
+  }
+}
+
+const getParameter = (query: string): string => {
+  const parameter = forceQuerySelector(currentPreferences)(query) as
+    | HTMLInputElement
+    | HTMLSelectElement
+    | HTMLTextAreaElement
+  const result = parameter.value
+  if (isNull(result)) throw 'Result was null'
+  return result
+}
+
+const updateProfile = async () => {
+  const artist_convert = forceQuerySelector<HTMLInputElement>(
+    currentPreferences
+  )('#artist_convert').checked
+    ? 't'
+    : 'f'
+
+  await fetch({
+    url: 'https://rateyourmusic.com/account/profile_edit_2',
+    method: 'POST',
+    urlParameters: {
+      username: getParameter('input[name="username"]'),
+      token: getParameter('input[name="token"]'),
+      language: getParameter('select[name="language"]'),
+      firstname: getParameter('#firstname'),
+      lastname: getParameter('#lastname'),
+      month: getParameter('#month'),
+      day: getParameter('#day'),
+      year: getParameter('#year'),
+      sex: getParameter('#sex'),
+      gender_label: getParameter('#gender_label'),
+      city: getParameter('#city'),
+      state: getParameter('#state'),
+      country: getParameter('#country'),
+      location: getParameter('#location'),
+      tz: getParameter('select[name="tz"]'),
+      email: getParameter('#email'),
+      password_confirm: getParameter('#password_confirm'),
+      homepage: getParameter('#homepage'),
+      fav_music: getParameter('#fav_music'),
+      artist_convert: artist_convert,
+      comments: getParameter('#comments'),
+    },
+  })
 }
 
 const main = async () => {
@@ -134,18 +293,18 @@ const main = async () => {
         .querySelector('li#fav_artists')
         ?.textContent?.trim()
         .toLowerCase() || 'favorite artists'
-    const headerFavArtists = getHeader(aliasFavArtists)
-    const buttonFavArtists = createEditButton(aliasFavArtists, 'fav_music')
-    headerFavArtists?.prepend(buttonFavArtists)
+    getHeader(aliasFavArtists)?.prepend(
+      createEditButton(aliasFavArtists, 'fav_music')
+    )
 
     const aliasOtherComments =
       htmlOrder
         .querySelector('li#other_comments')
         ?.textContent?.trim()
         .toLowerCase() || 'other comments'
-    const headerOtherComments = getHeader(aliasOtherComments)
-    const buttonOtherComments = createEditButton(aliasOtherComments, 'comments')
-    headerOtherComments?.prepend(buttonOtherComments)
+    getHeader(aliasOtherComments)?.prepend(
+      createEditButton(aliasOtherComments, 'comments')
+    )
   }
 }
 
