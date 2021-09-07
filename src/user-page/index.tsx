@@ -1,10 +1,16 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-//import { h } from 'preact'
+import { h, render } from 'preact'
 import { forceQuerySelector, waitForElement } from '../common/utils/dom'
 import { fetch } from '../common/utils/fetch'
 import { isNull, isUndefined } from '../common/utils/types'
 
 let headerArray = new Array<Element>()
+let currentPreferences: Document
+
+const EDIT_STYLE =
+  'vertical-align: middle; bottom: 0.3em; position: relative; margin-right: 1em; font-size: .6em'
+const OTHER_STYLE =
+  'vertical-align: middle; position: relative; margin-right: 1em; top: 75%; transform: translateY(-50%)'
 
 const getHeader = (alias: string) => {
   const header = headerArray.find((element) =>
@@ -24,15 +30,14 @@ const getCorrespondingContent = (header: Element) => {
   return content
 }
 
-const createEditButton = (alias: string) => {
+const createEditButton = (alias: string, field: string) => {
   const edit = document.createElement('a')
   edit.href = 'javascript:void(0)'
   edit.className = 'btn btn_small flat_btn'
   edit.textContent = 'edit'
-  edit.style.cssText =
-    'font-size: .6em; vertical-align: middle; bottom: 0.3em; position: relative; margin-right: 1em'
+  edit.style.cssText = EDIT_STYLE
   edit.dataset['alias'] = alias
-  edit.dataset['disabled'] = 'false'
+  edit.dataset['field'] = field
   edit.addEventListener('click', editClick)
   return edit
 }
@@ -40,14 +45,11 @@ const createEditButton = (alias: string) => {
 const editClick = (event: MouseEvent) => {
   const button = event.target as HTMLAnchorElement
   if (
-    button.dataset['disabled'] == 'false' &&
-    !isUndefined(button.dataset['alias'])
+    !button.hidden &&
+    !isUndefined(button.dataset['alias']) &&
+    !isUndefined(button.dataset['field'])
   ) {
-    // ~sharifi fix your css so i don't have to do this mess
-    button.dataset['disabled'] = 'true'
-    button.style.background = 'var(--btn-secondary-background-disabled)'
-    button.style.color = 'var(--btn-secondary-text-disabled)'
-    button.style.cursor = 'default'
+    button.hidden = true
 
     const contentBox = forceQuerySelector(
       getCorrespondingContent(getHeader(button.dataset['alias']))
@@ -55,9 +57,59 @@ const editClick = (event: MouseEvent) => {
     const contentRendered = forceQuerySelector<HTMLSpanElement>(contentBox)(
       '.rendered_text'
     )
+    const contentBackup = contentRendered.cloneNode(true) as HTMLSpanElement
+    contentBackup.className = 'brym-backup'
+    contentBackup.hidden = true
     contentRendered.hidden = true
-    contentBox?.prepend('editor goes here soon:tm:')
+    contentBox?.prepend(contentBackup)
+
+    const contentText = document.createElement('textarea')
+    contentText.textContent = forceQuerySelector(currentPreferences)(
+      `#${button.dataset['field']}`
+    ).textContent
+    contentText.rows = 5
+
+    const contentButtons = document.createElement('div')
+    render(
+      <div style='text-align: right; height: 2em'>
+        <a
+          href='javascript:void(0)'
+          className='btn btn_small flat_btn brym_save'
+          style={OTHER_STYLE}
+          onClick={saveClick}
+        >
+          save
+        </a>
+        <a
+          href='javascript:void(0)'
+          className='btn btn_small flat_btn brym_preview'
+          style={OTHER_STYLE}
+        >
+          preview
+        </a>
+        <a
+          href='javascript:void(0)'
+          className='btn btn_small flat_btn brym_cancel'
+          style={OTHER_STYLE}
+          onClick={closeUpShop}
+        >
+          cancel
+        </a>
+      </div>,
+      contentButtons
+    )
+    contentButtons.prepend(contentText)
+
+    contentBox?.append(contentButtons)
   }
+}
+
+const saveClick = (event: MouseEvent) => {
+  closeUpShop(event)
+}
+
+const closeUpShop = (event: MouseEvent) => {
+  const button = event.target as HTMLAnchorElement
 }
 
 const main = async () => {
@@ -72,13 +124,18 @@ const main = async () => {
     })
     const htmlOrder = new DOMParser().parseFromString(response, 'text/html')
 
+    const response2 = await fetch({
+      url: 'https://rateyourmusic.com/account/profile_edit',
+    })
+    currentPreferences = new DOMParser().parseFromString(response2, 'text/html')
+
     const aliasFavArtists =
       htmlOrder
         .querySelector('li#fav_artists')
         ?.textContent?.trim()
         .toLowerCase() || 'favorite artists'
     const headerFavArtists = getHeader(aliasFavArtists)
-    const buttonFavArtists = createEditButton(aliasFavArtists)
+    const buttonFavArtists = createEditButton(aliasFavArtists, 'fav_music')
     headerFavArtists?.prepend(buttonFavArtists)
 
     const aliasOtherComments =
@@ -87,7 +144,7 @@ const main = async () => {
         ?.textContent?.trim()
         .toLowerCase() || 'other comments'
     const headerOtherComments = getHeader(aliasOtherComments)
-    const buttonOtherComments = createEditButton(aliasOtherComments)
+    const buttonOtherComments = createEditButton(aliasOtherComments, 'comments')
     headerOtherComments?.prepend(buttonOtherComments)
   }
 }

@@ -1,18 +1,15 @@
 import { fetch } from './fetch'
 
-const getArtistLinkFromId = async (id: number) => {
-  const response = await fetch({
-    url: 'https://rateyourmusic.com/go/process_credit_artist_preview',
+const parseMarkup = async (markup: string) => {
+  const output = await fetch({
+    url: 'https://rateyourmusic.com/go/processpreview',
     method: 'POST',
     urlParameters: {
-      id: `credits_artist_${id}`,
-      text: `[Artist${id}]`,
-      type: 'credits',
+      id: 'body',
+      text: markup,
     },
   })
 
-  return new DOMParser().parseFromString(
-    response.slice(54 + id.toString().length, -2),
-    'text/html'
-  )
+  return new DOMParser().parseFromString(output.slice(33, -2), 'text/html')
+    .firstChild as HTMLSpanElement
 }
