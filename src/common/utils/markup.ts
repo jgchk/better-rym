@@ -1,6 +1,12 @@
 import { fetch } from './fetch'
 
 export const parseMarkup = async (markup: string): Promise<HTMLSpanElement> => {
+  // if markup is empty, just return an empty span
+  if (!markup) {
+    const span = document.createElement('span')
+    return span
+  }
+
   const output = await fetch({
     url: 'https://rateyourmusic.com/go/processpreview',
     method: 'POST',
