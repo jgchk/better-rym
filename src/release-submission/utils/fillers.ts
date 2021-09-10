@@ -9,7 +9,6 @@ import {
   Track,
 } from '../../common/services/types'
 import { forceQuerySelector } from '../../common/utils/dom'
-import { isDefined, isNotNull } from '../../common/utils/types'
 import { CapitalizationType, capitalize } from './capitalization'
 
 const TYPE_IDS: Record<ReleaseType, string> = {
@@ -155,13 +154,11 @@ const waitForResult = (
 ): Promise<HTMLDivElement | undefined> =>
   new Promise((resolve) => {
     const listener = () => {
-      const firstResult =
-        iframe.contentDocument?.querySelector<HTMLDivElement>('div.result')
-      if (isNotNull(firstResult) && isDefined(firstResult)) {
-        resolve(firstResult)
-      } else {
-        resolve(undefined)
-      }
+      const firstResult = iframe.contentDocument?.querySelector<HTMLDivElement>(
+        'div.result'
+      )
+      if (firstResult != null) resolve(firstResult)
+      else resolve(undefined)
 
       iframe.removeEventListener('load', listener)
     }
@@ -170,22 +167,19 @@ const waitForResult = (
 
 const fillArtist = async (artist: string) => {
   // Enter search term
-  const input = forceQuerySelector<HTMLInputElement>(document)(
-    'input#filed_under_searchterm'
-  )
-  input.value = artist
+  forceQuerySelector<HTMLInputElement>(document)(
+    '#filed_under_searchterm'
+  ).value = artist
 
   // Click search button
-  const submitButton = forceQuerySelector<HTMLInputElement>(document)(
+  forceQuerySelector<HTMLInputElement>(document)(
     '#section_filed_under .gosearch input[type=button]'
-  )
-  submitButton.click()
+  ).click()
 
   // Wait for results
-  const iframe = forceQuerySelector<HTMLIFrameElement>(document)(
-    'iframe#filed_underlist'
+  const topResult = await waitForResult(
+    forceQuerySelector<HTMLIFrameElement>(document)('#filed_underlist')
   )
-  const topResult = await waitForResult(iframe)
 
   // Click the top result if there is one
   topResult?.click()
@@ -194,81 +188,72 @@ const fillArtist = async (artist: string) => {
 const fillArtists = async (artists: string[]) => {
   if (artists[0]?.toLowerCase() === 'various artists') {
     // Various Artists release
-    const element =
-      forceQuerySelector<HTMLInputElement>(document)(`input#cat_va`)
-    element.click()
+    forceQuerySelector<HTMLInputElement>(document)('#cat_va').click()
   } else {
     // Regular release
-    const alreadyFilled = isNotNull(
-      document.querySelector('.sortable_filed_under')
-    )
-    if (alreadyFilled) return
+    if (document.querySelector('.sortable_filed_under') != null) return
 
-    for (const artist of artists) {
-      await fillArtist(artist)
-    }
+    for (const artist of artists) await fillArtist(artist)
   }
 }
 
 const fillType = (type: ReleaseType) => {
-  const element = forceQuerySelector<HTMLInputElement>(document)(
-    `input#category${TYPE_IDS[type]}`
-  )
-  element.checked = true
+  forceQuerySelector<HTMLInputElement>(document)(
+    `#category${TYPE_IDS[type]}`
+  ).checked = true
 }
 
 const fillYear = (year: number) => {
-  const element = forceQuerySelector<HTMLSelectElement>(document)('select#year')
-  element.value = year.toString()
+  forceQuerySelector<HTMLSelectElement>(document)(
+    '#year'
+  ).value = year.toString()
 }
 
 const fillMonth = (month: number) => {
-  const element =
-    forceQuerySelector<HTMLSelectElement>(document)('select#month')
-  element.value = month.toString().padStart(2, '0')
+  forceQuerySelector<HTMLSelectElement>(document)(
+    '#month'
+  ).value = month.toString().padStart(2, '0')
 }
 
 const fillDay = (day: number) => {
-  const element = forceQuerySelector<HTMLSelectElement>(document)('select#day')
-  element.value = day.toString().padStart(2, '0')
+  forceQuerySelector<HTMLSelectElement>(document)(
+    '#day'
+  ).value = day.toString().padStart(2, '0')
 }
 
 const fillDate = (date: ReleaseDate) => {
-  if (isDefined(date.year)) fillYear(date.year)
-  if (isDefined(date.month)) fillMonth(date.month)
-  if (isDefined(date.day)) fillDay(date.day)
+  if (date.year !== undefined) fillYear(date.year)
+  if (date.month !== undefined) fillMonth(date.month)
+  if (date.day !== undefined) fillDay(date.day)
 }
 
 const fillTitle = (title: string, capitalization: CapitalizationType) => {
-  const element = forceQuerySelector<HTMLInputElement>(document)('input#title')
-  element.value = capitalize(title, capitalization)
+  forceQuerySelector<HTMLInputElement>(document)('#title').value = capitalize(
+    title,
+    capitalization
+  )
 }
 
 const fillFormat = (format: ReleaseFormat) => {
-  const element = forceQuerySelector<HTMLInputElement>(document)(
-    `input#format${FORMAT_IDS[format]}`
-  )
-  element.checked = true
+  forceQuerySelector<HTMLInputElement>(document)(
+    `#format${FORMAT_IDS[format]}`
+  ).checked = true
 }
 
 const fillDiscSize = (discSize: DiscSize) => {
-  const element = forceQuerySelector<HTMLInputElement>(document)(
-    `input#disc_size${DISC_SIZE_IDS[discSize]}`
-  )
-  element.checked = true
+  forceQuerySelector<HTMLInputElement>(document)(
+    `#disc_size${DISC_SIZE_IDS[discSize]}`
+  ).checked = true
 }
 
 const fillAttribute = (attribute: ReleaseAttribute) => {
-  const element = forceQuerySelector<HTMLInputElement>(document)(
-    `input#attrib${ATTRIBUTE_IDS[attribute]}`
-  )
-  element.checked = true
+  forceQuerySelector<HTMLInputElement>(document)(
+    `#attrib${ATTRIBUTE_IDS[attribute]}`
+  ).checked = true
 }
 
 const fillAttributes = (attributes: ReleaseAttribute[]) => {
-  for (const attribute of attributes) {
-    fillAttribute(attribute)
-  }
+  for (const attribute of attributes) fillAttribute(attribute)
 }
 
 const fillTracks = (tracks: Track[], capitalization: CapitalizationType) => {
@@ -281,42 +266,29 @@ const fillTracks = (tracks: Track[], capitalization: CapitalizationType) => {
     })
     .join('\n')
 
-  const advancedButton =
-    forceQuerySelector<HTMLAnchorElement>(document)('a#goAdvancedBtn')
-  advancedButton.click()
-
-  const advancedInput = forceQuerySelector<HTMLTextAreaElement>(document)(
-    'textarea#track_advanced'
-  )
-  advancedInput.value = tracksString
-
-  const simpleButton =
-    forceQuerySelector<HTMLAnchorElement>(document)('a#goSimpleBtn')
-  simpleButton.click()
+  forceQuerySelector<HTMLAnchorElement>(document)('#goAdvancedBtn').click()
+  forceQuerySelector<HTMLTextAreaElement>(document)(
+    '#track_advanced'
+  ).value = tracksString
+  forceQuerySelector<HTMLAnchorElement>(document)('#goSimpleBtn').click()
 }
 
 const fillLabel = (label: ReleaseLabel) => {
-  const input = forceQuerySelector<HTMLInputElement>(document)(
-    '#label~table input#searchterm'
-  )
-  input.value = label.name ?? ''
+  forceQuerySelector<HTMLInputElement>(document)(
+    '#label~table #searchterm'
+  ).value = label.name ?? ''
 
-  if (label.name) {
-    const submit = forceQuerySelector<HTMLInputElement>(document)(
+  if (label.name)
+    forceQuerySelector<HTMLInputElement>(document)(
       '#label~table .gosearch .btn'
-    )
-    submit.click()
-  }
+    ).click()
 
-  const catalogElement =
-    forceQuerySelector<HTMLInputElement>(document)('input#catalog_no')
-  catalogElement.value = label.catno ?? ''
+  forceQuerySelector<HTMLInputElement>(document)('#catalog_no').value =
+    label.catno ?? ''
 }
 
 const fillSource = (url: string) => {
-  const element =
-    forceQuerySelector<HTMLTextAreaElement>(document)('textarea#notes')
-  element.value = url
+  forceQuerySelector<HTMLTextAreaElement>(document)('#notes').value = url
 }
 
 export const fill = async (
@@ -334,14 +306,14 @@ export const fill = async (
   }: ResolveData,
   capitalization: CapitalizationType
 ): Promise<void> => {
-  if (isDefined(artists)) await fillArtists(artists)
-  if (isDefined(type)) fillType(type)
-  if (isDefined(date)) fillDate(date)
-  if (isDefined(title)) fillTitle(title, capitalization)
-  if (isDefined(format)) fillFormat(format)
-  if (isDefined(discSize)) fillDiscSize(discSize)
-  if (isDefined(attributes)) fillAttributes(attributes)
-  if (isDefined(tracks)) fillTracks(tracks, capitalization)
-  if (isDefined(url)) fillSource(url)
-  if (isDefined(label)) fillLabel(label)
+  if (artists !== undefined) await fillArtists(artists)
+  if (type !== undefined) fillType(type)
+  if (date !== undefined) fillDate(date)
+  if (title !== undefined) fillTitle(title, capitalization)
+  if (format !== undefined) fillFormat(format)
+  if (discSize !== undefined) fillDiscSize(discSize)
+  if (attributes !== undefined) fillAttributes(attributes)
+  if (tracks !== undefined) fillTracks(tracks, capitalization)
+  if (url !== undefined) fillSource(url)
+  if (label !== undefined) fillLabel(label)
 }

@@ -2,7 +2,6 @@ import { asArray } from '../../utils/array'
 import { secondsToString } from '../../utils/datetime'
 import { fetchJson } from '../../utils/fetch'
 import { getReleaseType } from '../../utils/music'
-import { isNotNull, isNull, isUndefined } from '../../utils/types'
 import { ReleaseDate, ResolveData, ResolveFunction, Track } from '../types'
 import { requestToken } from './auth'
 import {
@@ -41,7 +40,7 @@ const getTracks = async (
 ): Promise<Track[]> => {
   let next = tracks.next
   const allTracks = tracks.items
-  while (isNotNull(next)) {
+  while (next !== null) {
     const nextResponse = await fetchJson(
       {
         url: next,
@@ -89,7 +88,7 @@ const resolveAlbum = async (
   const tracks = await getTracks(response.tracks, token)
   const type = parseType(response.album_type, tracks.length)
   const coverArt = asArray(getCoverArt(response))
-  const label = { name: response.copyrights[0]?.text, catno: '' }
+  const label = { name: response.copyrights[0]?.text }
 
   return {
     url,
@@ -144,16 +143,16 @@ const resolveTrack = async (
 
 export const resolve: ResolveFunction = async (url) => {
   const match = regex.exec(url)
-  if (isNull(match)) throw new Error('Invalid Spotify URL')
+  if (match === null) throw new Error('Invalid Spotify URL')
 
   const type = match[1]
-  if (isUndefined(type) || !isValidLinkType(type))
+  if (!type || !isValidLinkType(type))
     throw new Error(
       `Expected link to be album/track. Received: ${String(type)}`
     )
 
   const id = match[2]
-  if (isUndefined(id)) throw new Error('Could not find ID in link')
+  if (!id) throw new Error('Could not find ID in link')
 
   const { access_token } = await requestToken()
   return type === 'album'

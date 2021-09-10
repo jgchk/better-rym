@@ -1,16 +1,5 @@
-import { isDefined, isNull } from './types'
-
 export const isDocumentReady = (): boolean =>
   document.readyState === 'complete' || document.readyState === 'interactive'
-
-export const waitForDocumentReady = (): Promise<void> =>
-  new Promise((resolve) => {
-    if (isDocumentReady()) {
-      resolve()
-    } else {
-      document.addEventListener('DOMContentLoaded', () => resolve())
-    }
-  })
 
 export const waitForElement = <E extends Element>(query: string): Promise<E> =>
   waitForCallback(() => document.querySelector<E>(query) ?? undefined)
@@ -19,17 +8,14 @@ export const waitForCallback = <T>(callback: () => T | undefined): Promise<T> =>
   new Promise((resolve, reject) => {
     if (isDocumentReady()) {
       const result = callback()
-      if (isDefined(result)) {
-        resolve(result)
-      } else {
-        reject(new Error(`Callback never resolved`))
-      }
+      if (result !== undefined) resolve(result)
+      else reject(new Error(`Callback never resolved`))
     } else {
-      new MutationObserver((mutations, observer) => {
+      new MutationObserver((_m, observer) => {
         if (!document.body) return
 
         const result = callback()
-        if (isDefined(result)) {
+        if (result !== undefined) {
           resolve(result)
           observer.disconnect()
         }
@@ -50,6 +36,6 @@ export const forceQuerySelector = <E extends Element = Element>(
   node: ParentNode
 ) => (query: string): E => {
   const element = node.querySelector<E>(query)
-  if (isNull(element)) throw new Error(`Could not find element: ${query}`)
+  if (!element) throw new Error(`Could not find element: ${query}`)
   return element
 }

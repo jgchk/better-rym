@@ -1,5 +1,3 @@
-import { isDefined } from './types'
-
 export const chunkArray = <T>(array: T[], size: number): T[][] => {
   const result: T[][] = []
   for (let index = 0; index < array.length; index += size) {
@@ -22,4 +20,4 @@ export const findLastIndex = <T>(
 }
 
 export const asArray = <T>(item: T | undefined): T[] | undefined =>
-  isDefined(item) ? [item] : undefined
+  item != undefined ? [item] : undefined

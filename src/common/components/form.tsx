@@ -7,7 +7,6 @@ import {
 import { getMatchingService } from '../services'
 import { Service } from '../services/types'
 import styles from '../styles/form.module.css'
-import { isDefined } from '../utils/types'
 import { ServiceSelector } from './service-selector'
 
 const CAPITALIZE_ID = 'brym-capitalize'
@@ -46,15 +45,13 @@ export const Form = <S extends Service>({
 
   useEffect(() => {
     const service = getMatchingService(services)(url)
-    if (isDefined(service)) {
+    if (service !== undefined) {
       setSelectedService(service)
     }
   }, [services, url])
 
   useEffect(() => {
-    if (isDefined(selectedService)) {
-      setShowMissingServiceError(false)
-    }
+    if (selectedService !== undefined) setShowMissingServiceError(false)
   }, [selectedService])
 
   return (
@@ -62,7 +59,7 @@ export const Form = <S extends Service>({
       className={styles.form}
       onSubmit={(event) => {
         event.preventDefault()
-        if (isDefined(selectedService)) {
+        if (selectedService !== undefined) {
           onSubmit(url, selectedService, capitalization)
         } else {
           setShowMissingServiceError(true)

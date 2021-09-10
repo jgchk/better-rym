@@ -26,8 +26,13 @@ const Release = t.type(
   {
     attributes: t.type({
       artistName: t.string,
+      artwork: t.type({
+        url: t.string,
+      }),
       name: t.string,
       recordLabel: t.string,
+      releaseDate: t.string,
+      url: t.string,
     }),
     relationships: t.type({
       tracks: t.type({

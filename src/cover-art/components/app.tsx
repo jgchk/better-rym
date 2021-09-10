@@ -14,7 +14,7 @@ import {
   loading,
 } from '../../common/utils/one-shot'
 import { pipe } from '../../common/utils/pipe'
-import { isDefined, isNotNull } from '../../common/utils/types'
+import { isDefined } from '../../common/utils/types'
 import styles from '../styles/app.module.css'
 
 const getFilename = ({ title, artists }: ResolveData) => {
@@ -49,7 +49,7 @@ export const App: FunctionComponent = () => {
           const sourceInput = document.getElementById(
             'source'
           ) as HTMLTextAreaElement | null
-          if (isNotNull(sourceInput) && sourceInput.value.length === 0) {
+          if (sourceInput !== null && sourceInput.value.length === 0) {
             sourceInput.value = url
           }
         }

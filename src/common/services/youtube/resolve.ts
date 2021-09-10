@@ -3,7 +3,6 @@ import { secondsToString, stringToDate } from '../../utils/datetime'
 import { fetchJson } from '../../utils/fetch'
 import { FetchRequest } from '../../utils/messaging/codec'
 import { getReleaseType } from '../../utils/music'
-import { isDefined, isNull } from '../../utils/types'
 import { ResolveData, ResolveFunction, Track } from '../types'
 import { YOUTUBE_KEY } from './auth'
 import { Playlist, PlaylistItems, Video } from './codecs'
@@ -23,7 +22,7 @@ const parseTitle = (
   data: Video['items'][number] | Playlist['items'][number]
 ) => {
   const artistTitle = getArtistTitle(data.snippet.title)
-  return isDefined(artistTitle)
+  return artistTitle
     ? { artists: [artistTitle[0]], title: artistTitle[1] }
     : { artists: [data.snippet.channelTitle], title: data.snippet.title }
 }
@@ -59,7 +58,7 @@ const getTracks = async (playlistId: string): Promise<Track[]> => {
       part: 'contentDetails',
       key: YOUTUBE_KEY,
     }
-    if (isDefined(pageToken)) {
+    if (pageToken) {
       urlParameters.pageToken = pageToken
     }
 
@@ -73,7 +72,7 @@ const getTracks = async (playlistId: string): Promise<Track[]> => {
 
     videos.push(...items)
     pageToken = nextPageToken
-  } while (isDefined(pageToken))
+  } while (pageToken)
 
   return Promise.all(
     videos.map((video) => getTrack(video.contentDetails.videoId))
@@ -151,8 +150,7 @@ const resolveVideo = async (id: string): Promise<ResolveData> => {
 }
 
 export const resolve: ResolveFunction = async (url) => {
-  const match = regex.exec(url)
-  if (isNull(match)) throw new Error('Invalid Spotify URL')
+  if (regex.exec(url) == null) throw new Error('Invalid Spotify URL')
 
   const parsedUrl = new URL(url)
   let videoId: string | undefined
@@ -165,9 +163,9 @@ export const resolve: ResolveFunction = async (url) => {
     playlistId = parsedUrl.searchParams.get('list') ?? undefined
   }
 
-  if (isDefined(playlistId)) {
+  if (playlistId) {
     return resolvePlaylist(playlistId)
-  } else if (isDefined(videoId)) {
+  } else if (videoId) {
     return resolveVideo(videoId)
   } else {
     throw new Error('Could not find ID in link')

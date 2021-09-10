@@ -9,7 +9,7 @@ const RELEASE_TYPES = [
   ['DJ Mixes', 'typj'],
   ['Compilations', 'typc'],
   ['Videos', 'typd'],
-  ['Bootlegs', 'typb']
+  ['Bootlegs', 'typb'],
 ] as const
 
 const RATINGS = [
@@ -23,14 +23,15 @@ const RATINGS = [
   ['4.0', 'r4.0'],
   ['4.5', 'r4.5'],
   ['5.0', 'r5.0'],
-  ['Unrated', 'r0.0']
+  ['Unrated', 'r0.0'],
+  ['Rated', 'r0.5-5.0'],
 ] as const
 
 const STATUS = [
   ['Owned', 'oo'],
   ['Used to Own', 'ou'],
   ['Wishlist', 'ow'],
-  ['Not Owned', 'on']
+  ['Not Owned', 'on'],
 ] as const
 
 export const App: FunctionComponent = () => {
@@ -40,12 +41,12 @@ export const App: FunctionComponent = () => {
       {STATUS.map(([name, modifier]) => (
         <Button key={name} name={name} base='o' modifier={modifier} />
       ))}
-      <br/>
+      <br />
       Rating:&nbsp;
       {RATINGS.map(([name, modifier]) => (
         <Button key={name} name={name} base='r' modifier={modifier} />
       ))}
-      <br/>
+      <br />
       Type:&nbsp;
       {RELEASE_TYPES.map(([name, modifier]) => (
         <Button key={name} name={name} base='typ' modifier={modifier} />

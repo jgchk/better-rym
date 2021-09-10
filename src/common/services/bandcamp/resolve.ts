@@ -3,7 +3,7 @@ import { secondsToString, stringToDate } from '../../utils/datetime'
 import { fetch } from '../../utils/fetch'
 import { decode } from '../../utils/io-ts'
 import { getReleaseType } from '../../utils/music'
-import { isDefined, isNotNull } from '../../utils/types'
+import { isDefined } from '../../utils/types'
 import { ReleaseDate, ResolveFunction, Track } from '../types'
 import { AlbumData, ReleaseData, TrackData } from './codec'
 
@@ -16,7 +16,7 @@ const getData = (document_: Document) => {
 
 const getDate = (data: ReleaseData): ReleaseDate | undefined => {
   const dateString = data.current.release_date || data.album_release_date
-  return isNotNull(dateString) ? stringToDate(dateString) : undefined
+  return dateString !== null ? stringToDate(dateString) : undefined
 }
 
 const getTracks = (data: ReleaseData): Track[] | undefined => {

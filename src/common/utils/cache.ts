@@ -1,5 +1,5 @@
 import { ServiceId } from '../services/types'
-import { isDefined, isNotNull, isUndefined } from './types'
+import { isDefined } from './types'
 
 interface StoredValue<T> {
   expire: number
@@ -8,8 +8,7 @@ interface StoredValue<T> {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const isStoredValue = <T>(o: any): o is StoredValue<T> =>
-  isDefined(o) &&
-  isNotNull(o) &&
+  o != null &&
   typeof o === 'object' &&
   Object.prototype.hasOwnProperty.call(o, 'expire') &&
   Object.prototype.hasOwnProperty.call(o, 'data')
@@ -25,16 +24,14 @@ const parseStoredValue = <T>(s: string) => {
 export const get = async <T>(key: string): Promise<T | undefined> => {
   const response = await browser.storage.local.get(key)
   const storedValue = response[key] as StoredValue<T> | undefined
-  if (isUndefined(storedValue)) {
-    return undefined
-  } else {
+  if (storedValue !== undefined) {
     if (isExpired(storedValue)) {
       void browser.storage.local.remove(key)
-      return undefined
     } else {
       return storedValue.data
     }
   }
+  return undefined
 }
 
 export const set = async <T>(
