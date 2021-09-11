@@ -1,5 +1,5 @@
 import { mergeAndConcat } from 'merge-anything'
-import { fetchJson } from '../../../common/utils/fetch'
+import { fetch } from '../../../common/utils/fetch'
 import { getReleaseType } from '../../utils/music'
 import {
   DiscSize,
@@ -118,7 +118,7 @@ const parseFormat = (
 }
 
 const parseAttribute = (
-  desc: FormatDescription
+  desc: FormatDescription | string
 ): [ReleaseAttribute | undefined, Partial<ResolveData>] => {
   switch (desc) {
     case '16"':
@@ -227,41 +227,37 @@ const parseAttribute = (
 
 const parseAttributes = (
   format: Format
-): readonly [ReleaseAttribute[], Partial<ResolveData>] =>
-  (format.descriptions ?? []).reduce<
-    [ReleaseAttribute[], Partial<ResolveData>]
-  >(
-    ([attributes, resolveData], desc) => {
-      const [descAttribute, descResolveData] = parseAttribute(desc)
-      const descAttributeArray: ReleaseAttribute[] = descAttribute
-        ? [descAttribute]
-        : []
-      const combinedAttributes: ReleaseAttribute[] = [
-        ...attributes,
-        ...descAttributeArray,
-      ]
-      return [combinedAttributes, mergeAndConcat(resolveData, descResolveData)]
-    },
-    [[], {}]
-  )
+): readonly [ReleaseAttribute[], Partial<ResolveData>] => {
+  if (!format.descriptions) return [[], {}]
+
+  let attributes: ReleaseAttribute[] = []
+  let data: Partial<ResolveData> = {}
+  for (const description of format.descriptions) {
+    const [descAttribute, descResolveData] = parseAttribute(description)
+    const descAttributeArray: ReleaseAttribute[] = descAttribute
+      ? [descAttribute]
+      : []
+    attributes = [...attributes, ...descAttributeArray]
+    data = mergeAndConcat(data, descResolveData)
+  }
+  return [attributes, data]
+}
 
 const resolveRelease = async (id: string): Promise<ResolveData> => {
-  const response = await fetchJson(
-    {
+  const response = JSON.parse(
+    await fetch({
       url: `https://api.discogs.com/releases/${id}`,
       urlParameters: {
         key: client_key,
         secret: client_secret,
       },
-    },
-    Release
-  )
+    })
+  ) as Release
 
   const url = response.uri
   const title = response.title
   const artists = response.artists.map((artist) => artist.name)
-  const date =
-    response.released === undefined ? undefined : parseDate(response.released)
+  const date = !response.released ? undefined : parseDate(response.released)
   const tracks = response.tracklist.map((track) => ({
     position: track.position.replace('-', '.').replace(/(CD|DVD)\D?/, ''), // CD1-1 -> 1.1
     title: track.title,
@@ -313,16 +309,15 @@ const resolveRelease = async (id: string): Promise<ResolveData> => {
 }
 
 const getMasterPrimaryReleaseId = async (masterId: string) => {
-  const response = await fetchJson(
-    {
+  const response = JSON.parse(
+    await fetch({
       url: `https://api.discogs.com/masters/${masterId}`,
       urlParameters: {
         key: client_key,
         secret: client_secret,
       },
-    },
-    Master
-  )
+    })
+  ) as Master
   return response.main_release
 }
 

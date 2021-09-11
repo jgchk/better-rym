@@ -1,42 +1,30 @@
 import * as t from 'io-ts'
 
-const UserResult = t.type({ type: t.literal('f') }, 'UserResult')
+type UserResult = { type: 'f' }
 
-const BandResult = t.type({ type: t.literal('b') }, 'BandResult')
+type BandResult = { type: 'b' }
 
-const AlbumResult = t.type(
-  {
-    type: t.literal('a'),
-    url: t.string,
-    score: t.Int,
-    band_name: t.string,
-    name: t.string,
-  },
-  'AlbumResult'
-)
+type AlbumResult = {
+  type: 'a'
+  url: string
+  score: number
+  band_name: string
+  name: string
+}
 
-const TrackResult = t.type(
-  {
-    type: t.literal('t'),
-    url: t.string,
-    score: t.Int,
-    band_name: t.string,
-    name: t.string,
-  },
-  'TrackResult'
-)
+type TrackResult = {
+  type: 't'
+  url: string
+  score: number
+  band_name: string
+  name: string
+}
 
-export type MusicResult = t.TypeOf<typeof MusicResult>
-export const MusicResult = t.union([TrackResult, AlbumResult])
+export type MusicResult = TrackResult | AlbumResult
 
-export const SearchObject = t.type(
-  {
-    results: t.array(
-      t.union([BandResult, AlbumResult, TrackResult, UserResult])
-    ),
-  },
-  'SearchObject'
-)
+export type SearchObject = {
+  results: [BandResult | AlbumResult | TrackResult | UserResult]
+}
 
 export const TrackData = t.type(
   {

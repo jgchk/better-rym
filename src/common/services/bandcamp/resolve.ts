@@ -3,7 +3,6 @@ import { secondsToString, stringToDate } from '../../utils/datetime'
 import { fetch } from '../../utils/fetch'
 import { decode } from '../../utils/io-ts'
 import { getReleaseType } from '../../utils/music'
-import { isDefined } from '../../utils/types'
 import { ReleaseDate, ResolveFunction, Track } from '../types'
 import { AlbumData, ReleaseData, TrackData } from './codec'
 
@@ -11,12 +10,12 @@ const getData = (document_: Document) => {
   const text = document_.querySelector<HTMLScriptElement>(
     'script[data-tralbum]'
   )?.dataset.tralbum
-  return isDefined(text) ? decode(ReleaseData)(text) : undefined
+  return text ? decode(ReleaseData)(text) : undefined
 }
 
 const getDate = (data: ReleaseData): ReleaseDate | undefined => {
   const dateString = data.current.release_date || data.album_release_date
-  return dateString !== null ? stringToDate(dateString) : undefined
+  return dateString ? stringToDate(dateString) : undefined
 }
 
 const getTracks = (data: ReleaseData): Track[] | undefined => {
@@ -50,12 +49,12 @@ export const resolve: ResolveFunction = async (url) => {
   const document_ = new DOMParser().parseFromString(response, 'text/html')
   const data = getData(document_)
 
-  const url_ = isDefined(data) ? data.url : url
+  const url_ = data?.url || url
   const title = data?.current.title
   const artists = asArray(data?.artist)
-  const date = isDefined(data) ? getDate(data) : undefined
-  const tracks = isDefined(data) ? getTracks(data) : undefined
-  const type = isDefined(tracks) ? getReleaseType(tracks.length) : undefined
+  const date = data ? getDate(data) : undefined
+  const tracks = data ? getTracks(data) : undefined
+  const type = tracks ? getReleaseType(tracks.length) : undefined
   const coverArt = asArray(getCoverArt(document_))
 
   return {

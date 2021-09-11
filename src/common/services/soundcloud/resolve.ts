@@ -1,12 +1,10 @@
-import { array } from 'io-ts'
 import { asArray, chunkArray } from '../../utils/array'
 import { secondsToString, stringToDate } from '../../utils/datetime'
-import { fetchJson } from '../../utils/fetch'
+import { fetch } from '../../utils/fetch'
 import { getReleaseType } from '../../utils/music'
-import { isDefined } from '../../utils/types'
 import { ResolveData, ResolveFunction, Track } from '../types'
 import { requestToken } from './auth'
-import { MusicObject, PlaylistObject, TrackObject } from './codecs'
+import { MusicObject, TrackObject } from './codecs'
 
 const formatTrack = ({ title, duration }: TrackObject) => ({
   title,
@@ -17,7 +15,7 @@ const getTracks = async (
   data: MusicObject,
   token: string
 ): Promise<Track[]> => {
-  if (TrackObject.is(data))
+  if (data.kind === 'track')
     return [
       { title: data.title, duration: secondsToString(data.duration / 1000) },
     ]
@@ -25,18 +23,16 @@ const getTracks = async (
   const fullTracks = (
     await Promise.all(
       chunkArray(
-        data.tracks
-          .filter((track) => !TrackObject.is(track))
-          .map((track) => track.id),
+        data.tracks.filter((track) => !track.title).map((track) => track.id),
         15
-      ).map((ids) =>
-        fetchJson(
-          {
-            url: 'https://api-v2.soundcloud.com/tracks',
-            urlParameters: { ids: ids.join(','), client_id: token },
-          },
-          array(TrackObject)
-        )
+      ).map(
+        async (ids) =>
+          JSON.parse(
+            await fetch({
+              url: 'https://api-v2.soundcloud.com/tracks',
+              urlParameters: { ids: ids.join(','), client_id: token },
+            })
+          ) as TrackObject[]
       )
     )
   ).flat()
@@ -48,21 +44,20 @@ const getTracks = async (
           (track) =>
             [
               track.id,
-              TrackObject.is(track)
+              track.title
                 ? track
                 : fullTracks.find(({ id }) => id === track.id),
             ] as const
         )
         .map(
-          ([id, track]) =>
+          async ([id, track]) =>
             track ??
-            fetchJson(
-              {
+            (JSON.parse(
+              await fetch({
                 url: `https://api-v2.soundcloud.com/tracks/${id}`,
                 urlParameters: { client_id: token },
-              },
-              TrackObject
-            )
+              })
+            ) as TrackObject)
         )
     )
   ).map(formatTrack)
@@ -72,31 +67,30 @@ const getCoverArt = (data: MusicObject) =>
   [
     data.artwork_url?.replace('-large', '-original'),
     data.artwork_url,
-    ...(PlaylistObject.is(data)
+    ...((data.kind === 'playlist'
       ? data.tracks
           .flatMap((track) =>
-            TrackObject.is(track)
+            track.artwork_url
               ? [
                   track.artwork_url?.replace('-large', '-original'),
                   track.artwork_url,
                 ]
               : undefined
           )
-          .filter(isDefined)
-      : []),
-  ].filter((a) => a != null)
+          .filter((t) => t !== undefined)
+      : []) as string[]),
+  ].filter((a) => a != null) as string[]
 
 export const resolve: ResolveFunction = async (url) => {
   const token = await requestToken()
   if (!token) throw new Error('Could not find client id')
 
-  const response = await fetchJson(
-    {
+  const response = JSON.parse(
+    await fetch({
       url: 'https://api-v2.soundcloud.com/resolve',
       urlParameters: { url, client_id: token },
-    },
-    MusicObject
-  )
+    })
+  ) as MusicObject
 
   const url_ = response.permalink_url
   const title = response.title

@@ -14,24 +14,16 @@ import {
   loading,
 } from '../../common/utils/one-shot'
 import { pipe } from '../../common/utils/pipe'
-import { isDefined } from '../../common/utils/types'
 import styles from '../styles/app.module.css'
 
 const getFilename = ({ title, artists }: ResolveData) => {
   let filename = ''
-  if (isDefined(artists) && artists.length > 0) {
-    filename += artists.join(', ')
-  }
-  if (isDefined(title)) {
-    if (isDefined(artists) && artists.length > 0) {
-      filename += ' - '
-    }
+  if (artists && artists.length > 0) filename += artists.join(', ')
+  if (title) {
+    if (artists && artists.length > 0) filename += ' - '
     filename += title
   }
-  if (filename.length === 0) {
-    return 'cover'
-  }
-  return filename
+  return filename.length === 0 ? 'cover' : filename
 }
 
 export const App: FunctionComponent = () => {
@@ -41,17 +33,16 @@ export const App: FunctionComponent = () => {
   useEffect(() => {
     const handleDownload = async (data: ResolveData) => {
       const { coverArt, url } = data
-      if (isDefined(coverArt)) {
+      if (coverArt) {
         const filename = getFilename(data)
         await download(coverArt.map((url) => ({ url, filename })))
 
-        if (isDefined(url)) {
+        if (url) {
           const sourceInput = document.getElementById(
             'source'
           ) as HTMLTextAreaElement | null
-          if (sourceInput !== null && sourceInput.value.length === 0) {
+          if (sourceInput && sourceInput.value.length === 0)
             sourceInput.value = url
-          }
         }
 
         setState(complete(data))

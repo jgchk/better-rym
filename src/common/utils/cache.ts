@@ -1,5 +1,4 @@
 import { ServiceId } from '../services/types'
-import { isDefined } from './types'
 
 interface StoredValue<T> {
   expire: number
@@ -48,7 +47,7 @@ export const clean = async (): Promise<void> => {
   await Promise.all(
     Object.entries(wholeStorage).map(async ([key, value]) => {
       const storedValue = parseStoredValue(value)
-      if (isDefined(storedValue) && isExpired(storedValue))
+      if (storedValue !== undefined && isExpired(storedValue))
         await browser.storage.local.remove(key)
     })
   )
@@ -65,15 +64,9 @@ export const withCache = <A, T>(
     params: arguments_,
   })
   const cached = await get<T>(key)
-  if (isDefined(cached)) {
-    return cached
-  }
+  if (cached !== undefined) return cached
 
   const result = await function_(...arguments_)
-
-  if (isDefined(result)) {
-    void set(key, result)
-  }
-
+  if (result !== undefined) void set(key, result)
   return result
 }
