@@ -1,108 +1,66 @@
-import * as t from 'io-ts'
+export type TokenResponse = {
+  access_token: string
+  expires_in: number
+  token_type: string
+  scope?: string
+}
 
-export type TokenResponse = t.TypeOf<typeof TokenResponse>
-export const TokenResponse = t.intersection(
-  [
-    t.type({
-      access_token: t.string,
-      expires_in: t.number,
-      token_type: t.string,
-    }),
-    t.partial({
-      scope: t.string,
-    }),
-  ],
-  'TokenResponse'
-)
+type ExternalUrlObject = { spotify: string }
 
-const ExternalUrlObject = t.type({ spotify: t.string }, 'ExternalUrlObject')
+type ImageObject = {
+  width: number
+  height: number
+  url: string
+}
 
-const ImageObject = t.type(
-  {
-    width: t.Int,
-    height: t.Int,
-    url: t.string,
-  },
-  'ImageObject'
-)
+type SimplifiedAlbumObject = {
+  external_urls: ExternalUrlObject
+  images: ImageObject[]
+  release_date: string
+}
 
-const SimplifiedAlbumObject = t.type(
-  {
-    external_urls: ExternalUrlObject,
-    images: t.array(ImageObject),
-    release_date: t.string,
-  },
-  'SimplifiedAlbumObject'
-)
+type CopyrightObject = { text: string }
 
-const CopyrightObject = t.type({ text: t.string }, 'CopyrightObject')
+type PagingObject<C extends unknown> = {
+  href: string
+  items: C[]
+  limit: number
+  next: string | null
+  offset: number
+  previous: string | null
+  total: number
+}
 
-const PagingObject = <C extends t.Mixed>(item: C) =>
-  t.type(
-    {
-      href: t.string,
-      items: t.array(item),
-      limit: t.Int,
-      next: t.union([t.string, t.null]),
-      offset: t.Int,
-      previous: t.union([t.string, t.null]),
-      total: t.Int,
-    },
-    'PagingObject'
-  )
+export type AlbumSearchObject = { albums: PagingObject<SimplifiedAlbumObject> }
 
-export type AlbumSearchObject = t.TypeOf<typeof AlbumSearchObject>
-export const AlbumSearchObject = t.type(
-  { albums: PagingObject(SimplifiedAlbumObject) },
-  'AlbumSearchObject'
-)
+export type SimplifiedTrackObject = {
+  disc_number: number
+  duration_ms: number
+  name: string
+  track_number: number
+}
 
-export type SimplifiedTrackObject = t.TypeOf<typeof SimplifiedTrackObject>
-export const SimplifiedTrackObject = t.type(
-  {
-    disc_number: t.Int,
-    duration_ms: t.Int,
-    name: t.string,
-    track_number: t.Int,
-  },
-  'SimplifiedTrackObject'
-)
+type ArtistObject = { name: string }
 
-const ArtistObject = t.type({ name: t.string }, 'ArtistObject')
+export type AlbumType = 'album' | 'single' | 'compilation'
 
-export type AlbumType = t.TypeOf<typeof AlbumType>
-const AlbumType = t.union([
-  t.literal('album'),
-  t.literal('single'),
-  t.literal('compilation'),
-])
+export type AlbumTracks = PagingObject<SimplifiedTrackObject>
 
-export type AlbumTracks = t.TypeOf<typeof AlbumTracks>
-export const AlbumTracks = PagingObject(SimplifiedTrackObject)
+export type AlbumObject = {
+  album_type: AlbumType
+  artists: ArtistObject[]
+  copyrights: CopyrightObject[]
+  external_urls: ExternalUrlObject
+  images: ImageObject[]
+  name: string
+  release_date: string
+  tracks: AlbumTracks
+}
 
-export type AlbumObject = t.TypeOf<typeof AlbumObject>
-export const AlbumObject = t.type(
-  {
-    album_type: AlbumType,
-    artists: t.array(ArtistObject),
-    copyrights: t.array(CopyrightObject),
-    external_urls: ExternalUrlObject,
-    images: t.array(ImageObject),
-    name: t.string,
-    release_date: t.string,
-    tracks: AlbumTracks,
-  },
-  'AlbumObject'
-)
-
-export type TrackObject = t.TypeOf<typeof TrackObject>
-export const TrackObject = t.type(
-  {
-    album: SimplifiedAlbumObject,
-    artists: t.array(ArtistObject),
-    duration_ms: t.Int,
-    external_urls: ExternalUrlObject,
-    name: t.string,
-  },
-  'TrackObject'
-)
+export type TrackObject = {
+  album: SimplifiedAlbumObject
+  artists: ArtistObject[]
+  duration_ms: number
+  external_urls: ExternalUrlObject
+  name: string
+}

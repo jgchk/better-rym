@@ -1,5 +1,4 @@
 import { fetch } from '../../utils/fetch'
-import { decode } from '../../utils/io-ts'
 import { SearchFunction } from '../types'
 import { SearchObject } from './codecs'
 
@@ -24,7 +23,7 @@ export const search: SearchFunction = async ({ artist, title }) => {
   ][1]
   if (!searchObjectString) throw new Error('Could not find search metadata')
 
-  const searchObject = decode(SearchObject)(searchObjectString)
+  const searchObject = JSON.parse(searchObjectString) as SearchObject
   const videoData =
     searchObject.contents.twoColumnSearchResultsRenderer.primaryContents
       .sectionListRenderer.contents[0]?.itemSectionRenderer?.contents

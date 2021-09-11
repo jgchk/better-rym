@@ -1,16 +1,15 @@
 import { asArray } from '../../utils/array'
 import { secondsToString, stringToDate } from '../../utils/datetime'
 import { fetch } from '../../utils/fetch'
-import { decode } from '../../utils/io-ts'
 import { getReleaseType } from '../../utils/music'
 import { ReleaseDate, ResolveFunction, Track } from '../types'
-import { AlbumData, ReleaseData, TrackData } from './codec'
+import { ReleaseData } from './codec'
 
 const getData = (document_: Document) => {
   const text = document_.querySelector<HTMLScriptElement>(
     'script[data-tralbum]'
   )?.dataset.tralbum
-  return text ? decode(ReleaseData)(text) : undefined
+  return text ? (JSON.parse(text) as ReleaseData) : undefined
 }
 
 const getDate = (data: ReleaseData): ReleaseDate | undefined => {
@@ -19,7 +18,7 @@ const getDate = (data: ReleaseData): ReleaseDate | undefined => {
 }
 
 const getTracks = (data: ReleaseData): Track[] | undefined => {
-  if (TrackData.is(data)) {
+  if (data.item_type === 'track') {
     const trackInfo = data.trackinfo[0]
     if (trackInfo)
       return [
@@ -28,7 +27,7 @@ const getTracks = (data: ReleaseData): Track[] | undefined => {
           duration: secondsToString(trackInfo.duration),
         },
       ]
-  } else if (AlbumData.is(data)) {
+  } else if (data.item_type === 'album') {
     return data.trackinfo.map((track) => ({
       position: track.track_num.toString(),
       title: track.title,
@@ -38,10 +37,9 @@ const getTracks = (data: ReleaseData): Track[] | undefined => {
 }
 
 const getCoverArt = (document_: Document) => {
-  const element = document_.querySelector<HTMLAnchorElement>(
-    '#tralbumArt a.popupImage'
-  )
-  return element?.href.replace('10.jpg', '0')
+  return document_
+    .querySelector<HTMLAnchorElement>('#tralbumArt a.popupImage')
+    ?.href.replace('10.jpg', '0.jpg')
 }
 
 export const resolve: ResolveFunction = async (url) => {

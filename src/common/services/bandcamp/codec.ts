@@ -1,5 +1,3 @@
-import * as t from 'io-ts'
-
 type UserResult = { type: 'f' }
 
 type BandResult = { type: 'b' }
@@ -26,46 +24,35 @@ export type SearchObject = {
   results: [BandResult | AlbumResult | TrackResult | UserResult]
 }
 
-export const TrackData = t.type(
-  {
-    album_release_date: t.union([t.string, t.null]),
-    artist: t.string,
-    current: t.type({
-      release_date: t.union([t.string, t.null]),
-      title: t.string,
-    }),
-    item_type: t.literal('track'),
-    trackinfo: t.array(
-      t.type({
-        duration: t.number,
-        title: t.string,
-      })
-    ),
-    url: t.string,
-  },
-  'TrackData'
-)
+export type TrackData = {
+  album_release_date: string | null
+  artist: string
+  current: {
+    release_date: string | null
+    title: string
+  }
+  item_type: 'track'
+  trackinfo: {
+    duration: number
+    title: string
+  }[]
+  url: string
+}
 
-export const AlbumData = t.type(
-  {
-    album_release_date: t.union([t.string, t.null]),
-    artist: t.string,
-    current: t.type({
-      release_date: t.union([t.string, t.null]),
-      title: t.string,
-    }),
-    item_type: t.literal('album'),
-    trackinfo: t.array(
-      t.type({
-        duration: t.number,
-        title: t.string,
-        track_num: t.Int,
-      })
-    ),
-    url: t.string,
-  },
-  'AlbumData'
-)
+export type AlbumData = {
+  album_release_date: string | null
+  artist: string
+  current: {
+    release_date: string | null
+    title: string
+  }
+  item_type: 'album'
+  trackinfo: {
+    duration: number
+    title: string
+    track_num: number
+  }[]
+  url: string
+}
 
-export type ReleaseData = t.TypeOf<typeof ReleaseData>
-export const ReleaseData = t.union([TrackData, AlbumData])
+export type ReleaseData = TrackData | AlbumData

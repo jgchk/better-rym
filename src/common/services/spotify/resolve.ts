@@ -1,6 +1,6 @@
 import { asArray } from '../../utils/array'
 import { secondsToString } from '../../utils/datetime'
-import { fetchJson } from '../../utils/fetch'
+import { fetch } from '../../utils/fetch'
 import { getReleaseType } from '../../utils/music'
 import { ReleaseDate, ResolveData, ResolveFunction, Track } from '../types'
 import { requestToken } from './auth'
@@ -41,13 +41,12 @@ const getTracks = async (
   let next = tracks.next
   const allTracks = tracks.items
   while (next !== null) {
-    const nextResponse = await fetchJson(
-      {
+    const nextResponse = JSON.parse(
+      await fetch({
         url: next,
         headers: { Authorization: `Bearer ${token}` },
-      },
-      AlbumTracks
-    )
+      })
+    ) as AlbumTracks
     allTracks.push(...nextResponse.items)
     next = nextResponse.next
   }
@@ -65,7 +64,9 @@ const parseType = (type: AlbumType, numberOfTracks: number) =>
   type === 'compilation' ? type : getReleaseType(numberOfTracks)
 
 const getCoverArt = (data: AlbumObject | TrackObject) => {
-  const images = AlbumObject.is(data) ? data.images : data.album.images
+  const images = (data as AlbumObject)
+    ? (data as AlbumObject).images
+    : (data as TrackObject).album.images
   return images.sort((a, b) => b.width * b.height - a.width * a.height)[0]?.url
 }
 
@@ -73,13 +74,12 @@ const resolveAlbum = async (
   id: string,
   token: string
 ): Promise<ResolveData> => {
-  const response = await fetchJson(
-    {
+  const response = JSON.parse(
+    await fetch({
       url: `https://api.spotify.com/v1/albums/${id}`,
       headers: { Authorization: `Bearer ${token}` },
-    },
-    AlbumObject
-  )
+    })
+  ) as AlbumObject
 
   const url = response.external_urls.spotify
   const title = response.name
@@ -108,13 +108,12 @@ const resolveTrack = async (
   id: string,
   token: string
 ): Promise<ResolveData> => {
-  const response = await fetchJson(
-    {
+  const response = JSON.parse(
+    await fetch({
       url: `https://api.spotify.com/v1/tracks/${id}`,
       headers: { Authorization: `Bearer ${token}` },
-    },
-    TrackObject
-  )
+    })
+  ) as TrackObject
 
   const url = response.external_urls.spotify
   const title = response.name
