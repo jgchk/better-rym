@@ -53,6 +53,7 @@ export type ReleaseType =
   | 'ep'
   | 'single'
   | 'mixtape'
+  | 'music video'
   | 'dj mix'
   | 'bootleg'
   | 'video'

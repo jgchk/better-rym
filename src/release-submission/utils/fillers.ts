@@ -18,6 +18,7 @@ const TYPE_IDS: Record<ReleaseType, string> = {
   ep: 'e',
   single: 'i',
   mixtape: 'm',
+  'music video': 'o',
   'dj mix': 'j',
   bootleg: 'b',
   video: 'd',
@@ -155,8 +156,9 @@ const waitForResult = (
 ): Promise<HTMLDivElement | undefined> =>
   new Promise((resolve) => {
     const listener = () => {
-      const firstResult =
-        iframe.contentDocument?.querySelector<HTMLDivElement>('div.result')
+      const firstResult = iframe.contentDocument?.querySelector<HTMLDivElement>(
+        'div.result'
+      )
       if (isNotNull(firstResult) && isDefined(firstResult)) {
         resolve(firstResult)
       } else {
@@ -194,8 +196,9 @@ const fillArtist = async (artist: string) => {
 const fillArtists = async (artists: string[]) => {
   if (artists[0]?.toLowerCase() === 'various artists') {
     // Various Artists release
-    const element =
-      forceQuerySelector<HTMLInputElement>(document)(`input#cat_va`)
+    const element = forceQuerySelector<HTMLInputElement>(document)(
+      `input#cat_va`
+    )
     element.click()
   } else {
     // Regular release
@@ -214,7 +217,8 @@ const fillType = (type: ReleaseType) => {
   const element = forceQuerySelector<HTMLInputElement>(document)(
     `input#category${TYPE_IDS[type]}`
   )
-  element.checked = true
+  element.click() // click to trigger DOM onClick events (e.g. field updates on 'music video' click)
+  element.checked = true // ensure that element is checked
 }
 
 const fillYear = (year: number) => {
@@ -223,8 +227,9 @@ const fillYear = (year: number) => {
 }
 
 const fillMonth = (month: number) => {
-  const element =
-    forceQuerySelector<HTMLSelectElement>(document)('select#month')
+  const element = forceQuerySelector<HTMLSelectElement>(document)(
+    'select#month'
+  )
   element.value = month.toString().padStart(2, '0')
 }
 
@@ -281,8 +286,9 @@ const fillTracks = (tracks: Track[], capitalization: CapitalizationType) => {
     })
     .join('\n')
 
-  const advancedButton =
-    forceQuerySelector<HTMLAnchorElement>(document)('a#goAdvancedBtn')
+  const advancedButton = forceQuerySelector<HTMLAnchorElement>(document)(
+    'a#goAdvancedBtn'
+  )
   advancedButton.click()
 
   const advancedInput = forceQuerySelector<HTMLTextAreaElement>(document)(
@@ -290,8 +296,9 @@ const fillTracks = (tracks: Track[], capitalization: CapitalizationType) => {
   )
   advancedInput.value = tracksString
 
-  const simpleButton =
-    forceQuerySelector<HTMLAnchorElement>(document)('a#goSimpleBtn')
+  const simpleButton = forceQuerySelector<HTMLAnchorElement>(document)(
+    'a#goSimpleBtn'
+  )
   simpleButton.click()
 }
 
@@ -308,14 +315,16 @@ const fillLabel = (label: ReleaseLabel) => {
     submit.click()
   }
 
-  const catalogElement =
-    forceQuerySelector<HTMLInputElement>(document)('input#catalog_no')
+  const catalogElement = forceQuerySelector<HTMLInputElement>(document)(
+    'input#catalog_no'
+  )
   catalogElement.value = label.catno ?? ''
 }
 
 const fillSource = (url: string) => {
-  const element =
-    forceQuerySelector<HTMLTextAreaElement>(document)('textarea#notes')
+  const element = forceQuerySelector<HTMLTextAreaElement>(document)(
+    'textarea#notes'
+  )
   element.value = url
 }
 
