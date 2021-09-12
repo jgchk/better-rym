@@ -191,6 +191,8 @@ const parseAttribute = (
       return ['80 rpm', {}]
     case 'Single Sided':
       return ['single-sided', {}]
+    case 'Advance':
+      return ['promo', {}]
     case 'Album':
       return [undefined, { type: 'album' }]
     case 'Mini-Album':
