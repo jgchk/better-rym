@@ -1,9 +1,8 @@
 import getArtistTitle from 'get-artist-title'
 import { secondsToString, stringToDate } from '../../utils/datetime'
-import { fetchJson } from '../../utils/fetch'
+import { fetch } from '../../utils/fetch'
 import { FetchRequest } from '../../utils/messaging/codec'
 import { getReleaseType } from '../../utils/music'
-import { isDefined, isNull } from '../../utils/types'
 import { ResolveData, ResolveFunction, Track } from '../types'
 import { YOUTUBE_KEY } from './auth'
 import { Playlist, PlaylistItems, Video } from './codecs'
@@ -23,7 +22,7 @@ const parseTitle = (
   data: Video['items'][number] | Playlist['items'][number]
 ) => {
   const artistTitle = getArtistTitle(data.snippet.title)
-  return isDefined(artistTitle)
+  return artistTitle
     ? { artists: [artistTitle[0]], title: artistTitle[1] }
     : { artists: [data.snippet.channelTitle], title: data.snippet.title }
 }
@@ -31,17 +30,18 @@ const parseTitle = (
 const getTrack = async (videoId: string): Promise<Track> => {
   const {
     items: [response],
-  } = await fetchJson(
-    {
+  } = JSON.parse(
+    await fetch({
       url: 'https://youtube.googleapis.com/youtube/v3/videos',
       urlParameters: {
         id: videoId,
         part: 'snippet,contentDetails',
         key: YOUTUBE_KEY,
       },
-    },
-    Video
-  )
+    })
+  ) as Video
+
+  if (response === undefined) throw new Error('Failed to retrieve video')
 
   const { title } = parseTitle(response)
   const duration = parseDuration(response.contentDetails.duration)
@@ -59,21 +59,20 @@ const getTracks = async (playlistId: string): Promise<Track[]> => {
       part: 'contentDetails',
       key: YOUTUBE_KEY,
     }
-    if (isDefined(pageToken)) {
+    if (pageToken) {
       urlParameters.pageToken = pageToken
     }
 
-    const { items, nextPageToken } = await fetchJson(
-      {
+    const { items, nextPageToken } = JSON.parse(
+      await fetch({
         url: 'https://www.googleapis.com/youtube/v3/playlistItems',
         urlParameters,
-      },
-      PlaylistItems
-    )
+      })
+    ) as PlaylistItems
 
     videos.push(...items)
     pageToken = nextPageToken
-  } while (isDefined(pageToken))
+  } while (pageToken)
 
   return Promise.all(
     videos.map((video) => getTrack(video.contentDetails.videoId))
@@ -83,13 +82,14 @@ const getTracks = async (playlistId: string): Promise<Track[]> => {
 const resolvePlaylist = async (id: string): Promise<ResolveData> => {
   const {
     items: [response],
-  } = await fetchJson(
-    {
+  } = JSON.parse(
+    await fetch({
       url: 'https://www.googleapis.com/youtube/v3/playlists',
       urlParameters: { id, part: 'snippet', key: YOUTUBE_KEY },
-    },
-    Playlist
-  )
+    })
+  ) as Playlist
+
+  if (response === undefined) throw new Error('Failed to retrieve playlist')
 
   const url = `https://www.youtube.com/playlist?list=${response.id}`
   const { title, artists } = parseTitle(response)
@@ -116,13 +116,14 @@ const resolvePlaylist = async (id: string): Promise<ResolveData> => {
 const resolveVideo = async (id: string): Promise<ResolveData> => {
   const {
     items: [response],
-  } = await fetchJson(
-    {
+  } = JSON.parse(
+    await fetch({
       url: 'https://youtube.googleapis.com/youtube/v3/videos',
       urlParameters: { id, part: 'snippet,contentDetails', key: YOUTUBE_KEY },
-    },
-    Video
-  )
+    })
+  ) as Video
+
+  if (response === undefined) throw new Error('Failed to retrieve video')
 
   const url = `https://www.youtube.com/watch?v=${response.id}`
   const { title, artists } = parseTitle(response)
@@ -145,8 +146,7 @@ const resolveVideo = async (id: string): Promise<ResolveData> => {
 }
 
 export const resolve: ResolveFunction = async (url) => {
-  const match = regex.exec(url)
-  if (isNull(match)) throw new Error('Invalid Spotify URL')
+  if (regex.exec(url) == null) throw new Error('Invalid YouTube URL')
 
   const parsedUrl = new URL(url)
   let videoId: string | undefined
@@ -159,9 +159,9 @@ export const resolve: ResolveFunction = async (url) => {
     playlistId = parsedUrl.searchParams.get('list') ?? undefined
   }
 
-  if (isDefined(playlistId)) {
+  if (playlistId) {
     return resolvePlaylist(playlistId)
-  } else if (isDefined(videoId)) {
+  } else if (videoId) {
     return resolveVideo(videoId)
   } else {
     throw new Error('Could not find ID in link')

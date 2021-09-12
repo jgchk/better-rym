@@ -5,7 +5,6 @@ import {
   waitForCallback,
   waitForElement,
 } from '../../common/utils/dom'
-import { isNotNull, isNull } from '../../common/utils/types'
 
 const getTitle = async () => {
   const titleElement = await waitForElement<HTMLMetaElement>(
@@ -25,24 +24,22 @@ const getLinks = async (): Promise<Links> =>
     const element = document.querySelector(
       '.release_left_column .hide-for-small'
     )
-    if (isNull(element)) return
+    if (!element) return
 
     const complete =
-      isNotNull(element.querySelector('a[href^="/submit_media_link"]')) ||
+      element.querySelector('a[href^="/submit_media_link"]') !== null ||
       isDocumentReady()
     if (!complete) return
 
     const getLink = (service: ServiceId) => {
-      const linkElement = element.querySelector<HTMLAnchorElement>(
+      return element.querySelector<HTMLAnchorElement>(
         `a.ui_media_link_btn_${service}`
-      )
-      return linkElement?.href
+      )?.href
     }
 
-    const links = Object.fromEntries(
+    return Object.fromEntries(
       SEARCHABLES.map(({ id }) => [id, getLink(id)])
     ) as Record<ServiceId, string | undefined>
-    return links
   })
 
 export type Metadata = { artist: string; title: string }

@@ -2,7 +2,7 @@ import { asArray } from '../../utils/array'
 import { stringToDate } from '../../utils/datetime'
 import { fetch } from '../../utils/fetch'
 import { getReleaseType } from '../../utils/music'
-import { isDefined, isUndefined } from '../../utils/types'
+import { isDefined } from '../../utils/types'
 import { ResolveFunction } from '../types'
 
 const getTitle = (document_: Document) => {
@@ -21,7 +21,7 @@ const getDate = (document_: Document) => {
     document_.querySelectorAll('.section_info .meta dd').item(0)?.textContent ||
     undefined
 
-  return isUndefined(dateString) ? undefined : stringToDate(dateString)
+  return !dateString ? undefined : stringToDate(dateString)
 }
 
 const getTracks = (document_: Document) =>
@@ -41,13 +41,10 @@ const getType = (document_: Document, numberOfTracks: number) => {
   switch (type) {
     case '싱글':
       return 'single'
-
     case 'EP':
       return 'ep'
-
     case '정규':
       return 'album'
-
     default:
       return getReleaseType(numberOfTracks)
   }
@@ -58,7 +55,7 @@ const getCoverArt = (document_: Document) => {
     document_.querySelector<HTMLImageElement>('.image_typeAll img')?.src ||
     undefined
 
-  if (isUndefined(url)) return undefined
+  if (!url) return undefined
 
   // resize the image to a higher res version
   return url

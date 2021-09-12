@@ -4,6 +4,7 @@ export const parseMarkup = async (markup: string): Promise<HTMLSpanElement> => {
   // if markup is empty, just return an empty span
   if (!markup) {
     const span = document.createElement('span')
+    span.className = 'rendered_text'
     return span
   }
 

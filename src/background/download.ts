@@ -4,7 +4,6 @@ import {
   DownloadRequest,
   DownloadResponse,
 } from '../common/utils/messaging/codec'
-import { isDefined } from '../common/utils/types'
 
 const mimeTypes: Record<string, string | undefined> = {
   'image/bmp': 'bmp',
@@ -33,11 +32,12 @@ export const download = async ({
       const mimeTypeExtension = mimeTypes[blob.type]
       const urlExtension = url.split('.').pop()
 
-      const extension = isDefined(mimeTypeExtension)
-        ? `.${mimeTypeExtension}`
-        : isDefined(urlExtension)
-        ? `.${urlExtension}`
-        : ''
+      const extension =
+        mimeTypeExtension !== undefined
+          ? `.${mimeTypeExtension}`
+          : urlExtension !== undefined
+          ? `.${urlExtension}`
+          : ''
       const formattedFilename = filename.slice(0, 100 - extension.length)
       const filenameWithExtension = filenamify(
         `${formattedFilename}${extension}`

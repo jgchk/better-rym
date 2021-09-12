@@ -1,5 +1,4 @@
 import { fetch } from '../../utils/fetch'
-import { isUndefined } from '../../utils/types'
 import { EmbedFunction } from '../types'
 
 export const embed: EmbedFunction = async (url) => {
@@ -10,7 +9,7 @@ export const embed: EmbedFunction = async (url) => {
     'meta[property="twitter:player"]'
   )?.content
   const albumId = twitterEmbedUrl?.match(/album=(\d+)/)?.[1]
-  if (isUndefined(albumId)) return undefined
+  if (!albumId) return undefined
 
   return `<iframe style="border: 0; width: 350px; height: 470px;" src="https://bandcamp.com/EmbeddedPlayer/album=${albumId}/size=large/bgcol=ffffff/linkcol=0687f5/tracklist=false/transparent=true/" seamless><a href="${url}"></a></iframe>`
 }

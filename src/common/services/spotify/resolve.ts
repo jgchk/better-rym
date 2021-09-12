@@ -1,8 +1,7 @@
 import { asArray } from '../../utils/array'
 import { secondsToString } from '../../utils/datetime'
-import { fetchJson } from '../../utils/fetch'
+import { fetch } from '../../utils/fetch'
 import { getReleaseType } from '../../utils/music'
-import { isNotNull, isNull, isUndefined } from '../../utils/types'
 import { ReleaseDate, ResolveData, ResolveFunction, Track } from '../types'
 import { requestToken } from './auth'
 import {
@@ -41,14 +40,13 @@ const getTracks = async (
 ): Promise<Track[]> => {
   let next = tracks.next
   const allTracks = tracks.items
-  while (isNotNull(next)) {
-    const nextResponse = await fetchJson(
-      {
+  while (next !== null) {
+    const nextResponse = JSON.parse(
+      await fetch({
         url: next,
         headers: { Authorization: `Bearer ${token}` },
-      },
-      AlbumTracks
-    )
+      })
+    ) as AlbumTracks
     allTracks.push(...nextResponse.items)
     next = nextResponse.next
   }
@@ -66,7 +64,9 @@ const parseType = (type: AlbumType, numberOfTracks: number) =>
   type === 'compilation' ? type : getReleaseType(numberOfTracks)
 
 const getCoverArt = (data: AlbumObject | TrackObject) => {
-  const images = AlbumObject.is(data) ? data.images : data.album.images
+  const images = (data as AlbumObject)
+    ? (data as AlbumObject).images
+    : (data as TrackObject).album.images
   return images.sort((a, b) => b.width * b.height - a.width * a.height)[0]?.url
 }
 
@@ -74,13 +74,12 @@ const resolveAlbum = async (
   id: string,
   token: string
 ): Promise<ResolveData> => {
-  const response = await fetchJson(
-    {
+  const response = JSON.parse(
+    await fetch({
       url: `https://api.spotify.com/v1/albums/${id}`,
       headers: { Authorization: `Bearer ${token}` },
-    },
-    AlbumObject
-  )
+    })
+  ) as AlbumObject
 
   const url = response.external_urls.spotify
   const title = response.name
@@ -89,7 +88,7 @@ const resolveAlbum = async (
   const tracks = await getTracks(response.tracks, token)
   const type = parseType(response.album_type, tracks.length)
   const coverArt = asArray(getCoverArt(response))
-  const label = { name: response.copyrights[0]?.text, catno: '' }
+  const label = { name: response.copyrights[0]?.text }
 
   return {
     url,
@@ -109,13 +108,12 @@ const resolveTrack = async (
   id: string,
   token: string
 ): Promise<ResolveData> => {
-  const response = await fetchJson(
-    {
+  const response = JSON.parse(
+    await fetch({
       url: `https://api.spotify.com/v1/tracks/${id}`,
       headers: { Authorization: `Bearer ${token}` },
-    },
-    TrackObject
-  )
+    })
+  ) as TrackObject
 
   const url = response.external_urls.spotify
   const title = response.name
@@ -144,16 +142,16 @@ const resolveTrack = async (
 
 export const resolve: ResolveFunction = async (url) => {
   const match = regex.exec(url)
-  if (isNull(match)) throw new Error('Invalid Spotify URL')
+  if (match === null) throw new Error('Invalid Spotify URL')
 
   const type = match[1]
-  if (isUndefined(type) || !isValidLinkType(type))
+  if (!type || !isValidLinkType(type))
     throw new Error(
       `Expected link to be album/track. Received: ${String(type)}`
     )
 
   const id = match[2]
-  if (isUndefined(id)) throw new Error('Could not find ID in link')
+  if (!id) throw new Error('Could not find ID in link')
 
   const { access_token } = await requestToken()
   return type === 'album'

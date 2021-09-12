@@ -1,4 +1,7 @@
 # BetterRYM
+<a href="LICENSE.md"><img src="https://badgen.net/github/license/jgchk/better-rym" /></a>
+<a href="https://addons.mozilla.org/en-US/firefox/addon/better-rym/"><img src="https://badgen.net/amo/v/better-rym?color=orange" /></a>
+<a href="https://chrome.google.com/webstore/detail/betterrym/pdbgknkejapoehgogijhmahhpiimlhjg"><img src="https://badgen.net/chrome-web-store/v/pdbgknkejapoehgogijhmahhpiimlhjg?color=green" /></a>
 
 Enhancements for [RateYourMusic](https://rateyourmusic.com/) 🎧
 

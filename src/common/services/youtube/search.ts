@@ -1,6 +1,5 @@
 import { fetch } from '../../utils/fetch'
-import { decode } from '../../utils/io-ts'
-import { isDefined, isUndefined } from '../../utils/types'
+import { isDefined } from '../../utils/types'
 import { SearchFunction } from '../types'
 import { SearchObject } from './codecs'
 
@@ -23,17 +22,15 @@ export const search: SearchFunction = async ({ artist, title }) => {
   const searchObjectString = [
     ...(/var ytInitialData = ({.*});/.exec(dataScript) ?? []),
   ][1]
-  if (isUndefined(searchObjectString))
-    throw new Error('Could not find search metadata')
+  if (!searchObjectString) throw new Error('Could not find search metadata')
 
-  const searchObject = decode(SearchObject)(searchObjectString)
+  const searchObject = JSON.parse(searchObjectString) as SearchObject
   const videoData =
     searchObject.contents.twoColumnSearchResultsRenderer.primaryContents
       .sectionListRenderer.contents[0]?.itemSectionRenderer?.contents
-  if (isUndefined(videoData)) throw new Error('Could not find video data')
+  if (!videoData) throw new Error('Could not find video data')
 
-  const videoId = videoData
-    .map((video) => video.videoRenderer)
-    .find(isDefined)?.videoId
+  const videoId = videoData.map((video) => video.videoRenderer).find(isDefined)
+    ?.videoId
   return videoId ? `https://www.youtube.com/watch?v=${videoId}` : undefined
 }

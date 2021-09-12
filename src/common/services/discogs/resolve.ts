@@ -1,8 +1,8 @@
 import { mergeAndConcat } from 'merge-anything'
-import { fetchJson } from '../../../common/utils/fetch'
+import { fetch } from '../../../common/utils/fetch'
 import { getReleaseType } from '../../utils/music'
-import { isNull, isUndefined } from '../../utils/types'
 import {
+  DiscSize,
   ReleaseAttribute,
   ReleaseDate,
   ReleaseFormat,
@@ -31,37 +31,28 @@ const parseFormat = (
 ): [ReleaseFormat | undefined, Partial<ResolveData>] => {
   switch (format.name) {
     case 'Vinyl':
+    case 'Flexi-disc':
+    case 'Lathe Cut':
+    case 'Pathé Disc':
+    case 'Edison Disc':
       return ['vinyl', {}]
     case 'Acetate':
       return ['acetate', {}]
-    case 'Flexi-disc':
-      return ['vinyl', {}]
-    case 'Lathe Cut':
-      return ['vinyl', {}]
     case 'Shellac':
       return ['shellac', {}]
-    case 'Pathé Disc':
-      return ['vinyl', {}]
-    case 'Edison Disc':
-      return ['vinyl', {}]
     case 'Cylinder':
       return ['phonograph cylinder', {}]
     case 'CD':
       return ['cd', {}]
     case 'CDr':
       return ['cd-r', {}]
-    case 'CDV':
-      return ['laserdisc', {}]
     case 'DVD':
-      return ['dvd', {}]
-    case 'DVDr':
-      return ['dvd-r', {}]
     case 'HD DVD':
       return ['dvd', {}]
+    case 'DVDr':
     case 'HD DVD-R':
       return ['dvd-r', {}]
     case 'Blu-ray':
-      return ['blu-ray', {}]
     case 'Blu-ray-R':
       return ['blu-ray', {}]
     case 'SACD':
@@ -71,65 +62,44 @@ const parseFormat = (
     case '8-Track Cartridge':
       return ['8 track', {}]
     case 'Cassette':
-      return ['cassette', {}]
     case 'DC-International':
-      return ['cassette', {}]
     case 'Elcaset':
+    case 'RCA Tape Cartridge':
+    case 'Pocket Rocker':
+    case 'Revere Magnetic Stereo Tape Ca':
+    case 'Tefifon':
+    case 'Sabamobil':
       return ['cassette', {}]
+    case 'Microcassette':
+    case 'NT Cassette':
+      return ['microcasette', {}]
     case 'PlayTape':
       return ['playtape', {}]
-    case 'RCA Tape Cartridge':
-      return ['cassette', {}]
     case 'DAT':
       return ['dat', {}]
     case 'DCC':
       return ['dcc', {}]
-    case 'Microcassette':
-      return ['microcasette', {}]
-    case 'NT Cassette':
-      return ['microcasette', {}]
-    case 'Pocket Rocker':
-      return ['cassette', {}]
-    case 'Revere Magnetic Stereo Tape Ca':
-      return ['cassette', {}]
-    case 'Tefifon':
-      return ['cassette', {}]
-    case 'Reel-To-Reel':
-      return ['reel-to-reel', {}]
-    case 'Sabamobil':
-      return ['cassette', {}]
     case 'Betacam':
-      return ['beta', {}]
     case 'Betacam SP':
-      return ['beta', {}]
     case 'Betamax':
       return ['beta', {}]
     case 'Cartrivision':
-      return ['vhs', {}]
     case 'MiniDV':
-      return ['vhs', {}]
     case 'U-matic':
-      return ['vhs', {}]
     case 'VHS':
-      return ['vhs', {}]
     case 'Video 2000':
-      return ['vhs', {}]
     case 'Video8':
       return ['vhs', {}]
+    case 'Reel-To-Reel':
     case 'Film Reel':
       return ['reel-to-reel', {}]
+    case 'CDV':
     case 'Laserdisc':
-      return ['laserdisc', {}]
     case 'SelectaVision':
-      return ['laserdisc', {}]
     case 'VHD':
       return ['laserdisc', {}]
-    case 'Wire Recording':
-      return [undefined, {}]
     case 'Minidisc':
-      return ['minidisc', {}]
     case 'MVD':
-      return ['minidisc', {}]
     case 'UMD':
       return ['minidisc', {}]
     case 'Floppy Disk':
@@ -138,8 +108,8 @@ const parseFormat = (
       return ['digital file', { attributes: ['downloadable'] }]
     case 'Memory Stick':
       return ['digital file', { attributes: ['usb/flash drive'] }]
+    case 'Wire Recording':
     case 'Hybrid':
-      return [undefined, {}]
     case 'All Media':
       return [undefined, {}]
     case 'Box Set':
@@ -148,31 +118,20 @@ const parseFormat = (
 }
 
 const parseAttribute = (
-  desc: FormatDescription
+  desc: FormatDescription | string
 ): [ReleaseAttribute | undefined, Partial<ResolveData>] => {
   switch (desc) {
-    case 'LP':
-      return [undefined, { type: 'album' }]
     case '16"':
-      return [undefined, { discSize: '16' }]
     case '12"':
-      return [undefined, { discSize: '12' }]
     case '11"':
-      return [undefined, { discSize: '11' }]
     case '10"':
-      return [undefined, { discSize: '10' }]
     case '9"':
-      return [undefined, { discSize: '9' }]
     case '8"':
-      return [undefined, { discSize: '8' }]
     case '7"':
-      return [undefined, { discSize: '7' }]
     case '6"':
-      return [undefined, { discSize: '6' }]
     case '4"':
-      return [undefined, { discSize: '4' }]
     case '3"':
-      return [undefined, { discSize: '3' }]
+      return [undefined, { discSize: desc.slice(0, -1) as DiscSize }]
     case '6½"':
     case '5½"':
     case '3½"':
@@ -193,14 +152,13 @@ const parseAttribute = (
       return ['single-sided', {}]
     case 'Advance':
       return ['promo', {}]
+    case 'LP':
     case 'Album':
-      return [undefined, { type: 'album' }]
     case 'Mini-Album':
       return [undefined, { type: 'album' }]
     case 'EP':
       return [undefined, { type: 'ep' }]
     case 'Maxi-Single':
-      return [undefined, { type: 'single' }]
     case 'Single':
       return [undefined, { type: 'single' }]
     case 'Compilation':
@@ -231,16 +189,12 @@ const parseAttribute = (
       return [undefined, { type: 'bootleg' }]
     case 'White Label':
       return ['white label', {}]
-    case 'Mono':
-      return ['mono', {}]
     case 'Quadraphonic':
       return ['quadraphonic', {}]
     case 'HDCD':
       return [undefined, { format: 'hdcd' }]
     case 'VCD':
-      return [undefined, { format: 'vcd' }]
     case 'AVCD':
-      return [undefined, { format: 'vcd' }]
     case 'SVCD':
       return [undefined, { format: 'vcd' }]
     case 'DVD-Audio':
@@ -249,8 +203,8 @@ const parseAttribute = (
       return ['3 3/4 ips', {}]
     case '7 ½ ips':
       return ['7 1/2 ips', {}]
+    case 'Mono':
     case '2-Track Mono':
-      return ['mono', {}]
     case '4-Track Mono':
       return ['mono', {}]
     case 'AIFC':
@@ -275,41 +229,37 @@ const parseAttribute = (
 
 const parseAttributes = (
   format: Format
-): readonly [ReleaseAttribute[], Partial<ResolveData>] =>
-  (format.descriptions ?? []).reduce<
-    [ReleaseAttribute[], Partial<ResolveData>]
-  >(
-    ([attributes, resolveData], desc) => {
-      const [descAttribute, descResolveData] = parseAttribute(desc)
-      const descAttributeArray: ReleaseAttribute[] = descAttribute
-        ? [descAttribute]
-        : []
-      const combinedAttributes: ReleaseAttribute[] = [
-        ...attributes,
-        ...descAttributeArray,
-      ]
-      return [combinedAttributes, mergeAndConcat(resolveData, descResolveData)]
-    },
-    [[], {}]
-  )
+): readonly [ReleaseAttribute[], Partial<ResolveData>] => {
+  if (!format.descriptions) return [[], {}]
+
+  let attributes: ReleaseAttribute[] = []
+  let data: Partial<ResolveData> = {}
+  for (const description of format.descriptions) {
+    const [descAttribute, descResolveData] = parseAttribute(description)
+    const descAttributeArray: ReleaseAttribute[] = descAttribute
+      ? [descAttribute]
+      : []
+    attributes = [...attributes, ...descAttributeArray]
+    data = mergeAndConcat(data, descResolveData)
+  }
+  return [attributes, data]
+}
 
 const resolveRelease = async (id: string): Promise<ResolveData> => {
-  const response = await fetchJson(
-    {
+  const response = JSON.parse(
+    await fetch({
       url: `https://api.discogs.com/releases/${id}`,
       urlParameters: {
         key: client_key,
         secret: client_secret,
       },
-    },
-    Release
-  )
+    })
+  ) as Release
 
   const url = response.uri
   const title = response.title
   const artists = response.artists.map((artist) => artist.name)
-  const date =
-    response.released === undefined ? undefined : parseDate(response.released)
+  const date = !response.released ? undefined : parseDate(response.released)
   const tracks = response.tracklist.map((track) => ({
     position: track.position.replace('-', '.').replace(/(CD|DVD)\D?/, ''), // CD1-1 -> 1.1
     title: track.title,
@@ -337,9 +287,8 @@ const resolveRelease = async (id: string): Promise<ResolveData> => {
   }
 
   // special case: demos are indicated in the "text" property of the format
-  if (response.formats[0]?.text?.toLowerCase() === 'demo') {
+  if (response.formats[0]?.text?.toLowerCase() === 'demo')
     attributes.push('demo')
-  }
 
   const resolveData = mergeAndConcat(
     {
@@ -362,31 +311,30 @@ const resolveRelease = async (id: string): Promise<ResolveData> => {
 }
 
 const getMasterPrimaryReleaseId = async (masterId: string) => {
-  const response = await fetchJson(
-    {
+  const response = JSON.parse(
+    await fetch({
       url: `https://api.discogs.com/masters/${masterId}`,
       urlParameters: {
         key: client_key,
         secret: client_secret,
       },
-    },
-    Master
-  )
+    })
+  ) as Master
   return response.main_release
 }
 
 export const resolve: ResolveFunction = async (url) => {
   const match = regex.exec(url)
-  if (isNull(match)) throw new Error('Invalid Discogs URL')
+  if (!match) throw new Error('Invalid Discogs URL')
 
   const type = match[5]
-  if (isUndefined(type) || !isValidLinkType(type))
+  if (!type || !isValidLinkType(type))
     throw new Error(
       `Expected link to be release/master. Received: ${String(type)}`
     )
 
   const id = match[6]
-  if (isUndefined(id)) throw new Error('Could not find ID in link')
+  if (!id) throw new Error('Could not find ID in link')
 
   const releaseId =
     type === 'release' ? id : (await getMasterPrimaryReleaseId(id)).toString()
