@@ -128,9 +128,6 @@ const resolveVideo = async (id: string): Promise<ResolveData> => {
   const url = `https://www.youtube.com/watch?v=${response.id}`
   const { title, artists } = parseTitle(response)
   const date = stringToDate(response.snippet.publishedAt)
-  const tracks = [
-    { title, duration: parseDuration(response.contentDetails.duration) },
-  ]
   const coverArt = [
     `https://img.youtube.com/vi/${id}/maxresdefault.jpg`,
     `https://img.youtube.com/vi/${id}/sddefault.jpg`,
@@ -143,10 +140,7 @@ const resolveVideo = async (id: string): Promise<ResolveData> => {
     title,
     artists,
     date,
-    type: 'single',
-    format: 'digital file',
-    attributes: ['streaming'],
-    tracks,
+    type: 'music video',
     coverArt,
   }
 }

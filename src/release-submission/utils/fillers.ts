@@ -17,6 +17,7 @@ const TYPE_IDS: Record<ReleaseType, string> = {
   ep: 'e',
   single: 'i',
   mixtape: 'm',
+  'music video': 'o',
   'dj mix': 'j',
   bootleg: 'b',
   video: 'd',
@@ -157,6 +158,7 @@ const waitForResult = (
       const firstResult = iframe.contentDocument?.querySelector<HTMLDivElement>(
         'div.result'
       )
+
       if (firstResult != null) resolve(firstResult)
       else resolve(undefined)
 
@@ -198,9 +200,11 @@ const fillArtists = async (artists: string[]) => {
 }
 
 const fillType = (type: ReleaseType) => {
-  forceQuerySelector<HTMLInputElement>(document)(
-    `#category${TYPE_IDS[type]}`
-  ).checked = true
+  const element = forceQuerySelector<HTMLInputElement>(document)(
+    `input#category${TYPE_IDS[type]}`
+  )
+  element.click() // click to trigger DOM onClick events (e.g. field updates on 'music video' click)
+  element.checked = true // ensure that element is checked
 }
 
 const fillYear = (year: number) => {
