@@ -20,4 +20,4 @@ export const findLastIndex = <T>(
 }
 
 export const asArray = <T>(item: T | undefined): T[] | undefined =>
-  item != undefined ? [item] : undefined
+  item !== undefined ? [item] : undefined

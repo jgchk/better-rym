@@ -2,7 +2,7 @@ import { asArray, chunkArray } from '../../utils/array'
 import { secondsToString, stringToDate } from '../../utils/datetime'
 import { fetch } from '../../utils/fetch'
 import { getReleaseType } from '../../utils/music'
-import { ResolveData, ResolveFunction, Track } from '../types'
+import { ResolveFunction, Track } from '../types'
 import { requestToken } from './auth'
 import { MusicObject, TrackObject } from './codecs'
 
@@ -110,5 +110,5 @@ export const resolve: ResolveFunction = async (url) => {
     attributes: ['streaming'],
     tracks,
     coverArt,
-  } as ResolveData
+  }
 }

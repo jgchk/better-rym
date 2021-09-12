@@ -1,4 +1,5 @@
 import { fetch } from '../../utils/fetch'
+import { isDefined } from '../../utils/types'
 import { SearchFunction } from '../types'
 import { SearchObject } from './codecs'
 
@@ -29,8 +30,7 @@ export const search: SearchFunction = async ({ artist, title }) => {
       .sectionListRenderer.contents[0]?.itemSectionRenderer?.contents
   if (!videoData) throw new Error('Could not find video data')
 
-  const videoId = videoData
-    .map((video) => video.videoRenderer)
-    .find((v) => v != undefined)?.videoId
+  const videoId = videoData.map((video) => video.videoRenderer).find(isDefined)
+    ?.videoId
   return videoId ? `https://www.youtube.com/watch?v=${videoId}` : undefined
 }

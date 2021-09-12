@@ -18,7 +18,7 @@ const getResponse = (message: unknown): Promise<BackgroundResponse> => {
 
 browser.runtime.onMessage.addListener((message, sender) => {
   const tabId = sender.tab?.id
-  if (!tabId) return
+  if (tabId === undefined) return
 
   void getResponse(message).then((response) =>
     browser.tabs.sendMessage(tabId, response)

@@ -2,7 +2,8 @@ import { asArray } from '../../utils/array'
 import { stringToDate } from '../../utils/datetime'
 import { fetch } from '../../utils/fetch'
 import { getReleaseType } from '../../utils/music'
-import { ResolveData, ResolveFunction } from '../types'
+import { isDefined } from '../../utils/types'
+import { ResolveFunction } from '../types'
 
 const getTitle = (document_: Document) => {
   // .song_name is misleading, it actually contains the album title
@@ -12,7 +13,7 @@ const getTitle = (document_: Document) => {
 const getArtists = (document_: Document) => {
   return [...document_.querySelectorAll('.section_info .info .artist a')]
     .map((element) => element.textContent?.trim())
-    .filter((a) => a != undefined)
+    .filter(isDefined)
 }
 
 const getDate = (document_: Document) => {
@@ -83,5 +84,5 @@ export const resolve: ResolveFunction = async (url) => {
     format: 'digital file',
     attributes: ['downloadable', 'streaming'],
     coverArt,
-  } as ResolveData
+  }
 }

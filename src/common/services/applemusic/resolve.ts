@@ -2,14 +2,14 @@ import { asArray } from '../../utils/array'
 import { secondsToString, stringToDate } from '../../utils/datetime'
 import { fetch } from '../../utils/fetch'
 import { getReleaseType } from '../../utils/music'
-import { ResolveData, ResolveFunction } from '../types'
+import { ResolveFunction } from '../types'
 import { Release, ReleaseHolder } from './codec'
 
 const getArtists = (release: Release) => {
   if (release.relationships.artists.data.length > 0) {
-    return release.relationships.artists.data.map((artist) => {
-      artist.attributes.name
-    })
+    return release.relationships.artists.data.map(
+      (artist) => artist.attributes.name
+    )
   }
   return ['Various Artists']
 }
@@ -66,5 +66,5 @@ export const resolve: ResolveFunction = async (url) => {
     tracks,
     coverArt,
     label,
-  } as ResolveData
+  }
 }
