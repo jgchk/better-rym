@@ -1,6 +1,6 @@
 import argv from 'webpack-nano/argv'
 
-const BROWSERS = ['chrome', 'firefox', 'edge'] as const
+const BROWSERS = ['chrome', 'firefox'] as const
 type Browser = typeof BROWSERS[number]
 const isBrowser = (browser: string): browser is Browser =>
   (BROWSERS as readonly string[]).includes(browser)
@@ -8,14 +8,13 @@ const isBrowser = (browser: string): browser is Browser =>
 const browserslists: Record<Browser, string> = Object.freeze({
   chrome: 'chrome >= 79',
   firefox: 'firefox >= 79',
-  edge: 'edge >= 79',
 })
 
 const { browser } = argv
 const browsers = (Array.isArray(browser)
   ? browser
   : browser === undefined
-  ? ['chrome', 'firefox', 'edge']
+  ? ['chrome', 'firefox']
   : [browser]
 ).filter(isBrowser)
 const browserslist = browsers
