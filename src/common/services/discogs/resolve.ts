@@ -258,7 +258,11 @@ const resolveRelease = async (id: string): Promise<ResolveData> => {
 
   const url = response.uri
   const title = response.title
-  const artists = response.artists.map((artist) => artist.name)
+  const artists = response.artists.map((artist) =>
+    // id 194 = various artists
+    // we do this by id instead of name ('Various' on discogs) to allow for artists named 'Various'
+    artist.id === 194 ? 'Various Artists' : artist.name
+  )
   const date = !response.released ? undefined : parseDate(response.released)
   const tracks = response.tracklist.map((track) => ({
     position: track.position.replace('-', '.').replace(/(CD|DVD)\D?/, ''), // CD1-1 -> 1.1
@@ -266,7 +270,7 @@ const resolveRelease = async (id: string): Promise<ResolveData> => {
     duration: track.duration,
   }))
   const type = getReleaseType(tracks.length)
-  const coverArt = response.images.map((image) => image.resource_url)
+  const coverArt = (response.images ?? []).map((image) => image.resource_url)
   const label = response.labels[0]
 
   let format: ReleaseFormat | undefined,

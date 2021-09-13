@@ -240,7 +240,7 @@ export type Format = {
 export type Release = {
   uri: string
   title: string
-  artists: [{ name: string }]
+  artists: [{ name: string; id: number }]
   tracklist: [
     {
       position: string
