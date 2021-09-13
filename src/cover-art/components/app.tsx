@@ -1,17 +1,18 @@
 import { FunctionComponent, h } from 'preact'
 import { useEffect, useState } from 'preact/hooks'
+
 import { StatusForm } from '../../common/components/status-form'
 import { useReleaseInfo } from '../../common/hooks/use-release-info'
 import { RESOLVABLES } from '../../common/services'
 import { ResolveData } from '../../common/services/types'
 import { download } from '../../common/utils/download'
 import {
-  OneShot,
   complete,
   failed,
   fold,
   initial,
   loading,
+  OneShot,
 } from '../../common/utils/one-shot'
 import { pipe } from '../../common/utils/pipe'
 import styles from '../styles/app.module.css'

@@ -1,4 +1,5 @@
 import { h, render } from 'preact'
+
 import { waitForElement } from '../common/utils/dom'
 import { App } from './components/app'
 

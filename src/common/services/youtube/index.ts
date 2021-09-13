@@ -1,6 +1,6 @@
+import Icon from '../../../../res/youtube.svg'
 import FoundIcon from '../../../../res/youtube-found.svg'
 import NotFoundIcon from '../../../../res/youtube-notfound.svg'
-import Icon from '../../../../res/youtube.svg'
 import { withCache } from '../../utils/cache'
 import { Resolvable, Searchable, Service } from '../types'
 import { regex } from './regex'

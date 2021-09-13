@@ -5,7 +5,7 @@ module.exports = {
     tsconfigRootDir: __dirname,
     project: './tsconfig.json',
   },
-  plugins: ['@typescript-eslint'],
+  plugins: ['@typescript-eslint', 'simple-import-sort'],
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
@@ -17,9 +17,6 @@ module.exports = {
     'plugin:react-hooks/recommended',
     'plugin:unicorn/recommended',
     'prettier',
-    'prettier/@typescript-eslint',
-    'prettier/react',
-    'prettier/unicorn',
   ],
   settings: {
     react: {
@@ -32,16 +29,18 @@ module.exports = {
   },
   rules: {
     'import/no-default-export': 'error',
-    'import/order': [
-      'warn',
-      { alphabetize: { order: 'asc', caseInsensitive: true } },
-    ],
-    'sort-imports': ['warn', { ignoreDeclarationSort: true }],
+
+    'simple-import-sort/imports': 'error',
+    'simple-import-sort/exports': 'error',
+
     'react/prop-types': 'off',
+
     'unicorn/no-array-callback-reference': 'off',
     'unicorn/no-array-reduce': 'off',
     'unicorn/no-useless-undefined': 'off',
     'unicorn/no-null': 'off',
     'unicorn/prefer-query-selector': 'off',
+    'unicorn/prefer-node-protocol': 'off',
+    'unicorn/prefer-module': 'off',
   },
 }

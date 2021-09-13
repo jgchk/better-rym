@@ -65,7 +65,7 @@ export const splitPhrases = (text: string): string[] => {
   let lastSplitIndex = 0
   const phrases = []
 
-  for (const [index, char] of text.split('').entries()) {
+  for (const [index, char] of [...text].entries()) {
     if (PUNCTUATION.has(char) || CLOSING_BRACKETS.has(char)) {
       const lastSlice = text.slice(lastSplitIndex, index + 1)
       if (DONT_SPLIT.some((word) => lastSlice.endsWith(word))) continue

@@ -1,6 +1,7 @@
-import { FunctionComponent, JSX, h } from 'preact'
+import { FunctionComponent, h, JSX } from 'preact'
 import { createPortal } from 'preact/compat'
 import { useState } from 'preact/hooks'
+
 import Icon from '../../../res/x.svg'
 import styles from '../styles/failed.module.css'
 import { clsx } from '../utils/clsx'

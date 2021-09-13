@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'preact/hooks'
+
 import { Resolvable, ResolveData, Service } from '../services/types'
-import { OneShot, complete, failed, initial, loading } from '../utils/one-shot'
+import { complete, failed, initial, loading, OneShot } from '../utils/one-shot'
 
 export type InfoState = OneShot<Error, ResolveData>
 export type FetchFunction = (

@@ -1,8 +1,8 @@
 import { FunctionComponent, h } from 'preact'
 import { useCallback, useEffect, useState } from 'preact/hooks'
+
 import { Searchable, Service } from '../../common/services/types'
 import {
-  OneShot,
   complete,
   failed,
   initial,
@@ -10,6 +10,7 @@ import {
   isFailed,
   isLoading,
   loading,
+  OneShot,
 } from '../../common/utils/one-shot'
 import { PageDataState } from '../hooks/use-page-data'
 import { Icon } from './icon'

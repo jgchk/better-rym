@@ -1,6 +1,6 @@
+import Icon from '../../../../res/applemusic.svg'
 import FoundIcon from '../../../../res/applemusic-found.svg'
 import NotFoundIcon from '../../../../res/applemusic-notfound.svg'
-import Icon from '../../../../res/applemusic.svg'
 import { withCache } from '../../utils/cache'
 import { Resolvable, Searchable, Service } from '../types'
 import { resolve } from './resolve'

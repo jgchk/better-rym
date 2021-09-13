@@ -1,5 +1,6 @@
 import { FunctionComponent, h } from 'preact'
 import { useCallback } from 'preact/hooks'
+
 import { StatusForm } from '../../common/components/status-form'
 import { useReleaseInfo } from '../../common/hooks/use-release-info'
 import { RESOLVABLES } from '../../common/services'

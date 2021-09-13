@@ -1,5 +1,6 @@
-import { VNode, h } from 'preact'
+import { h, VNode } from 'preact'
 import { useEffect, useState } from 'preact/hooks'
+
 import {
   CAPITALIZATION_TYPES,
   CapitalizationType,
@@ -39,9 +40,8 @@ export const Form = <S extends Service>({
     undefined
   )
   const [showMissingServiceError, setShowMissingServiceError] = useState(false)
-  const [capitalization, setCapitalization] = useState<CapitalizationType>(
-    'title-case'
-  )
+  const [capitalization, setCapitalization] =
+    useState<CapitalizationType>('title-case')
 
   useEffect(() => {
     const service = getMatchingService(services)(url)

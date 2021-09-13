@@ -1,5 +1,6 @@
 import { FunctionComponent, h } from 'preact'
 import { useCallback } from 'preact/hooks'
+
 import { Failed } from '../../common/components/failed'
 import { Loader } from '../../common/components/loader'
 import { Searchable, Service } from '../../common/services/types'

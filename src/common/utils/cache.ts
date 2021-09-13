@@ -36,7 +36,7 @@ export const get = async <T>(key: string): Promise<T | undefined> => {
 export const set = async <T>(
   key: string,
   value: T,
-  ttl = 3600000
+  ttl = 3_600_000
 ): Promise<void> => {
   const storedValue: StoredValue<T> = { expire: Date.now() + ttl, data: value }
   await browser.storage.local.set({ [key]: storedValue })
@@ -53,20 +53,22 @@ export const clean = async (): Promise<void> => {
   )
 }
 
-export const withCache = <A, T>(
-  serviceId: ServiceId,
-  functionName: string,
-  function_: (...arguments_: A[]) => T | Promise<T>
-) => async (...arguments_: A[]): Promise<T> => {
-  const key = JSON.stringify({
-    service: serviceId,
-    func: functionName,
-    params: arguments_,
-  })
-  const cached = await get<T>(key)
-  if (cached !== undefined) return cached
+export const withCache =
+  <A, T>(
+    serviceId: ServiceId,
+    functionName: string,
+    function_: (...arguments_: A[]) => T | Promise<T>
+  ) =>
+  async (...arguments_: A[]): Promise<T> => {
+    const key = JSON.stringify({
+      service: serviceId,
+      func: functionName,
+      params: arguments_,
+    })
+    const cached = await get<T>(key)
+    if (cached !== undefined) return cached
 
-  const result = await function_(...arguments_)
-  if (result !== undefined) void set(key, result)
-  return result
-}
+    const result = await function_(...arguments_)
+    if (result !== undefined) void set(key, result)
+    return result
+  }

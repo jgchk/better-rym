@@ -1,4 +1,5 @@
-import { VNode, h } from 'preact'
+import { h, VNode } from 'preact'
+
 import { Service } from '../services/types'
 import styles from '../styles/service-selector.module.css'
 import { clsx } from '../utils/clsx'

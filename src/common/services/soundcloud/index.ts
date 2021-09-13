@@ -1,6 +1,6 @@
+import Icon from '../../../../res/soundcloud.svg'
 import FoundIcon from '../../../../res/soundcloud-found.svg'
 import NotFoundIcon from '../../../../res/soundcloud-notfound.svg'
-import Icon from '../../../../res/soundcloud.svg'
 import { withCache } from '../../utils/cache'
 import { Embeddable, Resolvable, Searchable, Service } from '../types'
 import { embed } from './embed'

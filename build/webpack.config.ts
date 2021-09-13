@@ -5,9 +5,10 @@ import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'
 import DotEnvironment from 'dotenv-webpack'
 import ForkTsCheckerPlugin from 'fork-ts-checker-webpack-plugin'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
-import { Configuration } from 'webpack'
+import { Configuration, WebpackPluginInstance } from 'webpack'
 // import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import { merge } from 'webpack-merge'
+
 import { browsers, browserslist } from './browserlist'
 import {
   ExtensionManifestPlugin,
@@ -16,7 +17,7 @@ import {
 
 const isFirefox = browsers.length === 1 && browsers[0] === 'firefox'
 
-const common = (mode: 'development' | 'production') => {
+const common = (mode: 'development' | 'production'): Configuration => {
   const isProduction = mode === 'production'
   const isDevelopment = !isProduction
 
@@ -80,11 +81,13 @@ const common = (mode: 'development' | 'production') => {
         },
       }),
       new CleanPlugin(),
-      new DotEnvironment(),
-      new MiniCssExtractPlugin({ filename: '[name].css' }),
+      new DotEnvironment() as unknown as WebpackPluginInstance,
+      new MiniCssExtractPlugin({
+        filename: '[name].css',
+      }) as unknown as WebpackPluginInstance,
       ExtensionManifestPlugin({ isDevelopment, isFirefox }),
       new CopyPlugin({
-        patterns: [{ from: './res/icons/*', to: '[name].[ext]' }],
+        patterns: [{ from: './res/icons/*', to: '[name][ext]' }],
       }),
       // new BundleAnalyzerPlugin() as any,
     ],

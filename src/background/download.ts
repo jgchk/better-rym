@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-unresolved
 import filenamify from 'filenamify/browser'
+
 import {
   DownloadRequest,
   DownloadResponse,

@@ -6,12 +6,12 @@ import { Soundcloud } from './soundcloud'
 import { Spotify } from './spotify'
 import {
   Embeddable,
-  Resolvable,
-  Searchable,
-  Service,
   isEmbeddable,
   isResolvable,
   isSearchable,
+  Resolvable,
+  Searchable,
+  Service,
 } from './types'
 import { YouTube } from './youtube'
 
@@ -25,16 +25,14 @@ export const SERVICES: Service[] = [
   Melon,
 ]
 
-export const SEARCHABLES: (Service & Searchable)[] = SERVICES.filter(
-  isSearchable
-)
-export const RESOLVABLES: (Service & Resolvable)[] = SERVICES.filter(
-  isResolvable
-)
-export const EMBEDDABLES: (Service & Embeddable)[] = SERVICES.filter(
-  isEmbeddable
-)
+export const SEARCHABLES: (Service & Searchable)[] =
+  SERVICES.filter(isSearchable)
+export const RESOLVABLES: (Service & Resolvable)[] =
+  SERVICES.filter(isResolvable)
+export const EMBEDDABLES: (Service & Embeddable)[] =
+  SERVICES.filter(isEmbeddable)
 
-export const getMatchingService = <S extends Service>(services: S[]) => (
-  url: string
-): S | undefined => services.find((service) => service.regex.test(url))
+export const getMatchingService =
+  <S extends Service>(services: S[]) =>
+  (url: string): S | undefined =>
+    services.find((service) => service.regex.test(url))

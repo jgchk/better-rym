@@ -1,4 +1,5 @@
 import { h, render } from 'preact'
+
 import { Loader } from '../common/components/loader'
 import { forceQuerySelector, waitForElement } from '../common/utils/dom'
 import { fetch } from '../common/utils/fetch'
@@ -204,7 +205,7 @@ const unlock = (button: HTMLAnchorElement) => {
 
 const updateProfile = async () => {
   const entries: Dictionary = {}
-  for (const [k, v] of [...currentPreferences]) entries[k] = v as string
+  for (const [k, v] of currentPreferences) entries[k] = v as string
 
   await fetch({
     url: 'https://rateyourmusic.com/account/profile_edit_2',

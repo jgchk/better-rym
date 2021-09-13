@@ -1,4 +1,5 @@
 import getArtistTitle from 'get-artist-title'
+
 import { secondsToString, stringToDate } from '../../utils/datetime'
 import { fetch } from '../../utils/fetch'
 import { FetchRequest } from '../../utils/messaging/codec'

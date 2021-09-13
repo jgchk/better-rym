@@ -1,6 +1,6 @@
+import Icon from '../../../../res/bandcamp.svg'
 import FoundIcon from '../../../../res/bandcamp-found.svg'
 import NotFoundIcon from '../../../../res/bandcamp-notfound.svg'
-import Icon from '../../../../res/bandcamp.svg'
 import { withCache } from '../../utils/cache'
 import { Embeddable, Resolvable, Searchable, Service } from '../types'
 import { embed } from './embed'

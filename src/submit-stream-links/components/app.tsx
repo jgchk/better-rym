@@ -1,5 +1,6 @@
 import { FunctionComponent, h } from 'preact'
 import { useCallback, useEffect, useState } from 'preact/hooks'
+
 import { Complete } from '../../common/components/complete'
 import { Failed } from '../../common/components/failed'
 import { Loader } from '../../common/components/loader'
@@ -7,13 +8,13 @@ import { ServiceSelector } from '../../common/components/service-selector'
 import { EMBEDDABLES, getMatchingService } from '../../common/services'
 import { Embeddable, Service } from '../../common/services/types'
 import {
-  OneShot,
   complete,
   failed,
   fold,
   initial,
   isComplete,
   loading,
+  OneShot,
 } from '../../common/utils/one-shot'
 import { pipe } from '../../common/utils/pipe'
 import { useControlledInput } from '../hooks/use-controlled-input'
@@ -39,9 +40,8 @@ export const App: FunctionComponent<{ input: HTMLInputElement }> = ({
     if (matchingService) setService(matchingService)
   }, [url])
 
-  const [embedCode, setEmbedCode] = useState<
-    OneShot<Error, string | undefined>
-  >(initial)
+  const [embedCode, setEmbedCode] =
+    useState<OneShot<Error, string | undefined>>(initial)
 
   const fetchEmbedCode = useCallback(async () => {
     if (!service) {

@@ -1,4 +1,5 @@
 import { FunctionComponent, h } from 'preact'
+
 import { Button } from './button'
 
 const RELEASE_TYPES = [

@@ -1,7 +1,8 @@
-import path from 'path'
 import { customAlphabet } from 'nanoid'
+import path from 'path'
 import { WebpackPluginInstance } from 'webpack'
 import { WebpackManifestPlugin } from 'webpack-manifest-plugin'
+
 import manifest from '../manifest.json'
 import packageInfo from '../package.json'
 
@@ -124,6 +125,6 @@ export const ExtensionManifestPlugin = ({
         ],
       }
 
-      return output
+      return output as Record<string, string>
     },
   })
