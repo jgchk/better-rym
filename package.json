@@ -18,9 +18,7 @@
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "eslint --cache --fix",
     "*.css": "stylelint --fix",
-    "*": "prettier --write --ignore-unknown",
-    "*.js": "eslint --cache --fix",
-    "*.{js,css,md}": "prettier --write"
+    "*": "prettier --write --ignore-unknown"
   },
   "dependencies": {
     "@types/firefox-webext-browser": "^82.0.1",
