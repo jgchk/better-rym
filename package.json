@@ -33,11 +33,6 @@
     "string-similarity": "^4.0.4",
     "webextension-polyfill": "^0.8.0"
   },
-  "dependenciesMeta": {
-    "webextension-polyfill@0.8.0": {
-      "unplugged": true
-    }
-  },
   "devDependencies": {
     "@svgr/webpack": "^5.5.0",
     "@types/copy-webpack-plugin": "^8.0.1",
