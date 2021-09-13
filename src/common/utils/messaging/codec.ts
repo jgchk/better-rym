@@ -1,53 +1,43 @@
-import * as t from 'io-ts'
+export type FetchRequest = {
+  id: string
+  type: 'fetch'
+  data: {
+    url: string
+    method?: 'GET' | 'POST'
+    urlParameters?: { [key: string]: string }
+    headers?: { [key: string]: string }
+  }
+}
 
-export type FetchRequest = t.TypeOf<typeof FetchRequest>
-export const FetchRequest = t.type(
-  {
-    id: t.string,
-    type: t.literal('fetch'),
-    data: t.intersection([
-      t.type({ url: t.string }),
-      t.partial({
-        method: t.union([t.literal('GET'), t.literal('POST')]),
-        urlParameters: t.record(t.string, t.string),
-        headers: t.record(t.string, t.string),
-      }),
-    ]),
-  },
-  'FetchRequest'
-)
+export type FetchResponse = {
+  id: string
+  type: 'fetch'
+  data: {
+    body: string
+  }
+}
 
-export type FetchResponse = t.TypeOf<typeof FetchResponse>
-export const FetchResponse = t.type(
-  {
-    id: t.string,
-    type: t.literal('fetch'),
-    data: t.type({
-      body: t.string,
-    }),
-  },
-  'FetchResponse'
-)
+export type DownloadRequest = {
+  id: string
+  type: 'download'
+  data: {
+    url: string
+    filename: string
+  }[]
+}
 
-export type DownloadRequest = t.TypeOf<typeof DownloadRequest>
-export const DownloadRequest = t.type(
-  {
-    id: t.string,
-    type: t.literal('download'),
-    data: t.array(t.type({ url: t.string, filename: t.string })),
-  },
-  'DownloadRequest'
-)
-
-export type DownloadResponse = t.TypeOf<typeof DownloadResponse>
-export const DownloadResponse = t.type(
-  {
-    id: t.string,
-    type: t.literal('download'),
-    data: t.type({ id: t.number }),
-  },
-  'DownloadResponse'
-)
+export type DownloadResponse = {
+  id: string
+  type: 'download'
+  data: {
+    id: number
+  }
+}
 
 export type BackgroundRequest = FetchRequest | DownloadRequest
 export type BackgroundResponse = FetchResponse | DownloadResponse
+
+export const isBackgroundRequest = (o: unknown): o is BackgroundRequest =>
+  typeof o === 'object' && o !== null && 'id' in o && 'type' in o && 'data' in o
+export const isBackgroundResponse = (o: unknown): o is BackgroundResponse =>
+  typeof o === 'object' && o !== null && 'id' in o && 'type' in o && 'data' in o

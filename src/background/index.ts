@@ -1,19 +1,16 @@
 import {
   BackgroundResponse,
-  DownloadRequest,
-  FetchRequest,
+  isBackgroundRequest,
 } from '../common/utils/messaging/codec'
 import { download } from './download'
 import { backgroundFetch } from './fetch'
 
 const getResponse = (message: unknown): Promise<BackgroundResponse> => {
-  if (FetchRequest.is(message)) {
-    return backgroundFetch(message)
-  } else if (DownloadRequest.is(message)) {
-    return download(message)
-  } else {
-    throw new Error(`Invalid message: ${JSON.stringify(message)}`)
+  if (isBackgroundRequest(message)) {
+    if (message.type === 'fetch') return backgroundFetch(message)
+    if (message.type === 'download') return download(message)
   }
+  throw new Error(`Invalid message: ${JSON.stringify(message)}`)
 }
 
 browser.runtime.onMessage.addListener((message, sender) => {

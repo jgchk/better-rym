@@ -1,20 +1,22 @@
-import { Type } from 'io-ts'
 import { nanoid } from 'nanoid'
-import { BackgroundRequest, BackgroundResponse } from './codec'
+import {
+  BackgroundRequest,
+  BackgroundResponse,
+  isBackgroundResponse,
+} from './codec'
 
 export const sendBackgroundMessage = <
   Request extends BackgroundRequest,
   Response extends BackgroundResponse
 >(
-  request: Omit<Request, 'id'>,
-  type: Type<Response>
+  request: Omit<Request, 'id'>
 ): Promise<Response> =>
   new Promise((resolve) => {
     const requestId = nanoid()
 
     const onResponse = (response: unknown) => {
-      if (type.is(response) && response.id === requestId) {
-        resolve(response)
+      if (isBackgroundResponse(response) && response.id === requestId) {
+        resolve(response as Response)
         browser.runtime.onMessage.removeListener(onResponse)
       }
     }

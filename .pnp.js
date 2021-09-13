@@ -71,7 +71,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["fork-ts-checker-webpack-plugin", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:6.1.1"],
             ["get-artist-title", "npm:1.3.1"],
             ["husky", "npm:4.3.8"],
-            ["io-ts", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:2.2.14"],
             ["jest", "npm:26.6.3"],
             ["lint-staged", "npm:10.5.4"],
             ["merge-anything", "npm:4.0.1"],
@@ -4681,7 +4680,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["fork-ts-checker-webpack-plugin", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:6.1.1"],
             ["get-artist-title", "npm:1.3.1"],
             ["husky", "npm:4.3.8"],
-            ["io-ts", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:2.2.14"],
             ["jest", "npm:26.6.3"],
             ["lint-staged", "npm:10.5.4"],
             ["merge-anything", "npm:4.0.1"],
@@ -7571,15 +7569,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
-      ["fp-ts", [
-        ["npm:2.10.5", {
-          "packageLocation": "./.yarn/cache/fp-ts-npm-2.10.5-3ae9fe0386-7a5fd244e8.zip/node_modules/fp-ts/",
-          "packageDependencies": [
-            ["fp-ts", "npm:2.10.5"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
       ["fragment-cache", [
         ["npm:0.2.1", {
           "packageLocation": "./.yarn/cache/fragment-cache-npm-0.2.1-407fe74319-f88983f4bf.zip/node_modules/fragment-cache/",
@@ -8493,27 +8482,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/interpret-npm-2.2.0-3603a544e1-c89b6aa67f.zip/node_modules/interpret/",
           "packageDependencies": [
             ["interpret", "npm:2.2.0"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
-      ["io-ts", [
-        ["npm:2.2.14", {
-          "packageLocation": "./.yarn/cache/io-ts-npm-2.2.14-2c94ddeadd-9a874b38b1.zip/node_modules/io-ts/",
-          "packageDependencies": [
-            ["io-ts", "npm:2.2.14"]
-          ],
-          "linkType": "SOFT",
-        }],
-        ["virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:2.2.14", {
-          "packageLocation": "./.yarn/$$virtual/io-ts-virtual-9158864692/0/cache/io-ts-npm-2.2.14-2c94ddeadd-9a874b38b1.zip/node_modules/io-ts/",
-          "packageDependencies": [
-            ["io-ts", "virtual:b8e5a309d2baf35a866e1ea08d3f08b02645f2bea7885535b1cf91d7cca9315d955ff160a68dcde0ad7b4104731d557ba32515a097742c3a0cfa9be4bfe73305#npm:2.2.14"],
-            ["@types/fp-ts", null],
-            ["fp-ts", "npm:2.10.5"]
-          ],
-          "packagePeers": [
-            "@types/fp-ts"
           ],
           "linkType": "HARD",
         }]
