@@ -108,7 +108,7 @@ const development = merge<Configuration>(
           new CopyPlugin({
             patterns: [
               {
-                from: './.yarn/unplugged/**/node_modules/webextension-polyfill/dist/browser-polyfill.js',
+                from: './node_modules/webextension-polyfill/dist/browser-polyfill.js',
                 to: 'browser-polyfill.js',
               },
             ],
@@ -133,7 +133,7 @@ const production = merge<Configuration>(
           new CopyPlugin({
             patterns: [
               {
-                from: './.yarn/unplugged/**/node_modules/webextension-polyfill/dist/browser-polyfill.min.js',
+                from: './node_modules/webextension-polyfill/dist/browser-polyfill.min.js',
                 to: 'browser-polyfill.js',
               },
             ],

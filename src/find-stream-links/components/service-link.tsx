@@ -2,6 +2,7 @@ import { FunctionComponent, h } from 'preact'
 import { useCallback, useEffect, useState } from 'preact/hooks'
 
 import { Searchable, Service } from '../../common/services/types'
+import { parseError } from '../../common/utils/error'
 import {
   complete,
   failed,
@@ -44,8 +45,8 @@ export const ServiceLink: FunctionComponent<{
             } else {
               setState(complete({ _tag: 'found', url: foundLink }))
             }
-          } catch (error) {
-            setState(failed(error))
+          } catch (error: unknown) {
+            setState(failed(parseError(error)))
           }
         } else {
           setState(complete({ _tag: 'exists', url: existingLink }))
