@@ -10,6 +10,7 @@ import {
 } from '../../common/services/types'
 import { forceQuerySelector } from '../../common/utils/dom'
 import { CapitalizationType, capitalize } from './capitalization'
+import { ReleaseOptions } from './types'
 
 const TYPE_IDS: Record<ReleaseType, string> = {
   album: 's',
@@ -155,9 +156,8 @@ const waitForResult = (
 ): Promise<HTMLDivElement | undefined> =>
   new Promise((resolve) => {
     const listener = () => {
-      const firstResult = iframe.contentDocument?.querySelector<HTMLDivElement>(
-        'div.result'
-      )
+      const firstResult =
+        iframe.contentDocument?.querySelector<HTMLDivElement>('div.result')
 
       if (firstResult != null) resolve(firstResult)
       else resolve(undefined)
@@ -208,21 +208,20 @@ const fillType = (type: ReleaseType) => {
 }
 
 const fillYear = (year: number) => {
-  forceQuerySelector<HTMLSelectElement>(document)(
-    '#year'
-  ).value = year.toString()
+  forceQuerySelector<HTMLSelectElement>(document)('#year').value =
+    year.toString()
 }
 
 const fillMonth = (month: number) => {
-  forceQuerySelector<HTMLSelectElement>(document)(
-    '#month'
-  ).value = month.toString().padStart(2, '0')
+  forceQuerySelector<HTMLSelectElement>(document)('#month').value = month
+    .toString()
+    .padStart(2, '0')
 }
 
 const fillDay = (day: number) => {
-  forceQuerySelector<HTMLSelectElement>(document)(
-    '#day'
-  ).value = day.toString().padStart(2, '0')
+  forceQuerySelector<HTMLSelectElement>(document)('#day').value = day
+    .toString()
+    .padStart(2, '0')
 }
 
 const fillDate = (date: ReleaseDate) => {
@@ -271,9 +270,8 @@ const fillTracks = (tracks: Track[], capitalization: CapitalizationType) => {
     .join('\n')
 
   forceQuerySelector<HTMLAnchorElement>(document)('#goAdvancedBtn').click()
-  forceQuerySelector<HTMLTextAreaElement>(document)(
-    '#track_advanced'
-  ).value = tracksString
+  forceQuerySelector<HTMLTextAreaElement>(document)('#track_advanced').value =
+    tracksString
   forceQuerySelector<HTMLAnchorElement>(document)('#goSimpleBtn').click()
 }
 
@@ -308,16 +306,19 @@ export const fill = async (
     url,
     label,
   }: ResolveData,
-  capitalization: CapitalizationType
+  options: ReleaseOptions
 ): Promise<void> => {
-  if (artists !== undefined) await fillArtists(artists)
-  if (type !== undefined) fillType(type)
-  if (date !== undefined) fillDate(date)
-  if (title !== undefined) fillTitle(title, capitalization)
-  if (format !== undefined) fillFormat(format)
-  if (discSize !== undefined) fillDiscSize(discSize)
-  if (attributes !== undefined) fillAttributes(attributes)
-  if (tracks !== undefined) fillTracks(tracks, capitalization)
+  if (artists != null && options.fillFields.artists) await fillArtists(artists)
+  if (type != null && options.fillFields.type) fillType(type)
+  if (date != null && options.fillFields.date) fillDate(date)
+  if (title != null && options.fillFields.title)
+    fillTitle(title, options.capitalization)
+  if (format != null && options.fillFields.format) fillFormat(format)
+  if (discSize != null && options.fillFields.discSize) fillDiscSize(discSize)
+  if (label != null && options.fillFields.label) fillLabel(label)
+  if (attributes != null && options.fillFields.attributes)
+    fillAttributes(attributes)
+  if (tracks != null && options.fillFields.tracks)
+    fillTracks(tracks, options.capitalization)
   if (url !== undefined) fillSource(url)
-  if (label !== undefined) fillLabel(label)
 }

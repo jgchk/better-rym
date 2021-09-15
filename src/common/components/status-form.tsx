@@ -1,6 +1,6 @@
 import { h, VNode } from 'preact'
 
-import { CapitalizationType } from '../../release-submission/utils/capitalization'
+import { ReleaseOptions } from '../../release-submission/utils/types'
 import { Service } from '../services/types'
 import styles from '../styles/status-form.module.css'
 import { fold, OneShot } from '../utils/one-shot'
@@ -16,7 +16,7 @@ export type Properties<E extends Error, T, S extends Service> = {
   onSubmit: (
     url: string,
     service: S,
-    capitalization: CapitalizationType
+    options: ReleaseOptions
   ) => void | Promise<void>
   submitText?: string
   showAutoCapitalize?: boolean
