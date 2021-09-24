@@ -97,7 +97,9 @@ export const Form = <S extends Service>({
         )}
         {showAutoCapitalize && (
           <details>
-            <summary style='text-align:center'>Advanced Options</summary>
+            <summary className={styles.advancedButton}>
+              Advanced Options
+            </summary>
             <div
               id='brym-release-options'
               style='margin-top:0.5em;'
