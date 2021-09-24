@@ -6,6 +6,7 @@ const RELEASE_TYPES = [
   ['Albums', 'typs'],
   ['EPs', 'type'],
   ['Singles', 'typi'],
+  ['Music Videos', 'typo'],
   ['Mixtapes', 'typm'],
   ['DJ Mixes', 'typj'],
   ['Compilations', 'typc'],
