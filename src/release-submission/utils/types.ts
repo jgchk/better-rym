@@ -13,4 +13,5 @@ export type ReleaseOptions = {
     tracks: boolean
     label: boolean
   }
+  downloadArt: boolean
 }

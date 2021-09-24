@@ -1,6 +1,6 @@
 # BetterRYM
 
-<a href="LICENSE.md"><img src="https://badgen.net/github/license/jgchk/better-rym" /></a>
+<a href="LICENSE"><img src="https://badgen.net/github/license/jgchk/better-rym" /></a>
 <a href="https://addons.mozilla.org/en-US/firefox/addon/better-rym/"><img src="https://badgen.net/amo/v/better-rym?color=orange" /></a>
 <a href="https://chrome.google.com/webstore/detail/betterrym/pdbgknkejapoehgogijhmahhpiimlhjg"><img src="https://badgen.net/chrome-web-store/v/pdbgknkejapoehgogijhmahhpiimlhjg?color=green" /></a>
 
@@ -18,7 +18,7 @@ Enhancements for [RateYourMusic](https://rateyourmusic.com/) 🎧
 
 ### Prerequisites
 
-1. Install [yarn](https://yarnpkg.com)
+1. Install [yarn](https://classic.yarnpkg.com)
 2. Create a `.env` file at the project root with the following format:
 
 ```
