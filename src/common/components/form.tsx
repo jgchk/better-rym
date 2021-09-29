@@ -53,6 +53,7 @@ export const Form = <S extends Service>({
   const [showMissingServiceError, setShowMissingServiceError] = useState(false)
   const [capitalization, setCapitalization] =
     useState<CapitalizationType>('title-case')
+  const [downloadArt, setDownloadArt] = useState(false)
 
   useEffect(() => {
     const service = getMatchingService(services)(url)
@@ -74,6 +75,7 @@ export const Form = <S extends Service>({
           onSubmit(url, selectedService, {
             capitalization: capitalization,
             fillFields: fillers,
+            downloadArt: downloadArt,
           } as ReleaseOptions)
         } else {
           setShowMissingServiceError(true)
@@ -124,6 +126,17 @@ export const Form = <S extends Service>({
                   ))}
                 </select>
               </label>
+              <label htmlFor='brym-downloadart'>
+                Download Cover Art:&nbsp;
+                <input
+                  type='checkbox'
+                  checked={downloadArt}
+                  onChange={(event) =>
+                    setDownloadArt((event.target as HTMLInputElement).checked)
+                  }
+                />
+              </label>
+              <hr style='width:100%;margin-bottom:0.5em' />
               {Object.keys(FIELDS_MAP).map((field) => (
                 <label key={field}>
                   {FIELDS_MAP[field]}:&nbsp;

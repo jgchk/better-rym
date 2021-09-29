@@ -48,8 +48,8 @@ const editClick = (event: MouseEvent) => {
   const button = event.target as HTMLElement
   if (
     button.style.display != 'none' &&
-    button.dataset['alias'] !== undefined &&
-    button.dataset['field'] !== undefined
+    button.dataset['alias'] != null &&
+    button.dataset['field'] != null
   ) {
     button.style.display = 'none'
 
@@ -98,8 +98,8 @@ const editClick = (event: MouseEvent) => {
 const saveClick = (event: MouseEvent) => {
   const button = event.target as HTMLAnchorElement
   if (
-    button.dataset['alias'] !== undefined &&
-    button.dataset['field'] !== undefined &&
+    button.dataset['alias'] != null &&
+    button.dataset['field'] != null &&
     button.style.cursor != 'default'
   ) {
     const container = getCorrespondingContent(button.dataset['alias'])
@@ -120,11 +120,7 @@ const saveClick = (event: MouseEvent) => {
 
 const previewClick = (event: MouseEvent) => {
   const button = event.target as HTMLAnchorElement
-  if (
-    button.dataset['alias'] !== undefined &&
-    button.dataset['field'] !== undefined &&
-    button.style.cursor != 'default'
-  ) {
+  if (button.dataset['alias'] != null && button.style.cursor != 'default') {
     const container = forceQuerySelector(
       getCorrespondingContent(button.dataset['alias'])
     )('div')
@@ -153,10 +149,7 @@ const cancelClick = (event: MouseEvent) => {
 }
 
 const closeUpShop = (button: HTMLAnchorElement) => {
-  if (
-    button.dataset['alias'] !== undefined &&
-    button.dataset['field'] !== undefined
-  ) {
+  if (button.dataset['alias'] != null && button.dataset['field'] != null) {
     const container = getCorrespondingContent(button.dataset['alias'])
     const field = button.dataset['field']
     if (container.querySelector('svg[class*="loader"]') != null)
