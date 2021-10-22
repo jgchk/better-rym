@@ -27,7 +27,7 @@ SPOTIFY_SECRET=j3821r0nowJFDASEIQ8931ho
 YOUTUBE_KEY=jf2138fFJ_432jf8f198flasj8
 ```
 
-3. Create a [Spotify client ID/secret](https://developer.spotify.com/documentation/general/guides/app-settings/#register-your-app) and a [YouTube API key](https://developers.google.com/youtube/v3/getting-started#before-you-start) and place them in the `.env` file.
+3. Create a [Spotify client ID/secret](https://developer.spotify.com/documentation/web-api/quick-start/) and a [YouTube API key](https://developers.google.com/youtube/v3/getting-started#before-you-start) and place them in the `.env` file.
 
 ### Development
 
