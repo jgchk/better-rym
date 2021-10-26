@@ -11,3 +11,5 @@ if (location.pathname.startsWith('/release/')) {
 } else if (location.pathname.startsWith('/~')) {
   void import('./user-page')
 }
+
+void import('./search-bar')
