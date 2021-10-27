@@ -1,3 +1,6 @@
+import { pipe } from '../../common/utils/pipe'
+import { regexIndexOf, regexLastIndexOf } from '../../common/utils/string'
+
 export type TokenType = 'word' | 'romanNumeral' | 'whitespace' | 'punctuation'
 
 const parsers: [TokenType, RegExp][] = [
@@ -5,7 +8,7 @@ const parsers: [TokenType, RegExp][] = [
     'romanNumeral',
     /(?!mi)(?=[cdilmvx])m*(c[dm]|d?c*)(x[cl]|l?x*)(i[vx]|v?i*)(?=\s|$)/i,
   ],
-  ['word', /[^\s"()[\]{}“”-]+/],
+  ['word', /[^\s"()/[\]{}“”-]+/],
   ['whitespace', /\s+/],
   ['punctuation', /[^\s\w]/],
 ]
@@ -72,6 +75,17 @@ export const splitPhrases = (text: string): string[] => {
 
       phrases.push(lastSlice)
       lastSplitIndex = index + 1
+    } else if (char === '/') {
+      let lastSlice = text.slice(lastSplitIndex, index)
+      lastSlice = lastSlice.slice(
+        0,
+        pipe(regexLastIndexOf(lastSlice, /\S/), (index_) =>
+          index_ === -1 ? undefined : index_ + 1
+        )
+      )
+      phrases.push(lastSlice, ' / ')
+
+      lastSplitIndex = regexIndexOf(text, /\S/, index + 1)
     } else if (OPENING_BRACKETS.has(char)) {
       phrases.push(text.slice(lastSplitIndex, index))
       lastSplitIndex = index

@@ -1,7 +1,7 @@
 import { capitalize } from './capitalization'
 
 describe('title caps', () => {
-  const titles = [
+  const titles: (string | [string, string])[] = [
     'You Can Leave Your Hat On',
     'One Is For',
     'And You and I',
@@ -79,9 +79,16 @@ describe('title caps', () => {
     'B$%^h Made',
     '"Incalls Only"',
     '“Incalls Only “',
+    ['Edifice/Riftworm', 'Edifice / Riftworm'],
+    ['Frozen Heart / A Cracked Sea', 'Frozen Heart / A Cracked Sea'],
+    ['Frozen Heart  /    A Cracked Sea', 'Frozen Heart / A Cracked Sea'],
   ]
-  test.each(titles)('correctly capitalizes %p', (input) => {
-    expect(capitalize(input.toLowerCase(), 'title-case')).toBe(input)
+  test.each(titles)('correctly capitalizes %p', (testCase) => {
+    const [input, output] =
+      typeof testCase === 'string'
+        ? [testCase.toLowerCase(), testCase]
+        : [testCase[0].toLowerCase(), testCase[1]]
+    expect(capitalize(input, 'title-case')).toBe(output)
   })
 })
 

@@ -61,33 +61,33 @@ export const capitalize = (
         .map(capitalizePhrase(capitalization))
         .join('')
 
-const capitalizePhrase = (
-  capitalization: Exclude<CapitalizationType, 'as-is'>
-) => (phrase: Phrase): string => {
-  const firstWordIndex = phrase.findIndex(isWord)
-  const lastWordIndex = findLastIndex(phrase, isWord)
+const capitalizePhrase =
+  (capitalization: Exclude<CapitalizationType, 'as-is'>) =>
+  (phrase: Phrase): string => {
+    const firstWordIndex = phrase.findIndex(isWord)
+    const lastWordIndex = findLastIndex(phrase, isWord)
 
-  return capitalization === 'sentence-case'
-    ? phrase
-        .map((token, index) =>
-          index === firstWordIndex
-            ? toTitleCase(token)
-            : token.type === 'romanNumeral'
-            ? token.text.toUpperCase()
-            : token.text.toLowerCase()
-        )
-        .join('')
-    : phrase
-        .map((token, index) => {
-          if (index === firstWordIndex || index === lastWordIndex) {
-            return ENG_DO_NOT_CAPITALIZE_FORCE.has(token.text.toLowerCase())
-              ? token.text.toLowerCase()
-              : toTitleCase(token)
-          } else if (ENG_DO_NOT_CAPITALIZE.has(token.text.toLowerCase())) {
-            return token.text.toLowerCase()
-          } else {
-            return toTitleCase(token)
-          }
-        })
-        .join('')
-}
+    return capitalization === 'sentence-case'
+      ? phrase
+          .map((token, index) =>
+            index === firstWordIndex
+              ? toTitleCase(token)
+              : token.type === 'romanNumeral'
+              ? token.text.toUpperCase()
+              : token.text.toLowerCase()
+          )
+          .join('')
+      : phrase
+          .map((token, index) => {
+            if (index === firstWordIndex || index === lastWordIndex) {
+              return ENG_DO_NOT_CAPITALIZE_FORCE.has(token.text.toLowerCase())
+                ? token.text.toLowerCase()
+                : toTitleCase(token)
+            } else if (ENG_DO_NOT_CAPITALIZE.has(token.text.toLowerCase())) {
+              return token.text.toLowerCase()
+            } else {
+              return toTitleCase(token)
+            }
+          })
+          .join('')
+  }
