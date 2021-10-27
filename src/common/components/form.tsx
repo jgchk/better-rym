@@ -98,65 +98,67 @@ export const Form = <S extends Service>({
           <div className={styles.error}>Select an import source</div>
         )}
         {showAutoCapitalize && (
-          <details>
-            <summary className={styles.advancedButton}>
-              Advanced Options
-            </summary>
-            <div
-              id='brym-release-options'
-              style='margin-top:0.5em;'
-              className={styles.input}
-            >
-              <hr style='width:100%;margin-bottom:0.5em' />
-              <label htmlFor='brym-capitalize'>
-                Capitalization:&nbsp;
-                <select
-                  value={capitalization}
-                  onChange={(event) =>
-                    setCapitalization(
-                      (event.target as HTMLSelectElement)
-                        .value as CapitalizationType
-                    )
-                  }
-                >
-                  {CAPITALIZATION_TYPES.map((capType) => (
-                    <option value={capType} key={capType}>
-                      {CAPITALIZATION_TYPE_MAP[capType]}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <label htmlFor='brym-downloadart'>
-                Download Cover Art:&nbsp;
-                <input
-                  type='checkbox'
-                  checked={downloadArt}
-                  onChange={(event) =>
-                    setDownloadArt((event.target as HTMLInputElement).checked)
-                  }
-                />
-              </label>
-              <hr style='width:100%;margin-bottom:0.5em' />
-              {Object.keys(FIELDS_MAP).map((field) => (
-                <label key={field}>
-                  {FIELDS_MAP[field]}:&nbsp;
+          <>
+            <label htmlFor='brym-capitalize'>
+              Capitalization:&nbsp;
+              <select
+                value={capitalization}
+                onChange={(event) =>
+                  setCapitalization(
+                    (event.target as HTMLSelectElement)
+                      .value as CapitalizationType
+                  )
+                }
+              >
+                {CAPITALIZATION_TYPES.map((capType) => (
+                  <option value={capType} key={capType}>
+                    {CAPITALIZATION_TYPE_MAP[capType]}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <details>
+              <summary className={styles.advancedButton}>
+                Advanced Options
+              </summary>
+              <div
+                id='brym-release-options'
+                style='margin-top:0.5em;'
+                className={styles.input}
+              >
+                <hr style='width:100%;margin-bottom:0.5em' />
+                <label htmlFor='brym-downloadart'>
+                  Download Cover Art:&nbsp;
                   <input
-                    id={`brym-${field}`}
                     type='checkbox'
-                    checked={fillers[field]}
+                    checked={downloadArt}
                     onChange={(event) =>
-                      setFillers((previousState) => {
-                        const checkbox = event.target as HTMLInputElement
-                        const newState = previousState
-                        newState[checkbox.id.slice(5)] = checkbox.checked
-                        return newState
-                      })
+                      setDownloadArt((event.target as HTMLInputElement).checked)
                     }
                   />
                 </label>
-              ))}
-            </div>
-          </details>
+                <hr style='width:100%;margin-bottom:0.5em' />
+                {Object.keys(FIELDS_MAP).map((field) => (
+                  <label key={field}>
+                    {FIELDS_MAP[field]}:&nbsp;
+                    <input
+                      id={`brym-${field}`}
+                      type='checkbox'
+                      checked={fillers[field]}
+                      onChange={(event) =>
+                        setFillers((previousState) => {
+                          const checkbox = event.target as HTMLInputElement
+                          const newState = previousState
+                          newState[checkbox.id.slice(5)] = checkbox.checked
+                          return newState
+                        })
+                      }
+                    />
+                  </label>
+                ))}
+              </div>
+            </details>
+          </>
         )}
       </div>
       <input type='submit' value={submitText} className={styles.submit} />
