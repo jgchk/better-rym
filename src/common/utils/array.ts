@@ -30,7 +30,6 @@ export const uniqueBy =
 
     for (const item of items) {
       const appliedItem = function_(item)
-      console.log(item, !set.has(appliedItem))
       if (!set.has(appliedItem)) {
         set.add(appliedItem)
         result.push(item)

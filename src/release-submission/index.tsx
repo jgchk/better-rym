@@ -3,6 +3,7 @@ import { h, render } from 'preact'
 import { waitForElement } from '../common/utils/dom'
 import { Credits } from './components/credits'
 import { Import } from './components/import'
+import { NoLabel } from './components/no-label'
 import { UnknownArtist } from './components/unknown-artist'
 
 const injectImport = async () => {
@@ -45,12 +46,20 @@ const injectCredits = async () => {
   render(<Credits />, unknownArtistDiv)
 }
 
+const injectLabel = async () => {
+  const label = await waitForElement('#labellist')
+  const noLabelDiv = document.createElement('div')
+  label.after(noLabelDiv)
+  render(<NoLabel />, noLabelDiv)
+}
+
 const main = () =>
   Promise.all([
     injectImport(),
     injectClearTracklist(),
     injectFileUnder(),
     injectCredits(),
+    injectLabel(),
   ])
 
 void main()

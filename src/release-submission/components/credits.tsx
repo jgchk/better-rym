@@ -5,7 +5,7 @@ import { equals, uniqueBy } from '../../common/utils/array'
 import { clsx } from '../../common/utils/clsx'
 import { pipe } from '../../common/utils/pipe'
 import { ifDefined, isDefined } from '../../common/utils/types'
-import classes from '../styles/unknown-artist.module.css'
+import classes from '../styles/buttons.module.css'
 import { selectShortcut } from '../utils/page-functions'
 
 type Artist = {
@@ -20,7 +20,6 @@ export const Credits: FunctionComponent = () => {
     UNKNOWN_ARTIST,
   ])
   useEffect(() => {
-    console.log('OBSERVE')
     const observer = new MutationObserver(() => {
       if (!document.body) return
 
@@ -61,11 +60,6 @@ export const Credits: FunctionComponent = () => {
         uniqueBy((artist) => artist.id)
       )
 
-      console.log(
-        artists,
-        filedUnderArtists,
-        equals(artists, filedUnderArtists)
-      )
       if (!equals(artists, filedUnderArtists)) {
         setFiledUnderArtists(artists)
       }
@@ -75,7 +69,6 @@ export const Credits: FunctionComponent = () => {
 
     return () => observer.disconnect()
   }, [filedUnderArtists])
-  useEffect(() => console.log(filedUnderArtists), [filedUnderArtists])
 
   const handleClick = useCallback(
     (artist: Artist) => selectShortcut('a', artist.id, artist.name, 'credits'),
