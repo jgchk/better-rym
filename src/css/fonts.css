@@ -1,0 +1,29 @@
+@font-face {
+  font-weight: 400;
+  font-family: Dongle;
+  src: url('../fonts/Dongle/Dongle-Regular.ttf');
+}
+
+@font-face {
+  font-weight: 300;
+  font-family: Dongle;
+  src: url('../fonts/Dongle/Dongle-Bold.ttf');
+}
+
+@font-face {
+  font-weight: 700;
+  font-family: Dongle;
+  src: url('../fonts/Dongle/Dongle-Bold.ttf');
+}
+
+@font-face {
+  font-family: Karrik;
+  font-style: italic;
+  src: url('../fonts/Karrik/Karrik-Italic.woff2');
+}
+
+@font-face {
+  font-family: Karrik;
+  font-style: normal;
+  src: url('../fonts/Karrik/Karrik-Regular.woff2');
+}

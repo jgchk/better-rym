@@ -1,0 +1,110 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.title {
+  display: flex;
+  flex-direction: row;
+  gap: 22px;
+  align-items: center;
+  height: 120px;
+  text-shadow: 0 1px 1px rgb(0 0 0 / 12%), 0 2px 2px rgb(0 0 0 / 12%),
+    0 4px 4px rgb(0 0 0 / 12%), 0 8px 8px rgb(0 0 0 / 12%);
+}
+
+.title-image {
+  position: relative;
+  height: 100%;
+  transition: transform 0.5s;
+}
+
+.title-logo {
+  height: 100%;
+  border-radius: 50%;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 7%), 0 2px 4px rgb(0 0 0 / 7%),
+    0 4px 8px rgb(0 0 0 / 7%), 0 8px 16px rgb(0 0 0 / 7%),
+    0 16px 32px rgb(0 0 0 / 7%), 0 32px 64px rgb(0 0 0 / 7%);
+}
+
+.title-plus {
+  position: absolute;
+  right: -2%;
+  bottom: -2%;
+  color: #25cf23;
+  font-size: 108px;
+  font-family: Dongle, sans-serif;
+  text-shadow: 0 1px 1px rgb(0 0 0 / 12%), 0 2px 2px rgb(0 0 0 / 12%),
+    0 4px 4px rgb(0 0 0 / 12%), 0 8px 8px rgb(0 0 0 / 12%);
+  transform: rotate(0deg);
+  transform-origin: 50% 50%;
+  cursor: default;
+  transition: transform 1s;
+  pointer-events: none;
+}
+
+.title-plus > div {
+  position: relative;
+  top: 8px;
+  line-height: 44px;
+}
+
+.title-plus:hover,
+.title-image:hover .title-plus {
+  transform: rotate(360deg);
+}
+
+.title-image:hover {
+  transform: scale(1.1);
+}
+
+.title-text {
+  position: relative;
+  top: 8%;
+  color: #39393a;
+  font-size: 108px;
+  font-family: Dongle, sans-serif;
+  line-height: 80px;
+  transition: transform 0.5s;
+  pointer-events: none;
+}
+
+.download-links {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
+.download-link {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 11px;
+  color: #2c2c2c;
+  font-size: 22px;
+  font-family: Karrik, sans-serif;
+  text-decoration: none;
+  background: none;
+  border: 2px solid #ebebed;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.125s;
+}
+
+.download-link:hover {
+  background: #ebebed;
+}
+
+.chrome {
+  height: 40px;
+}
+
+.firefox {
+  height: 40px;
+}

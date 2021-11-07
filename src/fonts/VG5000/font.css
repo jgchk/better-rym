@@ -1,0 +1,11 @@
+@font-face {
+  font-weight: normal;
+  font-family: 'VG5000';
+  font-style: normal;
+  src: url('VG5000-Regular_web.eot');
+  src: url('VG5000-Regular_web.eot?#iefix') format('embedded-opentype'),
+    url('VG5000-Regular_web.woff') format('woff'),
+    url('VG5000-Regular_web.woff2') format('woff2'),
+    url('VG5000-Regular_web.ttf') format('truetype'),
+    url('VG5000-Regular_web.svg#svgFontName') format('svg');
+}
