@@ -20,7 +20,7 @@ const getFilename = ({ title, artists }: ResolveData) => {
   return filename.length === 0 ? 'cover' : filename
 }
 
-export const App: FunctionComponent = () => {
+export const Import: FunctionComponent = () => {
   const { info, fetchInfo } = useReleaseInfo()
 
   const fetchInfoOuter = useCallback(

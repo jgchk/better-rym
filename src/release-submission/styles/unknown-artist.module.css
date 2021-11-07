@@ -1,0 +1,11 @@
+.container {
+  margin-bottom: -0.25em;
+
+  & .small-button {
+    margin-bottom: 0.25em;
+  }
+}
+
+.small-button {
+  font-size: 14px !important;
+}

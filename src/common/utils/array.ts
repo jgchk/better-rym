@@ -21,3 +21,27 @@ export const findLastIndex = <T>(
 
 export const asArray = <T>(item: T | undefined): T[] | undefined =>
   item !== undefined ? [item] : undefined
+
+export const uniqueBy =
+  <T, O>(function_: (item: T) => O) =>
+  (items: T[]): T[] => {
+    const set = new Set()
+    const result = []
+
+    for (const item of items) {
+      const appliedItem = function_(item)
+      console.log(item, !set.has(appliedItem))
+      if (!set.has(appliedItem)) {
+        set.add(appliedItem)
+        result.push(item)
+      }
+    }
+
+    return result
+  }
+
+export const equals = <T>(a: T[], b: T[]): boolean =>
+  Array.isArray(a) &&
+  Array.isArray(b) &&
+  a.length === b.length &&
+  a.every((value, index) => JSON.stringify(value) === JSON.stringify(b[index]))
