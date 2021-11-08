@@ -16,7 +16,12 @@ export const Label: FunctionComponent = () => {
         '<span class="smallgray"> (Use search box on right to choose label )</span>'
   }, [])
 
-  const handleNoLabelClick = useCallback(() => goInfobox(897), [])
+  const handleNoLabelClick = useCallback(() => {
+    goInfobox(897)
+
+    const input = document.querySelector<HTMLInputElement>('input#catalog_no')
+    if (input) input.value = 'n/a'
+  }, [])
 
   return (
     <div className={classes['label-container']}>
