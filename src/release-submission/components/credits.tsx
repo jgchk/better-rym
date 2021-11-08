@@ -13,12 +13,8 @@ type Artist = {
   name: string
 }
 
-const UNKNOWN_ARTIST: Artist = { id: 250_714, name: '[unknown artist]' }
-
 export const Credits: FunctionComponent = () => {
-  const [filedUnderArtists, setFiledUnderArtists] = useState<Artist[]>([
-    UNKNOWN_ARTIST,
-  ])
+  const [filedUnderArtists, setFiledUnderArtists] = useState<Artist[]>([])
   useEffect(() => {
     const observer = new MutationObserver(() => {
       if (!document.body) return
@@ -56,7 +52,6 @@ export const Credits: FunctionComponent = () => {
               return { id, name }
             })
             .filter(isDefined),
-        (artists) => [UNKNOWN_ARTIST, ...artists],
         uniqueBy((artist) => artist.id)
       )
 
