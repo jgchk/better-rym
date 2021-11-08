@@ -1,9 +1,10 @@
 import { h, render } from 'preact'
 
 import { waitForElement } from '../common/utils/dom'
+import { CatalogNumber } from './components/catalog-number'
 import { Credits } from './components/credits'
 import { Import } from './components/import'
-import { NoLabel } from './components/no-label'
+import { Label } from './components/label'
 import { UnknownArtist } from './components/unknown-artist'
 
 const injectImport = async () => {
@@ -47,10 +48,18 @@ const injectCredits = async () => {
 }
 
 const injectLabel = async () => {
-  const label = await waitForElement('#labellist')
-  const noLabelDiv = document.createElement('div')
-  label.after(noLabelDiv)
-  render(<NoLabel />, noLabelDiv)
+  const clearButton = await waitForElement('input[value=Clear]')
+  const container = document.createElement('span')
+  clearButton.after(container)
+  clearButton.remove()
+  render(<Label />, container)
+}
+
+const injectCatalogNumber = async () => {
+  const catNoInput = await waitForElement('#catalog_no')
+  const container = document.createElement('span')
+  catNoInput.after(container)
+  render(<CatalogNumber />, container)
 }
 
 const main = () =>
@@ -60,6 +69,7 @@ const main = () =>
     injectFileUnder(),
     injectCredits(),
     injectLabel(),
+    injectCatalogNumber(),
   ])
 
 void main()

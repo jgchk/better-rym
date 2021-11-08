@@ -6,6 +6,10 @@
   }
 }
 
+.label-container {
+  margin-top: 0.25em;
+}
+
 .small-button {
   font-size: 14px !important;
 }
