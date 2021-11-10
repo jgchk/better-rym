@@ -294,6 +294,9 @@ const resolveRelease = async (id: string): Promise<ResolveData> => {
   // special case: demos are indicated in the "text" property of the format
   if (response.formats[0]?.text?.toLowerCase() === 'demo')
     attributes.push('demo')
+  // special case: gatefolds are indicated in the "text" property of the format
+  if (response.formats[0]?.text?.toLowerCase() === 'gatefold')
+    attributes.push('gatefold')
 
   const resolveData = mergeAndConcat(
     {
