@@ -44,3 +44,12 @@ export const equals = <T>(a: T[], b: T[]): boolean =>
   Array.isArray(b) &&
   a.length === b.length &&
   a.every((value, index) => JSON.stringify(value) === JSON.stringify(b[index]))
+
+export function isTuple<T>(array: T[], minLength: 1): array is [T]
+export function isTuple<T>(array: T[], minLength: 2): array is [T, T]
+export function isTuple<T>(array: T[], minLength: 3): array is [T, T, T]
+export function isTuple<T>(array: T[], minLength: 4): array is [T, T, T, T]
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export function isTuple<T>(array: T[], minLength: number) {
+  return array.length >= minLength
+}

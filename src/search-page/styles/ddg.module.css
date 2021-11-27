@@ -1,0 +1,10 @@
+.results {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.title {
+  margin: 0.1em 0 0.29em 0;
+  font-size: 22px;
+}

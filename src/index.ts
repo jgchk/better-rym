@@ -10,6 +10,8 @@ if (location.pathname.startsWith('/release/')) {
   void import('./filter-collection')
 } else if (location.pathname.startsWith('/~')) {
   void import('./user-page')
+} else if (location.pathname.startsWith('/search')) {
+  void import('./search-page')
 }
 
 void import('./search-bar')
