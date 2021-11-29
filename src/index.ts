@@ -1,15 +1,38 @@
+import { FeatureIds } from './options/components/options'
+import { getBrowserOption } from './options/utils/browser-options'
+
 if (location.pathname.startsWith('/release/')) {
-  void import('./find-stream-links')
+  void getBrowserOption(FeatureIds.StreamLinkAutodiscover, true).then(
+    (enabled) => {
+      if (enabled) import('./find-stream-links')
+    }
+  )
 } else if (location.pathname.startsWith('/releases/ac')) {
-  void import('./release-submission')
+  void getBrowserOption(FeatureIds.ReleaseSubmissionAutofill, true).then(
+    (enabled) => {
+      if (enabled) void import('./release-submission')
+    }
+  )
 } else if (location.pathname.startsWith('/images/upload')) {
-  void import('./cover-art')
+  void getBrowserOption(FeatureIds.CoverArtDownloader, true).then((enabled) => {
+    if (enabled) void import('./cover-art')
+  })
 } else if (location.pathname.startsWith('/submit_media_link')) {
-  void import('./submit-stream-links')
+  void getBrowserOption(FeatureIds.StreamLinkEmbedConverter, true).then(
+    (enabled) => {
+      if (enabled) void import('./submit-stream-links')
+    }
+  )
 } else if (location.pathname.startsWith('/collection')) {
-  void import('./filter-collection')
+  void getBrowserOption(FeatureIds.CollectionFilters, true).then((enabled) => {
+    if (enabled) void import('./filter-collection')
+  })
 } else if (location.pathname.startsWith('/~')) {
-  void import('./user-page')
+  void getBrowserOption(FeatureIds.ProfileQuickEdit, true).then((enabled) => {
+    if (enabled) void import('./user-page')
+  })
 }
 
-void import('./search-bar')
+void getBrowserOption(FeatureIds.SearchBarShortcuts, true).then((enabled) => {
+  if (enabled) void import('./search-bar')
+})

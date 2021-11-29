@@ -19,5 +19,15 @@
     "16": "sonemic-16.png",
     "48": "sonemic-48.png",
     "128": "sonemic-128.png"
+  },
+
+  "browser_action": {
+    "browser_style": true,
+    "default_popup": "options.html",
+    "default_icon": {
+      "16": "sonemic-16.png",
+      "48": "sonemic-48.png",
+      "128": "sonemic-128.png"
+    }
   }
 }

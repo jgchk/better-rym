@@ -54,7 +54,14 @@ export const ExtensionManifestPlugin = ({
 }: ExtensionManifestPluginOptions): WebpackPluginInstance =>
   new WebpackManifestPlugin({
     generate: (seed, files, entries) => {
-      const { name, permissions, icons, content_scripts, background } = manifest
+      const {
+        name,
+        permissions,
+        icons,
+        content_scripts,
+        background,
+        ...otherEntries
+      } = manifest
 
       const output: { [key: string]: unknown } = {
         manifest_version: 2,
@@ -63,6 +70,7 @@ export const ExtensionManifestPlugin = ({
         version: packageInfo.version,
         permissions: permissions || [],
         icons: icons || {},
+        ...otherEntries,
       }
 
       if (isDevelopment) {

@@ -4,7 +4,7 @@ import CopyPlugin from 'copy-webpack-plugin'
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'
 import DotEnvironment from 'dotenv-webpack'
 import ForkTsCheckerPlugin from 'fork-ts-checker-webpack-plugin'
-import MiniCssExtractPlugin from 'mini-css-extract-plugin'
+import HtmlWebpackPlugin from 'html-webpack-plugin'
 import { Configuration, WebpackPluginInstance } from 'webpack'
 // import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import { merge } from 'webpack-merge'
@@ -23,7 +23,10 @@ const common = (mode: 'development' | 'production'): Configuration => {
 
   return {
     mode,
-    entry: manifestEntries,
+    entry: {
+      ...manifestEntries,
+      options: path.join(__dirname, '../src/options/index.tsx'),
+    },
     output: {
       path: path.resolve(__dirname, '../output'),
     },
@@ -36,7 +39,7 @@ const common = (mode: 'development' | 'production'): Configuration => {
         {
           test: /\.css$/,
           use: [
-            MiniCssExtractPlugin.loader,
+            { loader: 'style-loader', options: { insert: 'html' } },
             'css-loader',
             {
               loader: 'postcss-loader',
@@ -82,9 +85,13 @@ const common = (mode: 'development' | 'production'): Configuration => {
       }),
       new CleanPlugin(),
       new DotEnvironment() as unknown as WebpackPluginInstance,
-      new MiniCssExtractPlugin({
-        filename: '[name].css',
-      }) as unknown as WebpackPluginInstance,
+      new HtmlWebpackPlugin({
+        filename: 'options.html',
+        chunks: ['options'],
+        ...(isFirefox
+          ? {}
+          : { template: path.join(__dirname, 'options-template.html') }), // use template which includes browser-polyfill.js for chrome
+      }),
       ExtensionManifestPlugin({ isDevelopment, isFirefox }),
       new CopyPlugin({
         patterns: [{ from: './res/icons/*', to: '[name][ext]' }],
