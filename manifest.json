@@ -25,5 +25,10 @@
       "48": "sonemic-48.png",
       "128": "sonemic-128.png"
     }
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "better-rym@jake.cafe"
+    }
   }
 }

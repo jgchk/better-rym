@@ -42,6 +42,7 @@
     "@typescript-eslint/parser": "^4.31.1",
     "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^9.0.1",
+    "crx-hotreload": "^1.0.6",
     "css-loader": "^6.2.0",
     "css-minimizer-webpack-plugin": "^3.0.2",
     "dotenv-webpack": "^7.0.3",

@@ -44,12 +44,21 @@ const config = (env) => {
               if (!production) {
                 jsonContent.content_security_policy =
                   "script-src 'self' 'unsafe-eval'; object-src 'self';"
+                jsonContent.background.scripts.push('hot-reload.js')
               }
               jsonContent.description = packageInfo.description
               jsonContent.version = packageInfo.version
               return JSON.stringify(jsonContent, undefined, 2)
             },
           },
+          ...(!production
+            ? [
+                {
+                  from: './node_modules/crx-hotreload/hot-reload.js',
+                  to: '[name][ext]',
+                },
+              ]
+            : []),
           { from: './res/icons/*', to: '[name][ext]' },
           { from: './res/options.html', to: '[name][ext]' },
           {
