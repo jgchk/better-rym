@@ -17,7 +17,6 @@ const config = (env) => {
     entry: {
       background: join(__dirname, './src/background/index.ts'),
       content: join(__dirname, './src/index.ts'),
-      options: join(__dirname, './src/options/index.tsx'),
     },
     optimization: {
       minimize: production,
@@ -60,7 +59,6 @@ const config = (env) => {
               ]
             : []),
           { from: './res/icons/*', to: '[name][ext]' },
-          { from: './res/options.html', to: '[name][ext]' },
           {
             from: production
               ? './node_modules/webextension-polyfill/dist/browser-polyfill.js'
