@@ -1,6 +1,6 @@
 import { h, render } from 'preact'
 
-import { waitForElement } from '../common/utils/dom'
+import { forceQuerySelector, waitForElement } from '../common/utils/dom'
 import { CatalogNumber } from './components/catalog-number'
 import { Credits } from './components/credits'
 import { Import } from './components/import'
@@ -25,11 +25,28 @@ const injectClearTracklist = async () => {
   lengthClear.style.cssText = 'margin-left: 1em; visibility: visible;'
   lengthClear.textContent = 'clear lengths'
 
-  const lengthScript = document.createAttribute('onclick')
-  lengthScript.value =
-    'if(confirm("Are you sure?")) { clearAllRows("track_track_length");}'
+  lengthClear.addEventListener('click', () => {
+    const advancedInputContainer = forceQuerySelector(document)('#tracks_adv')
+    const isAdvanced =
+      window.getComputedStyle(advancedInputContainer).display !== 'none'
 
-  lengthClear.attributes.setNamedItem(lengthScript)
+    const advancedInput =
+      forceQuerySelector<HTMLTextAreaElement>(document)('#track_advanced')
+
+    if (!isAdvanced)
+      forceQuerySelector<HTMLAnchorElement>(document)('#goAdvancedBtn').click()
+
+    advancedInput.value = advancedInput.value
+      .split('\n')
+      .filter((line) => line.length > 0)
+      .map((line) => [...line.split('|').slice(0, 2), ''].join('|'))
+      .join('\n')
+    console.log(advancedInput.value)
+
+    if (!isAdvanced)
+      forceQuerySelector<HTMLAnchorElement>(document)('#goSimpleBtn').click()
+  })
+
   clearAll.after(lengthClear)
 }
 
