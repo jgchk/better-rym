@@ -6,6 +6,7 @@ export type FetchRequest = {
     method?: 'GET' | 'POST'
     urlParameters?: { [key: string]: string }
     headers?: { [key: string]: string }
+    credentials?: RequestCredentials
   }
 }
 
