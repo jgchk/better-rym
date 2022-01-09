@@ -66,6 +66,7 @@ const getTracks = async (
 const getCoverArt = (data: MusicObject) =>
   [
     data.artwork_url?.replace('-large', '-original'),
+    data.artwork_url?.replace('-large', '-t500x500'),
     data.artwork_url,
     ...((data.kind === 'playlist'
       ? data.tracks
