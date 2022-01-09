@@ -7,6 +7,7 @@ import {
   ReleaseAttribute,
   ReleaseDate,
   ReleaseFormat,
+  ReleaseLabel,
   ResolveData,
   ResolveFunction,
 } from '../types'
@@ -272,7 +273,8 @@ const resolveRelease = async (id: string): Promise<ResolveData> => {
   }))
   const type = getReleaseType(tracks.length)
   const coverArt = (response.images ?? []).map((image) => image.resource_url)
-  const label = response.labels[0]
+  const label: ReleaseLabel = response.labels[0]
+  if (label.catno === 'none') label.catno = undefined
 
   let format: ReleaseFormat | undefined,
     attributes: ReleaseAttribute[],
