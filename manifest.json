@@ -1,26 +1,22 @@
 {
+  "manifest_version": 2,
   "name": "BetterRYM",
-
-  "content_scripts": [
-    {
-      "js": ["./src/index.ts"],
-      "matches": ["*://*.rateyourmusic.com/*"],
-      "run_at": "document_start"
-    }
-  ],
-
-  "background": {
-    "scripts": ["./src/background/index.ts"]
-  },
-
-  "permissions": ["storage", "downloads", "*://*/*"],
-
   "icons": {
     "16": "sonemic-16.png",
     "48": "sonemic-48.png",
     "128": "sonemic-128.png"
   },
-
+  "background": {
+    "scripts": ["browser-polyfill.js", "background.js"]
+  },
+  "content_scripts": [
+    {
+      "js": ["browser-polyfill.js", "content.js"],
+      "matches": ["*://*.rateyourmusic.com/*"],
+      "run_at": "document_start"
+    }
+  ],
+  "permissions": ["storage", "downloads", "*://*/*"],
   "browser_action": {
     "browser_style": true,
     "default_popup": "options.html",
