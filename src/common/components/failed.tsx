@@ -2,7 +2,7 @@ import { FunctionComponent, h, JSX } from 'preact'
 import { createPortal } from 'preact/compat'
 import { useState } from 'preact/hooks'
 
-import Icon from '../../../res/x.svg'
+import Icon from '../../../res/svg/x.svg'
 import styles from '../styles/failed.module.css'
 import { clsx } from '../utils/clsx'
 

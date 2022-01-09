@@ -1,4 +1,4 @@
-import Icon from '../../../../res/melon.svg'
+import Icon from '../../../../res/svg/melon.svg'
 import { withCache } from '../../utils/cache'
 import { Resolvable, Service } from '../types'
 import { resolve } from './resolve'

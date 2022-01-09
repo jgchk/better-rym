@@ -1,6 +1,6 @@
 import { FunctionComponent, h, JSX } from 'preact'
 
-import Icon from '../../../res/check.svg'
+import Icon from '../../../res/svg/check.svg'
 import styles from '../styles/complete.module.css'
 import { clsx } from '../utils/clsx'
 

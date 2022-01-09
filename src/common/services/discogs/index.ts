@@ -1,4 +1,4 @@
-import icon from '../../../../res/discogs.svg'
+import icon from '../../../../res/svg/discogs.svg'
 import { withCache } from '../../utils/cache'
 import { Resolvable, Service } from '../types'
 import { regex } from './regex'
