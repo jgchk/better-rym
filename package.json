@@ -6,8 +6,6 @@
   "scripts": {
     "dev": "webpack --env development",
     "prod": "webpack --env production",
-    "prod:chrome": "wp --config.prod build/webpack.config.ts --browser chrome",
-    "prod:firefox": "wp --config.prod build/webpack.config.ts --browser firefox",
     "zip": "rm brym.zip || true && cd output && atool -a ../brym.zip *",
     "test": "jest --watch",
     "lint": "eslint ./src",
