@@ -9,5 +9,5 @@ export const Discogs: Service & Resolvable = {
   name: 'Discogs',
   regex,
   icon,
-  resolve: withCache('discogs', 'resolve', resolve),
+  resolve: withCache('discogs-resolve', resolve),
 }

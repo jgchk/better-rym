@@ -14,6 +14,6 @@ export const AppleMusic: Service & Searchable & Resolvable = {
   icon: Icon,
   foundIcon: FoundIcon,
   notFoundIcon: NotFoundIcon,
-  search: withCache('applemusic', 'search', search),
-  resolve: withCache('applemusic', 'resolve', resolve),
+  search: withCache('applemusic-search', search),
+  resolve: withCache('applemusic-resolve', resolve),
 }

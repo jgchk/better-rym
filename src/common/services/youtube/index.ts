@@ -14,6 +14,6 @@ export const YouTube: Service & Searchable & Resolvable = {
   icon: Icon,
   foundIcon: FoundIcon,
   notFoundIcon: NotFoundIcon,
-  search: withCache('youtube', 'search', search),
-  resolve: withCache('youtube', 'resolve', resolve),
+  search: withCache('youtube-search', search),
+  resolve: withCache('youtube-resolve', resolve),
 }

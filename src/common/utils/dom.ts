@@ -1,6 +1,16 @@
 export const isDocumentReady = (): boolean =>
   document.readyState === 'complete' || document.readyState === 'interactive'
 
+export const waitForDocumentReady = (): Promise<void> =>
+  new Promise((resolve) => {
+    if (isDocumentReady()) return resolve()
+    const listener = () => {
+      resolve()
+      document.removeEventListener('DOMContentLoaded', listener)
+    }
+    document.addEventListener('DOMContentLoaded', listener)
+  })
+
 export const waitForElement = <E extends Element>(query: string): Promise<E> =>
   waitForCallback(() => document.querySelector<E>(query) ?? undefined)
 
@@ -32,10 +42,10 @@ export const waitForCallback = <T>(callback: () => T | undefined): Promise<T> =>
     }
   })
 
-export const forceQuerySelector = <E extends Element = Element>(
-  node: ParentNode
-) => (query: string): E => {
-  const element = node.querySelector<E>(query)
-  if (!element) throw new Error(`Could not find element: ${query}`)
-  return element
-}
+export const forceQuerySelector =
+  <E extends Element = Element>(node: ParentNode) =>
+  (query: string): E => {
+    const element = node.querySelector<E>(query)
+    if (!element) throw new Error(`Could not find element: ${query}`)
+    return element
+  }

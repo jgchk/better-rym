@@ -14,7 +14,7 @@ export const Bandcamp: Service & Searchable & Resolvable & Embeddable = {
   icon: Icon,
   foundIcon: FoundIcon,
   notFoundIcon: NotFoundIcon,
-  search: withCache('bandcamp', 'search', search),
-  resolve: withCache('bandcamp', 'resolve', resolve),
-  embed: withCache('bandcamp', 'embed', embed),
+  search: withCache('bandcamp-search', search),
+  resolve: withCache('bandcamp-resolve', resolve),
+  embed: withCache('bandcamp-embed', embed),
 }

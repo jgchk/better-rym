@@ -15,7 +15,7 @@ export const Soundcloud: Service & Searchable & Resolvable & Embeddable = {
   icon: Icon,
   foundIcon: FoundIcon,
   notFoundIcon: NotFoundIcon,
-  search: withCache('soundcloud', 'search', search),
-  resolve: withCache('soundcloud', 'resolve', resolve),
-  embed: withCache('soundcloud', 'embed', embed),
+  search: withCache('soundcloud-search', search),
+  resolve: withCache('soundcloud-resolve', resolve),
+  embed: withCache('soundcloud-embed', embed),
 }

@@ -8,5 +8,5 @@ export const Melon: Service & Resolvable = {
   name: 'Melon',
   regex: /https?:\/\/www\.melon\.com\/album\/detail\.htm\?albumId=\d+/,
   icon: Icon,
-  resolve: withCache('melon', 'resolve', resolve),
+  resolve: withCache('melon-resolve', resolve),
 }
