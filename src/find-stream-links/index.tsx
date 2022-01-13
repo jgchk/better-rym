@@ -9,14 +9,14 @@ const main = async () => {
 
   try {
     const siblingElement = await waitForElement(
-      '.hide-for-small a[href^="/submit_media_link"]'
+      '.hide-for-small a[href^="buy"]'
     )
-    siblingElement.before(app)
+    siblingElement.after(app)
   } catch {
     const siblingElement = await waitForElement(
       '.page_release_art_frame .hide-for-small'
     )
-    siblingElement.append(app)
+    siblingElement.prepend(app)
   }
 
   render(<App />, app)
