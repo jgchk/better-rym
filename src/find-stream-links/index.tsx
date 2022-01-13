@@ -4,17 +4,20 @@ import { waitForElement } from '../common/utils/dom'
 import { App } from './components/app'
 
 const main = async () => {
-  const siblingElement = await waitForElement(
-    '.hide-for-small [style="margin-top:8px;"]'
-  ).catch(() =>
-    document.querySelector('.hide-for-small a[href^="/submit_media_link"]')
-  )
-  if (!siblingElement)
-    throw new Error('Could not find insertion point for BetterRYM')
-
   const app = document.createElement('div')
   app.id = 'better-rym'
-  siblingElement.before(app)
+
+  try {
+    const siblingElement = await waitForElement(
+      '.hide-for-small a[href^="/submit_media_link"]'
+    )
+    siblingElement.before(app)
+  } catch {
+    const siblingElement = await waitForElement(
+      '.page_release_art_frame .hide-for-small'
+    )
+    siblingElement.append(app)
+  }
 
   render(<App />, app)
 }
