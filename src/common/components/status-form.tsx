@@ -1,6 +1,6 @@
 import { h, VNode } from 'preact'
 
-import { ReleaseOptions } from '../../release-submission/utils/types'
+import { ReleaseOptions } from '../../modules/release-submission/utils/types'
 import { Service } from '../services/types'
 import styles from '../styles/status-form.module.css'
 import { fold, OneShot } from '../utils/one-shot'

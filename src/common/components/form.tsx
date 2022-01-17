@@ -4,8 +4,8 @@ import { useEffect, useState } from 'preact/hooks'
 import {
   CAPITALIZATION_TYPES,
   CapitalizationType,
-} from '../../release-submission/utils/capitalization'
-import { ReleaseOptions } from '../../release-submission/utils/types'
+} from '../../modules/release-submission/utils/capitalization'
+import { ReleaseOptions } from '../../modules/release-submission/utils/types'
 import { getMatchingService } from '../services'
 import { Service } from '../services/types'
 import styles from '../styles/form.module.css'

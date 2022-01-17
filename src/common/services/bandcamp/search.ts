@@ -1,6 +1,6 @@
 import { compareTwoStrings } from 'string-similarity'
 
-import { Metadata } from '../../../find-stream-links/utils/page-data'
+import { Metadata } from '../../../modules/stream-links/utils/page-data'
 import { fetch } from '../../utils/fetch'
 import { SearchFunction } from '../types'
 import { MusicResult, SearchObject } from './codec'

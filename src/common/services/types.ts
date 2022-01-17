@@ -1,6 +1,6 @@
 import { FunctionComponent, JSX } from 'preact'
 
-import { Metadata } from '../../find-stream-links/utils/page-data'
+import { Metadata } from '../../modules/stream-links/utils/page-data'
 
 export const SERVICE_IDS = [
   'applemusic',

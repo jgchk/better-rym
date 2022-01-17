@@ -1,19 +1,19 @@
 if (location.pathname.startsWith('/release/')) {
-  import('./find-stream-links')
+  import('./modules/stream-links')
 } else if (location.pathname.startsWith('/releases/ac')) {
-  import('./release-submission')
+  import('./modules/release-submission')
 } else if (location.pathname.startsWith('/images/upload')) {
-  import('./cover-art')
+  import('./modules/cover-art')
 } else if (location.pathname.startsWith('/submit_media_link')) {
-  import('./submit-stream-links')
+  import('./modules/stream-link-submission')
 } else if (location.pathname.startsWith('/collection')) {
-  import('./filter-collection')
+  import('./modules/user-collection')
 } else if (location.pathname.startsWith('/~')) {
-  import('./user-page')
+  import('./modules/user-page')
 } else if (location.pathname.startsWith('/rgenre/vote_history')) {
-  import('./vote-history/genres')
+  import('./modules/vote-history/genres')
 } else if (location.pathname.startsWith('/rdescriptor/vote_history')) {
-  import('./vote-history/descriptors')
+  import('./modules/vote-history/descriptors')
 }
 
-import('./search-bar')
+import('./modules/search-bar')

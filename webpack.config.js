@@ -15,7 +15,7 @@ const config = (env) => {
     mode: production ? 'production' : 'development',
     devtool: production ? undefined : 'eval-cheap-module-source-map',
     entry: {
-      background: join(__dirname, './src/background/index.ts'),
+      background: join(__dirname, './src/modules/background/index.ts'),
       content: join(__dirname, './src/index.ts'),
     },
     optimization: {
