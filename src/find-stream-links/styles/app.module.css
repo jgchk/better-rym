@@ -1,6 +1,7 @@
-.app {
+.container {
   display: flex;
   gap: 4px;
+  align-items: center;
   justify-content: center;
   margin-top: 1.5em;
 }

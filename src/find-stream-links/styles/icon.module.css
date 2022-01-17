@@ -18,6 +18,10 @@
   position: relative;
 }
 
+.container svg {
+  display: block;
+}
+
 .status {
   position: absolute;
   right: 0;
