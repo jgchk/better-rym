@@ -14,6 +14,8 @@ if (location.pathname.startsWith('/release/')) {
   import('./modules/vote-history/genres')
 } else if (location.pathname.startsWith('/rdescriptor/vote_history')) {
   import('./modules/vote-history/descriptors')
+} else if (location.pathname.startsWith('/misc/media_link_you_know')) {
+  import('./modules/stream-link-missing')
 }
 
 import('./modules/search-bar')
