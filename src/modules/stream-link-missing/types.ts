@@ -42,10 +42,7 @@ export const filtersToQueryString = (filters: Filters): string => {
 
 export const queryStringToFilters = (queryString: string): Filters => {
   const queryParameters = new URLSearchParams(queryString)
-
   const artistTitle = queryParameters.get('artistTitle') ?? ''
-
   const links = queryParameters.getAll('link').filter(isStreamLinkName)
-
   return { artistTitle, links }
 }
