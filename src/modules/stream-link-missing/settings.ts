@@ -1,7 +1,7 @@
 import { DisplayType } from './types'
 
 const displayTypeKey = 'brym.missingLinksDisplayType'
-const defaultDisplayType = 'available'
+export const defaultDisplayType = 'available'
 
 export const getDisplayType = async (): Promise<DisplayType> => {
   const response = await browser.storage.local.get(displayTypeKey)

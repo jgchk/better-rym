@@ -6,6 +6,8 @@ import { getDisplayType, setDisplayType } from './settings'
 import {
   DisplayType,
   displayTypes,
+  filtersToQueryString,
+  queryStringToFilters,
   Row,
   State,
   StreamLinkName,
@@ -40,13 +42,17 @@ const initializeState = async (): Promise<State> => {
     })
     .filter(isDefined)
   const displayType = await getDisplayType()
-  return { rows, filters: { displayType, links: [], artistTitle: '' } }
+  return {
+    rows,
+    displayType,
+    filters: queryStringToFilters(window.location.hash.slice(1)),
+  }
 }
 
 const render = (state: State) => {
   for (const row of state.rows) {
     row.mediaLinksElement.innerHTML = (
-      state.filters.displayType === 'available'
+      state.displayType === 'available'
         ? row.availableMediaLinks
         : row.missingMediaLinks
     )
@@ -74,7 +80,30 @@ const render = (state: State) => {
 const main = async () => {
   await waitForDocumentReady()
 
-  const state = await initializeState()
+  let state = await initializeState()
+  const applyStateHash = (state: State) => {
+    const hash = filtersToQueryString(state.filters)
+    window.location.hash = hash
+
+    for (const node of document.querySelectorAll<HTMLAnchorElement>(
+      'a.navlinknum, a.navlinkprev, a.navlinknext'
+    )) {
+      const url = new URL(node.href)
+      url.hash = hash
+      node.href = url.toString()
+    }
+  }
+  const updateState = (
+    updates: Partial<State> | ((state: State) => Partial<State>)
+  ) => {
+    const newState = {
+      ...state,
+      ...(typeof updates === 'function' ? updates(state) : updates),
+    }
+    applyStateHash(newState)
+    state = newState
+  }
+  applyStateHash(state)
 
   const table = document.querySelector('.mbgen')
   if (!table) return
@@ -90,10 +119,10 @@ const main = async () => {
     )
     .join('')
 
-  select.value = state.filters.displayType
+  select.value = state.displayType
   select.addEventListener('change', (event) => {
     const displayType = (event.target as HTMLSelectElement).value as DisplayType
-    state.filters.displayType = displayType
+    updateState((s) => ({ filters: { ...s.filters, displayType } }))
     render(state)
     void setDisplayType(displayType)
   })
@@ -108,8 +137,8 @@ const main = async () => {
   const linksFilterElement = document.createElement('div')
   linksFilterElement.innerHTML = `<label>Missing media links</label>`
   linksFilterElement.append(
-    makeSelector((selected) => {
-      state.filters.links = [...selected]
+    makeSelector(new Set(state.filters.links), (selected) => {
+      updateState((s) => ({ filters: { ...s.filters, links: [...selected] } }))
       render(state)
     })
   )
@@ -118,8 +147,14 @@ const main = async () => {
   const artistTitleFilterContainer = document.createElement('div')
   artistTitleFilterContainer.innerHTML = '<label>Artist/Title<label>'
   const artistTitleFilterElement = document.createElement('input')
+  artistTitleFilterElement.value = state.filters.artistTitle
   artistTitleFilterElement.addEventListener('input', (event) => {
-    state.filters.artistTitle = (event.target as HTMLInputElement).value
+    updateState((s) => ({
+      filters: {
+        ...s.filters,
+        artistTitle: (event.target as HTMLInputElement).value,
+      },
+    }))
     render(state)
   })
   artistTitleFilterContainer.append(artistTitleFilterElement)
@@ -128,10 +163,13 @@ const main = async () => {
   render(state)
 }
 
-const makeSelector = (onChange: (selected: Set<StreamLinkName>) => void) => {
+const makeSelector = (
+  initialState: Set<StreamLinkName>,
+  onChange: (selected: Set<StreamLinkName>) => void
+) => {
   const div = document.createElement('div')
 
-  const selectedNames: Set<StreamLinkName> = new Set()
+  const selectedNames: Set<StreamLinkName> = initialState
 
   const toggleSelected = (streamLinkName: StreamLinkName) => {
     const isSelected = selectedNames.has(streamLinkName)
@@ -147,13 +185,18 @@ const makeSelector = (onChange: (selected: Set<StreamLinkName>) => void) => {
     const streamLinkButton = document.createElement('button')
     streamLinkButton.className = 'brym selector-button'
     streamLinkButton.innerHTML = `<span class="ui_media_link_btn ui_media_link_btn_${streamLinkName}"></span>`
-    streamLinkButton.addEventListener('click', () => {
-      const selected = toggleSelected(streamLinkName)
+    // eslint-disable-next-line unicorn/consistent-function-scoping
+    const renderSelected = (selected: boolean) => {
       if (selected) {
         streamLinkButton.classList.add('selected')
       } else {
         streamLinkButton.classList.remove('selected')
       }
+    }
+    renderSelected(selectedNames.has(streamLinkName))
+    streamLinkButton.addEventListener('click', () => {
+      const selected = toggleSelected(streamLinkName)
+      renderSelected(selected)
       onChange(selectedNames)
     })
     div.append(streamLinkButton)
