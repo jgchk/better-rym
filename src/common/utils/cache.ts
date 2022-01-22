@@ -1,3 +1,5 @@
+import * as storage from './storage'
+
 interface StoredValue<T> {
   expire: number
   data: T
@@ -6,11 +8,10 @@ interface StoredValue<T> {
 const isExpired = <T>({ expire }: StoredValue<T>) => Date.now() > expire
 
 export const get = async <T>(key: string): Promise<T | undefined> => {
-  const response = await browser.storage.local.get(key)
-  const storedValue = response[key] as StoredValue<T> | undefined
+  const storedValue = await storage.get<StoredValue<T>>(key)
   if (storedValue !== undefined) {
     if (isExpired(storedValue)) {
-      void browser.storage.local.remove(key)
+      void storage.remove(key)
     } else {
       return storedValue.data
     }
@@ -24,17 +25,17 @@ export const set = async <T>(
   ttl = 3_600_000
 ): Promise<void> => {
   const storedValue: StoredValue<T> = { expire: Date.now() + ttl, data: value }
-  await browser.storage.local.set({ [key]: storedValue })
+  await storage.set(key, storedValue)
   void clean()
 }
 
 export const clean = async (): Promise<void> => {
-  const wholeStorage = await browser.storage.local.get()
+  const wholeStorage = await storage.getAll()
   await Promise.all(
     Object.entries(wholeStorage).map(async ([key, value]) => {
       const storedValue = value as StoredValue<unknown> | undefined
       if (storedValue !== undefined && isExpired(storedValue)) {
-        await browser.storage.local.remove(key)
+        await storage.remove(key)
       }
     })
   )

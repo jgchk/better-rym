@@ -50,6 +50,7 @@ const initializeState = async (): Promise<State> => {
 }
 
 const render = (state: State) => {
+  console.log('displayType', state.displayType)
   for (const row of state.rows) {
     row.mediaLinksElement.innerHTML = (
       state.displayType === 'available'
@@ -122,7 +123,7 @@ const main = async () => {
   select.value = state.displayType
   select.addEventListener('change', (event) => {
     const displayType = (event.target as HTMLSelectElement).value as DisplayType
-    updateState((s) => ({ filters: { ...s.filters, displayType } }))
+    updateState({ displayType })
     render(state)
     void setDisplayType(displayType)
   })

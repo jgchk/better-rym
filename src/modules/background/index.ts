@@ -1,3 +1,4 @@
+import { getPageEnabled, pages, setPageEnabled } from '../../common/pages'
 import {
   BackgroundResponse,
   isBackgroundRequest,
@@ -20,4 +21,46 @@ browser.runtime.onMessage.addListener((message, sender) => {
   void getResponse(message).then((response) =>
     browser.tabs.sendMessage(tabId, response)
   )
+})
+
+const setTabIcon = (tabId: number, enabled: boolean) => {
+  void browser.pageAction.setIcon({
+    tabId,
+    path: enabled
+      ? {
+          '19': 'extension-enabled-19.png',
+          '38': 'extension-enabled-38.png',
+        }
+      : {
+          '19': 'extension-disabled-19.png',
+          '38': 'extension-disabled-38.png',
+        },
+  })
+  void browser.pageAction.setTitle({
+    tabId,
+    title: `BetterRYM ${enabled ? 'enabled' : 'disabled'}`,
+  })
+}
+
+browser.tabs.onUpdated.addListener((id, changeInfo, tab) => {
+  void browser.pageAction.show(id)
+  const pageUrls = Object.values(pages)
+  for (const pageUrl of pageUrls) {
+    if (tab.url && new URL(tab.url).pathname.startsWith(pageUrl)) {
+      void getPageEnabled(pageUrl).then((enabled) => setTabIcon(id, enabled))
+    }
+  }
+})
+
+browser.pageAction.onClicked.addListener((tab) => {
+  const pageUrls = Object.values(pages)
+  for (const pageUrl of pageUrls) {
+    if (tab.url && new URL(tab.url).pathname.startsWith(pageUrl)) {
+      void getPageEnabled(pageUrl).then((enabled) => {
+        if (tab.id === undefined) return
+        void setPageEnabled(pageUrl, !enabled)
+        void setTabIcon(tab.id, !enabled)
+      })
+    }
+  }
 })

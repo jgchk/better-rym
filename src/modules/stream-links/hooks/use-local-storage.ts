@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useState } from 'preact/hooks'
 
+import * as storage from '../../../common/utils/storage'
+
 export const useLocalStorage = <T>(
   key: string,
   initialValue: T
 ): [T | undefined, (value: T) => void] => {
   const readValue = useCallback(async (): Promise<T> => {
-    const response = await browser.storage.local.get(key)
-    const item = response[key] as T | undefined
+    const item = await storage.get<T>(key)
     return item ?? initialValue
   }, [initialValue, key])
 
@@ -24,7 +25,7 @@ export const useLocalStorage = <T>(
   // ... persists the new value to localStorage.
   const setValue = useCallback(
     async (value: T) => {
-      await browser.storage.local.set({ [key]: value })
+      await storage.set(key, value)
       setStoredValue(value)
     },
     [key]

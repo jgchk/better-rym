@@ -16,5 +16,12 @@
       "run_at": "document_start"
     }
   ],
-  "permissions": ["storage", "downloads", "*://*/*"]
+  "page_action": {
+    "default_icon": {
+      "19": "extension-enabled-19.png",
+      "38": "extension-enabled-38.png"
+    },
+    "default_title": "BetterRYM enabled"
+  },
+  "permissions": ["storage", "downloads", "tabs", "*://*/*"]
 }
