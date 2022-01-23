@@ -293,12 +293,13 @@ const resolveRelease = async (id: string): Promise<ResolveData> => {
     partialResolveData = {}
   }
 
-  // special case: demos are indicated in the "text" property of the format
+  // special cases: some properties are specified in the "text" property of the format
   if (response.formats[0]?.text?.toLowerCase() === 'demo')
     attributes.push('demo')
-  // special case: gatefolds are indicated in the "text" property of the format
   if (response.formats[0]?.text?.toLowerCase() === 'gatefold')
     attributes.push('gatefold')
+  if (response.formats[0]?.text?.toLowerCase() === 'cardboard sleeve')
+    attributes.push('paper/cardboard sleeve')
 
   const resolveData = mergeAndConcat(
     {
