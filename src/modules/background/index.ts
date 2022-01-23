@@ -48,8 +48,21 @@ browser.tabs.onUpdated.addListener((id, changeInfo, tab) => {
   for (const pageUrl of pageUrls) {
     if (tab.url && new URL(tab.url).pathname.startsWith(pageUrl)) {
       void getPageEnabled(pageUrl).then((enabled) => setTabIcon(id, enabled))
+      return
     }
   }
+
+  void browser.pageAction.setIcon({
+    tabId: id,
+    path: {
+      '19': 'extension-neutral-19.png',
+      '38': 'extension-neutral-38.png',
+    },
+  })
+  void browser.pageAction.setTitle({
+    tabId: id,
+    title: 'BetterRYM',
+  })
 })
 
 browser.pageAction.onClicked.addListener((tab) => {
