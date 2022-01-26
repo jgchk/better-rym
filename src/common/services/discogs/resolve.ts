@@ -157,7 +157,7 @@ const parseAttribute = (
     case 'LP':
     case 'Album':
     case 'Mini-Album':
-      return [undefined, { type: 'album' }]
+      return [undefined, { type: 'ep' }]
     case 'EP':
       return [undefined, { type: 'ep' }]
     case 'Maxi-Single':
