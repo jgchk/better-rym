@@ -156,8 +156,8 @@ const parseAttribute = (
       return ['promo', {}]
     case 'LP':
     case 'Album':
+      return [undefined, { type: 'album' }]
     case 'Mini-Album':
-      return [undefined, { type: 'ep' }]
     case 'EP':
       return [undefined, { type: 'ep' }]
     case 'Maxi-Single':
@@ -300,6 +300,8 @@ const resolveRelease = async (id: string): Promise<ResolveData> => {
     attributes.push('gatefold')
   if (response.formats[0]?.text?.toLowerCase() === 'cardboard sleeve')
     attributes.push('paper/cardboard sleeve')
+  if (response.formats[0]?.text?.toLowerCase() === 'book')
+    attributes.push('digibook')
 
   const resolveData = mergeAndConcat(
     {
