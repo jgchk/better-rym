@@ -2,7 +2,7 @@ import { asArray, chunkArray } from '../../utils/array'
 import { secondsToString, stringToDate } from '../../utils/datetime'
 import { fetch } from '../../utils/fetch'
 import { getReleaseType } from '../../utils/music'
-import { ResolveFunction, Track } from '../types'
+import { ReleaseAttribute, ResolveFunction, Track } from '../types'
 import { requestToken } from './auth'
 import { MusicObject, TrackObject } from './codecs'
 
@@ -101,6 +101,13 @@ export const resolve: ResolveFunction = async (url) => {
   const type = getReleaseType(tracks.length)
   const coverArt = getCoverArt(response)
 
+  const attributes: ReleaseAttribute[] = ['streaming']
+
+  const downloadable = response.kind === 'track' && response.downloadable
+  if (downloadable) {
+    attributes.push('downloadable')
+  }
+
   return {
     url: url_,
     title,
@@ -108,7 +115,7 @@ export const resolve: ResolveFunction = async (url) => {
     date,
     type,
     format: 'digital file',
-    attributes: ['streaming'],
+    attributes,
     tracks,
     coverArt,
   }

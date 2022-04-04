@@ -4,6 +4,7 @@ export type TrackObject = {
   id: number
   kind: 'track'
   display_date: string
+  downloadable: boolean
   duration: number
   permalink_url: string
   title?: string
