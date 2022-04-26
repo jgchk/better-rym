@@ -42,5 +42,7 @@ module.exports = {
     'unicorn/prefer-query-selector': 'off',
     'unicorn/prefer-node-protocol': 'off',
     'unicorn/prefer-module': 'off',
+    'unicorn/no-abusive-eslint-disable': 'off',
+    'unicorn/prevent-abbreviations': 'off',
   },
 }
