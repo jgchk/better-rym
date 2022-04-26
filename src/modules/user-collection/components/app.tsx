@@ -1,4 +1,5 @@
 import { FunctionComponent, h } from 'preact'
+import { useMemo } from 'preact/hooks'
 
 import { Button } from './button'
 
@@ -37,6 +38,11 @@ const STATUS = [
 ] as const
 
 export const App: FunctionComponent = () => {
+  const showReleaseTypes = useMemo(
+    () => !window.location.href.includes('film_collection'),
+    []
+  )
+
   return (
     <div style='line-height: 2.5em'>
       Status:&nbsp;
@@ -49,10 +55,14 @@ export const App: FunctionComponent = () => {
         <Button key={name} name={name} base='r' modifier={modifier} />
       ))}
       <br />
-      Type:&nbsp;
-      {RELEASE_TYPES.map(([name, modifier]) => (
-        <Button key={name} name={name} base='typ' modifier={modifier} />
-      ))}
+      {showReleaseTypes && (
+        <>
+          Type:&nbsp;
+          {RELEASE_TYPES.map(([name, modifier]) => (
+            <Button key={name} name={name} base='typ' modifier={modifier} />
+          ))}
+        </>
+      )}
     </div>
   )
 }

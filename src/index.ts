@@ -20,6 +20,7 @@ void runPage(
   () => import('./modules/stream-link-submission')
 )
 void runPage(pages.userCollection, () => import('./modules/user-collection'))
+void runPage(pages.filmCollection, () => import('./modules/user-collection'))
 void runPage(pages.userPage, () => import('./modules/user-page'))
 void runPage(
   pages.voteHistoryGenres,

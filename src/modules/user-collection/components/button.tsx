@@ -4,7 +4,9 @@ import { useMemo } from 'preact/hooks'
 const filterApplied = (modifier: string) => {
   const path = window.location.pathname.split('/')
   const collectionIndex = path.findIndex(
-    (element) => element.toLowerCase() === 'collection'
+    (element) =>
+      element.toLowerCase() === 'collection' ||
+      element.toLowerCase() === 'film_collection'
   )
   return (path[collectionIndex + 2] || '').split(/\s*,\s*/).includes(modifier)
 }
@@ -12,7 +14,9 @@ const filterApplied = (modifier: string) => {
 const makeUrl = (base: string, modifier: string) => {
   const path = window.location.pathname.split('/')
   const collectionIndex = path.findIndex(
-    (element) => element.toLowerCase() === 'collection'
+    (element) =>
+      element.toLowerCase() === 'collection' ||
+      element.toLowerCase() === 'film_collection'
   )
   const modifiers = [
     ...(path[collectionIndex + 2] || '')

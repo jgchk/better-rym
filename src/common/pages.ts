@@ -6,6 +6,7 @@ export const pages = {
   coverArt: '/images/upload',
   streamLinkSubmission: '/submit_media_link',
   userCollection: '/collection',
+  filmCollection: '/film_collection',
   userPage: '/~',
   voteHistoryGenres: '/rgenre/vote_history',
   voteHistoryDescriptors: '/rdescriptor/vote_history',
