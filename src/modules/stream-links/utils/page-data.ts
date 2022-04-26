@@ -79,7 +79,6 @@ const getLinks = async (): Promise<Links> =>
 
     /* eslint-disable */
     const linksData = JSON.parse(linksString)
-    console.log(linksData)
 
     const e: { [service: string]: string } = {}
     for (const a in linksData) {
@@ -87,7 +86,6 @@ const getLinks = async (): Promise<Links> =>
       const r = f(a, n)
       r && (e[a] = m(a, r))
     }
-    console.log('aaaa', e)
     /* eslint-enable */
 
     return Object.fromEntries(
