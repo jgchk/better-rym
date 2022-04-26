@@ -1,12 +1,8 @@
-import { mergeAndConcat } from 'merge-anything'
-
 import { fetch } from '../../../common/utils/fetch'
 import { getReleaseType } from '../../utils/music'
 import {
   DiscSize,
-  ReleaseAttribute,
   ReleaseDate,
-  ReleaseFormat,
   ReleaseLabel,
   ResolveData,
   ResolveFunction,
@@ -28,41 +24,63 @@ const parseDate = (date: string): ReleaseDate => {
   }
 }
 
-const parseFormat = (
-  format: Format
-): [ReleaseFormat | undefined, Partial<ResolveData>] => {
+const parseFormatName = (data: ResolveData, format: Format) => {
   switch (format.name) {
     case 'Vinyl':
     case 'Flexi-disc':
     case 'Lathe Cut':
     case 'Pathé Disc':
-    case 'Edison Disc':
-      return ['vinyl', {}]
-    case 'Acetate':
-      return ['acetate', {}]
-    case 'Shellac':
-      return ['shellac', {}]
-    case 'Cylinder':
-      return ['phonograph cylinder', {}]
-    case 'CD':
-      return ['cd', {}]
-    case 'CDr':
-      return ['cd-r', {}]
+    case 'Edison Disc': {
+      data.format = 'vinyl'
+      break
+    }
+    case 'Acetate': {
+      data.format = 'acetate'
+      break
+    }
+    case 'Shellac': {
+      data.format = 'shellac'
+      break
+    }
+    case 'Cylinder': {
+      data.format = 'phonograph cylinder'
+      break
+    }
+    case 'CD': {
+      data.format = 'cd'
+      break
+    }
+    case 'CDr': {
+      data.format = 'cd-r'
+      break
+    }
     case 'DVD':
-    case 'HD DVD':
-      return ['dvd', {}]
+    case 'HD DVD': {
+      data.format = 'dvd'
+      break
+    }
     case 'DVDr':
-    case 'HD DVD-R':
-      return ['dvd-r', {}]
+    case 'HD DVD-R': {
+      data.format = 'dvd-r'
+      break
+    }
     case 'Blu-ray':
-    case 'Blu-ray-R':
-      return ['blu-ray', {}]
-    case 'SACD':
-      return ['sacd', {}]
-    case '4-Track Cartridge':
-      return ['4 track', {}]
-    case '8-Track Cartridge':
-      return ['8 track', {}]
+    case 'Blu-ray-R': {
+      data.format = 'blu-ray'
+      break
+    }
+    case 'SACD': {
+      data.format = 'sacd'
+      break
+    }
+    case '4-Track Cartridge': {
+      data.format = '4 track'
+      break
+    }
+    case '8-Track Cartridge': {
+      data.format = '8 track'
+      break
+    }
     case 'Cassette':
     case 'DC-International':
     case 'Elcaset':
@@ -70,58 +88,85 @@ const parseFormat = (
     case 'Pocket Rocker':
     case 'Revere Magnetic Stereo Tape Ca':
     case 'Tefifon':
-    case 'Sabamobil':
-      return ['cassette', {}]
+    case 'Sabamobil': {
+      data.format = 'cassette'
+      break
+    }
     case 'Microcassette':
-    case 'NT Cassette':
-      return ['microcasette', {}]
-    case 'PlayTape':
-      return ['playtape', {}]
-    case 'DAT':
-      return ['dat', {}]
-    case 'DCC':
-      return ['dcc', {}]
+    case 'NT Cassette': {
+      data.format = 'microcasette'
+      break
+    }
+    case 'PlayTape': {
+      data.format = 'playtape'
+      break
+    }
+    case 'DAT': {
+      data.format = 'dat'
+      break
+    }
+    case 'DCC': {
+      data.format = 'dcc'
+      break
+    }
     case 'Betacam':
     case 'Betacam SP':
-    case 'Betamax':
-      return ['beta', {}]
+    case 'Betamax': {
+      data.format = 'beta'
+      break
+    }
     case 'Cartrivision':
     case 'MiniDV':
     case 'U-matic':
     case 'VHS':
     case 'Video 2000':
-    case 'Video8':
-      return ['vhs', {}]
+    case 'Video8': {
+      data.format = 'vhs'
+      break
+    }
     case 'Reel-To-Reel':
-    case 'Film Reel':
-      return ['reel-to-reel', {}]
+    case 'Film Reel': {
+      data.format = 'reel-to-reel'
+      break
+    }
     case 'CDV':
     case 'Laserdisc':
     case 'SelectaVision':
-    case 'VHD':
-      return ['laserdisc', {}]
+    case 'VHD': {
+      data.format = 'laserdisc'
+      break
+    }
     case 'Minidisc':
     case 'MVD':
-    case 'UMD':
-      return ['minidisc', {}]
-    case 'Floppy Disk':
-      return ['digital file', {}]
-    case 'File':
-      return ['digital file', { attributes: ['downloadable'] }]
-    case 'Memory Stick':
-      return ['digital file', { attributes: ['usb/flash drive'] }]
-    case 'Wire Recording':
-    case 'Hybrid':
-    case 'All Media':
-      return [undefined, {}]
-    case 'Box Set':
-      return [undefined, { attributes: ['box set'] }]
+    case 'UMD': {
+      data.format = 'minidisc'
+      break
+    }
+    case 'Floppy Disk': {
+      data.format = 'digital file'
+      break
+    }
+    case 'File': {
+      data.format = 'digital file'
+      data.attributes = [...(data.attributes ?? []), 'downloadable']
+      break
+    }
+    case 'Memory Stick': {
+      data.format = 'digital file'
+      data.attributes = [...(data.attributes ?? []), 'usb/flash drive']
+      break
+    }
+    case 'Box Set': {
+      data.attributes = [...(data.attributes ?? []), 'box set']
+      break
+    }
   }
 }
 
-const parseAttribute = (
+const parseFormatDescription = (
+  data: ResolveData,
   desc: FormatDescription | string
-): [ReleaseAttribute | undefined, Partial<ResolveData>] => {
+) => {
   switch (desc) {
     case '16"':
     case '12"':
@@ -132,83 +177,149 @@ const parseAttribute = (
     case '7"':
     case '6"':
     case '4"':
-    case '3"':
-      return [undefined, { discSize: desc.slice(0, -1) as DiscSize }]
+    case '3"': {
+      data.discSize = desc.slice(0, -1) as DiscSize
+      break
+    }
     case '6½"':
     case '5½"':
     case '3½"':
     case '2"':
-    case '1"':
-      return [undefined, { discSize: 'non-standard' }]
-    case '16 ⅔ RPM':
-      return ['16 rpm', {}]
-    case '33 ⅓ RPM':
-      return ['33 rpm', {}]
-    case '45 RPM':
-      return ['45 rpm', {}]
-    case '78 RPM':
-      return ['78 rpm', {}]
-    case '80 RPM':
-      return ['80 rpm', {}]
-    case 'Single Sided':
-      return ['single-sided', {}]
-    case 'Advance':
-      return ['promo', {}]
+    case '1"': {
+      data.discSize = 'non-standard'
+      break
+    }
+    case '16 ⅔ RPM': {
+      data.attributes = [...(data.attributes ?? []), '16 rpm']
+      break
+    }
+    case '33 ⅓ RPM': {
+      data.attributes = [...(data.attributes ?? []), '33 rpm']
+      break
+    }
+    case '45 RPM': {
+      data.attributes = [...(data.attributes ?? []), '45 rpm']
+      break
+    }
+    case '78 RPM': {
+      data.attributes = [...(data.attributes ?? []), '78 rpm']
+      break
+    }
+    case '80 RPM': {
+      data.attributes = [...(data.attributes ?? []), '80 rpm']
+      break
+    }
+    case 'Single Sided': {
+      data.attributes = [...(data.attributes ?? []), 'single-sided']
+      break
+    }
+    case 'Advance': {
+      data.attributes = [...(data.attributes ?? []), 'promo']
+      break
+    }
     case 'LP':
-    case 'Album':
-      return [undefined, { type: 'album' }]
+    case 'Album': {
+      data.type = 'album'
+      break
+    }
     case 'Mini-Album':
-    case 'EP':
-      return [undefined, { type: 'ep' }]
+    case 'EP': {
+      data.type = 'ep'
+      break
+    }
     case 'Maxi-Single':
-    case 'Single':
-      return [undefined, { type: 'single' }]
-    case 'Compilation':
-      return [undefined, { type: 'compilation' }]
-    case 'Club Edition':
-      return ['fan club release', {}]
-    case 'Deluxe Edition':
-      return ['deluxe edition', {}]
-    case 'Enhanced':
-      return ['enhanced cd', {}]
-    case 'Etched':
-      return ['etched', {}]
-    case 'Limited Edition':
-      return ['limited edition', {}]
-    case 'Mixtape':
-      return [undefined, { type: 'mixtape' }]
-    case 'Numbered':
-      return ['numbered edition', {}]
-    case 'Picture Disc':
-      return ['picture disc', {}]
-    case 'Promo':
-      return ['promo', {}]
-    case 'Remastered':
-      return ['remastered', {}]
-    case 'Test Pressing':
-      return ['test pressing', {}]
-    case 'Unofficial Release':
-      return [undefined, { type: 'bootleg' }]
-    case 'White Label':
-      return ['white label', {}]
-    case 'Quadraphonic':
-      return ['quadraphonic', {}]
-    case 'HDCD':
-      return [undefined, { format: 'hdcd' }]
+    case 'Single': {
+      data.type = 'single'
+      break
+    }
+    case 'Compilation': {
+      data.type = 'compilation'
+      break
+    }
+    case 'Club Edition': {
+      data.attributes = [...(data.attributes ?? []), 'fan club release']
+      break
+    }
+    case 'Deluxe Edition': {
+      data.attributes = [...(data.attributes ?? []), 'deluxe edition']
+      break
+    }
+    case 'Enhanced': {
+      data.attributes = [...(data.attributes ?? []), 'enhanced cd']
+      break
+    }
+    case 'Etched': {
+      data.attributes = [...(data.attributes ?? []), 'etched']
+      break
+    }
+    case 'Limited Edition': {
+      data.attributes = [...(data.attributes ?? []), 'limited edition']
+      break
+    }
+    case 'Mixtape': {
+      data.type = 'mixtape'
+      break
+    }
+    case 'Numbered': {
+      data.attributes = [...(data.attributes ?? []), 'numbered edition']
+      break
+    }
+    case 'Picture Disc': {
+      data.attributes = [...(data.attributes ?? []), 'picture disc']
+      break
+    }
+    case 'Promo': {
+      data.attributes = [...(data.attributes ?? []), 'promo']
+      break
+    }
+    case 'Remastered': {
+      data.attributes = [...(data.attributes ?? []), 'remastered']
+      break
+    }
+    case 'Test Pressing': {
+      data.attributes = [...(data.attributes ?? []), 'test pressing']
+      break
+    }
+    case 'Unofficial Release': {
+      data.type = 'bootleg'
+      break
+    }
+    case 'White Label': {
+      data.attributes = [...(data.attributes ?? []), 'test pressing']
+      break
+    }
+    case 'Quadraphonic': {
+      data.attributes = [...(data.attributes ?? []), 'quadraphonic']
+      break
+    }
+    case 'HDCD': {
+      data.format = 'hdcd'
+      break
+    }
     case 'VCD':
     case 'AVCD':
-    case 'SVCD':
-      return [undefined, { format: 'vcd' }]
-    case 'DVD-Audio':
-      return [undefined, { format: 'dvd-a' }]
-    case '3 ¾ ips':
-      return ['3 3/4 ips', {}]
-    case '7 ½ ips':
-      return ['7 1/2 ips', {}]
+    case 'SVCD': {
+      data.format = 'vcd'
+      break
+    }
+    case 'DVD-Audio': {
+      data.format = 'dvd-a'
+      break
+    }
+    case '3 ¾ ips': {
+      data.attributes = [...(data.attributes ?? []), '3 3/4 ips']
+      break
+    }
+    case '7 ½ ips': {
+      data.attributes = [...(data.attributes ?? []), '7 1/2 ips']
+      break
+    }
     case 'Mono':
     case '2-Track Mono':
-    case '4-Track Mono':
-      return ['mono', {}]
+    case '4-Track Mono': {
+      data.attributes = [...(data.attributes ?? []), 'mono']
+      break
+    }
     case 'AIFC':
     case 'AIFF':
     case 'ALAC':
@@ -220,31 +331,48 @@ const parseAttribute = (
     case 'TTA':
     case 'WAV':
     case 'WavPack':
-    case 'WMA':
-      return [undefined, { format: 'lossless digital' }]
-    case 'DualDisc':
-      return [undefined, { format: 'dualdisc' }]
-    default:
-      return [undefined, {}]
+    case 'WMA': {
+      data.format = 'lossless digital'
+      break
+    }
+    case 'DualDisc': {
+      data.format = 'dualdisc'
+      break
+    }
   }
 }
 
-const parseAttributes = (
-  format: Format
-): readonly [ReleaseAttribute[], Partial<ResolveData>] => {
-  if (!format.descriptions) return [[], {}]
+const parseFormatDescriptions = (data: ResolveData, format: Format) => {
+  if (!format.descriptions) return
 
-  let attributes: ReleaseAttribute[] = []
-  let data: Partial<ResolveData> = {}
   for (const description of format.descriptions) {
-    const [descAttribute, descResolveData] = parseAttribute(description)
-    const descAttributeArray: ReleaseAttribute[] = descAttribute
-      ? [descAttribute]
-      : []
-    attributes = [...attributes, ...descAttributeArray]
-    data = mergeAndConcat(data, descResolveData)
+    parseFormatDescription(data, description)
   }
-  return [attributes, data]
+}
+
+const parseFormatText = (data: ResolveData, format: Format) => {
+  switch (format.text?.toLowerCase()) {
+    case 'demo': {
+      data.attributes = [...(data.attributes ?? []), 'demo']
+      break
+    }
+    case 'gatefold': {
+      data.attributes = [...(data.attributes ?? []), 'gatefold']
+      break
+    }
+    case 'cardboard sleeve': {
+      data.attributes = [...(data.attributes ?? []), 'paper/cardboard sleeve']
+      break
+    }
+    case 'book': {
+      data.attributes = [...(data.attributes ?? []), 'digibook']
+      break
+    }
+    case 'digipak':
+    case 'digipack': {
+      data.attributes = [...(data.attributes ?? []), 'digipak']
+    }
+  }
 }
 
 const resolveRelease = async (id: string): Promise<ResolveData> => {
@@ -276,51 +404,28 @@ const resolveRelease = async (id: string): Promise<ResolveData> => {
   const label: ReleaseLabel = response.labels[0]
   if (label.catno === 'none') label.catno = undefined
 
-  let format: ReleaseFormat | undefined,
-    attributes: ReleaseAttribute[],
-    partialResolveData: Partial<ResolveData>
-  if (response.formats[0]) {
-    const formatResult = parseFormat(response.formats[0])
-    format = formatResult[0]
-
-    const attributesResult = parseAttributes(response.formats[0])
-    attributes = attributesResult[0]
-
-    partialResolveData = mergeAndConcat(formatResult[1], attributesResult[1])
-  } else {
-    format = undefined
-    attributes = []
-    partialResolveData = {}
+  const data: ResolveData = {
+    url,
+    title,
+    artists,
+    date,
+    type,
+    tracks,
+    coverArt,
+    label,
   }
 
-  // special cases: some properties are specified in the "text" property of the format
-  if (response.formats[0]?.text?.toLowerCase() === 'demo')
-    attributes.push('demo')
-  if (response.formats[0]?.text?.toLowerCase() === 'gatefold')
-    attributes.push('gatefold')
-  if (response.formats[0]?.text?.toLowerCase() === 'cardboard sleeve')
-    attributes.push('paper/cardboard sleeve')
-  if (response.formats[0]?.text?.toLowerCase() === 'book')
-    attributes.push('digibook')
+  const format = response.formats[0]
+  if (format) {
+    parseFormatName(data, format)
+    parseFormatDescriptions(data, format)
+    parseFormatText(data, format)
+  }
 
-  const resolveData = mergeAndConcat(
-    {
-      url,
-      title,
-      artists,
-      date,
-      type,
-      format,
-      attributes,
-      tracks,
-      coverArt,
-      label,
-    },
-    partialResolveData
-  )
   // de-dupe attributes
-  resolveData.attributes = [...new Set(resolveData.attributes)]
-  return resolveData
+  data.attributes = [...new Set(data.attributes)]
+
+  return data
 }
 
 const getMasterPrimaryReleaseId = async (masterId: string) => {
