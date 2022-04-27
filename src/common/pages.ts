@@ -2,6 +2,7 @@ import * as storage from './utils/storage'
 
 export const pages = {
   streamLinks: '/release/',
+  suggestions: '/release/',
   releaseSubmission: '/releases/ac',
   coverArt: '/images/upload',
   streamLinkSubmission: '/submit_media_link',

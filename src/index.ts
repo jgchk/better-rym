@@ -10,6 +10,7 @@ const runPage = async (page: string, callback: () => unknown) => {
 }
 
 void runPage(pages.streamLinks, () => import('./modules/stream-links'))
+void runPage(pages.suggestions, () => import('./modules/suggestions'))
 void runPage(
   pages.releaseSubmission,
   () => import('./modules/release-submission')
