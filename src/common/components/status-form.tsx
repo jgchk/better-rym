@@ -33,7 +33,7 @@ export const StatusForm = <E extends Error, T, S extends Service>({
     <Form
       services={services}
       submitText={submitText}
-      onSubmit={onSubmit}
+      onSubmit={(url, service, options) => void onSubmit(url, service, options)}
       showAutoCapitalize={showAutoCapitalize}
     />
     {pipe(

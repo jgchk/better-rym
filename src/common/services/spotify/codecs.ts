@@ -21,7 +21,7 @@ type SimplifiedAlbumObject = {
 
 type CopyrightObject = { text: string }
 
-type PagingObject<C extends unknown> = {
+type PagingObject<C> = {
   href: string
   items: C[]
   limit: number

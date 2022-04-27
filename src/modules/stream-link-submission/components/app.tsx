@@ -74,7 +74,7 @@ export const App: FunctionComponent<{ input: HTMLInputElement }> = ({
         type='button'
         value='Convert to Embed'
         disabled={!service}
-        onClick={fetchEmbedCode}
+        onClick={() => void fetchEmbedCode()}
       />
       {pipe(
         embedCode,

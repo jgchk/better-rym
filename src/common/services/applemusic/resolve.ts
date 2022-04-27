@@ -19,7 +19,9 @@ const getReleaseData = (document_: Document) => {
     .querySelector<HTMLScriptElement>('#shoebox-media-api-cache-amp-music')
     ?.text?.replace('\uF8FF', 'apple')
   if (shoebox) {
-    const base: [string, string][] = Object.entries(JSON.parse(shoebox))
+    const base: [string, string][] = Object.entries(
+      JSON.parse(shoebox) as Record<string, string>
+    )
     if (base[1] && base[1][1])
       return (JSON.parse(base[1][1]) as ReleaseHolder)?.d[0]
   }
