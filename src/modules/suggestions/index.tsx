@@ -29,8 +29,6 @@ const main = async () => {
   // we already get suggestions if we're subscribed
   if (!notSubscribed) return
 
-  notSubscribed.style.display = 'none'
-
   const suggestionsAnchor = getSuggestionsAnchor()
   if (!suggestionsAnchor) {
     console.error('BRYM: could not find suggestions insertion point')
@@ -58,6 +56,9 @@ const main = async () => {
   `
 
   suggestionsAnchor.after(suggestionsElement)
+
+  // hide not subscribed message
+  notSubscribed.style.display = 'none'
 
   refreshSuggestions(releaseId)
 }
