@@ -2,7 +2,7 @@ import { asArray } from '../../utils/array'
 import { secondsToString, stringToDate } from '../../utils/datetime'
 import { fetch } from '../../utils/fetch'
 import { getReleaseType } from '../../utils/music'
-import { ReleaseDate, ResolveFunction, Track } from '../types'
+import { ReleaseAttribute, ReleaseDate, ResolveFunction, Track } from '../types'
 import { ReleaseData } from './codec'
 
 const getData = (document_: Document) => {
@@ -46,6 +46,7 @@ export const resolve: ResolveFunction = async (url) => {
   const response = await fetch({ url })
   const document_ = new DOMParser().parseFromString(response, 'text/html')
   const data = getData(document_)
+  console.log(data)
 
   const url_ = data?.url || url
   const title = data?.current.title
@@ -55,6 +56,16 @@ export const resolve: ResolveFunction = async (url) => {
   const type = tracks ? getReleaseType(tracks.length) : undefined
   const coverArt = asArray(getCoverArt(document_))
 
+  const attributes: ReleaseAttribute[] = ['downloadable', 'streaming']
+
+  const isCreativeCommons = document_
+    .getElementById('license')
+    ?.textContent?.toLowerCase()
+    .includes('some rights reserved')
+  if (isCreativeCommons) {
+    attributes.push('creative commons')
+  }
+
   return {
     url: url_,
     title,
@@ -62,7 +73,7 @@ export const resolve: ResolveFunction = async (url) => {
     date,
     type,
     format: 'lossless digital',
-    attributes: ['downloadable', 'streaming'],
+    attributes,
     tracks,
     coverArt,
   }
