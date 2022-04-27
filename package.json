@@ -62,7 +62,7 @@
     "style-loader": "^3.3.1",
     "stylelint": "^14.8.0",
     "stylelint-config-prettier": "^9.0.3",
-    "stylelint-config-rational-order": "^0.1.2",
+    "stylelint-config-rational-order-fix": "^0.1.9",
     "stylelint-config-standard": "^25.0.0",
     "ts-jest": "^27.0.5",
     "ts-loader": "^9.2.5",

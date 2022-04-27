@@ -1,7 +1,7 @@
 {
   "extends": [
     "stylelint-config-standard",
-    "stylelint-config-rational-order",
+    "stylelint-config-rational-order-fix",
     "stylelint-config-prettier"
   ],
   "rules": {
