@@ -103,9 +103,11 @@ const config = (env) => {
             loader: '@svgr/webpack',
             options: {
               svgoConfig: {
-                plugins: {
-                  removeViewBox: false,
-                },
+                plugins: [
+                  { name: 'removeViewBox' },
+                  { name: 'removeUnusedNS' },
+                  { name: 'removeEditorsNSData' },
+                ],
               },
             },
           },

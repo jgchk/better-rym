@@ -29,7 +29,7 @@
     "webextension-polyfill": "^0.8.0"
   },
   "devDependencies": {
-    "@svgr/webpack": "^5.5.0",
+    "@svgr/webpack": "^6.2.1",
     "@types/copy-webpack-plugin": "^8.0.1",
     "@types/css-minimizer-webpack-plugin": "^3.0.2",
     "@types/dotenv-webpack": "^7.0.3",
