@@ -9,7 +9,15 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "plugins": [
-      { "name": "typescript-plugin-css-modules" },
+      {
+        "name": "typescript-plugin-css-modules",
+        "options": {
+          "classnameTransform": "camelCaseOnly",
+          "postcssOptions": {
+            "useConfig": true
+          }
+        }
+      },
       { "name": "typescript-eslint-language-service" }
     ]
   }

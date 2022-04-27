@@ -78,7 +78,14 @@ const config = (env) => {
           test: /\.css$/,
           use: [
             { loader: 'style-loader', options: { insert: 'html' } },
-            'css-loader',
+            {
+              loader: 'css-loader',
+              options: {
+                modules: {
+                  exportLocalsConvention: 'camelCaseOnly',
+                },
+              },
+            },
             {
               loader: 'postcss-loader',
               options: {

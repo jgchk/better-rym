@@ -1,3 +1,5 @@
+/* stylelint-disable selector-class-pattern */
+/* stylelint-disable selector-id-pattern */
 #submit_issue_step_3_fields
   > div.submit_step_box
   > table
@@ -6,3 +8,5 @@
   > td:nth-child(2) {
   height: unset !important;
 }
+/* stylelint-enable selector-class-pattern */
+/* stylelint-enable selector-id-pattern */

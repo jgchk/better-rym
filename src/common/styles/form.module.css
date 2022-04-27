@@ -19,7 +19,7 @@
   color: var(--gen-text-red);
 }
 
-.advancedButton {
+.advanced-button {
   text-align: center;
   cursor: pointer;
   opacity: 0.9;
