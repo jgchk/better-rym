@@ -50,7 +50,6 @@ const initializeState = async (): Promise<State> => {
 }
 
 const render = (state: State) => {
-  console.log('displayType', state.displayType)
   for (const row of state.rows) {
     row.mediaLinksElement.innerHTML = (
       state.displayType === 'available'

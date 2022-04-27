@@ -46,7 +46,6 @@ export const resolve: ResolveFunction = async (url) => {
   const response = await fetch({ url })
   const document_ = new DOMParser().parseFromString(response, 'text/html')
   const data = getData(document_)
-  console.log(data)
 
   const url_ = data?.url || url
   const title = data?.current.title

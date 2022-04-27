@@ -41,7 +41,6 @@ const injectClearTracklist = async () => {
       .filter((line) => line.length > 0)
       .map((line) => [...line.split('|').slice(0, 2), ''].join('|'))
       .join('\n')
-    console.log(advancedInput.value)
 
     if (!isAdvanced)
       forceQuerySelector<HTMLAnchorElement>(document)('#goSimpleBtn').click()
