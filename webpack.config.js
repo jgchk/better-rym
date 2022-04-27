@@ -82,6 +82,7 @@ const config = (env) => {
               loader: 'css-loader',
               options: {
                 modules: {
+                  auto: true,
                   exportLocalsConvention: 'camelCaseOnly',
                 },
               },
