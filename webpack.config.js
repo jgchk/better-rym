@@ -104,7 +104,6 @@ const config = (env) => {
             options: {
               svgoConfig: {
                 plugins: [
-                  { name: 'removeViewBox' },
                   { name: 'removeUnusedNS' },
                   { name: 'removeEditorsNSData' },
                 ],
