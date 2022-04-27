@@ -20,12 +20,6 @@ import { pipe } from '../../../common/utils/pipe'
 import { useControlledInput } from '../hooks/use-controlled-input'
 import styles from '../styles/app.module.css'
 
-declare global {
-  interface Window {
-    submitMediaLink: () => void
-  }
-}
-
 export const App: FunctionComponent<{ input: HTMLInputElement }> = ({
   input,
 }) => {

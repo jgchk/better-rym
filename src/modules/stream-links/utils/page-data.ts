@@ -2,14 +2,6 @@ import { SEARCHABLES } from '../../../common/services'
 import { ServiceId } from '../../../common/services/types'
 import { waitForCallback, waitForElement } from '../../../common/utils/dom'
 
-declare global {
-  interface Window {
-    streamingPreferences: {
-      service_regions: { [service: string]: string }
-    }
-  }
-}
-
 const getTitle = async () => {
   const titleElement = await waitForElement<HTMLMetaElement>(
     'meta[itemprop=name]'
@@ -23,7 +15,7 @@ const getArtist = async () => {
 }
 
 /* eslint-disable */
-function f(serviceName: any, linkData: any) {
+function f(serviceName: any, linkData: any, streamingPreferences: any) {
   let a = null,
     n = null
   for (const r in linkData) {
@@ -31,15 +23,12 @@ function f(serviceName: any, linkData: any) {
     if (index.default) (a = index), (n = r)
     else if (
       index.for &&
-      index.for.includes(
-        window.streamingPreferences.service_regions[serviceName]
-      )
+      index.for.includes(streamingPreferences.service_regions[serviceName])
     )
       return (index.media_id = r), index
   }
   return a
-    ? a.not &&
-      a.not.includes(window.streamingPreferences.service_regions[serviceName])
+    ? a.not && a.not.includes(streamingPreferences.service_regions[serviceName])
       ? null
       : ((a.media_id = n), a)
     : null
@@ -66,9 +55,38 @@ function m(t: any, linkData: any) {
 }
 /* eslint-enable */
 
+type StreamingPreferences = Record<string, unknown>
+const getStreamingPreferences = (): StreamingPreferences | undefined => {
+  let streamingPreferences: StreamingPreferences | undefined = undefined
+
+  const listener = (e: Event) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    streamingPreferences = (e as CustomEvent).detail
+      .streamingPreferences as StreamingPreferences
+  }
+  window.addEventListener('StreamingPreferencesEvent', listener)
+
+  const script = document.createElement('script')
+  script.textContent = `
+    const streamingPreferences = window.streamingPreferences;
+    const event = document.createEvent('CustomEvent');
+    event.initCustomEvent('StreamingPreferencesEvent', true, true, { streamingPreferences });
+    window.dispatchEvent(event);
+  `
+  document.head.append(script)
+  script.remove()
+
+  document.removeEventListener('StreamingPreferencesEvent', listener)
+
+  return streamingPreferences
+}
+
 export type Links = Record<ServiceId, string | undefined>
-const getLinks = async (): Promise<Links> =>
-  waitForCallback(() => {
+const getLinks = async (): Promise<Links> => {
+  return waitForCallback(() => {
+    const streamingPreferences = getStreamingPreferences()
+    if (!streamingPreferences) return
+
     const element_ = document.querySelector<HTMLElement>(
       '#media_link_button_container_top'
     )
@@ -83,7 +101,7 @@ const getLinks = async (): Promise<Links> =>
     const e: { [service: string]: string } = {}
     for (const a in linksData) {
       const n = linksData[a]
-      const r = f(a, n)
+      const r = f(a, n, streamingPreferences)
       r && (e[a] = m(a, r))
     }
     /* eslint-enable */
@@ -92,6 +110,7 @@ const getLinks = async (): Promise<Links> =>
       SEARCHABLES.map(({ id }) => [id, e[id]])
     ) as Record<ServiceId, string | undefined>
   })
+}
 
 export type Metadata = { artist: string; title: string }
 export type PageData = { metadata: Metadata; links: Links }
