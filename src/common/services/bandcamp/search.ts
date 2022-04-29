@@ -1,40 +1,9 @@
-import { compareTwoStrings } from 'string-similarity'
-
-import { Metadata } from '../../../modules/stream-links/utils/page-data'
-import { fetch } from '../../utils/fetch'
+import { search as ddgSearch } from '../../utils/duckduckgo'
 import { SearchFunction } from '../types'
-import { MusicResult, SearchObject } from './codec'
-
-const compareResults =
-  ({ artist, title }: Metadata) =>
-  (a: MusicResult, b: MusicResult) => {
-    const aSimilarity = compareTwoStrings(
-      `${artist} ${title}`,
-      `${a.band_name} ${a.name}`
-    )
-    const bSimilarity = compareTwoStrings(
-      `${artist} ${title}`,
-      `${b.band_name} ${b.name}`
-    )
-    return bSimilarity - aSimilarity || a.score - b.score
-  }
 
 export const search: SearchFunction = async ({ artist, title }) => {
-  const response = JSON.parse(
-    await fetch({
-      url: 'https://bandcamp.com/api/nusearch/2/autocomplete',
-      urlParameters: { q: `${artist} ${title}` },
-      headers: {
-        'User-Agent':
-          'android-async-http/1.4.1 (http://loopj.com/android-async-http)',
-        Cookie: '$Version=1',
-      },
-    })
-  ) as SearchObject
+  const ddg = await ddgSearch(`site:bandcamp.com/album ${artist} ${title}`)
+  console.log(ddg)
 
-  return (
-    response.results.filter(
-      (r) => r.type == 'a' || r.type == 't'
-    ) as MusicResult[]
-  ).sort(compareResults({ artist, title }))[0]?.url
+  return ddg.results[0]?.url
 }
