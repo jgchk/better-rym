@@ -76,7 +76,7 @@ export const Credits: FunctionComponent = () => {
         <input
           key={artist.id}
           type='button'
-          className={clsx('btn', classes['small-button'])}
+          className={clsx('btn', classes.smallButton)}
           value={`+ ${artist.name}`}
           onClick={() => handleClick(artist)}
         />
