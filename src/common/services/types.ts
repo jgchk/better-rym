@@ -188,6 +188,7 @@ export type ResolveData = {
   artists?: string[]
   coverArt?: string[]
   date?: ReleaseDate
+  publishDate?: ReleaseDate
   type?: ReleaseType
   label?: ReleaseLabel
   format?: ReleaseFormat

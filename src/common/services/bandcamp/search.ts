@@ -3,7 +3,5 @@ import { SearchFunction } from '../types'
 
 export const search: SearchFunction = async ({ artist, title }) => {
   const ddg = await ddgSearch(`site:bandcamp.com/album ${artist} ${title}`)
-  console.log(ddg)
-
   return ddg.results[0]?.url
 }

@@ -11,6 +11,7 @@ import {
 import { forceQuerySelector } from '../../../common/utils/dom'
 import { pipe } from '../../../common/utils/pipe'
 import { ifDefined } from '../../../common/utils/types'
+import { FillData } from '../components/dom'
 import { CapitalizationType, capitalize } from './capitalization'
 import { ReleaseOptions } from './types'
 
@@ -226,10 +227,15 @@ const fillDay = (day: number) => {
     .padStart(2, '0')
 }
 
-const fillDate = (date: ReleaseDate) => {
+export const fillDate = (date: ReleaseDate) => {
   if (date.year !== undefined) fillYear(date.year)
   if (date.month !== undefined) fillMonth(date.month)
   if (date.day !== undefined) fillDay(date.day)
+
+  const fillEvent = new CustomEvent<FillData>('fillEvent', {
+    detail: { filledField: 'date' },
+  })
+  document.dispatchEvent(fillEvent)
 }
 
 const fillTitle = (title: string, capitalization: CapitalizationType) => {

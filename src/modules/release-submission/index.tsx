@@ -3,6 +3,7 @@ import { h, render } from 'preact'
 import { forceQuerySelector, waitForElement } from '../../common/utils/dom'
 import { CatalogNumber } from './components/catalog-number'
 import { Credits } from './components/credits'
+import { DateButton } from './components/date'
 import { Import } from './components/import'
 import { Label } from './components/label'
 import { UnknownArtist } from './components/unknown-artist'
@@ -78,6 +79,14 @@ const injectCatalogNumber = async () => {
   render(<CatalogNumber />, container)
 }
 
+const injectDate = async () => {
+  const yearInput = await waitForElement('#year')
+
+  const container = document.createElement('div')
+  yearInput.after(container)
+  render(<DateButton />, container)
+}
+
 const main = () =>
   Promise.all([
     injectImport(),
@@ -86,6 +95,7 @@ const main = () =>
     injectCredits(),
     injectLabel(),
     injectCatalogNumber(),
+    injectDate(),
   ])
 
 void main()

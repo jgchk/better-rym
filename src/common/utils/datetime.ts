@@ -1,4 +1,5 @@
 import { ReleaseDate } from '../services/types'
+import { isDefined } from './types'
 
 export const stringToDate = (dateString: string): ReleaseDate => {
   const date = new Date(dateString)
@@ -15,3 +16,15 @@ export const secondsToString = (seconds: number): string => {
   const sec = Math.floor(seconds % 60)
   return `${min}:${sec.toString().padStart(2, '0')}`
 }
+
+export const datesEqual = (a: ReleaseDate, b: ReleaseDate) =>
+  a.day === b.day && a.month === b.month && a.year === b.year
+
+export const dateToString = (date: ReleaseDate) =>
+  [
+    date.year,
+    date.month?.toString().padStart(2, '0'),
+    date.day?.toString().padStart(2, '0'),
+  ]
+    .filter(isDefined)
+    .join('-')

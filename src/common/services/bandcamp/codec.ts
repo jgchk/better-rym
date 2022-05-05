@@ -3,6 +3,7 @@ export type TrackData = {
   artist: string
   current: {
     release_date: string | null
+    publish_date: string
     title: string
   }
   item_type: 'track'
@@ -18,6 +19,7 @@ export type AlbumData = {
   artist: string
   current: {
     release_date: string | null
+    publish_date: string
     title: string
   }
   item_type: 'album'

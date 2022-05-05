@@ -37,6 +37,12 @@ export const Import: FunctionComponent = () => {
       if (isComplete(info)) {
         void fill(info.data, options)
 
+        // emit import event
+        const importEvent = new CustomEvent<ResolveData>('importEvent', {
+          detail: info.data,
+        })
+        document.dispatchEvent(importEvent)
+
         if (options.downloadArt && info.data.coverArt) {
           const filename = getFilename(info.data)
           await download(info.data.coverArt.map((url) => ({ url, filename })))

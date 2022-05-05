@@ -17,6 +17,11 @@ const getDate = (data: ReleaseData): ReleaseDate | undefined => {
   return dateString ? stringToDate(dateString) : undefined
 }
 
+const getPublishDate = (data: ReleaseData): ReleaseDate | undefined => {
+  const dateString = data.current.publish_date
+  return dateString ? stringToDate(dateString) : undefined
+}
+
 const getTracks = (data: ReleaseData): Track[] | undefined => {
   if (data.item_type === 'track') {
     const trackInfo = data.trackinfo[0]
@@ -51,6 +56,7 @@ export const resolve: ResolveFunction = async (url) => {
   const title = data?.current.title
   const artists = asArray(data?.artist)
   const date = data ? getDate(data) : undefined
+  const publishDate = data ? getPublishDate(data) : undefined
   const tracks = data ? getTracks(data) : undefined
   const type = tracks ? getReleaseType(tracks.length) : undefined
   const coverArt = asArray(getCoverArt(document_))
@@ -70,6 +76,7 @@ export const resolve: ResolveFunction = async (url) => {
     title,
     artists,
     date,
+    publishDate,
     type,
     format: 'lossless digital',
     attributes,
