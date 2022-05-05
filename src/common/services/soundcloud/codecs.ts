@@ -12,6 +12,7 @@ export type TrackObject = {
   user: {
     username: string
   }
+  license: string
 }
 
 export type PlaylistObject = {

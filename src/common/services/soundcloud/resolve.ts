@@ -6,19 +6,21 @@ import { ReleaseAttribute, ResolveFunction, Track } from '../types'
 import { requestToken } from './auth'
 import { MusicObject, TrackObject } from './codecs'
 
-const formatTrack = ({ title, duration }: TrackObject) => ({
+const formatTrack = ({
+  title,
+  duration,
+  license,
+}: TrackObject): Track & { cc: boolean } => ({
   title,
   duration: secondsToString(duration / 1000),
+  cc: license === 'cc-by-nc',
 })
 
 const getTracks = async (
   data: MusicObject,
   token: string
-): Promise<Track[]> => {
-  if (data.kind === 'track')
-    return [
-      { title: data.title, duration: secondsToString(data.duration / 1000) },
-    ]
+): Promise<(Track & { cc: boolean })[]> => {
+  if (data.kind === 'track') return [formatTrack(data)]
 
   const fullTracks = (
     await Promise.all(
@@ -106,6 +108,10 @@ export const resolve: ResolveFunction = async (url) => {
   const downloadable = response.kind === 'track' && response.downloadable
   if (downloadable) {
     attributes.push('downloadable')
+  }
+
+  if (tracks.every((track) => track.cc)) {
+    attributes.push('creative commons')
   }
 
   return {
