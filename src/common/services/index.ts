@@ -1,5 +1,6 @@
 import { AppleMusic } from './applemusic'
 import { Bandcamp } from './bandcamp'
+import { Beatport } from './beatport'
 import { Discogs } from './discogs'
 import { Melon } from './melon'
 import { Soundcloud } from './soundcloud'
@@ -23,6 +24,7 @@ export const SERVICES: Service[] = [
   Spotify,
   YouTube,
   Melon,
+  Beatport,
 ]
 
 export const SEARCHABLES: (Service & Searchable)[] =
