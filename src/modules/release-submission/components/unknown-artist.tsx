@@ -16,7 +16,7 @@ export const UnknownArtist: FunctionComponent<{ target: string }> = ({
   return (
     <input
       type='button'
-      className={clsx('btn', classes['small-button'])}
+      className={clsx('btn', classes.smallButton)}
       value='+ [unknown artist]'
       onClick={handleClick}
     />

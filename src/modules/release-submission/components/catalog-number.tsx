@@ -16,16 +16,16 @@ export const CatalogNumber: FunctionComponent = () => {
   }, [])
 
   return (
-    <div className={classes['label-container']}>
+    <div className={classes.labelContainer}>
       <input
         type='button'
-        className={clsx('btn blue_btn', classes['small-button'])}
+        className={clsx('btn blue_btn', classes.smallButton)}
         value='Clear'
         onClick={handleClearClick}
       />
       <input
         type='button'
-        className={clsx('btn', classes['small-button'])}
+        className={clsx('btn', classes.smallButton)}
         value='+ n/a'
         onClick={handleNAClick}
       />
