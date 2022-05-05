@@ -25,6 +25,7 @@ export const ServiceSelector = <S extends Service>({
           styles.icon,
           service.id === selected?.id && styles.selected
         )}
+        title={service.name}
       >
         {service.icon({ title: service.name })}
       </button>
