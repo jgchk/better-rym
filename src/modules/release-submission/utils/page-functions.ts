@@ -1,9 +1,4 @@
-const runScript = (script: string) => {
-  const element = document.createElement('script')
-  element.innerHTML = script
-  document.head.append(element)
-  element.remove()
-}
+import { runScript } from '../../../common/utils/dom'
 
 export const selectShortcut = (
   type: string,

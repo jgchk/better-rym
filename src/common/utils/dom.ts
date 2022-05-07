@@ -49,3 +49,10 @@ export const forceQuerySelector =
     if (!element) throw new Error(`Could not find element: ${query}`)
     return element
   }
+
+export const runScript = (script: string) => {
+  const element = document.createElement('script')
+  element.innerHTML = script
+  document.head.append(element)
+  element.remove()
+}

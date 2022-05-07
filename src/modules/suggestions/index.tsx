@@ -1,4 +1,4 @@
-import { waitForDocumentReady } from '../../common/utils/dom'
+import { runScript, waitForDocumentReady } from '../../common/utils/dom'
 
 const getSubscribeMessage = () =>
   document.querySelector<HTMLAnchorElement>(
@@ -13,14 +13,8 @@ const getReleaseId = () => {
   return el?.value.slice(6, -1)
 }
 
-const refreshSuggestions = (releaseId: string) => {
-  const script = document.createElement('script')
-  script.textContent = `
-    RYMsuggestions.refresh($('#suggestions_release_${releaseId}'));
-  `
-  document.head.append(script)
-  script.remove()
-}
+const refreshSuggestions = (releaseId: string) =>
+  runScript(`RYMsuggestions.refresh($('#suggestions_release_${releaseId}'))`)
 
 const main = async () => {
   await waitForDocumentReady()

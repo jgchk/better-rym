@@ -1,6 +1,10 @@
 import { SEARCHABLES } from '../../../common/services'
 import { ServiceId } from '../../../common/services/types'
-import { waitForCallback, waitForElement } from '../../../common/utils/dom'
+import {
+  runScript,
+  waitForCallback,
+  waitForElement,
+} from '../../../common/utils/dom'
 
 const getTitle = async () => {
   const titleElement = await waitForElement<HTMLMetaElement>(
@@ -66,15 +70,12 @@ const getStreamingPreferences = (): StreamingPreferences | undefined => {
   }
   window.addEventListener('StreamingPreferencesEvent', listener)
 
-  const script = document.createElement('script')
-  script.textContent = `
+  runScript(`
     const streamingPreferences = window.streamingPreferences;
     const event = document.createEvent('CustomEvent');
     event.initCustomEvent('StreamingPreferencesEvent', true, true, { streamingPreferences });
     window.dispatchEvent(event);
-  `
-  document.head.append(script)
-  script.remove()
+  `)
 
   document.removeEventListener('StreamingPreferencesEvent', listener)
 
