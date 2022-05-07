@@ -18,7 +18,6 @@ const ENG_DO_NOT_CAPITALIZE = new Set([
   'nor',
   'for',
   'yet',
-  'so',
   'as',
   'at',
   'by',
