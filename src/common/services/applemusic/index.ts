@@ -10,7 +10,7 @@ export const AppleMusic: Service & Searchable & Resolvable = {
   id: 'applemusic',
   name: 'Apple Music',
   regex:
-    /https?:\/\/music\.apple\.com\/(\w{2,4})\/album\/([^/]*)\/([^?]+)[^/]*/,
+    /https?:\/\/music\.apple\.com\/(\w{2,4})\/(album|music-video)\/([^/]*)\/([^?]+)[^/]*/,
   icon: Icon,
   foundIcon: FoundIcon,
   notFoundIcon: NotFoundIcon,

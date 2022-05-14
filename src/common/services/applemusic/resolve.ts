@@ -2,8 +2,8 @@ import { asArray } from '../../utils/array'
 import { secondsToString, stringToDate } from '../../utils/datetime'
 import { fetch } from '../../utils/fetch'
 import { getReleaseType } from '../../utils/music'
-import { ResolveFunction } from '../types'
-import { Release, ReleaseHolder } from './codec'
+import { ReleaseLabel, ReleaseType, ResolveFunction, Track } from '../types'
+import { isVideoRelease, Release, ReleaseHolder } from './codec'
 
 const getArtists = (release: Release) => {
   if (release.relationships.artists.data.length > 0) {
@@ -22,8 +22,10 @@ const getReleaseData = (document_: Document) => {
     const base: [string, string][] = Object.entries(
       JSON.parse(shoebox) as Record<string, string>
     )
-    if (base[1] && base[1][1])
-      return (JSON.parse(base[1][1]) as ReleaseHolder)?.d[0]
+    if (base[1] && base[1][1]) {
+      const releaseData = (JSON.parse(base[1][1]) as ReleaseHolder)?.d[0]
+      if (releaseData) return releaseData
+    }
   }
   throw new Error('Could not get release data for URL ' + document_.URL)
 }
@@ -36,25 +38,43 @@ export const resolve: ResolveFunction = async (url) => {
   const url_ = release.attributes.url
   const artists = getArtists(release)
   const date = stringToDate(release.attributes.releaseDate)
-  const tracks = release.relationships.tracks.data.map((element) => {
-    const position = element.attributes.trackNumber.toString()
-    const title = element.attributes.name
-    const duration = secondsToString(element.attributes.durationInMillis / 1000)
-    return { position, title, duration }
-  })
-  const coverArt = asArray(
-    release.attributes.artwork.url.replace('{w}x{h}bb.{f}', '2400x2400bb.jpg')
-  )
-  const label = { name: release.attributes.recordLabel, catno: '' }
 
-  let title = release.attributes.name
-  let type = getReleaseType(tracks.length)
-  if (title?.includes(' - EP')) {
-    title = title.replace(' - EP', '')
-    type = 'ep'
-  } else if (title?.includes(' - Single')) {
-    title = title.replace(' - Single', '')
-    type = 'single'
+  let tracks: Track[] | undefined
+  let title: string
+  let type: ReleaseType
+  let label: ReleaseLabel | undefined
+  let coverArt: string[] | undefined
+
+  if (isVideoRelease(release)) {
+    title = release.attributes.name
+    type = 'music video'
+    coverArt = asArray(
+      release.attributes.artwork.url.replace('{w}x{h}mv', '2400x2400mv')
+    )
+  } else {
+    tracks = release.relationships.tracks.data.map((element) => {
+      const position = element.attributes.trackNumber.toString()
+      const title = element.attributes.name
+      const duration = secondsToString(
+        element.attributes.durationInMillis / 1000
+      )
+      return { position, title, duration }
+    })
+
+    title = release.attributes.name
+    type = getReleaseType(tracks.length)
+    if (title?.includes(' - EP')) {
+      title = title.replace(' - EP', '')
+      type = 'ep'
+    } else if (title?.includes(' - Single')) {
+      title = title.replace(' - Single', '')
+      type = 'single'
+    }
+
+    label = { name: release.attributes.recordLabel, catno: '' }
+    coverArt = asArray(
+      release.attributes.artwork.url.replace('{w}x{h}bb.{f}', '2400x2400bb.jpg')
+    )
   }
 
   return {
