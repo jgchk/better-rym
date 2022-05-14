@@ -45,7 +45,12 @@ const setTabIcon = (tabId: number, enabled: boolean) => {
 browser.tabs.onUpdated.addListener((id, changeInfo, tab) => {
   const pageUrls = Object.values(pages)
   for (const pageUrl of pageUrls) {
-    if (tab.url && new URL(tab.url).pathname.startsWith(pageUrl)) {
+    if (!tab.url) continue
+    const url = new URL(tab.url)
+    if (
+      url.hostname.endsWith('rateyourmusic.com') &&
+      url.pathname.startsWith(pageUrl)
+    ) {
       void getPageEnabled(pageUrl).then((enabled) => setTabIcon(id, enabled))
       void browser.pageAction.show(id)
       return
