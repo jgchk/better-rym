@@ -64,9 +64,7 @@ const parseType = (type: AlbumType, numberOfTracks: number) =>
   type === 'compilation' ? type : getReleaseType(numberOfTracks)
 
 const getCoverArt = (data: AlbumObject | TrackObject) => {
-  const images = (data as AlbumObject)
-    ? (data as AlbumObject).images
-    : (data as TrackObject).album.images
+  const images = 'album_type' in data ? data.images : data.album.images
   return images.sort((a, b) => b.width * b.height - a.width * a.height)[0]?.url
 }
 
