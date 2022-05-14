@@ -64,3 +64,6 @@ export type TrackObject = {
   external_urls: ExternalUrlObject
   name: string
 }
+
+export const isAlbumObject = (o: AlbumObject | TrackObject): o is AlbumObject =>
+  'album_type' in o

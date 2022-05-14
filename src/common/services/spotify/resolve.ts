@@ -8,6 +8,7 @@ import {
   AlbumObject,
   AlbumTracks,
   AlbumType,
+  isAlbumObject,
   SimplifiedTrackObject,
   TrackObject,
 } from './codecs'
@@ -64,7 +65,7 @@ const parseType = (type: AlbumType, numberOfTracks: number) =>
   type === 'compilation' ? type : getReleaseType(numberOfTracks)
 
 const getCoverArt = (data: AlbumObject | TrackObject) => {
-  const images = 'album_type' in data ? data.images : data.album.images
+  const images = isAlbumObject(data) ? data.images : data.album.images
   return images.sort((a, b) => b.width * b.height - a.width * a.height)[0]?.url
 }
 
