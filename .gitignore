@@ -4,6 +4,7 @@ output/
 
 .env
 .eslintcache
+.dccache
 
 brym.zip
 output.pem
