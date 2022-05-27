@@ -22,47 +22,44 @@ const getTracks = async (
 ): Promise<(Track & { cc: boolean })[]> => {
   if (data.kind === 'track') return [formatTrack(data)]
 
-  const fullTracks = (
-    await Promise.all(
-      chunkArray(
-        data.tracks.filter((track) => !track.title).map((track) => track.id),
-        15
-      ).map(
-        async (ids) =>
-          JSON.parse(
-            await fetch({
-              url: 'https://api-v2.soundcloud.com/tracks',
-              urlParameters: { ids: ids.join(','), client_id: token },
-            })
-          ) as TrackObject[]
-      )
+  const fullTrackResults = await Promise.all(
+    chunkArray(
+      data.tracks.filter((track) => !track.title).map((track) => track.id),
+      15
+    ).map(
+      async (ids) =>
+        JSON.parse(
+          await fetch({
+            url: 'https://api-v2.soundcloud.com/tracks',
+            urlParameters: { ids: ids.join(','), client_id: token },
+          })
+        ) as TrackObject[]
     )
-  ).flat()
+  )
+  const fullTracks = fullTrackResults.flat()
 
-  return (
-    await Promise.all(
-      data.tracks
-        .map(
-          (track) =>
-            [
-              track.id,
-              track.title
-                ? track
-                : fullTracks.find(({ id }) => id === track.id),
-            ] as const
-        )
-        .map(
-          async ([id, track]) =>
-            track ??
-            (JSON.parse(
-              await fetch({
-                url: `https://api-v2.soundcloud.com/tracks/${id}`,
-                urlParameters: { client_id: token },
-              })
-            ) as TrackObject)
-        )
-    )
-  ).map(formatTrack)
+  const tracks = await Promise.all(
+    data.tracks
+      .map(
+        (track) =>
+          [
+            track.id,
+            track.title ? track : fullTracks.find(({ id }) => id === track.id),
+          ] as const
+      )
+      .map(
+        async ([id, track]) =>
+          track ??
+          (JSON.parse(
+            await fetch({
+              url: `https://api-v2.soundcloud.com/tracks/${id}`,
+              urlParameters: { client_id: token },
+            })
+          ) as TrackObject)
+      )
+  )
+
+  return tracks.map(formatTrack)
 }
 
 const getCoverArt = (data: MusicObject) =>

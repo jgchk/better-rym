@@ -11,7 +11,7 @@ import {
 import { forceQuerySelector } from '../../../common/utils/dom'
 import { pipe } from '../../../common/utils/pipe'
 import { ifDefined } from '../../../common/utils/types'
-import { FillData } from '../components/dom'
+import { FillData } from '../components/dom.d'
 import { CapitalizationType, capitalize } from './capitalization'
 import { ReleaseOptions } from './types'
 

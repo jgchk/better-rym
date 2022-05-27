@@ -6,7 +6,7 @@ import { clsx } from '../../../common/utils/clsx'
 import { datesEqual, dateToString } from '../../../common/utils/datetime'
 import classes from '../styles/buttons.module.css'
 import { fillDate } from '../utils/fillers'
-import { FillData } from './dom'
+import { FillData } from './dom.d'
 
 export const DateButton: FunctionComponent = () => {
   const filledDate = useFilledDate()

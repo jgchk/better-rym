@@ -17,8 +17,7 @@
             "useConfig": true
           }
         }
-      },
-      { "name": "typescript-eslint-language-service" }
+      }
     ]
   }
 }

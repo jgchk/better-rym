@@ -454,7 +454,13 @@ export const resolve: ResolveFunction = async (url) => {
   const id = match[6]
   if (!id) throw new Error('Could not find ID in link')
 
-  const releaseId =
-    type === 'release' ? id : (await getMasterPrimaryReleaseId(id)).toString()
+  let releaseId
+  if (type === 'release') {
+    releaseId = id
+  } else {
+    const masterReleaseId = await getMasterPrimaryReleaseId(id)
+    releaseId = masterReleaseId.toString()
+  }
+
   return resolveRelease(releaseId)
 }

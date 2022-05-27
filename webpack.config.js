@@ -3,6 +3,7 @@ const DotEnvironmentPlugin = require('dotenv-webpack')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const ForkTsCheckerPlugin = require('fork-ts-checker-webpack-plugin')
+const ESLintPlugin = require('eslint-webpack-plugin')
 const webpack = require('webpack')
 const { join } = require('path')
 const packageInfo = require('./package.json')
@@ -26,11 +27,9 @@ const config = (env) => {
       path: join(__dirname, './output'),
     },
     plugins: [
-      new ForkTsCheckerPlugin({
-        eslint: {
-          enabled: true,
-          files: './src/**/*.{ts,tsx,js,jsx}',
-        },
+      new ForkTsCheckerPlugin(),
+      new ESLintPlugin({
+        extensions: ['js', 'jsx', 'ts', 'tsx'],
       }),
       new CleanWebpackPlugin(),
       new DotEnvironmentPlugin(),
