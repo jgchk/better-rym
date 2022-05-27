@@ -72,7 +72,6 @@ describe('title caps', () => {
     'I’m Ready',
     'Howžy',
     'Grand Theft Auto IV',
-    'This Thing - Vocal Mix',
     'Mi Padre',
     'B$&@h Made',
     'B!@#h Made',
@@ -82,6 +81,9 @@ describe('title caps', () => {
     ['Edifice/Riftworm', 'Edifice / Riftworm'],
     ['Frozen Heart / A Cracked Sea', 'Frozen Heart / A Cracked Sea'],
     ['Frozen Heart  /    A Cracked Sea', 'Frozen Heart / A Cracked Sea'],
+    ['Howdy - Extended Mix', 'Howdy (Extended Mix)'],
+    ['This Thing - Vocal Mix', 'This Thing (Vocal Mix)'],
+    ['Ya Ya  -     Ayo    Remix', 'Ya Ya (Ayo Remix)'],
   ]
   test.each(titles)('correctly capitalizes %p', (testCase) => {
     const [input, output] =

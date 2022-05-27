@@ -1,4 +1,5 @@
 import { findLastIndex } from '../../../common/utils/array'
+import { pipe } from '../../../common/utils/pipe'
 import { Phrase, Token, tokenize } from './tokenize'
 
 export const CAPITALIZATION_TYPES = [
@@ -67,26 +68,43 @@ const capitalizePhrase =
     const lastWordIndex = findLastIndex(phrase, isWord)
 
     return capitalization === 'sentence-case'
-      ? phrase
-          .map((token, index) =>
-            index === firstWordIndex
-              ? toTitleCase(token)
-              : token.type === 'romanNumeral'
-              ? token.text.toUpperCase()
-              : token.text.toLowerCase()
-          )
-          .join('')
-      : phrase
-          .map((token, index) => {
-            if (index === firstWordIndex || index === lastWordIndex) {
-              return ENG_DO_NOT_CAPITALIZE_FORCE.has(token.text.toLowerCase())
-                ? token.text.toLowerCase()
-                : toTitleCase(token)
-            } else if (ENG_DO_NOT_CAPITALIZE.has(token.text.toLowerCase())) {
-              return token.text.toLowerCase()
-            } else {
-              return toTitleCase(token)
-            }
-          })
-          .join('')
+      ? pipe(
+          phrase
+            .map((token, index) =>
+              index === firstWordIndex
+                ? toTitleCase(token)
+                : token.type === 'romanNumeral'
+                ? token.text.toUpperCase()
+                : token.text.toLowerCase()
+            )
+            .join(''),
+          formatMixText
+        )
+      : pipe(
+          phrase
+            .map((token, index) => {
+              if (index === firstWordIndex || index === lastWordIndex) {
+                return ENG_DO_NOT_CAPITALIZE_FORCE.has(token.text.toLowerCase())
+                  ? token.text.toLowerCase()
+                  : toTitleCase(token)
+              } else if (ENG_DO_NOT_CAPITALIZE.has(token.text.toLowerCase())) {
+                return token.text.toLowerCase()
+              } else {
+                return toTitleCase(token)
+              }
+            })
+            .join(''),
+          formatMixText
+        )
   }
+
+const formatMixText = (text: string) => {
+  const regex = /\s*-\s*(.*)\b([Rr]emix|[Mm]ix)/
+  const match = regex.exec(text)
+  if (!match) return text
+
+  const artistText = match[1]?.trim() ?? ''
+  const mixType = match[2]?.trim() ?? ''
+
+  return text.replace(regex, ` (${artistText} ${mixType})`)
+}
