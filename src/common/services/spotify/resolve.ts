@@ -87,7 +87,14 @@ const resolveAlbum = async (
   const tracks = await getTracks(response.tracks, token)
   const type = parseType(response.album_type, tracks.length)
   const coverArt = asArray(getCoverArt(response))
-  const label = { name: response.copyrights[0]?.text }
+  const label = {
+    name: response.copyrights[0]?.text
+      // https://github.com/jgchk/better-rym/issues/128
+      .replaceAll('©', '')
+      .trim()
+      .replace(/^\d+/, '')
+      .trim(),
+  }
 
   return {
     url,
