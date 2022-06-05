@@ -246,6 +246,7 @@ export type Release = {
       position: string
       title: string
       duration: string
+      type_: 'heading' | 'track'
     }
   ]
   images: [{ resource_url: string }]

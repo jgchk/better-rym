@@ -181,7 +181,12 @@ export type ReleaseAttribute =
   | 'television soundtrack'
   | 'video game soundtrack'
 export type ReleaseLabel = { name?: string; catno?: string }
-export type Track = { position?: string; title?: string; duration?: string }
+export type Track = {
+  position?: string
+  title?: string
+  duration?: string
+  header?: boolean
+}
 export type ResolveData = {
   url?: string
   title?: string

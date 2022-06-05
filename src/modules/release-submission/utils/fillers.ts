@@ -9,8 +9,6 @@ import {
   Track,
 } from '../../../common/services/types'
 import { forceQuerySelector } from '../../../common/utils/dom'
-import { pipe } from '../../../common/utils/pipe'
-import { ifDefined } from '../../../common/utils/types'
 import { FillData } from '../components/dom.d'
 import { CapitalizationType, capitalize } from './capitalization'
 import { ReleaseOptions } from './types'
@@ -271,16 +269,20 @@ const fillTracks = (tracks: Track[], capitalization: CapitalizationType) => {
   const tracksString = tracks
     .map((track, index) => {
       const position = track.position ?? index + 1
-      const title =
-        pipe(
-          track.title,
-          ifDefined((title) =>
-            title.toLowerCase() === 'untitled'
-              ? '[untitled]'
-              : capitalize(title, capitalization)
-          )
-        ) ?? ''
+
+      let title = track.title ?? ''
+
+      title =
+        title.toLowerCase() === 'untitled'
+          ? '[untitled]'
+          : capitalize(title, capitalization)
+
+      if (track.header) {
+        title = `[b]${title}[/b]`
+      }
+
       const duration = track.duration ?? ''
+
       return `${position}|${title}|${duration}`
     })
     .join('\n')

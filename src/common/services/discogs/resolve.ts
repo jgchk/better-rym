@@ -398,6 +398,7 @@ const resolveRelease = async (id: string): Promise<ResolveData> => {
     position: track.position.replace('-', '.').replace(/(CD|DVD)\D?/, ''), // CD1-1 -> 1.1
     title: track.title,
     duration: track.duration,
+    header: track.type_ === 'heading',
   }))
   const type = getReleaseType(tracks.length)
   const coverArt = (response.images ?? []).map((image) => image.resource_url)
