@@ -49,9 +49,21 @@ const getTracks = (document_: Document) =>
       title += ` (${remix})`
     }
 
-    const duration = element
+    let duration = element
       .querySelector('.buk-track-length')
       ?.textContent?.trim()
+
+    if (duration) {
+      const durationParts = duration.split(':')
+      if (durationParts.length === 3) {
+        const hours = Number.parseInt(durationParts[0] ?? '0')
+        const minutes = Number.parseInt(durationParts[1] ?? '0')
+        const seconds = durationParts[2] ?? '00'
+
+        const totalMinutes = hours * 60 + minutes
+        duration = `${totalMinutes}:${seconds}`
+      }
+    }
 
     return { position, title, duration }
   })
