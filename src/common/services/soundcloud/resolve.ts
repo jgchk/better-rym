@@ -1,5 +1,9 @@
 import { asArray, chunkArray } from '../../utils/array'
-import { secondsToString, stringToDate } from '../../utils/datetime'
+import {
+  ONE_MINUTE_MS,
+  secondsToString,
+  stringToDate,
+} from '../../utils/datetime'
 import { fetch } from '../../utils/fetch'
 import { getReleaseType } from '../../utils/music'
 import { ReleaseAttribute, ResolveFunction, Track } from '../types'
@@ -97,8 +101,14 @@ export const resolve: ResolveFunction = async (url) => {
   const artists = asArray(response.user.username)
   const date = stringToDate(response.display_date)
   const tracks = await getTracks(response, token)
-  const type = getReleaseType(tracks.length)
+  let type = getReleaseType(tracks.length)
   const coverArt = getCoverArt(response)
+
+  const isLongTrack =
+    response.kind === 'track' && response.duration >= 20 * ONE_MINUTE_MS
+  if (isLongTrack) {
+    type = 'dj mix'
+  }
 
   const attributes: ReleaseAttribute[] = ['streaming']
 
