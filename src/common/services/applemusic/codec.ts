@@ -25,6 +25,7 @@ type TrackRelationship = {
     durationInMillis: number
     name: string
     trackNumber: number
+    discNumber: number
   }
 }
 

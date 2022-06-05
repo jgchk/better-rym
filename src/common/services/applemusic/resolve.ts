@@ -52,8 +52,18 @@ export const resolve: ResolveFunction = async (url) => {
       release.attributes.artwork.url.replace('{w}x{h}mv', '2400x2400mv')
     )
   } else {
+    const hasMultipleDiscs = release.relationships.tracks.data.some(
+      (track) => track.attributes.discNumber > 1
+    )
     tracks = release.relationships.tracks.data.map((element) => {
-      const position = element.attributes.trackNumber.toString()
+      let position
+      const trackNumber = element.attributes.trackNumber
+      if (hasMultipleDiscs) {
+        const discNumber = element.attributes.discNumber
+        position = `${discNumber}.${trackNumber}`
+      } else {
+        position = trackNumber.toString()
+      }
       const title = element.attributes.name
       const duration = secondsToString(
         element.attributes.durationInMillis / 1000
