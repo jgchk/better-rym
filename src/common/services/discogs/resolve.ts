@@ -57,16 +57,19 @@ const parseFormatName = (data: ResolveData, format: Format) => {
     case 'DVD':
     case 'HD DVD': {
       data.format = 'dvd'
+      data.type = 'video'
       break
     }
     case 'DVDr':
     case 'HD DVD-R': {
       data.format = 'dvd-r'
+      data.type = 'video'
       break
     }
     case 'Blu-ray':
     case 'Blu-ray-R': {
       data.format = 'blu-ray'
+      data.type = 'video'
       break
     }
     case 'SACD': {
@@ -113,6 +116,7 @@ const parseFormatName = (data: ResolveData, format: Format) => {
     case 'Betacam SP':
     case 'Betamax': {
       data.format = 'beta'
+      data.type = 'video'
       break
     }
     case 'Cartrivision':
@@ -122,6 +126,7 @@ const parseFormatName = (data: ResolveData, format: Format) => {
     case 'Video 2000':
     case 'Video8': {
       data.format = 'vhs'
+      data.type = 'video'
       break
     }
     case 'Reel-To-Reel':
@@ -134,6 +139,7 @@ const parseFormatName = (data: ResolveData, format: Format) => {
     case 'SelectaVision':
     case 'VHD': {
       data.format = 'laserdisc'
+      data.type = 'video'
       break
     }
     case 'Minidisc':
@@ -300,6 +306,7 @@ const parseFormatDescription = (
     case 'AVCD':
     case 'SVCD': {
       data.format = 'vcd'
+      data.type = 'video'
       break
     }
     case 'DVD-Audio': {
@@ -418,8 +425,8 @@ const resolveRelease = async (id: string): Promise<ResolveData> => {
 
   const format = response.formats[0]
   if (format) {
-    parseFormatName(data, format)
     parseFormatDescriptions(data, format)
+    parseFormatName(data, format)
     parseFormatText(data, format)
   }
 
