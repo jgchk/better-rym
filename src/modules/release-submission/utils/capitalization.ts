@@ -99,12 +99,16 @@ const capitalizePhrase =
   }
 
 const formatMixText = (text: string) => {
-  const regex = /\s*-\s*(.*)\b([Rr]emix|[Mm]ix)/
+  const regex = /\s*-\s*(.*)\b((?:[Rr]emix|[Mm]ix)(?:e?s)?)/
   const match = regex.exec(text)
   if (!match) return text
 
   const artistText = match[1]?.trim() ?? ''
   const mixType = match[2]?.trim() ?? ''
 
-  return text.replace(regex, ` (${artistText} ${mixType})`)
+  const parenthesizedText = [artistText, mixType]
+    .filter((s) => s.length > 0)
+    .join(' ')
+
+  return text.replace(regex, ` (${parenthesizedText})`)
 }

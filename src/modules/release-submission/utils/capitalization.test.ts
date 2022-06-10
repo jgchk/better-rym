@@ -84,6 +84,11 @@ describe('title caps', () => {
     ['Howdy - Extended Mix', 'Howdy (Extended Mix)'],
     ['This Thing - Vocal Mix', 'This Thing (Vocal Mix)'],
     ['Ya Ya  -     Ayo    Remix', 'Ya Ya (Ayo Remix)'],
+    [
+      'Some Remixes of Other Songs - Remixes',
+      'Some Remixes of Other Songs (Remixes)',
+    ],
+    ['A Set - New Mixs', 'A Set (New Mixs)'],
   ]
   test.each(titles)('correctly capitalizes %p', (testCase) => {
     const [input, output] =
