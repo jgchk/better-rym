@@ -73,7 +73,7 @@ const getCoverArt = (document_: Document) => {
     'img.interior-release-chart-artwork'
   )?.src
 
-  const maxSizeUrl = originalUrl?.replace(/\/\d+x\d+\//, '/2400x2400/')
+  const maxSizeUrl = originalUrl?.replace(/\/\d+x\d+\//, '/0x0/')
 
   return [maxSizeUrl, originalUrl].filter(isDefined)
 }
