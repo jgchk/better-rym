@@ -60,7 +60,7 @@ export const resolve: ResolveFunction = async (url) => {
     format = undefined
     attributes = []
     coverArt = asArray(
-      release.attributes.artwork.url.replace('{w}x{h}mv', '2400x2400mv')
+      release.attributes.artwork.url.replace('{w}x{h}mv', '999999999x999999999')
     )
   } else {
     const hasMultipleDiscs = release.relationships.tracks.data.some(
@@ -96,7 +96,10 @@ export const resolve: ResolveFunction = async (url) => {
 
     label = { name: release.attributes.recordLabel, catno: '' }
     coverArt = asArray(
-      release.attributes.artwork.url.replace('{w}x{h}bb.{f}', '2400x2400bb.jpg')
+      release.attributes.artwork.url.replace(
+        '{w}x{h}bb.{f}',
+        '999999999x999999999.jpg'
+      )
     )
   }
 
