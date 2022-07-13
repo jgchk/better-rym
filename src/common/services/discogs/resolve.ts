@@ -290,6 +290,13 @@ const parseFormatDescription = (
       data.attributes = [...(data.attributes ?? []), 'test pressing']
       break
     }
+    case 'Transcription': {
+      // "transcription releases are releases given to a radio station for broadcast.
+      //  rym doesn't have a specific tag for this, but the promo tag is the same thing"
+      //      - via https://github.com/jgchk/better-rym/issues/141
+      data.attributes = [...(data.attributes ?? []), 'promo']
+      break
+    }
     case 'Unofficial Release': {
       data.type = 'bootleg'
       break
