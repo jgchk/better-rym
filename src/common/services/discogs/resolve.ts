@@ -223,7 +223,11 @@ const parseFormatDescription = (
       data.attributes = [...(data.attributes ?? []), 'promo']
       break
     }
-    case 'LP':
+    case 'LP': {
+      data.type = 'album'
+      data.discSize = data.discSize ?? '12' // discogs LPs are 12" by default (https://github.com/jgchk/better-rym/issues/140)
+      break
+    }
     case 'Album': {
       data.type = 'album'
       break
