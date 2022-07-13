@@ -84,33 +84,39 @@ const getStreamingPreferences = (): StreamingPreferences | undefined => {
 
 export type Links = Record<ServiceId, string | undefined>
 const getLinks = async (): Promise<Links> => {
-  return waitForCallback(() => {
-    const streamingPreferences = getStreamingPreferences()
-    if (!streamingPreferences) return
+  return waitForCallback(
+    () => {
+      const streamingPreferences = getStreamingPreferences()
+      if (!streamingPreferences) return
 
-    const element_ = document.querySelector<HTMLElement>(
-      '#media_link_button_container_top'
-    )
-    if (!element_) return
+      const element_ = document.querySelector<HTMLElement>(
+        '#media_link_button_container_top'
+      )
+      if (!element_) return
 
-    const linksString = element_.dataset.links
-    if (!linksString) return
+      const linksString = element_.dataset.links
+      if (!linksString) return
 
-    /* eslint-disable */
-    const linksData = JSON.parse(linksString)
+      /* eslint-disable */
+      const linksData = JSON.parse(linksString)
 
-    const e: { [service: string]: string } = {}
-    for (const a in linksData) {
-      const n = linksData[a]
-      const r = f(a, n, streamingPreferences)
-      r && (e[a] = m(a, r))
-    }
-    /* eslint-enable */
+      const e: { [service: string]: string } = {}
+      for (const a in linksData) {
+        const n = linksData[a]
+        const r = f(a, n, streamingPreferences)
+        r && (e[a] = m(a, r))
+      }
+      /* eslint-enable */
 
-    return Object.fromEntries(
-      SEARCHABLES.map(({ id }) => [id, e[id]])
-    ) as Record<ServiceId, string | undefined>
-  })
+      return Object.fromEntries(
+        SEARCHABLES.map(({ id }) => [id, e[id]])
+      ) as Record<ServiceId, string | undefined>
+    },
+    () =>
+      Object.fromEntries(
+        SEARCHABLES.map(({ id }) => [id, undefined])
+      ) as Record<ServiceId, string | undefined>
+  )
 }
 
 export type Metadata = { artist: string; title: string }
