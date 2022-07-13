@@ -89,6 +89,7 @@ describe('title caps', () => {
       'Some Remixes of Other Songs (Remixes)',
     ],
     ['A Set - New Mixs', 'A Set (New Mixs)'],
+    ['Factor In - Solo Version', 'Factor In (Solo Version)'],
   ]
   test.each(titles)('correctly capitalizes %p', (testCase) => {
     const [input, output] =
@@ -104,6 +105,7 @@ describe('sentence caps', () => {
     ['You Can Leave Your Hat On', 'You can leave your hat on'],
     ['One Is For', 'One is for'],
     ['Grand Theft Auto IV', 'Grand theft auto IV'],
+    ['One IV the III', 'One IV the III'],
   ]
 
   test.each(titles)('correctly capitalizes %p', (input, output) =>

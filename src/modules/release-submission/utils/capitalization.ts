@@ -1,7 +1,3 @@
-import { findLastIndex } from '../../../common/utils/array'
-import { pipe } from '../../../common/utils/pipe'
-import { Phrase, Token, tokenize } from './tokenize'
-
 export const CAPITALIZATION_TYPES = [
   'title-case',
   'sentence-case',
@@ -9,97 +5,43 @@ export const CAPITALIZATION_TYPES = [
 ] as const
 export type CapitalizationType = typeof CAPITALIZATION_TYPES[number]
 
-const ENG_DO_NOT_CAPITALIZE = new Set([
-  'a',
-  'an',
-  'the',
-  'and',
-  'but',
-  'or',
-  'nor',
-  'for',
-  'yet',
-  'as',
-  'at',
-  'by',
-  'for',
-  'in',
-  'of',
-  'on',
-  'to',
-  'versus',
-  'vs',
-  'vs.',
-  'v',
-  'v.',
-  'n',
-  "'n",
-  "n'",
-  "'n'",
-  "o'",
-  'o',
-])
+const upperCaseFirst = (text: string): string =>
+  text.charAt(0).toUpperCase() + text.slice(1)
 
-// Don't capitalize even if it's the first or last word
-const ENG_DO_NOT_CAPITALIZE_FORCE = new Set(['etc', 'etc.'])
+const capitalCase = (text: string): string =>
+  text.replace(/[^\s"()/[\]{}“”-]+/g, (match) => upperCaseFirst(match))
 
-const isWord = ({ type }: Token) => type === 'word' || type === 'romanNumeral'
+const capitalizeRomanNumerals = (text: string): string =>
+  text.replace(
+    /\b(?!mi)(?<!['’])(?=[cdilmvx])m*(c[dm]|d?c*)(x[cl]|l?x*)(i[vx]|v?i*)(?=\s|$)/gi,
+    (match) => match.toUpperCase()
+  )
 
-const toTitleCase = ({ text, type }: Token) => {
-  if (!text[0]) return text
-  if (type === 'romanNumeral') return text.toUpperCase()
-  return text[0].toUpperCase() + text.slice(1).toLowerCase()
-}
+const lowercaseWords = (text: string): string =>
+  text.replace(
+    /\b(versus|the|and|but|nor|for|yet|an|or|as|at|by|in|of|on|to|vs|a|v|n|o)\b/gi,
+    (match) => match.toLowerCase()
+  )
 
-export const capitalize = (
-  text: string,
-  capitalization: CapitalizationType
-): string =>
-  capitalization === 'as-is'
-    ? text
-    : tokenize(text.toLowerCase())
-        .map(capitalizePhrase(capitalization))
-        .join('')
+const capitalizeFirstWord = (text: string): string =>
+  text.replace(/(?:^|(?:[!()./:?[\]{}]\s*))([\w']+)/g, (match) =>
+    capitalCase(match)
+  )
 
-const capitalizePhrase =
-  (capitalization: Exclude<CapitalizationType, 'as-is'>) =>
-  (phrase: Phrase): string => {
-    const firstWordIndex = phrase.findIndex(isWord)
-    const lastWordIndex = findLastIndex(phrase, isWord)
+const capitalizeLastWord = (text: string): string =>
+  text.replace(
+    /([^\s"()/[\]{}“”-]+)(?:$|(?:\s*(?<!vs?)[!()./:?[\]{}]))/g,
+    (match) => upperCaseFirst(match)
+  )
 
-    return capitalization === 'sentence-case'
-      ? pipe(
-          phrase
-            .map((token, index) =>
-              index === firstWordIndex
-                ? toTitleCase(token)
-                : token.type === 'romanNumeral'
-                ? token.text.toUpperCase()
-                : token.text.toLowerCase()
-            )
-            .join(''),
-          formatMixText
-        )
-      : pipe(
-          phrase
-            .map((token, index) => {
-              if (index === firstWordIndex || index === lastWordIndex) {
-                return ENG_DO_NOT_CAPITALIZE_FORCE.has(token.text.toLowerCase())
-                  ? token.text.toLowerCase()
-                  : toTitleCase(token)
-              } else if (ENG_DO_NOT_CAPITALIZE.has(token.text.toLowerCase())) {
-                return token.text.toLowerCase()
-              } else {
-                return toTitleCase(token)
-              }
-            })
-            .join(''),
-          formatMixText
-        )
-  }
+const forceLowercaseWords = (text: string): string =>
+  text.replace(/\betc\b/gi, (match) => match.toLowerCase())
+
+const spaceSlashes = (text: string): string =>
+  text.replace(/\s*\/\s*/, ' / ').replace(/\s*\\\s*/, ' \\ ')
 
 const formatMixText = (text: string) => {
-  const regex = /\s*-\s*(.*)\b((?:[Rr]emix|[Mm]ix)(?:e?s)?)/
+  const regex = /\s*-\s*(.*)\b((?:[Rr]emix|[Mm]ix|[Vv]ersion)(?:e?s)?)/
   const match = regex.exec(text)
   if (!match) return text
 
@@ -111,4 +53,45 @@ const formatMixText = (text: string) => {
     .join(' ')
 
   return text.replace(regex, ` (${parenthesizedText})`)
+}
+
+export const capitalize = (
+  text: string,
+  capitalization: CapitalizationType
+): string => {
+  if (capitalization === 'as-is') {
+    return text
+  }
+
+  if (capitalization === 'sentence-case') {
+    let output = upperCaseFirst(text.toLowerCase())
+    output = lowercaseWords(output)
+    output = capitalizeRomanNumerals(output)
+    output = formatMixText(output)
+    output = spaceSlashes(output)
+    output = capitalizeFirstWord(output)
+    output = forceLowercaseWords(output)
+    return output
+  }
+
+  const log = text === 'birds v. worms'
+
+  // title-case
+  let output = capitalCase(text.toLowerCase())
+  if (log) console.log(1, output)
+  output = lowercaseWords(output)
+  if (log) console.log(2, output)
+  output = capitalizeRomanNumerals(output)
+  if (log) console.log(3, output)
+  output = spaceSlashes(output)
+  if (log) console.log(4, output)
+  output = formatMixText(output)
+  if (log) console.log(5, output)
+  output = capitalizeFirstWord(output)
+  if (log) console.log(6, output)
+  output = capitalizeLastWord(output)
+  if (log) console.log(7, output)
+  output = forceLowercaseWords(output)
+  if (log) console.log(8, output)
+  return output
 }
