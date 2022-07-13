@@ -2,7 +2,14 @@ import { asArray } from '../../utils/array'
 import { secondsToString, stringToDate } from '../../utils/datetime'
 import { fetch } from '../../utils/fetch'
 import { getReleaseType } from '../../utils/music'
-import { ReleaseLabel, ReleaseType, ResolveFunction, Track } from '../types'
+import {
+  ReleaseAttribute,
+  ReleaseFormat,
+  ReleaseLabel,
+  ReleaseType,
+  ResolveFunction,
+  Track,
+} from '../types'
 import { isVideoRelease, Release, ReleaseHolder } from './codec'
 
 const getArtists = (release: Release) => {
@@ -42,12 +49,16 @@ export const resolve: ResolveFunction = async (url) => {
   let tracks: Track[] | undefined
   let title: string
   let type: ReleaseType
+  let format: ReleaseFormat | undefined
+  let attributes: ReleaseAttribute[]
   let label: ReleaseLabel | undefined
   let coverArt: string[] | undefined
 
   if (isVideoRelease(release)) {
     title = release.attributes.name
     type = 'music video'
+    format = undefined
+    attributes = []
     coverArt = asArray(
       release.attributes.artwork.url.replace('{w}x{h}mv', '2400x2400mv')
     )
@@ -73,6 +84,8 @@ export const resolve: ResolveFunction = async (url) => {
 
     title = release.attributes.name
     type = getReleaseType(tracks.length)
+    format = 'lossless digital'
+    attributes = ['downloadable', 'streaming']
     if (title?.includes(' - EP')) {
       title = title.replace(' - EP', '')
       type = 'ep'
@@ -93,8 +106,8 @@ export const resolve: ResolveFunction = async (url) => {
     artists,
     date,
     type,
-    format: 'lossless digital',
-    attributes: ['downloadable', 'streaming'],
+    format,
+    attributes,
     tracks,
     coverArt,
     label,
