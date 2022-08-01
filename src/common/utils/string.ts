@@ -33,3 +33,7 @@ export const regexLastIndexOf = (
   }
   return lastIndexOf
 }
+
+export const htmlDecode = (input: string) =>
+  new DOMParser().parseFromString(input, 'text/html').documentElement
+    .textContent

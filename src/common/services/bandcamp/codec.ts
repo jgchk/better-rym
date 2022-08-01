@@ -1,4 +1,5 @@
 export type TrackData = {
+  id: number
   album_release_date: string | null
   artist: string
   current: {
@@ -15,6 +16,7 @@ export type TrackData = {
 }
 
 export type AlbumData = {
+  id: number
   album_release_date: string | null
   artist: string
   current: {
@@ -32,3 +34,17 @@ export type AlbumData = {
 }
 
 export type ReleaseData = TrackData | AlbumData
+
+export type EmbedAlbumData = {
+  tracks: EmbedTrackData[]
+}
+
+export type EmbedTrackData = {
+  artist: string
+  duration: number
+  id: number
+  title: string
+  title_link: string
+  track_streaming: boolean
+  tracknum: number
+}

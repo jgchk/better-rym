@@ -2,8 +2,9 @@ import { asArray } from '../../utils/array'
 import { secondsToString, stringToDate } from '../../utils/datetime'
 import { fetch } from '../../utils/fetch'
 import { getReleaseType } from '../../utils/music'
+import { htmlDecode } from '../../utils/string'
 import { ReleaseAttribute, ReleaseDate, ResolveFunction, Track } from '../types'
-import { ReleaseData } from './codec'
+import { EmbedAlbumData, ReleaseData } from './codec'
 
 const getData = (document_: Document) => {
   const text = document_.querySelector<HTMLScriptElement>(
@@ -22,7 +23,20 @@ const getPublishDate = (data: ReleaseData): ReleaseDate | undefined => {
   return dateString ? stringToDate(dateString) : undefined
 }
 
-const getTracks = (data: ReleaseData): Track[] | undefined => {
+const getTracks = async (
+  data: ReleaseData,
+  allowEmbed = true
+): Promise<Track[] | undefined> => {
+  if (allowEmbed) {
+    const hasMissingDurations = data.trackinfo.some(
+      (track) => track.duration === 0
+    )
+
+    if (hasMissingDurations) {
+      return getTracksFromEmbed(data)
+    }
+  }
+
   if (data.item_type === 'track') {
     const trackInfo = data.trackinfo[0]
     if (trackInfo)
@@ -41,6 +55,25 @@ const getTracks = (data: ReleaseData): Track[] | undefined => {
   }
 }
 
+const getTracksFromEmbed = async (
+  data: ReleaseData
+): Promise<Track[] | undefined> => {
+  const url = `https://bandcamp.com/EmbeddedPlayer.html/album=${data.id}/size=large/artwork=small/`
+  const response = await fetch({ url })
+  const playerDataStr = /data-player-data="([^"]*)"/.exec(response)?.[1]
+  if (!playerDataStr) return
+
+  const playerDataDecoded = htmlDecode(playerDataStr)
+  if (!playerDataDecoded) return
+
+  const playerData = JSON.parse(playerDataDecoded) as EmbedAlbumData
+  return playerData.tracks.map((track) => ({
+    position: (track.tracknum + 1).toString(),
+    title: track.title,
+    duration: secondsToString(track.duration),
+  }))
+}
+
 const getCoverArt = (document_: Document) => {
   return document_
     .querySelector<HTMLAnchorElement>('#tralbumArt a.popupImage')
@@ -57,7 +90,7 @@ export const resolve: ResolveFunction = async (url) => {
   const artists = asArray(data?.artist)
   const date = data ? getDate(data) : undefined
   const publishDate = data ? getPublishDate(data) : undefined
-  const tracks = data ? getTracks(data) : undefined
+  const tracks = data ? await getTracks(data) : undefined
   const type = tracks ? getReleaseType(tracks.length) : undefined
   const coverArt = asArray(getCoverArt(document_))
 
