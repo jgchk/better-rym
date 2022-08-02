@@ -14,7 +14,7 @@ Enhancements for [RateYourMusic](https://rateyourmusic.com/) 🎧
 - Filter your collection by release type
 - Convert stream links to embed codes
 
-## Workflows
+## Installation
 
 ### Prerequisites
 
@@ -22,9 +22,9 @@ Enhancements for [RateYourMusic](https://rateyourmusic.com/) 🎧
 2. Create a `.env` file at the project root with the following format:
 
 ```
-SPOTIFY_ID=FJEIjfeiwqn342163nfowiqnefJ
-SPOTIFY_SECRET=j3821r0nowJFDASEIQ8931ho
-YOUTUBE_KEY=jf2138fFJ_432jf8f198flasj8
+SPOTIFY_ID=<client id>
+SPOTIFY_SECRET=<client secret>
+YOUTUBE_KEY=<api key>
 ```
 
 3. Create a [Spotify client ID/secret](https://developer.spotify.com/documentation/web-api/quick-start/) and a [YouTube API key](https://developers.google.com/youtube/v3/getting-started#before-you-start) and place them in the `.env` file.
