@@ -85,7 +85,7 @@ export const resolve: ResolveFunction = async (url) => {
     title = release.attributes.name
     type = getReleaseType(tracks.length)
     format = 'lossless digital'
-    attributes = ['downloadable', 'streaming']
+    attributes = ['streaming']
     if (title?.includes(' - EP')) {
       title = title.replace(' - EP', '')
       type = 'ep'

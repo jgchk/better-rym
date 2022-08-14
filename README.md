@@ -22,6 +22,7 @@ Enhancements for [RateYourMusic](https://rateyourmusic.com/) 🎧
 ## Contributing
 
 I take any and all PRs. So far I've worked with a few talented developers and would love to work with more:
+
 - ~lempamo: additional collection filters, label autofill, inline profile editing/markup preview, advanced autofill options, and speed/size optimizations
 - ~code_gs: collection filters feature
 - ~flushed_emoji: Melon import support
@@ -65,12 +66,8 @@ Use this to generate a production build with minified code.
 # Install dependencies
 yarn
 
-# Build for all browsers
+# Build for all browsers (Chrome and Firefox)
 yarn prod
-
-# Build for individual browsers
-yarn prod:chrome
-yarn prod:firefox
 ```
 
 ## License
