@@ -66,6 +66,29 @@ export const resolve: ResolveFunction = async (url) => {
     const hasMultipleDiscs = release.relationships.tracks.data.some(
       (track) => track.attributes.discNumber > 1
     )
+
+    // For various artist releases, Apple Music often only shows the artists
+    // when it's different from the release artist. For example:
+    //
+    // 3. Sunflower (Netsky Remix)           | Swae Lee & Post Malone
+    // 4. Mixed Emotions (Feat. Montell2099) |
+    // 5. Put Your Head on My Shoulder       | Paul Anka & Doja Cat
+    //
+    // The missing artist on track 4 is because it's the same as the release
+    // artist; Netsky in this case.
+    //
+    // This is kind of wonky when entering into RYM because track 4 should
+    // always show as: "Netsky - Mixed Emotions (Feat. Montell2099)"
+    //
+    // However, we cannot always trust the release artists. Instead, we should
+    // decide to always include all artist names or none.
+    const hasTrackArtists =
+      new Set(
+        release.relationships.tracks.data.map(
+          (track) => track.attributes.artistName
+        )
+      ).size > 1
+
     tracks = release.relationships.tracks.data.map((element) => {
       let position
       const trackNumber = element.attributes.trackNumber
@@ -75,7 +98,11 @@ export const resolve: ResolveFunction = async (url) => {
       } else {
         position = trackNumber.toString()
       }
-      const title = element.attributes.name
+
+      const title = hasTrackArtists
+        ? `${element.attributes.artistName} - ${element.attributes.name}`
+        : element.attributes.name
+
       const duration = secondsToString(
         element.attributes.durationInMillis / 1000
       )
