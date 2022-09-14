@@ -8,7 +8,7 @@ import {
   ResolveData,
   Track,
 } from '../../../common/services/types'
-import { forceQuerySelector } from '../../../common/utils/dom'
+import { forceQuerySelector, waitForResult } from '../../../common/utils/dom'
 import { FillData } from '../components/dom.d'
 import { CapitalizationType, capitalize } from './capitalization'
 import { ReleaseOptions } from './types'
@@ -151,22 +151,6 @@ const ATTRIBUTE_IDS: Record<ReleaseAttribute, number> = {
   'television soundtrack': 55,
   'video game soundtrack': 56,
 }
-
-const waitForResult = (
-  iframe: HTMLIFrameElement
-): Promise<HTMLDivElement | undefined> =>
-  new Promise((resolve) => {
-    const listener = () => {
-      const firstResult =
-        iframe.contentDocument?.querySelector<HTMLDivElement>('div.result')
-
-      if (firstResult != null) resolve(firstResult)
-      else resolve(undefined)
-
-      iframe.removeEventListener('load', listener)
-    }
-    iframe.addEventListener('load', listener)
-  })
 
 const fillArtist = async (artist: string) => {
   // Enter search term
