@@ -14,21 +14,14 @@ export const waitForDocumentReady = (): Promise<void> =>
 export const waitForElement = <E extends Element>(query: string): Promise<E> =>
   waitForCallback(() => document.querySelector<E>(query) ?? undefined)
 
-export const waitForCallback = <T>(
-  callback: () => T | undefined,
-  onFailure?: () => T
-): Promise<T> =>
+export const waitForCallback = <T>(callback: () => T | undefined): Promise<T> =>
   new Promise((resolve, reject) => {
     if (isDocumentReady()) {
       const result = callback()
       if (result !== undefined) {
         resolve(result)
       } else {
-        if (onFailure) {
-          resolve(onFailure())
-        } else {
-          reject(new Error('Callback never resolved'))
-        }
+        reject(new Error('Callback never resolved'))
       }
     } else {
       new MutationObserver((_m, observer) => {
@@ -42,11 +35,7 @@ export const waitForCallback = <T>(
 
         // Document is fully loaded and we didn't find what we were looking for
         if (isDocumentReady()) {
-          if (onFailure) {
-            resolve(onFailure())
-          } else {
-            reject(new Error('Callback never resolved'))
-          }
+          reject(new Error('Callback never resolved'))
           observer.disconnect()
         }
       }).observe(document, {
