@@ -89,6 +89,11 @@ describe('title caps', () => {
       'Some Remixes of Other Songs (Remixes)',
     ],
     ['A Set - New Mixs', 'A Set (New Mixs)'],
+    [
+      'Take A Walk (Neo-Romantic Dima Remix)',
+      'Take a Walk (Neo-Romantic Dima Remix)',
+    ],
+    'Everything Else Is Secondary (1-800 Girls Remix)',
   ]
   test.each(titles)('correctly capitalizes %p', (testCase) => {
     const [input, output] =

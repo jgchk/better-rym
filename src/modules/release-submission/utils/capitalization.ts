@@ -99,7 +99,7 @@ const capitalizePhrase =
   }
 
 const formatMixText = (text: string) => {
-  const regex = /\s*-\s*(.*)\b((?:[Rr]emix|[Mm]ix)(?:e?s)?)/
+  const regex = /\s+-\s+(.*)\b((?:[Rr]emix|[Mm]ix)(?:e?s)?)/
   const match = regex.exec(text)
   if (!match) return text
 
