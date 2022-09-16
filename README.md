@@ -26,6 +26,7 @@ I take any and all PRs. So far I've worked with a few talented developers and wo
 - ~lempamo: additional collection filters, label autofill, inline profile editing/markup preview, advanced autofill options, and speed/size optimizations
 - ~code_gs: collection filters feature
 - ~flushed_emoji: Melon import support
+- ~echance:  featured/remix credit buttons and bug fixes
 
 Issues are also always welcome. This is the best way to get my attention on a bug or feature request.
 
