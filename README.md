@@ -22,6 +22,7 @@ Enhancements for [RateYourMusic](https://rateyourmusic.com/) 🎧
 ## Contributing
 
 I take any and all PRs. So far I've worked with a few talented developers and would love to work with more:
+
 - ~lempamo: additional collection filters, label autofill, inline profile editing/markup preview, advanced autofill options, and speed/size optimizations
 - ~code_gs: collection filters feature
 - ~flushed_emoji: Melon import support
@@ -39,9 +40,11 @@ Issues are also always welcome. This is the best way to get my attention on a bu
 SPOTIFY_ID=<client id>
 SPOTIFY_SECRET=<client secret>
 YOUTUBE_KEY=<api key>
+DISCOGS_KEY=<key>
+DISCOGS_SECRET=<secret>
 ```
 
-3. Create a [Spotify client ID/secret](https://developer.spotify.com/documentation/web-api/quick-start/) and a [YouTube API key](https://developers.google.com/youtube/v3/getting-started#before-you-start) and place them in the `.env` file.
+3. Create a [Spotify client ID/secret](https://developer.spotify.com/documentation/web-api/quick-start/), [YouTube API key](https://developers.google.com/youtube/v3/getting-started#before-you-start), and a [Discogs application](https://www.discogs.com/settings/developers) and place them in the `.env` file.
 
 ### Dev Server
 
