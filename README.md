@@ -46,9 +46,9 @@ DISCOGS_SECRET=<secret>
 
 3. Create a [Spotify client ID/secret](https://developer.spotify.com/documentation/web-api/quick-start/), [YouTube API key](https://developers.google.com/youtube/v3/getting-started#before-you-start), and a [Discogs application](https://www.discogs.com/settings/developers) and place them in the `.env` file.
 
-### Dev Server
+### Development Build
 
-BetterRYM includes a dev server which will hot-reload your browser automatically as you work. It passes source maps and unminified code to the browser for easier debugging.
+Run the following commands to get a dev build running. It will automatically rebuild when you save, and will pass source maps and unminified code to the browser for easier debugging.
 
 ```sh
 # Install dependencies
@@ -59,6 +59,8 @@ yarn dev
 ```
 
 Load the unpacked extension from `./output` into your browser ([Chrome](https://developer.chrome.com/docs/extensions/mv3/getstarted/#manifest), [Firefox](https://extensionworkshop.com/documentation/develop/temporary-installation-in-firefox/))
+
+_NOTE: You will need to manually reload the extension on your browser's extension page to see your changes reflected in-browser_
 
 ### Production
 

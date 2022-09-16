@@ -14,7 +14,7 @@ const config = (env) => {
   return {
     watch: !production,
     mode: production ? 'production' : 'development',
-    devtool: production ? undefined : 'eval-cheap-module-source-map',
+    devtool: production ? undefined : 'cheap-module-source-map',
     entry: {
       background: join(__dirname, './src/modules/background/index.ts'),
       content: join(__dirname, './src/index.ts'),
@@ -37,33 +37,14 @@ const config = (env) => {
         patterns: [
           {
             from: './manifest.json',
-            transform(content, absoluteFrom) {
+            transform(content) {
               const jsonContent = JSON.parse(content.toString())
-              if (!production) {
-                jsonContent.content_security_policy =
-                  "script-src 'self' 'unsafe-eval'; object-src 'self';"
-                jsonContent.background.scripts.push('hot-reload.js')
-              }
               jsonContent.description = packageInfo.description
               jsonContent.version = packageInfo.version
               return JSON.stringify(jsonContent, undefined, 2)
             },
           },
-          ...(!production
-            ? [
-                {
-                  from: './node_modules/crx-hotreload/hot-reload.js',
-                  to: '[name][ext]',
-                },
-              ]
-            : []),
           { from: './res/icons/*', to: '[name][ext]' },
-          {
-            from: production
-              ? './node_modules/webextension-polyfill/dist/browser-polyfill.js'
-              : './node_modules/webextension-polyfill/dist/browser-polyfill.min.js',
-            to: 'browser-polyfill.js',
-          },
         ],
       }),
     ],

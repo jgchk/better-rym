@@ -14,17 +14,17 @@ const getResponse = (message: unknown): Promise<BackgroundResponse> => {
   throw new Error(`Invalid message: ${JSON.stringify(message)}`)
 }
 
-browser.runtime.onMessage.addListener((message, sender) => {
+chrome.runtime.onMessage.addListener((message, sender) => {
   const tabId = sender.tab?.id
   if (tabId === undefined) return
 
   void getResponse(message).then((response) =>
-    browser.tabs.sendMessage(tabId, response)
+    chrome.tabs.sendMessage(tabId, response)
   )
 })
 
 const setTabIcon = (tabId: number, enabled: boolean) => {
-  void browser.pageAction.setIcon({
+  void chrome.action.setIcon({
     tabId,
     path: enabled
       ? {
@@ -36,13 +36,13 @@ const setTabIcon = (tabId: number, enabled: boolean) => {
           '38': 'extension-disabled-38.png',
         },
   })
-  void browser.pageAction.setTitle({
+  void chrome.action.setTitle({
     tabId,
     title: `BetterRYM ${enabled ? 'enabled' : 'disabled'}`,
   })
 }
 
-browser.tabs.onUpdated.addListener((id, changeInfo, tab) => {
+chrome.tabs.onUpdated.addListener((id, changeInfo, tab) => {
   const pageUrls = Object.values(pages)
   for (const pageUrl of pageUrls) {
     if (!tab.url) continue
@@ -52,13 +52,13 @@ browser.tabs.onUpdated.addListener((id, changeInfo, tab) => {
       url.pathname.startsWith(pageUrl)
     ) {
       void getPageEnabled(pageUrl).then((enabled) => setTabIcon(id, enabled))
-      void browser.pageAction.show(id)
+      void chrome.action.enable(id)
       return
     }
   }
 })
 
-browser.pageAction.onClicked.addListener((tab) => {
+chrome.action.onClicked.addListener((tab) => {
   const pageUrls = Object.values(pages)
   for (const pageUrl of pageUrls) {
     if (tab.url && new URL(tab.url).pathname.startsWith(pageUrl)) {

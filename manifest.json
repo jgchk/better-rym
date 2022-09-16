@@ -1,5 +1,5 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "BetterRYM",
   "icons": {
     "16": "sonemic-16.png",
@@ -7,21 +7,25 @@
     "128": "sonemic-128.png"
   },
   "background": {
-    "scripts": ["browser-polyfill.js", "background.js"]
+    "service_worker": "background.js"
   },
   "content_scripts": [
     {
-      "js": ["browser-polyfill.js", "content.js"],
+      "js": ["content.js"],
       "matches": ["*://*.rateyourmusic.com/*"],
       "run_at": "document_start"
     }
   ],
-  "page_action": {
+  "action": {
     "default_icon": {
       "19": "extension-enabled-19.png",
       "38": "extension-enabled-38.png"
     },
     "default_title": "BetterRYM enabled"
   },
-  "permissions": ["storage", "downloads", "tabs", "*://*/*"]
+  "permissions": ["storage", "downloads", "tabs"],
+  "host_permissions": ["*://*/*"],
+  "externally_connectable": {
+    "matches": ["*://*.rateyourmusic.com/*"]
+  }
 }

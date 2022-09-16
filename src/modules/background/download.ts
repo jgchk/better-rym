@@ -44,7 +44,7 @@ export const download = async ({
         `${formattedFilename}${extension}`
       )
 
-      const downloadId = await browser.downloads.download({
+      const downloadId = await chrome.downloads.download({
         url: URL.createObjectURL(blob),
         filename: filenameWithExtension,
       })

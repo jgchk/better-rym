@@ -19,16 +19,15 @@
     "*": "prettier --write --ignore-unknown"
   },
   "dependencies": {
-    "@types/firefox-webext-browser": "^94.0.1",
     "@types/string-similarity": "^4.0.0",
     "filenamify": "^5.1.1",
     "get-artist-title": "^1.3.1",
     "nanoid": "^3.3.4",
-    "preact": "^10.7.2",
-    "webextension-polyfill": "^0.9.0"
+    "preact": "^10.7.2"
   },
   "devDependencies": {
     "@svgr/webpack": "^6.2.1",
+    "@types/chrome": "^0.0.196",
     "@types/css-minimizer-webpack-plugin": "^3.0.2",
     "@types/dotenv-webpack": "^7.0.3",
     "@types/jest": "^27.5.1",
@@ -37,7 +36,6 @@
     "@typescript-eslint/parser": "^5.26.0",
     "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^11.0.0",
-    "crx-hotreload": "^1.0.6",
     "css-loader": "^6.2.0",
     "css-minimizer-webpack-plugin": "^4.0.0",
     "dotenv-webpack": "^7.0.3",

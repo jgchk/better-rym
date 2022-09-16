@@ -18,10 +18,10 @@ export const sendBackgroundMessage = <
     const onResponse = (response: unknown) => {
       if (isBackgroundResponse(response) && response.id === requestId) {
         resolve(response as Response)
-        browser.runtime.onMessage.removeListener(onResponse)
+        chrome.runtime.onMessage.removeListener(onResponse)
       }
     }
 
-    browser.runtime.onMessage.addListener(onResponse)
-    void browser.runtime.sendMessage({ id: requestId, ...request })
+    chrome.runtime.onMessage.addListener(onResponse)
+    void chrome.runtime.sendMessage({ id: requestId, ...request })
   })
