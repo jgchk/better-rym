@@ -70,3 +70,19 @@ export const runScript = (script: string) => {
   document.head.append(element)
   element.remove()
 }
+
+export const waitForResult = (
+  iframe: HTMLIFrameElement
+): Promise<HTMLDivElement | undefined> =>
+  new Promise((resolve) => {
+    const listener = () => {
+      const firstResult =
+        iframe.contentDocument?.querySelector<HTMLDivElement>('div.result')
+
+      if (firstResult != null) resolve(firstResult)
+      else resolve(undefined)
+
+      iframe.removeEventListener('load', listener)
+    }
+    iframe.addEventListener('load', listener)
+  })
