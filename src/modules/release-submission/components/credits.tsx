@@ -17,20 +17,89 @@ type Artist = {
 function useSelectedText() {
   const [selectedText, setSelectedText] = useState('')
   const [trackNumber, setTrackNumber] = useState('')
+
+  const [trackTitleInputs, setTrackTitleInputs] = useState<
+    (HTMLInputElement | HTMLTextAreaElement)[]
+  >([])
   useEffect(() => {
-    function handleChange() {
-      setSelectedText(window?.getSelection()?.toString() || '')
-      setTrackNumber(
-        (
-          window?.getSelection()?.anchorNode?.parentElement?.children[1]
-            ?.firstChild as HTMLInputElement
-        )?.value || ''
+    const observer = new MutationObserver(() => {
+      if (!document.body) return
+
+      const trackTitleInputs: (HTMLInputElement | HTMLTextAreaElement)[] = [
+        ...document.querySelectorAll<HTMLInputElement>(
+          'input[id^="track_track_title"]'
+        ),
+      ]
+
+      const advancedInput = document.querySelector<HTMLTextAreaElement>(
+        'textarea#track_advanced'
       )
-    }
-    window.addEventListener('select', handleChange)
-    handleChange()
-    return () => window.removeEventListener('select', handleChange)
+      if (advancedInput) {
+        trackTitleInputs.push(advancedInput)
+      }
+
+      setTrackTitleInputs(trackTitleInputs)
+    })
+
+    observer.observe(document, { childList: true, subtree: true })
+
+    return () => observer.disconnect()
   }, [])
+
+  useEffect(() => {
+    const handleChange = (e: Event) => {
+      const isInput = e.target instanceof HTMLInputElement
+      const isTextArea = e.target instanceof HTMLTextAreaElement
+      if (!(isInput || isTextArea)) return
+
+      const selStart = e.target.selectionStart
+      const selEnd = e.target.selectionEnd
+      if (selStart === null || selEnd === null) return
+
+      const selText = e.target.value.slice(selStart, selEnd)
+
+      // QOL: don't show gigantic helper buttons if you've selected the entire advanced view textarea
+      if (selText.includes('\n')) return
+
+      setSelectedText(selText)
+
+      if (isInput) {
+        const trackNumInput =
+          e.target.parentElement?.parentElement?.children[1]?.firstChild
+        const trackNum =
+          trackNumInput && trackNumInput instanceof HTMLInputElement
+            ? trackNumInput.value
+            : ''
+        setTrackNumber(trackNum)
+      } else {
+        const lastLineStart =
+          e.target.value.slice(0, selStart).lastIndexOf('\n') + 1
+
+        const nextLineStartTemp = e.target.value.slice(selStart).indexOf('\n')
+        const nextLineStart =
+          nextLineStartTemp === -1
+            ? e.target.value.length
+            : nextLineStartTemp + selStart
+
+        const line = e.target.value.slice(lastLineStart, nextLineStart)
+
+        const split = line.split('|')
+        const trackNum = split[0]
+        setTrackNumber(trackNum ?? '')
+      }
+    }
+
+    for (const trackTitleInput of trackTitleInputs) {
+      trackTitleInput.addEventListener('select', handleChange)
+    }
+
+    return () => {
+      for (const trackTitleInput of trackTitleInputs) {
+        trackTitleInput.removeEventListener('select', handleChange)
+      }
+    }
+  }, [trackTitleInputs])
+
   return [selectedText, trackNumber]
 }
 
