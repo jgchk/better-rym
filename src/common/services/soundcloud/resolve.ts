@@ -17,7 +17,7 @@ const formatTrack = ({
 }: TrackObject): Track & { cc: boolean } => ({
   title,
   duration: secondsToString(duration / 1000),
-  cc: license === 'cc-by-nc' || license === 'cc-by',
+  cc: license.startsWith('cc-by'),
 })
 
 const getTracks = async (
