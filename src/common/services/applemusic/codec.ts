@@ -1,63 +1,100 @@
+/**
+ * RELEASE
+ */
+export interface ReleaseData {
+  '@context': string
+  '@type': 'MusicAlbum'
+  name: string
+  description: string
+  citation: unknown[]
+  tracks: Track[]
+  workExample: Track[]
+  url: string
+  genre: string[]
+  datePublished: string
+  byArtist: ByArtist
+}
+
+export interface ByArtist {
+  '@type': string
+  url?: string
+  name: string
+}
+
+export interface Track {
+  '@type': 'MusicRecording'
+  name: string
+  url: string
+  audio?: Audio
+  offers?: Offers
+  duration?: string
+  image?: string
+}
+
+export interface Audio {
+  '@type': AudioType
+}
+
+export enum AudioType {
+  AudioObject = 'AudioObject',
+}
+
+export interface Offers {
+  '@type': OffersType
+  category: Category
+  price: number
+}
+
+export enum OffersType {
+  Offer = 'Offer',
+}
+
+export enum Category {
+  Free = 'free',
+}
+
+/**
+ * VIDEO
+ */
+export interface MusicVideoData {
+  '@context': string
+  '@type': 'MusicVideoObject'
+  name: string
+  description: string
+  url: string
+  video: Video
+  genre: string[]
+  dateCreated: string
+  duration: string
+  image: string
+  creator: Citation[]
+  citation: Citation[]
+  workExample: Citation[]
+}
+
+export enum Type {
+  MusicGroup = 'MusicGroup',
+  MusicVideoObject = 'MusicVideoObject',
+}
+
+export interface Citation {
+  '@type': Type
+  name: string
+  url: string
+  image?: string
+}
+
+export interface Video {
+  '@type': string
+  name: string
+  description: string
+  uploadDate: string
+  thumbnailUrl: string
+}
+
+/**
+ * SEARCH
+ */
 export type SearchObject = {
   results: [{ collectionViewUrl: string }]
-}
-
-type ReleaseAttributes = {
-  artistName: string
-  artwork: {
-    url: string
-  }
-  name: string
-  recordLabel?: string
-  releaseDate: string
-  url: string
-}
-
-type ArtistRelationship = {
-  attributes: {
-    name: string
-  }
-}
-
-type TrackRelationship = {
-  attributes: {
-    artistName: string
-    durationInMillis: number
-    name: string
-    trackNumber: number
-    discNumber: number
-  }
-}
-
-export type MusicRelease = {
-  type: 'albums'
-  attributes: ReleaseAttributes
-  relationships: {
-    artists: {
-      data: ArtistRelationship[]
-    }
-    tracks: {
-      data: TrackRelationship[]
-    }
-  }
-}
-
-export type VideoRelease = {
-  type: 'music-videos'
-  attributes: ReleaseAttributes & { durationInMillis: number }
-  relationships: {
-    artists: {
-      data: ArtistRelationship[]
-    }
-  }
-}
-
-export type Release = MusicRelease | VideoRelease
-
-export const isVideoRelease = (r: Release): r is VideoRelease =>
-  r.type === 'music-videos'
-
-export type ReleaseHolder = {
-  x: number
-  d: Release[]
 }

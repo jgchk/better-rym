@@ -1,7 +1,9 @@
 import { asArray } from '../../utils/array'
-import { secondsToString, stringToDate } from '../../utils/datetime'
+import { stringToDate } from '../../utils/datetime'
 import { fetch } from '../../utils/fetch'
 import { getReleaseType } from '../../utils/music'
+import { pipe } from '../../utils/pipe'
+import { ifDefined } from '../../utils/types'
 import {
   ReleaseAttribute,
   ReleaseFormat,
@@ -10,30 +12,20 @@ import {
   ResolveFunction,
   Track,
 } from '../types'
-import { isVideoRelease, Release, ReleaseHolder } from './codec'
-
-const getArtists = (release: Release) => {
-  if (release.relationships.artists.data.length > 0) {
-    return release.relationships.artists.data.map(
-      (artist) => artist.attributes.name
-    )
-  }
-  return ['Various Artists']
-}
+import { MusicVideoData, ReleaseData } from './codec'
 
 const getReleaseData = (document_: Document) => {
-  const shoebox = document_
-    .querySelector<HTMLScriptElement>('#shoebox-media-api-cache-amp-music')
-    ?.text?.replace('\uF8FF', 'apple')
-  if (shoebox) {
-    const base: [string, string][] = Object.entries(
-      JSON.parse(shoebox) as Record<string, string>
-    )
-    if (base[1] && base[1][1]) {
-      const releaseData = (JSON.parse(base[1][1]) as ReleaseHolder)?.d[0]
-      if (releaseData) return releaseData
-    }
-  }
+  const releaseScript = document_.querySelector<HTMLScriptElement>(
+    'script#schema\\:music-album'
+  )
+  if (releaseScript) return JSON.parse(releaseScript.text) as ReleaseData
+
+  const musicVideoScript = document_.querySelector<HTMLScriptElement>(
+    'script#schema\\:music-video'
+  )
+  if (musicVideoScript)
+    return JSON.parse(musicVideoScript.text) as MusicVideoData
+
   throw new Error('Could not get release data for URL ' + document_.URL)
 }
 
@@ -42,9 +34,13 @@ export const resolve: ResolveFunction = async (url) => {
   const document_ = new DOMParser().parseFromString(response, 'text/html')
   const release = getReleaseData(document_)
 
-  const url_ = release.attributes.url
-  const artists = getArtists(release)
-  const date = stringToDate(release.attributes.releaseDate)
+  const url_ = release.url
+  let artists: string[]
+  const date = stringToDate(
+    release['@type'] === 'MusicAlbum'
+      ? release.datePublished
+      : release.dateCreated
+  )
 
   let tracks: Track[] | undefined
   let title: string
@@ -54,65 +50,74 @@ export const resolve: ResolveFunction = async (url) => {
   let label: ReleaseLabel | undefined
   let coverArt: string[] | undefined
 
-  if (isVideoRelease(release)) {
-    title = release.attributes.name
+  if (release['@type'] === 'MusicVideoObject') {
+    artists = release.creator.map((c) => c.name)
+    title = release.name
     type = 'music video'
     format = undefined
     attributes = []
     coverArt = asArray(
-      release.attributes.artwork.url.replace('{w}x{h}mv', '999999999x999999999')
+      release.image.replace('{w}x{h}mv', '999999999x999999999')
     )
   } else {
-    const hasMultipleDiscs = release.relationships.tracks.data.some(
-      (track) => track.attributes.discNumber > 1
-    )
-
-    // For various artist releases, Apple Music often only shows the artists
-    // when it's different from the release artist. For example:
-    //
-    // 3. Sunflower (Netsky Remix)           | Swae Lee & Post Malone
-    // 4. Mixed Emotions (Feat. Montell2099) |
-    // 5. Put Your Head on My Shoulder       | Paul Anka & Doja Cat
-    //
-    // The missing artist on track 4 is because it's the same as the release
-    // artist; Netsky in this case.
-    //
-    // This is kind of wonky when entering into RYM because track 4 should
-    // always show as: "Netsky - Mixed Emotions (Feat. Montell2099)"
-    //
-    // However, we cannot always trust the release artists. Instead, we should
-    // decide to always include all artist names or none.
-    const hasTrackArtists =
-      new Set(
-        release.relationships.tracks.data.map(
-          (track) => track.attributes.artistName
-        )
-      ).size > 1
-
-    tracks = release.relationships.tracks.data.map((element) => {
-      let position
-      const trackNumber = element.attributes.trackNumber
-      if (hasMultipleDiscs) {
-        const discNumber = element.attributes.discNumber
-        position = `${discNumber}.${trackNumber}`
-      } else {
-        position = trackNumber.toString()
-      }
-
-      const title = hasTrackArtists
-        ? `${element.attributes.artistName} - ${element.attributes.name}`
-        : element.attributes.name
-
-      const duration = secondsToString(
-        element.attributes.durationInMillis / 1000
+    tracks = []
+    const tracklists = [
+      ...document_.querySelectorAll<HTMLElement>('.songs-list'),
+    ]
+    for (const tracklist of tracklists) {
+      const discNum = pipe(
+        tracklist.parentElement
+          ?.querySelector('.header .title')
+          ?.textContent?.slice(5),
+        ifDefined((n) => Number.parseInt(n)),
+        ifDefined((n) => (Number.isNaN(n) ? undefined : n))
       )
-      return { position, title, duration }
-    })
+      const trackEls = [...tracklist.querySelectorAll('.songs-list-row')]
+      for (const trackEl of trackEls) {
+        const trackNum = pipe(
+          trackEl
+            .querySelector('[data-testid="track-number"]')
+            ?.textContent?.trim() ?? undefined,
+          ifDefined((n) => Number.parseInt(n)),
+          ifDefined((n) => (Number.isNaN(n) ? undefined : n))
+        )
+        const trackTitle =
+          trackEl
+            .querySelector('[data-testid="track-title"]')
+            ?.textContent?.trim() ?? undefined
+        const duration =
+          trackEl
+            .querySelector('[data-testid="track-duration"]')
+            ?.textContent?.trim() ?? undefined
+        const trackArtists =
+          trackEl
+            .querySelector('.songs-list-row__by-line')
+            ?.textContent?.replaceAll('\n', '')
+            .replace(/\s+/g, ' ')
+            .trim() ?? undefined
 
-    title = release.attributes.name
-    type = getReleaseType(tracks.length)
-    format = 'lossless digital'
-    attributes = ['downloadable', 'streaming']
+        let position: string | undefined
+        if (trackNum !== undefined) {
+          position =
+            discNum !== undefined
+              ? `${discNum}.${trackNum}`
+              : trackNum.toString()
+        }
+
+        let title: string | undefined
+        if (trackTitle) {
+          title = trackArtists ? `${trackArtists} - ${trackTitle}` : trackTitle
+        }
+
+        tracks.push({ position, title, duration })
+      }
+    }
+
+    artists = [release.byArtist.name]
+    title = release.name
+    type = getReleaseType(release.tracks.length)
+    format = 'digital file'
+    attributes = ['streaming']
     if (title?.includes(' - EP')) {
       title = title.replace(' - EP', '')
       type = 'ep'
@@ -121,13 +126,48 @@ export const resolve: ResolveFunction = async (url) => {
       type = 'single'
     }
 
-    label = { name: release.attributes.recordLabel, catno: '' }
+    const descEl = document_.querySelector(
+      '[data-testid="tracklist-footer-description"]'
+    )
+    if (descEl) {
+      const descText = descEl.textContent ?? ''
+      const lines = descText.split('\n')
+      if (lines.length === 3) {
+        const labelLine = lines[2]
+          ?.replace('℗', '')
+          .replaceAll(/20\d\d/g, '')
+          .replaceAll(/19\d\d/g, '')
+          .replace('This Compilation', '')
+          .trim()
+
+        if (lines[2]?.includes('This Compilation')) {
+          type = 'compilation'
+        }
+
+        if (labelLine) {
+          label = { name: labelLine, catno: '' }
+        }
+      }
+    }
+
     coverArt = asArray(
-      release.attributes.artwork.url.replace(
-        '{w}x{h}bb.{f}',
-        '999999999x999999999.jpg'
+      pipe(
+        document_.querySelector<HTMLMetaElement>('meta[property="og:image"]') ??
+          undefined,
+        ifDefined((el) =>
+          el.content.replace(/\d+x\d+bf-\d+\.jpg/, '999999999x999999999.jpg')
+        )
       )
     )
+
+    const isDownloadable =
+      document.querySelector(
+        'button[aria-label="Also available in the iTunes Store"]'
+      ) !== null
+    if (isDownloadable) {
+      format = 'lossless digital'
+      attributes.push('downloadable')
+    }
   }
 
   return {
