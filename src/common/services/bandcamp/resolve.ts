@@ -3,14 +3,35 @@ import { secondsToString, stringToDate } from '../../utils/datetime'
 import { fetch } from '../../utils/fetch'
 import { getReleaseType } from '../../utils/music'
 import { htmlDecode } from '../../utils/string'
-import { ReleaseAttribute, ReleaseDate, ResolveFunction, Track } from '../types'
-import { EmbedAlbumData, ReleaseData } from './codec'
+import {
+  ReleaseAttribute,
+  ReleaseDate,
+  ReleaseLabel,
+  ResolveFunction,
+  Track,
+} from '../types'
+import {
+  EmbedAlbumData,
+  ReleaseData,
+  SecondaryAlbumData,
+  SecondaryTrackData,
+} from './codec'
 
 const getData = (document_: Document) => {
   const text = document_.querySelector<HTMLScriptElement>(
     'script[data-tralbum]'
   )?.dataset.tralbum
   return text ? (JSON.parse(text) as ReleaseData) : undefined
+}
+
+const getSecondaryData = (document_: Document) => {
+  const text = document_.querySelector<HTMLScriptElement>(
+    'script[type="application/ld+json"]'
+  )?.text
+
+  if (text && text.includes('@id')) {
+    return JSON.parse(text) as SecondaryAlbumData | SecondaryTrackData
+  }
 }
 
 const getDate = (data: ReleaseData): ReleaseDate | undefined => {
@@ -84,6 +105,7 @@ export const resolve: ResolveFunction = async (url) => {
   const response = await fetch({ url })
   const document_ = new DOMParser().parseFromString(response, 'text/html')
   const data = getData(document_)
+  const secondaryData = getSecondaryData(document_)
 
   const url_ = data?.url || url
   const title = data?.current.title
@@ -104,6 +126,21 @@ export const resolve: ResolveFunction = async (url) => {
     attributes.push('creative commons')
   }
 
+  let label: ReleaseLabel | undefined
+  if (secondaryData) {
+    const albumRelease = (
+      secondaryData['@type'] === 'MusicAlbum'
+        ? secondaryData.albumRelease
+        : secondaryData.inAlbum.albumRelease
+    )[0]
+
+    const labelName = albumRelease?.recordLabel?.name
+
+    if (labelName) {
+      label = { name: labelName }
+    }
+  }
+
   return {
     url: url_,
     title,
@@ -115,5 +152,6 @@ export const resolve: ResolveFunction = async (url) => {
     attributes,
     tracks,
     coverArt,
+    label,
   }
 }

@@ -48,3 +48,25 @@ export type EmbedTrackData = {
   track_streaming: boolean
   tracknum: number
 }
+
+export type SecondaryAlbumData = {
+  '@type': 'MusicAlbum'
+  albumRelease: AlbumRelease[]
+}
+
+export type SecondaryTrackData = {
+  '@type': 'MusicRecording'
+  inAlbum: InAlbum
+}
+
+export interface InAlbum {
+  albumRelease: AlbumRelease[]
+}
+
+export interface AlbumRelease {
+  recordLabel?: Label
+}
+
+export interface Label {
+  name: string
+}
