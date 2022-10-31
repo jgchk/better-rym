@@ -161,7 +161,9 @@ export const resolve: ResolveFunction = async (url) => {
     )
 
     const isDownloadable =
-      document_.querySelector('button[aria-label$="iTunes Store"]') !== null
+      document_.querySelector('button[aria-label$="iTunes Store"]') !== null ||
+      // yes, these are different selectors lmao
+      document_.querySelector('button[aria-label$="iTunes Store"]') !== null
     if (isDownloadable) {
       attributes.push('downloadable')
     }
