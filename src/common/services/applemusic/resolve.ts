@@ -116,7 +116,7 @@ export const resolve: ResolveFunction = async (url) => {
     artists = [release.byArtist.name]
     title = release.name
     type = getReleaseType(release.tracks.length)
-    format = 'digital file'
+    format = 'lossless digital'
     attributes = ['streaming']
     if (title?.includes(' - EP')) {
       title = title.replace(' - EP', '')
@@ -161,11 +161,8 @@ export const resolve: ResolveFunction = async (url) => {
     )
 
     const isDownloadable =
-      document.querySelector(
-        'button[aria-label="Also available in the iTunes Store"]'
-      ) !== null
+      document_.querySelector('button[aria-label$="iTunes Store"]') !== null
     if (isDownloadable) {
-      format = 'lossless digital'
       attributes.push('downloadable')
     }
   }
