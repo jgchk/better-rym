@@ -2,7 +2,6 @@ lockfileVersion: 5.4
 
 specifiers:
   '@svgr/webpack': ^6.2.1
-  '@types/css-minimizer-webpack-plugin': ^3.0.2
   '@types/dotenv-webpack': ^7.0.3
   '@types/firefox-webext-browser': ^94.0.1
   '@types/jest': ^27.5.1
@@ -62,7 +61,6 @@ dependencies:
 
 devDependencies:
   '@svgr/webpack': 6.2.1
-  '@types/css-minimizer-webpack-plugin': 3.2.1_webpack@5.72.1
   '@types/dotenv-webpack': 7.0.3_webpack-cli@4.9.2
   '@types/jest': 27.5.1
   '@types/node': 17.0.35
@@ -2593,22 +2591,6 @@ packages:
       }
     dependencies:
       '@babel/types': 7.18.2
-    dev: true
-
-  /@types/css-minimizer-webpack-plugin/3.2.1_webpack@5.72.1:
-    resolution:
-      {
-        integrity: sha512-MIlnEVQDTX0Y1/ZBY0RyD+F6+ZHlG42qCeSoCVhxI5N1atm+RnmDLQWUCWrdNqebFozUTRLDZJ04v5aYzGG5CA==,
-      }
-    deprecated: This is a stub types definition. css-minimizer-webpack-plugin provides its own type definitions, so you do not need this installed.
-    dependencies:
-      css-minimizer-webpack-plugin: 4.0.0_webpack@5.72.1
-    transitivePeerDependencies:
-      - '@parcel/css'
-      - clean-css
-      - csso
-      - esbuild
-      - webpack
     dev: true
 
   /@types/dotenv-webpack/7.0.3_webpack-cli@4.9.2:
