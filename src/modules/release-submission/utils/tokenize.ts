@@ -6,7 +6,7 @@ export type TokenType = 'word' | 'romanNumeral' | 'whitespace' | 'punctuation'
 const parsers: [TokenType, RegExp][] = [
   [
     'romanNumeral',
-    /(?!mi)(?=[cdilmvx])m*(c[dm]|d?c*)(x[cl]|l?x*)(i[vx]|v?i*)(?=\s|$)/i,
+    /(?!mi)(?=[cdilmvx])m*(c[dm]|d?c*)(x[cl]|l?x*)(i[vx]|v?i*)(?=\s|$|\)|]|}|"|”|-|:)/i,
   ],
   ['word', /[^\s"()/[\]{}“”-]+/],
   ['whitespace', /\s+/],

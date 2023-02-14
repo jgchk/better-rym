@@ -94,6 +94,11 @@ describe('title caps', () => {
       'Take a Walk (Neo-Romantic Dima Remix)',
     ],
     'Everything Else Is Secondary (1-800 Girls Remix)',
+    'Malum Veneficus Viriditas Chronicles II (Part I)',
+    'Malum Veneficus Viriditas Chronicles II (Part II)',
+    'Triptych I: Birth and Comfort',
+    'Triptych II: Awareness',
+    'Triptych III: Blood Flow',
   ]
   test.each(titles)('correctly capitalizes %p', (testCase) => {
     const [input, output] =
