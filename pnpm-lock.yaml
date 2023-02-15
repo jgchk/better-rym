@@ -12,14 +12,14 @@ specifiers:
   clean-webpack-plugin: ^4.0.0
   copy-webpack-plugin: ^11.0.0
   crx-hotreload: ^1.0.6
-  css-loader: ^6.2.0
+  css-loader: ^6.7.1
   css-minimizer-webpack-plugin: ^4.0.0
-  dotenv-webpack: ^7.0.3
+  dotenv-webpack: ^7.1.0
   eslint: ^8.16.0
-  eslint-config-prettier: ^8.3.0
+  eslint-config-prettier: ^8.5.0
   eslint-plugin-import: ^2.26.0
   eslint-plugin-react: ^7.30.0
-  eslint-plugin-react-hooks: ^4.2.0
+  eslint-plugin-react-hooks: ^4.5.0
   eslint-plugin-simple-import-sort: ^7.0.0
   eslint-plugin-unicorn: ^42.0.0
   eslint-webpack-plugin: ^3.1.1
@@ -35,7 +35,7 @@ specifiers:
   postcss-nested: ^5.0.6
   postcss-preset-env: ^7.6.0
   preact: ^10.7.2
-  prettier: ^2.4.0
+  prettier: ^2.6.2
   style-loader: ^3.3.1
   stylelint: ^14.8.5
   stylelint-config-prettier: ^9.0.3
@@ -48,7 +48,7 @@ specifiers:
   typescript-plugin-css-modules: ^3.4.0
   webextension-polyfill: ^0.9.0
   webpack: ^5.72.1
-  webpack-cli: ^4.8.0
+  webpack-cli: ^4.9.2
 
 dependencies:
   '@types/firefox-webext-browser': 94.0.1
@@ -3463,7 +3463,7 @@ packages:
       postcss: ^8.1.0
     dependencies:
       browserslist: 4.20.3
-      caniuse-lite: 1.0.30001344
+      caniuse-lite: 1.0.30001452
       fraction.js: 4.2.0
       normalize-range: 0.1.2
       picocolors: 1.0.0
@@ -3676,7 +3676,7 @@ packages:
     engines: { node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7 }
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001344
+      caniuse-lite: 1.0.30001452
       electron-to-chromium: 1.4.122
       escalade: 3.1.1
       node-releases: 2.0.3
@@ -3770,15 +3770,15 @@ packages:
       }
     dependencies:
       browserslist: 4.20.3
-      caniuse-lite: 1.0.30001344
+      caniuse-lite: 1.0.30001452
       lodash.memoize: 4.1.2
       lodash.uniq: 4.5.0
     dev: true
 
-  /caniuse-lite/1.0.30001344:
+  /caniuse-lite/1.0.30001452:
     resolution:
       {
-        integrity: sha512-0ZFjnlCaXNOAYcV7i+TtdKBp0L/3XEU2MF/x6Du1lrh+SRX4IfzIVL4HNJg5pB2PmFb8rszIGyOvsZnqqRoc2g==,
+        integrity: sha512-Lkp0vFjMkBB3GTpLR8zk4NwW5EdRdnitwYJHDOOKIU85x4ckYCPQ+9WlVvSVClHxVReefkUMtWZH2l9KGlD51w==,
       }
     dev: true
 
