@@ -68,13 +68,12 @@ const getStreamingPreferences = (): StreamingPreferences | undefined => {
     streamingPreferences = (e as CustomEvent).detail
       .streamingPreferences as StreamingPreferences
   }
-  window.addEventListener('StreamingPreferencesEvent', listener)
+  document.addEventListener('StreamingPreferencesEvent', listener)
 
   runScript(`
     const streamingPreferences = window.streamingPreferences;
-    const event = document.createEvent('CustomEvent');
-    event.initCustomEvent('StreamingPreferencesEvent', true, true, { streamingPreferences });
-    window.dispatchEvent(event);
+    const __event = new CustomEvent('StreamingPreferencesEvent', { detail: { streamingPreferences } });
+    document.dispatchEvent(__event);
   `)
 
   document.removeEventListener('StreamingPreferencesEvent', listener)
