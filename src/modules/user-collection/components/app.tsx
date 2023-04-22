@@ -13,6 +13,7 @@ const RELEASE_TYPES = [
   ['Compilations', 'typc'],
   ['Videos', 'typd'],
   ['Bootlegs', 'typb'],
+  ['Additional Releases', 'typx'],
 ] as const
 
 const RATINGS = [
