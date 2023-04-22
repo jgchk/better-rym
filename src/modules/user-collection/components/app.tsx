@@ -45,23 +45,36 @@ export const App: FunctionComponent = () => {
   )
 
   return (
-    <div style='line-height: 2.5em'>
-      Status:&nbsp;
-      {STATUS.map(([name, modifier]) => (
-        <Button key={name} name={name} base='o' modifier={modifier} />
-      ))}
-      <br />
-      Rating:&nbsp;
-      {RATINGS.map(([name, modifier]) => (
-        <Button key={name} name={name} base='r' modifier={modifier} />
-      ))}
-      <br />
+    <div
+      style={{
+        lineHeight: '2.5em',
+        display: 'grid',
+        gridTemplateColumns: 'auto 1fr',
+        columnGap: '6px',
+      }}
+    >
+      <div>Status:</div>
+      <div>
+        {STATUS.map(([name, modifier]) => (
+          <Button key={name} name={name} base='o' modifier={modifier} />
+        ))}
+      </div>
+
+      <div>Rating:</div>
+      <div>
+        {RATINGS.map(([name, modifier]) => (
+          <Button key={name} name={name} base='r' modifier={modifier} />
+        ))}
+      </div>
+
       {showReleaseTypes && (
         <>
-          Type:&nbsp;
-          {RELEASE_TYPES.map(([name, modifier]) => (
-            <Button key={name} name={name} base='typ' modifier={modifier} />
-          ))}
+          <div>Type:</div>
+          <div>
+            {RELEASE_TYPES.map(([name, modifier]) => (
+              <Button key={name} name={name} base='typ' modifier={modifier} />
+            ))}
+          </div>
         </>
       )}
     </div>
