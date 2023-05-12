@@ -76,8 +76,7 @@ interface CallbackNextSearch {
   n: string
 }
 
-const NEW_VQD_REGEX = /vqd\s*=\s*'(\d+-\d+)'/
-const OLD_VQD_REGEX = /vqd='(\d+-\d+-\d+)'/
+const VQD_REGEX = /vqd=["'](\d+(?:-\d+){1,2})["']/
 const SEARCH_REGEX =
   /DDG\.pageLayout\.load\('d',(\[.+])\);DDG\.duckbar\.load\('images'/
 
@@ -87,8 +86,7 @@ const getVQD = async (query: string, ia = 'web') => {
     urlParameters: { q: query, ia },
   })
 
-  const vqd =
-    NEW_VQD_REGEX.exec(response)?.[1] ?? OLD_VQD_REGEX.exec(response)?.[1]
+  const vqd = VQD_REGEX.exec(response)?.[1]
 
   if (vqd === undefined)
     throw new Error(`Failed to get the VQD for query "${query}"`)
