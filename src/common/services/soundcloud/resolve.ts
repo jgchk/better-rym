@@ -66,24 +66,40 @@ const getTracks = async (
   return tracks.map(formatTrack)
 }
 
-const getCoverArt = (data: MusicObject) =>
-  [
-    data.artwork_url?.replace('-large', '-original'),
-    data.artwork_url?.replace('-large', '-t500x500'),
-    data.artwork_url,
-    ...((data.kind === 'playlist'
-      ? data.tracks
-          .flatMap((track) =>
-            track.artwork_url
-              ? [
-                  track.artwork_url?.replace('-large', '-original'),
-                  track.artwork_url,
-                ]
-              : undefined
-          )
-          .filter((t) => t !== undefined)
-      : []) as string[]),
-  ].filter((a) => a != null) as string[]
+const withExtension = (url: string, extension: string) => {
+  const withoutExtension = url.slice(0, url.lastIndexOf('.'))
+  return `${withoutExtension}.${extension}`
+}
+
+const getCoverArt = (data: MusicObject) => {
+  const extensions = ['png', 'jpg', 'jpeg', 'gif']
+  const withAllExtensions = (url: string) =>
+    extensions.map((extension) => withExtension(url, extension))
+
+  const urls: string[] = []
+
+  if (data.artwork_url) {
+    urls.push(
+      data.artwork_url.replace('-large', '-original'),
+      data.artwork_url.replace('-large', '-t500x500'),
+      data.artwork_url
+    )
+  }
+
+  if (data.kind === 'playlist') {
+    for (const track of data.tracks) {
+      if (track.artwork_url) {
+        urls.push(
+          track.artwork_url.replace('-large', '-original'),
+          track.artwork_url.replace('-large', '-t500x500'),
+          track.artwork_url
+        )
+      }
+    }
+  }
+
+  return urls.flatMap((url) => withAllExtensions(url))
+}
 
 export const resolve: ResolveFunction = async (url) => {
   const token = await requestToken()
