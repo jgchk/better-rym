@@ -52,11 +52,16 @@ const getTracks = async (
     next = nextResponse.next
   }
 
+  // The album metadata doesn't actually tell us if it's various artists. So
+  // make sure we don't append the same artist(s) to every track name.
+  const shouldIncludeArtists = new Set(allTracks.map((track) =>
+    track.artists.map(artist => artist.name).join(', '))).size > 1
+
   const numberOfDiscs = new Set(allTracks.map((track) => track.disc_number))
     .size
   return allTracks.map((track) => ({
     position: getPosition(track, numberOfDiscs),
-    title: track.name,
+    title: (shouldIncludeArtists ? `${track.artists.map(artist => artist.name).join(', ')} - ` : '') + track.name,
     duration: secondsToString(track.duration_ms / 1000),
   }))
 }

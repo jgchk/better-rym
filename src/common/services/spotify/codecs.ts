@@ -38,9 +38,17 @@ export type SimplifiedTrackObject = {
   duration_ms: number
   name: string
   track_number: number
+  artists: ArtistObject[]
 }
 
-type ArtistObject = { name: string }
+type ArtistObject = {
+  external_urls: ExternalUrlObject
+  href: string
+  id: string
+  name: string
+  type: string
+  uri: string
+}
 
 export type AlbumType = 'album' | 'single' | 'compilation'
 
