@@ -4,7 +4,7 @@ import { useState } from 'preact/hooks'
 
 import Icon from '../../../res/svg/x.svg'
 import styles from '../styles/failed.module.css'
-import { ClassValue, clsx } from '../utils/clsx'
+import { clsx } from '../utils/clsx'
 
 export const Failed: FunctionComponent<
   { error: Error } & JSX.SVGAttributes<SVGSVGElement>
@@ -18,7 +18,7 @@ export const Failed: FunctionComponent<
         onMouseOver={() => setShowTip(true)}
         onMouseOut={() => setShowTip(false)}
         onMouseMove={(event) => setPos({ x: event.pageX, y: event.pageY })}
-        className={clsx(styles.failed, className as ClassValue)}
+        className={clsx(styles.failed, className)}
         {...properties}
       />
       {showTip &&
