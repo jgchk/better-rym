@@ -4,6 +4,7 @@ describe('spotify regex', () => {
   const validUrls = [
     'https://open.spotify.com/track/1PNk1Xno8t3spNEU78Hxsu',
     'https://open.spotify.com/intl-fr/track/1PNk1Xno8t3spNEU78Hxsu',
+    'https://open.spotify.com/intl-es/track/1PNk1Xno8t3spNEU78Hxsu',
   ]
 
   const invalidUrls = [
