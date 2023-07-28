@@ -14,6 +14,8 @@ import {
 } from '../types'
 import { MusicVideoData, ReleaseData } from './codec'
 
+const FULL_IMAGE_SIZE = '999999999x999999999'
+
 function convertAppleMusicDuration(appleMusicDuration: string) {
   // Extract minutes and seconds using a regular expression
   const matches = appleMusicDuration.match(/PT(\d+?)M(\d+?)S/)
@@ -81,9 +83,10 @@ export const resolve: ResolveFunction = async (url) => {
     type = 'music video'
     format = undefined
     attributes = []
-    coverArt = asArray(
-      release.image.replace('{w}x{h}mv', '999999999x999999999')
-    )
+    coverArt = [
+      release.video.thumbnailUrl,
+      release.image.replace('{w}x{h}mv', FULL_IMAGE_SIZE),
+    ]
   } else {
     tracks = release.tracks.map((t, i) => ({
       position: String(i + 1),
@@ -133,7 +136,7 @@ export const resolve: ResolveFunction = async (url) => {
         document_.querySelector<HTMLMetaElement>('meta[property="og:image"]') ??
           undefined,
         ifDefined((el) =>
-          el.content.replace(/\d+x\d+bf-\d+\.jpg/, '999999999x999999999.jpg')
+          el.content.replace(/\d+x\d+bf-\d+\.jpg/, `FULL_IMAGE_SIZE.jpg`)
         )
       )
     )
