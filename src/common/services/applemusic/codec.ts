@@ -12,7 +12,7 @@ export interface ReleaseData {
   url: string
   genre: string[]
   datePublished: string
-  byArtist: ByArtist
+  byArtist: ByArtist[]
 }
 
 export interface ByArtist {

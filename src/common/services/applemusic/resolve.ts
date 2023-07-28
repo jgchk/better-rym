@@ -14,6 +14,31 @@ import {
 } from '../types'
 import { MusicVideoData, ReleaseData } from './codec'
 
+function convertAppleMusicDuration(appleMusicDuration: string) {
+  // Extract minutes and seconds using a regular expression
+  const matches = appleMusicDuration.match(/PT(\d+?)M(\d+?)S/)
+
+  if (!matches) {
+    throw new Error('Invalid format')
+  }
+
+  const mins = matches[1]
+  const secs = matches[2]
+
+  if (mins === undefined || secs === undefined) {
+    throw new Error('Invalid format')
+  }
+
+  // Pad the seconds with a leading 0 if it's a single digit
+  const minutes = mins
+  const seconds = secs.length === 1 ? '0' + secs : secs
+
+  // Construct the final duration string
+  const duration = `${minutes}:${seconds}`
+
+  return duration
+}
+
 const getReleaseData = (document_: Document) => {
   const releaseScript = document_.querySelector<HTMLScriptElement>(
     'script#schema\\:music-album'
@@ -60,60 +85,13 @@ export const resolve: ResolveFunction = async (url) => {
       release.image.replace('{w}x{h}mv', '999999999x999999999')
     )
   } else {
-    tracks = []
-    const tracklists = [
-      ...document_.querySelectorAll<HTMLElement>('.songs-list'),
-    ]
-    for (const tracklist of tracklists) {
-      const discNum = pipe(
-        tracklist.parentElement
-          ?.querySelector('.header .title')
-          ?.textContent?.slice(5),
-        ifDefined((n) => Number.parseInt(n)),
-        ifDefined((n) => (Number.isNaN(n) ? undefined : n))
-      )
-      const trackEls = [...tracklist.querySelectorAll('.songs-list-row')]
-      for (const trackEl of trackEls) {
-        const trackNum = pipe(
-          trackEl
-            .querySelector('[data-testid="track-number"]')
-            ?.textContent?.trim() ?? undefined,
-          ifDefined((n) => Number.parseInt(n)),
-          ifDefined((n) => (Number.isNaN(n) ? undefined : n))
-        )
-        const trackTitle =
-          trackEl
-            .querySelector('[data-testid="track-title"]')
-            ?.textContent?.trim() ?? undefined
-        const duration =
-          trackEl
-            .querySelector('[data-testid="track-duration"]')
-            ?.textContent?.trim() ?? undefined
-        const trackArtists =
-          trackEl
-            .querySelector('.songs-list-row__by-line')
-            ?.textContent?.replaceAll('\n', '')
-            .replace(/\s+/g, ' ')
-            .trim() ?? undefined
+    tracks = release.tracks.map((t, i) => ({
+      position: String(i + 1),
+      title: t.name,
+      duration: ifDefined(convertAppleMusicDuration)(t.duration),
+    }))
 
-        let position: string | undefined
-        if (trackNum !== undefined) {
-          position =
-            discNum !== undefined
-              ? `${discNum}.${trackNum}`
-              : trackNum.toString()
-        }
-
-        let title: string | undefined
-        if (trackTitle) {
-          title = trackArtists ? `${trackArtists} - ${trackTitle}` : trackTitle
-        }
-
-        tracks.push({ position, title, duration })
-      }
-    }
-
-    artists = [release.byArtist.name]
+    artists = release.byArtist.map((a) => a.name)
     title = release.name
     type = getReleaseType(release.tracks.length)
     format = 'lossless digital'
