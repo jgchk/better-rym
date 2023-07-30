@@ -18,18 +18,16 @@ const FULL_IMAGE_SIZE = '999999999x999999999'
 
 function convertAppleMusicDuration(appleMusicDuration: string) {
   // Extract minutes and seconds using a regular expression
-  const matches = appleMusicDuration.match(/PT(\d+?)M(\d+?)S/)
+  const matches = appleMusicDuration.match(/PT((\d+?)M)?(\d+?)?S?/)
 
   if (!matches) {
-    throw new Error('Invalid format')
+    throw new Error(`Invalid format: ${appleMusicDuration}`)
   }
 
-  const mins = matches[1]
-  const secs = matches[2]
-
-  if (mins === undefined || secs === undefined) {
-    throw new Error('Invalid format')
-  }
+  // If minutes are not defined, set it to '0'
+  const mins = matches[2] || '0'
+  // If seconds are not defined, set it to '00'
+  const secs = matches[3] || '00'
 
   // Pad the seconds with a leading 0 if it's a single digit
   const minutes = mins
@@ -136,7 +134,7 @@ export const resolve: ResolveFunction = async (url) => {
         document_.querySelector<HTMLMetaElement>('meta[property="og:image"]') ??
           undefined,
         ifDefined((el) =>
-          el.content.replace(/\d+x\d+bf-\d+\.jpg/, `FULL_IMAGE_SIZE.jpg`)
+          el.content.replace(/\d+x\d+bf-\d+\.jpg/, `${FULL_IMAGE_SIZE}.jpg`)
         )
       )
     )
