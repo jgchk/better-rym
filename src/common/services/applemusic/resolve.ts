@@ -16,18 +16,18 @@ import { MusicVideoData, ReleaseData } from './codec'
 
 const FULL_IMAGE_SIZE = '999999999x999999999'
 
-function convertAppleMusicDuration(appleMusicDuration: string) {
+export function convertAppleMusicDuration(appleMusicDuration: string) {
   // Extract minutes and seconds using a regular expression
-  const matches = appleMusicDuration.match(/PT((\d+?)M)?(\d+?)?S?/)
+  const matches = appleMusicDuration.match(/PT(?:(\d+?)M)?(?:(\d+?)S)?/)
 
   if (!matches) {
     throw new Error(`Invalid format: ${appleMusicDuration}`)
   }
 
   // If minutes are not defined, set it to '0'
-  const mins = matches[2] || '0'
+  const mins = matches[1] || '0'
   // If seconds are not defined, set it to '00'
-  const secs = matches[3] || '00'
+  const secs = matches[2] || '00'
 
   // Pad the seconds with a leading 0 if it's a single digit
   const minutes = mins
