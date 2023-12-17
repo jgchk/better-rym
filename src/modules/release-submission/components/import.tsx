@@ -57,7 +57,7 @@ export const Import: FunctionComponent = () => {
       <div className='submit_step_header'>
         Step 0: <span className='submit_step_header_title'>Import</span>
       </div>
-      <div className={'submit_step_box'}>
+      <div className='submit_step_box'>
         <StatusForm
           services={RESOLVABLES}
           submitText='Import'

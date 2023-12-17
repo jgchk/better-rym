@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 dependencies:
   '@types/firefox-webext-browser':
     specifier: ^94.0.1
@@ -3511,7 +3515,7 @@ packages:
       postcss: ^8.1.0
     dependencies:
       browserslist: 4.20.3
-      caniuse-lite: 1.0.30001452
+      caniuse-lite: 1.0.30001570
       fraction.js: 4.2.0
       normalize-range: 0.1.2
       picocolors: 1.0.0
@@ -3724,7 +3728,7 @@ packages:
     engines: { node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7 }
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001452
+      caniuse-lite: 1.0.30001570
       electron-to-chromium: 1.4.122
       escalade: 3.1.1
       node-releases: 2.0.3
@@ -3818,15 +3822,15 @@ packages:
       }
     dependencies:
       browserslist: 4.20.3
-      caniuse-lite: 1.0.30001452
+      caniuse-lite: 1.0.30001570
       lodash.memoize: 4.1.2
       lodash.uniq: 4.5.0
     dev: true
 
-  /caniuse-lite@1.0.30001452:
+  /caniuse-lite@1.0.30001570:
     resolution:
       {
-        integrity: sha512-Lkp0vFjMkBB3GTpLR8zk4NwW5EdRdnitwYJHDOOKIU85x4ckYCPQ+9WlVvSVClHxVReefkUMtWZH2l9KGlD51w==,
+        integrity: sha512-+3e0ASu4sw1SWaoCtvPeyXp+5PsjigkSt8OXZbF9StH5pQWbxEjLAZE3n8Aup5udop1uRiKA7a4utUk/uoSpUw==,
       }
     dev: true
 
@@ -3876,7 +3880,7 @@ packages:
       normalize-path: 3.0.0
       readdirp: 3.6.0
     optionalDependencies:
-      fsevents: 2.3.2
+      fsevents: 2.3.3
     dev: true
 
   /chrome-trace-event@1.0.3:
@@ -5527,10 +5531,10 @@ packages:
       }
     dev: true
 
-  /fsevents@2.3.2:
+  /fsevents@2.3.3:
     resolution:
       {
-        integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==,
+        integrity: sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==,
       }
     engines: { node: ^8.16.0 || ^10.6.0 || >=11.0.0 }
     os: [darwin]
@@ -5792,6 +5796,15 @@ packages:
       }
     dev: true
 
+  /graceful-fs@4.2.11:
+    resolution:
+      {
+        integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==,
+      }
+    requiresBuild: true
+    dev: true
+    optional: true
+
   /hard-rejection@2.1.0:
     resolution:
       {
@@ -5915,6 +5928,7 @@ packages:
         integrity: sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==,
       }
     engines: { node: '>=0.10.0' }
+    requiresBuild: true
     dependencies:
       safer-buffer: 2.1.2
     dev: true
@@ -6617,7 +6631,7 @@ packages:
       micromatch: 4.0.5
       walker: 1.0.8
     optionalDependencies:
-      fsevents: 2.3.2
+      fsevents: 2.3.3
     dev: true
 
   /jest-leak-detector@28.1.0:
@@ -7098,7 +7112,7 @@ packages:
       tslib: 2.4.0
     optionalDependencies:
       errno: 0.1.8
-      graceful-fs: 4.2.10
+      graceful-fs: 4.2.11
       image-size: 0.5.5
       make-dir: 2.1.0
       mime: 1.6.0
@@ -9097,6 +9111,7 @@ packages:
       {
         integrity: sha512-yPw4Sng1gWghHQWj0B3ZggWUm4qVbPwPFcRG8KyxiU7J2OHFSoEHKS+EZ3fv5l1t9CyCiop6l/ZYeWbrgoQejw==,
       }
+    requiresBuild: true
     dev: true
     optional: true
 
