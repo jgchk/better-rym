@@ -228,20 +228,28 @@ const main = async () => {
       )('#mediumForm')
     )
 
-    createEditButton(
-      htmlOrder
-        .querySelector('li#fav_artists')
-        ?.textContent?.trim()
-        .toLowerCase() || 'favorite artists',
-      'fav_music'
-    )
-    createEditButton(
-      htmlOrder
-        .querySelector('li#other_comments')
-        ?.textContent?.trim()
-        .toLowerCase() || 'other comments',
-      'comments'
-    )
+    try {
+      createEditButton(
+        htmlOrder
+          .querySelector('li#fav_artists')
+          ?.textContent?.trim()
+          .toLowerCase() || 'favorite artists',
+        'fav_music'
+      )
+    } catch (error) {
+      console.error(error)
+    }
+    try {
+      createEditButton(
+        htmlOrder
+          .querySelector('li#other_comments')
+          ?.textContent?.trim()
+          .toLowerCase() || 'other comments',
+        'comments'
+      )
+    } catch (error) {
+      console.error(error)
+    }
   }
 }
 

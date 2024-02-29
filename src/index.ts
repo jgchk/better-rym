@@ -24,6 +24,7 @@ void runPage(
 void runPage(pages.userCollection, () => import('./modules/user-collection'))
 void runPage(pages.filmCollection, () => import('./modules/user-collection'))
 void runPage(pages.userPage, () => import('./modules/user-page'))
+void runPage(pages.userPage, () => import('./modules/user-page-custom-css'))
 void runPage(
   pages.voteHistoryGenres,
   () => import('./modules/vote-history/genres')
