@@ -7,9 +7,6 @@ import { waitForElement } from '../../common/utils/dom'
 import { fetch } from '../../common/utils/fetch'
 import classes from './styles.module.css'
 
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN
-if (!GITHUB_TOKEN) throw new Error('GITHUB_TOKEN not found!')
-
 const BUTTON_CLASSES = 'btn btn_small flat_btn'
 
 let styleEl: HTMLStyleElement | null = null
@@ -128,7 +125,6 @@ const setupOwnUserPage = (username: string, initialUserStyle: string) => {
         method: 'PUT',
         headers: {
           Accept: 'application/vnd.github+json',
-          Authorization: `Bearer ${GITHUB_TOKEN}`,
           'X-GitHub-Api-Version': '2022-11-28',
         },
         body: {
@@ -177,15 +173,20 @@ const setupOwnUserPage = (username: string, initialUserStyle: string) => {
 }
 
 const fetchUserStyle = async (username: string) => {
-  return fetch({
-    url: `https://api.github.com/repos/jgchk/better-rym-user-themes/contents/${username}.css`,
+  const res = await fetch({
+    url: `https://better-rym-server.vercel.app/api/themes/${username}`,
     method: 'GET',
-    headers: {
-      Accept: 'application/vnd.github.raw+json',
-      Authorization: `Bearer ${GITHUB_TOKEN}`,
-      'X-GitHub-Api-Version': '2022-11-28',
-    },
   })
+
+  const json = JSON.parse(res) as
+    | { error: true; message: string }
+    | { success: true; message: string; data: { theme: string } }
+
+  if ('error' in json) {
+    throw new Error(json.message)
+  }
+
+  return json.data.theme
 }
 
 const main = async () => {
