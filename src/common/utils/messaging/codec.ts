@@ -3,10 +3,11 @@ export type FetchRequest = {
   type: 'fetch'
   data: {
     url: string
-    method?: 'GET' | 'POST'
+    method?: 'GET' | 'POST' | 'PUT'
     urlParameters?: { [key: string]: string }
     headers?: { [key: string]: string }
     credentials?: RequestCredentials
+    body?: unknown
   }
 }
 

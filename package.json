@@ -23,6 +23,7 @@
     "@types/string-similarity": "^4.0.0",
     "filenamify": "^5.1.1",
     "get-artist-title": "^1.3.1",
+    "highlight.js": "^11.9.0",
     "nanoid": "^3.3.4",
     "preact": "^10.7.2",
     "webextension-polyfill": "^0.9.0"
