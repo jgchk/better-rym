@@ -3,11 +3,80 @@ import 'highlight.js/styles/github-dark.css'
 import hljs from 'highlight.js/lib/core'
 import css from 'highlight.js/lib/languages/css'
 
-import { waitForElement } from '../../common/utils/dom'
+import { forceQuerySelector, waitForElement } from '../../common/utils/dom'
 import { fetch } from '../../common/utils/fetch'
+import * as storage from '../../common/utils/storage'
 import classes from './styles.module.css'
 
 const BUTTON_CLASSES = 'btn btn_small flat_btn'
+
+type Dictionary = { [index: string]: string }
+
+const updateProfile = async (profileData: FormData) => {
+  const entries: Dictionary = {}
+  for (const [k, v] of profileData) {
+    entries[k] = v as string
+  }
+
+  await fetch({
+    url: 'https://rateyourmusic.com/account/profile_edit_2',
+    method: 'POST',
+    urlParameters: entries,
+  })
+}
+
+// Add token to favorite artists if available
+// If favorite artists is not available, add to other comments
+// If other comments is not available, turn on other comments and then add
+
+const addTokenToProfile = async (token: string) => {
+  console.log('1')
+  const response2 = await fetch({
+    url: 'https://rateyourmusic.com/account/profile_edit',
+  })
+  console.log('2')
+  const profileData = new FormData(
+    forceQuerySelector<HTMLFormElement>(
+      new DOMParser().parseFromString(response2, 'text/html')
+    )('#mediumForm')
+  )
+
+  const favArtists = profileData.get('fav_music')?.toString() ?? ''
+  profileData.set('fav_music', `${favArtists}\n${token}`)
+
+  await updateProfile(profileData)
+}
+
+const verifyAccount = async (username: string) => {
+  const registerResponse = await fetch({
+    url: `https://better-rym-server.vercel.app/api/register`,
+    method: 'POST',
+    body: { username },
+  })
+  const registerJson = JSON.parse(registerResponse) as
+    | { error: true; message: string }
+    | { success: true; message: string; data: { publicToken: string } }
+  if ('error' in registerJson) {
+    throw new Error(registerJson.message)
+  }
+  const publicToken = registerJson.data.publicToken
+
+  await addTokenToProfile(publicToken)
+
+  const verifyResponse = await fetch({
+    url: `https://better-rym-server.vercel.app/api/verify`,
+    method: 'POST',
+    body: { username },
+  })
+  const verifyJson = JSON.parse(verifyResponse) as
+    | { error: true; message: string }
+    | { success: true; message: string; data: { privateToken: string } }
+  if ('error' in verifyJson) {
+    throw new Error(verifyJson.message)
+  }
+  const privateToken = verifyJson.data.privateToken
+  await storage.set('private-token', privateToken)
+}
 
 let styleEl: HTMLStyleElement | null = null
 const applyStyle = (styleText: string | null) => {
@@ -23,11 +92,24 @@ const applyStyle = (styleText: string | null) => {
   }
 }
 
-const setupOwnUserPage = (username: string, initialUserStyle: string) => {
+const setupOwnUserPage = async (username: string, initialUserStyle: string) => {
   hljs.registerLanguage('css', css)
 
   const header = document.querySelector('.profile_header')
   if (!header) throw new Error('No header found on the user page!')
+
+  const isVerified = await storage.get('private-token')
+  console.log({ isVerified })
+  if (!isVerified) {
+    const verifyBtn = document.createElement('button')
+    verifyBtn.className = BUTTON_CLASSES
+    verifyBtn.textContent = 'verify'
+
+    verifyBtn.addEventListener('click', () => {
+      void verifyAccount(username).then(() => console.log('VERIFIED NERD'))
+    })
+    header.append(verifyBtn)
+  }
 
   const editBtn = document.createElement('button')
   editBtn.className = BUTTON_CLASSES
@@ -203,7 +285,7 @@ const main = async () => {
   const key = await waitForElement('.profile_set_listening_btn a')
   const isOwnUserPage = key !== null
   if (isOwnUserPage) {
-    setupOwnUserPage(username, userStyle)
+    await setupOwnUserPage(username, userStyle)
   }
 }
 
