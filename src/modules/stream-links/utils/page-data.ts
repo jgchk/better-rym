@@ -60,25 +60,27 @@ function m(t: any, linkData: any) {
 /* eslint-enable */
 
 type StreamingPreferences = Record<string, unknown>
-const getStreamingPreferences = (): StreamingPreferences | undefined => {
-  let streamingPreferences: StreamingPreferences | undefined = undefined
+const getStreamingPreferences = async (): Promise<
+  StreamingPreferences | undefined
+> => {
+  return new Promise((resolve) => {
+    const listener = (e: Event) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      const streamingPreferences = (e as CustomEvent).detail
+        .streamingPreferences as StreamingPreferences
 
-  const listener = (e: Event) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    streamingPreferences = (e as CustomEvent).detail
-      .streamingPreferences as StreamingPreferences
-  }
-  document.addEventListener('StreamingPreferencesEvent', listener)
+      document.removeEventListener('StreamingPreferencesEvent', listener)
 
-  runScript(`
-    const streamingPreferences = window.streamingPreferences;
-    const __event = new CustomEvent('StreamingPreferencesEvent', { detail: { streamingPreferences } });
-    document.dispatchEvent(__event);
-  `)
+      resolve(streamingPreferences)
+    }
+    document.addEventListener('StreamingPreferencesEvent', listener)
 
-  document.removeEventListener('StreamingPreferencesEvent', listener)
-
-  return streamingPreferences
+    void runScript(`
+      const streamingPreferences = window.streamingPreferences;
+      const __event = new CustomEvent('StreamingPreferencesEvent', { detail: { streamingPreferences } });
+      document.dispatchEvent(__event);
+    `)
+  })
 }
 
 const EMPTY_LINKS = Object.fromEntries(
@@ -89,7 +91,7 @@ export type Links = Record<ServiceId, string | undefined>
 const getLinks = async (): Promise<Links> => {
   await waitForDocumentReady()
 
-  const streamingPreferences = getStreamingPreferences()
+  const streamingPreferences = await getStreamingPreferences()
   if (!streamingPreferences) return EMPTY_LINKS
 
   const element_ = document.querySelector<HTMLElement>(

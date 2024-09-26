@@ -77,7 +77,7 @@ const render = (state: State) => {
   }
 }
 
-const main = async () => {
+export const main = async () => {
   await waitForDocumentReady()
 
   let state = await initializeState()
@@ -204,5 +204,3 @@ const makeSelector = (
 
   return div
 }
-
-void main()

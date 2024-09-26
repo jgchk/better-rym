@@ -1,3 +1,5 @@
+import browser from 'webextension-polyfill'
+
 export const get = async <T>(key: string): Promise<T | undefined> => {
   const response = await browser.storage.local.get(key)
   return response[key] as T

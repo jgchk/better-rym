@@ -87,7 +87,7 @@ const injectDate = async () => {
   render(<DateButton />, container)
 }
 
-const main = () =>
+export const main = () =>
   Promise.all([
     injectImport(),
     injectClearTracklist(),
@@ -97,5 +97,3 @@ const main = () =>
     injectCatalogNumber(),
     injectDate(),
   ])
-
-void main()

@@ -1,0 +1,30 @@
+{
+  "{{chrome}}.manifest_version": 3,
+  "{{firefox}}.manifest_version": 2,
+  "icons": {
+    "16": "icons/sonemic-16.png",
+    "48": "icons/sonemic-48.png",
+    "128": "icons/sonemic-128.png"
+  },
+  "background": {
+    "{{chrome}}.service_worker": "src/modules/background/index.ts",
+    "{{firefox}}.scripts": ["src/modules/background/index.ts"]
+  },
+  "content_scripts": [
+    {
+      "js": ["src/index.ts"],
+      "matches": ["*://*.rateyourmusic.com/*"],
+      "run_at": "document_start"
+    }
+  ],
+  "permissions": ["storage", "downloads", "tabs", "scripting", "*://*/*"],
+  "{{firefox}}.web_accessible_resources": [
+    "scripts/get-streaming-preferences.js"
+  ],
+  "{{chrome}}.web_accessible_resources": [
+    {
+      "resources": ["scripts/get-streaming-preferences.js"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

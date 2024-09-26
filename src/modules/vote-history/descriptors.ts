@@ -35,10 +35,8 @@ const getDescriptors = withCache(
   604_800_000
 )
 
-const main = () =>
+export const main = () =>
   Promise.all([
     waitForDocumentReady().then(() => fixPaginationParameters()),
     addDropdown('Descriptor', 'descriptor', getDescriptors),
   ])
-
-void main()

@@ -1,5 +1,5 @@
-// eslint-disable-next-line import/no-unresolved
 import filenamify from 'filenamify/browser'
+import browser from 'webextension-polyfill'
 
 import {
   DownloadRequest,

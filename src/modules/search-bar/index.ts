@@ -36,7 +36,7 @@ const shortcutHandler = (event: Event) => {
   }
 }
 
-const main = async () => {
+export const main = async () => {
   const searchBar: HTMLInputElement = await waitForElement(
     '#ui_search_input_main_search'
   )
@@ -50,5 +50,3 @@ const main = async () => {
   searchBar.onkeydown = shortcutHandler
   searchButton.onclick = shortcutHandler
 }
-
-void main()

@@ -3,7 +3,7 @@ import { h, render } from 'preact'
 import { waitForElement } from '../../common/utils/dom'
 import { App } from './components/app'
 
-const main = async () => {
+export const main = async () => {
   const app = document.createElement('div')
   app.id = 'better-rym'
 
@@ -21,5 +21,3 @@ const main = async () => {
 
   render(<App />, app)
 }
-
-void main()

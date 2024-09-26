@@ -1,6 +1,6 @@
-import Icon from '../../../../res/svg/spotify.svg'
-import FoundIcon from '../../../../res/svg/spotify-found.svg'
-import NotFoundIcon from '../../../../res/svg/spotify-notfound.svg'
+import SpotifyIcon from '../../icons/spotify'
+import SpotifyFoundIcon from '../../icons/spotify-found'
+import SpotifyNotFoundIcon from '../../icons/spotify-notfound'
 import { withCache } from '../../utils/cache'
 import { Resolvable, Searchable, Service } from '../types'
 import { regex } from './regex'
@@ -11,9 +11,9 @@ export const Spotify: Service & Searchable & Resolvable = {
   id: 'spotify',
   name: 'Spotify',
   regex,
-  icon: Icon,
-  foundIcon: FoundIcon,
-  notFoundIcon: NotFoundIcon,
+  icon: SpotifyIcon,
+  foundIcon: SpotifyFoundIcon,
+  notFoundIcon: SpotifyNotFoundIcon,
   search: withCache('spotify-search', search),
   resolve: withCache('spotify-resolve', resolve),
 }

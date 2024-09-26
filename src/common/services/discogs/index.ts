@@ -1,4 +1,4 @@
-import icon from '../../../../res/svg/discogs.svg'
+import DiscogsIcon from '../../icons/discogs'
 import { withCache } from '../../utils/cache'
 import { Resolvable, Service } from '../types'
 import { regex } from './regex'
@@ -8,6 +8,6 @@ export const Discogs: Service & Resolvable = {
   id: 'discogs',
   name: 'Discogs',
   regex,
-  icon,
+  icon: DiscogsIcon,
   resolve: withCache('discogs-resolve', resolve),
 }

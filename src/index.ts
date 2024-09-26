@@ -1,4 +1,15 @@
 import { getPageEnabled, pages } from './common/pages'
+import { main as coverArt } from './modules/cover-art'
+import { main as releaseSubmission } from './modules/release-submission'
+import { main as searchBar } from './modules/search-bar'
+import { main as streamLinkMissing } from './modules/stream-link-missing'
+import { main as streamLinkSubmission } from './modules/stream-link-submission'
+import { main as streamLinks } from './modules/stream-links'
+import { main as suggestions } from './modules/suggestions'
+import { main as userCollection } from './modules/user-collection'
+import { main as userPage } from './modules/user-page'
+import { main as voteHistoryDescriptors } from './modules/vote-history/descriptors'
+import { main as voteHistoryGenres } from './modules/vote-history/genres'
 
 const runPage = async (page: string, callback: () => unknown) => {
   if (!location.hostname.endsWith('rateyourmusic.com')) return
@@ -10,31 +21,15 @@ const runPage = async (page: string, callback: () => unknown) => {
   callback()
 }
 
-void runPage(pages.streamLinks, () => import('./modules/stream-links'))
-void runPage(pages.suggestions, () => import('./modules/suggestions'))
-void runPage(
-  pages.releaseSubmission,
-  () => import('./modules/release-submission')
-)
-void runPage(pages.coverArt, () => import('./modules/cover-art'))
-void runPage(
-  pages.streamLinkSubmission,
-  () => import('./modules/stream-link-submission')
-)
-void runPage(pages.userCollection, () => import('./modules/user-collection'))
-void runPage(pages.filmCollection, () => import('./modules/user-collection'))
-void runPage(pages.userPage, () => import('./modules/user-page'))
-void runPage(
-  pages.voteHistoryGenres,
-  () => import('./modules/vote-history/genres')
-)
-void runPage(
-  pages.voteHistoryDescriptors,
-  () => import('./modules/vote-history/descriptors')
-)
-void runPage(
-  pages.streamLinkMissing,
-  () => import('./modules/stream-link-missing')
-)
-
-import('./modules/search-bar')
+void runPage(pages.streamLinks, streamLinks)
+void runPage(pages.suggestions, suggestions)
+void runPage(pages.releaseSubmission, releaseSubmission)
+void runPage(pages.coverArt, coverArt)
+void runPage(pages.streamLinkSubmission, streamLinkSubmission)
+void runPage(pages.userCollection, userCollection)
+void runPage(pages.filmCollection, userCollection)
+void runPage(pages.userPage, userPage)
+void runPage(pages.voteHistoryGenres, voteHistoryGenres)
+void runPage(pages.voteHistoryDescriptors, voteHistoryDescriptors)
+void runPage(pages.streamLinkMissing, streamLinkMissing)
+void searchBar()

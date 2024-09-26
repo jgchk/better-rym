@@ -35,10 +35,26 @@ export type DownloadResponse = {
   }
 }
 
-export type BackgroundRequest = FetchRequest | DownloadRequest
-export type BackgroundResponse = FetchResponse | DownloadResponse
+export type ScriptRequest = {
+  id: string
+  type: 'script'
+  data: {
+    script: string
+  }
+}
+
+export type ScriptResponse = {
+  id: string
+  type: 'script'
+}
+
+export type BackgroundRequest = FetchRequest | DownloadRequest | ScriptRequest
+export type BackgroundResponse =
+  | FetchResponse
+  | DownloadResponse
+  | ScriptResponse
 
 export const isBackgroundRequest = (o: unknown): o is BackgroundRequest =>
-  typeof o === 'object' && o !== null && 'id' in o && 'type' in o && 'data' in o
+  typeof o === 'object' && o !== null && 'id' in o && 'type' in o
 export const isBackgroundResponse = (o: unknown): o is BackgroundResponse =>
-  typeof o === 'object' && o !== null && 'id' in o && 'type' in o && 'data' in o
+  typeof o === 'object' && o !== null && 'id' in o && 'type' in o

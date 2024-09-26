@@ -3,7 +3,7 @@ import { h, render } from 'preact'
 import { waitForElement } from '../../common/utils/dom'
 import { App } from './components/app'
 
-const main = async () => {
+export const main = async () => {
   const siblingElement = await waitForElement('#content_total_cover')
 
   const app = document.createElement('div')
@@ -12,5 +12,3 @@ const main = async () => {
 
   render(<App />, app)
 }
-
-void main()

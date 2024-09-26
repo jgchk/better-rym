@@ -1,8 +1,8 @@
 import { fetch } from '../../utils/fetch'
 import { TokenResponse } from './codecs'
 
-const client_id = process.env.SPOTIFY_ID || ''
-const client_secret = process.env.SPOTIFY_SECRET || ''
+const client_id = import.meta.env.SPOTIFY_ID as string
+const client_secret = import.meta.env.SPOTIFY_SECRET as string
 
 export const requestToken = async (): Promise<TokenResponse> =>
   JSON.parse(

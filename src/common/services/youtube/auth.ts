@@ -1,1 +1,1 @@
-export const YOUTUBE_KEY = process.env.YOUTUBE_KEY || ''
+export const YOUTUBE_KEY = import.meta.env.YOUTUBE_KEY as string

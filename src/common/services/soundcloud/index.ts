@@ -1,6 +1,6 @@
-import Icon from '../../../../res/svg/soundcloud.svg'
-import FoundIcon from '../../../../res/svg/soundcloud-found.svg'
-import NotFoundIcon from '../../../../res/svg/soundcloud-notfound.svg'
+import SpotifyIcon from '../../icons/spotify'
+import SpotifyFoundIcon from '../../icons/spotify-found'
+import SpotifyNotFoundIcon from '../../icons/spotify-notfound'
 import { withCache } from '../../utils/cache'
 import { Embeddable, Resolvable, Searchable, Service } from '../types'
 import { embed } from './embed'
@@ -12,9 +12,9 @@ export const Soundcloud: Service & Searchable & Resolvable & Embeddable = {
   name: 'Soundcloud',
   regex:
     /((http:\/\/(soundcloud\.com\/.*|soundcloud\.com\/.*\/.*|soundcloud\.com\/.*\/sets\/.*|soundcloud\.com\/groups\/.*|snd\.sc\/.*))|(https:\/\/(soundcloud\.com\/.*|soundcloud\.com\/.*\/.*|soundcloud\.com\/.*\/sets\/.*|soundcloud\.com\/groups\/.*)))/,
-  icon: Icon,
-  foundIcon: FoundIcon,
-  notFoundIcon: NotFoundIcon,
+  icon: SpotifyIcon,
+  foundIcon: SpotifyFoundIcon,
+  notFoundIcon: SpotifyNotFoundIcon,
   search: withCache('soundcloud-search', search),
   resolve: withCache('soundcloud-resolve', resolve),
   embed: withCache('soundcloud-embed', embed),

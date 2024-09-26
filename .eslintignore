@@ -4,3 +4,4 @@ output/
 postcss.config.js
 jest.config.js
 webpack.config.js
+vite.config.ts

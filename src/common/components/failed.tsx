@@ -2,7 +2,7 @@ import { FunctionComponent, h, JSX } from 'preact'
 import { createPortal } from 'preact/compat'
 import { useState } from 'preact/hooks'
 
-import Icon from '../../../res/svg/x.svg'
+import XIcon from '../icons/x'
 import styles from '../styles/failed.module.css'
 import { clsx } from '../utils/clsx'
 
@@ -14,10 +14,12 @@ export const Failed: FunctionComponent<
 
   return (
     <>
-      <Icon
+      <XIcon
         onMouseOver={() => setShowTip(true)}
         onMouseOut={() => setShowTip(false)}
-        onMouseMove={(event) => setPos({ x: event.pageX, y: event.pageY })}
+        onMouseMove={(event: MouseEvent) =>
+          setPos({ x: event.pageX, y: event.pageY })
+        }
         className={clsx(styles.failed, className)}
         {...properties}
       />

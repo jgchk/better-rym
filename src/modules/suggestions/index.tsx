@@ -14,9 +14,11 @@ const getReleaseId = () => {
 }
 
 const refreshSuggestions = (releaseId: string) =>
-  runScript(`RYMsuggestions.refresh($('#suggestions_release_${releaseId}'))`)
+  void runScript(
+    `RYMsuggestions.refresh($('#suggestions_release_${releaseId}'))`
+  )
 
-const main = async () => {
+export const main = async () => {
   await waitForDocumentReady()
 
   const notSubscribed = getSubscribeMessage()
@@ -56,5 +58,3 @@ const main = async () => {
 
   refreshSuggestions(releaseId)
 }
-
-void main()

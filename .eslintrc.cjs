@@ -10,9 +10,6 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
-    'plugin:import/errors',
-    'plugin:import/warnings',
-    'plugin:import/typescript',
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
     'plugin:unicorn/recommended',
@@ -28,8 +25,6 @@ module.exports = {
     browser: true,
   },
   rules: {
-    'import/no-default-export': 'error',
-
     'simple-import-sort/imports': 'error',
     'simple-import-sort/exports': 'error',
 

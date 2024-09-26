@@ -6,7 +6,10 @@ export const selectShortcut = (
   name: string,
   target: string
 ): void =>
-  runScript(`selectShortcut(\`${type}\`, ${id}, \`${name}\`, \`${target}\`)`)
+  void runScript(
+    `selectShortcut(\`${type}\`, ${id}, \`${name}\`, \`${target}\`)`
+  )
 
 // window.parent.goInfobox(897)
-export const goInfobox = (id: number): void => runScript(`goInfobox(${id})`)
+export const goInfobox = (id: number): void =>
+  void runScript(`goInfobox(${id})`)

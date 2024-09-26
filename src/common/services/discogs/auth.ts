@@ -1,2 +1,2 @@
-export const client_key = process.env.DISCOGS_KEY || ''
-export const client_secret = process.env.DISCOGS_SECRET || ''
+export const client_key = import.meta.env.DISCOGS_KEY as string
+export const client_secret = import.meta.env.DISCOGS_SECRET as string

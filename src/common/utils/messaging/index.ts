@@ -1,4 +1,5 @@
 import { nanoid } from 'nanoid'
+import browser from 'webextension-polyfill'
 
 import {
   BackgroundRequest,
@@ -15,11 +16,13 @@ export const sendBackgroundMessage = <
   new Promise((resolve) => {
     const requestId = nanoid()
 
-    const onResponse = (response: unknown) => {
+    const onResponse = (response: unknown): undefined => {
       if (isBackgroundResponse(response) && response.id === requestId) {
         resolve(response as Response)
         browser.runtime.onMessage.removeListener(onResponse)
       }
+
+      return
     }
 
     browser.runtime.onMessage.addListener(onResponse)

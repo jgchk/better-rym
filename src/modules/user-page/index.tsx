@@ -207,7 +207,7 @@ const updateProfile = async () => {
   })
 }
 
-const main = async () => {
+export const main = async () => {
   // look for the element that always appears on your user page, but never on others
   const key = await waitForElement('.profile_set_listening_btn a')
 
@@ -244,5 +244,3 @@ const main = async () => {
     )
   }
 }
-
-void main()

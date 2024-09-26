@@ -1,7 +1,7 @@
 import { FunctionComponent, h } from 'preact'
 import { useCallback, useEffect, useState } from 'preact/hooks'
 
-import InfoIcon from '../../../../res/svg/info.svg'
+import InfoIcon from '../../../common/icons/info'
 import { clsx } from '../../../common/utils/clsx'
 import { waitForElement } from '../../../common/utils/dom'
 import { useLocalStorage } from '../hooks/use-local-storage'

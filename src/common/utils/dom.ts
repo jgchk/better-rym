@@ -1,3 +1,6 @@
+import { sendBackgroundMessage } from './messaging'
+import { ScriptRequest, ScriptResponse } from './messaging/codec'
+
 export const isDocumentReady = (): boolean =>
   document.readyState === 'complete' || document.readyState === 'interactive'
 
@@ -53,11 +56,11 @@ export const forceQuerySelector =
     return element
   }
 
-export const runScript = (script: string) => {
-  const element = document.createElement('script')
-  element.innerHTML = script
-  document.head.append(element)
-  element.remove()
+export const runScript = async (script: string) => {
+  await sendBackgroundMessage<ScriptRequest, ScriptResponse>({
+    type: 'script',
+    data: { script },
+  })
 }
 
 export const waitForResult = (
