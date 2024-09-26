@@ -9,8 +9,6 @@ export const script = async (
   { id, data }: ScriptRequest,
   tabId: number
 ): Promise<ScriptResponse> => {
-  console.log('INJECT SCRIPT')
-
   await browser.scripting.executeScript({
     target: { tabId },
     world: 'MAIN',

@@ -6,6 +6,9 @@
     "48": "icons/sonemic-48.png",
     "128": "icons/sonemic-128.png"
   },
+  "action": {
+    "default_title": "BetterRYM"
+  },
   "background": {
     "{{chrome}}.service_worker": "src/modules/background/index.ts",
     "{{firefox}}.scripts": ["src/modules/background/index.ts"]
@@ -17,14 +20,13 @@
       "run_at": "document_start"
     }
   ],
-  "permissions": ["storage", "downloads", "tabs", "scripting", "*://*/*"],
-  "{{firefox}}.web_accessible_resources": [
-    "scripts/get-streaming-preferences.js"
+  "permissions": [
+    "storage",
+    "downloads",
+    "tabs",
+    "scripting",
+    "activeTab",
+    "*://*/*"
   ],
-  "{{chrome}}.web_accessible_resources": [
-    {
-      "resources": ["scripts/get-streaming-preferences.js"],
-      "matches": ["<all_urls>"]
-    }
-  ]
+  "{{chrome}}.host_permissions": ["*://*/*"]
 }

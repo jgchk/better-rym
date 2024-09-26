@@ -9,8 +9,6 @@ import { download } from './download'
 import { backgroundFetch } from './fetch'
 import { script } from './script'
 
-console.log('Background script loaded')
-
 const getResponse = (
   message: unknown,
   tabId: number
@@ -33,19 +31,19 @@ browser.runtime.onMessage.addListener((message, sender) => {
 })
 
 const setTabIcon = (tabId: number, enabled: boolean) => {
-  void browser.pageAction.setIcon({
+  void browser.action.setIcon({
     tabId,
     path: enabled
       ? {
-          '19': 'extension-enabled-19.png',
-          '38': 'extension-enabled-38.png',
+          '19': browser.runtime.getURL('icons/extension-enabled-19.png'),
+          '38': browser.runtime.getURL('icons/extension-enabled-38.png'),
         }
       : {
-          '19': 'extension-disabled-19.png',
-          '38': 'extension-disabled-38.png',
+          '19': browser.runtime.getURL('icons/extension-disabled-19.png'),
+          '38': browser.runtime.getURL('icons/extension-disabled-38.png'),
         },
   })
-  void browser.pageAction.setTitle({
+  void browser.action.setTitle({
     tabId,
     title: `BetterRYM ${enabled ? 'enabled' : 'disabled'}`,
   })
@@ -61,13 +59,13 @@ browser.tabs.onUpdated.addListener((id, changeInfo, tab) => {
       url.pathname.startsWith(pageUrl)
     ) {
       void getPageEnabled(pageUrl).then((enabled) => setTabIcon(id, enabled))
-      void browser.pageAction.show(id)
+      void browser.action.enable(id)
       return
     }
   }
 })
 
-browser.pageAction.onClicked.addListener((tab) => {
+browser.action.onClicked.addListener((tab) => {
   const pageUrls = Object.values(pages)
   for (const pageUrl of pageUrls) {
     if (tab.url && new URL(tab.url).pathname.startsWith(pageUrl)) {
