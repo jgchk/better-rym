@@ -4,7 +4,6 @@ import { main as releaseSubmission } from './modules/release-submission'
 import { main as searchBar } from './modules/search-bar'
 import { main as streamLinkMissing } from './modules/stream-link-missing'
 import { main as streamLinkSubmission } from './modules/stream-link-submission'
-import { main as streamLinks } from './modules/stream-links'
 import { main as userCollection } from './modules/user-collection'
 import { main as userPage } from './modules/user-page'
 import { main as voteHistoryDescriptors } from './modules/vote-history/descriptors'
@@ -20,7 +19,6 @@ const runPage = async (page: string, callback: () => unknown) => {
   callback()
 }
 
-void runPage(pages.streamLinks, streamLinks)
 void runPage(pages.releaseSubmission, releaseSubmission)
 void runPage(pages.coverArt, coverArt)
 void runPage(pages.streamLinkSubmission, streamLinkSubmission)

@@ -18,6 +18,11 @@
       "js": ["src/index.ts"],
       "matches": ["*://*.rateyourmusic.com/*"],
       "run_at": "document_start"
+    },
+    {
+      "js": ["src/modules/stream-links/main.ts"],
+      "matches": ["*://*.rateyourmusic.com/release/*"],
+      "run_at": "document_start"
     }
   ],
   "permissions": [
