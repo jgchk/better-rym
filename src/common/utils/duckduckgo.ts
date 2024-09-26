@@ -135,7 +135,7 @@ export const search = async (query: string): Promise<SearchResults> => {
 
   const resultsString = SEARCH_REGEX.exec(res)?.[1]?.replace(/\t/g, '    ')
   if (resultsString === undefined) {
-    throw new Error('Could not find DDG search resutls')
+    throw new Error('Could not find DDG search results')
   }
 
   const searchResults = JSON.parse(resultsString) as (
