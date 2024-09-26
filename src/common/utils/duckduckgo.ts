@@ -133,6 +133,10 @@ export const search = async (query: string): Promise<SearchResults> => {
     throw new Error('A DDG server error occurred!')
   }
 
+  if (res.includes('DDG.deep.anomalyDetectionBlock')) {
+    throw new Error('DuckDuckGo detected our bot request. Try again later.')
+  }
+
   const resultsString = SEARCH_REGEX.exec(res)?.[1]?.replace(/\t/g, '    ')
   if (resultsString === undefined) {
     throw new Error('Could not find DDG search results')
