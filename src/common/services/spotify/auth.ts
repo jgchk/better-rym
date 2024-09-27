@@ -1,8 +1,8 @@
 import { fetch } from '../../utils/fetch'
 import { TokenResponse } from './codecs'
 
-const client_id = import.meta.env.SPOTIFY_ID as string
-const client_secret = import.meta.env.SPOTIFY_SECRET as string
+const client_id = import.meta.env.VITE_SPOTIFY_ID as string
+const client_secret = import.meta.env.VITE_SPOTIFY_SECRET as string
 
 export const requestToken = async (): Promise<TokenResponse> =>
   JSON.parse(
@@ -14,5 +14,5 @@ export const requestToken = async (): Promise<TokenResponse> =>
         Authorization: `Basic ${btoa(`${client_id}:${client_secret}`)}`,
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-    })
+    }),
   ) as TokenResponse

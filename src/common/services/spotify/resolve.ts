@@ -29,7 +29,7 @@ const parseDate = (date: string): ReleaseDate => {
 
 const getPosition = (
   track: SimplifiedTrackObject,
-  numberOfDiscs: number
+  numberOfDiscs: number,
 ): string =>
   numberOfDiscs === 1
     ? track.track_number.toString()
@@ -37,7 +37,7 @@ const getPosition = (
 
 const getTracks = async (
   tracks: AlbumTracks,
-  token: string
+  token: string,
 ): Promise<Track[]> => {
   let next = tracks.next
   const allTracks = tracks.items
@@ -46,7 +46,7 @@ const getTracks = async (
       await fetch({
         url: next,
         headers: { Authorization: `Bearer ${token}` },
-      })
+      }),
     ) as AlbumTracks
     allTracks.push(...nextResponse.items)
     next = nextResponse.next
@@ -54,14 +54,21 @@ const getTracks = async (
 
   // The album metadata doesn't actually tell us if it's various artists. So
   // make sure we don't append the same artist(s) to every track name.
-  const shouldIncludeArtists = new Set(allTracks.map((track) =>
-    track.artists.map(artist => artist.name).join(', '))).size > 1
+  const shouldIncludeArtists =
+    new Set(
+      allTracks.map((track) =>
+        track.artists.map((artist) => artist.name).join(', '),
+      ),
+    ).size > 1
 
   const numberOfDiscs = new Set(allTracks.map((track) => track.disc_number))
     .size
   return allTracks.map((track) => ({
     position: getPosition(track, numberOfDiscs),
-    title: (shouldIncludeArtists ? `${track.artists.map(artist => artist.name).join(', ')} - ` : '') + track.name,
+    title:
+      (shouldIncludeArtists
+        ? `${track.artists.map((artist) => artist.name).join(', ')} - `
+        : '') + track.name,
     duration: secondsToString(track.duration_ms / 1000),
   }))
 }
@@ -76,14 +83,16 @@ const getCoverArt = (data: AlbumObject | TrackObject) => {
 
 const resolveAlbum = async (
   id: string,
-  token: string
+  token: string,
 ): Promise<ResolveData> => {
   const response = JSON.parse(
     await fetch({
       url: `https://api.spotify.com/v1/albums/${id}`,
       headers: { Authorization: `Bearer ${token}` },
-    })
+    }),
   ) as AlbumObject
+
+  console.log({ response })
 
   const url = response.external_urls.spotify
   const title = response.name
@@ -117,13 +126,13 @@ const resolveAlbum = async (
 
 const resolveTrack = async (
   id: string,
-  token: string
+  token: string,
 ): Promise<ResolveData> => {
   const response = JSON.parse(
     await fetch({
       url: `https://api.spotify.com/v1/tracks/${id}`,
       headers: { Authorization: `Bearer ${token}` },
-    })
+    }),
   ) as TrackObject
 
   const url = response.external_urls.spotify
@@ -158,7 +167,7 @@ export const resolve: ResolveFunction = async (url) => {
   const type = match[1]
   if (!type || !isValidLinkType(type))
     throw new Error(
-      `Expected link to be album/track. Received: ${String(type)}`
+      `Expected link to be album/track. Received: ${String(type)}`,
     )
 
   const id = match[2]

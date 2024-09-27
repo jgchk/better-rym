@@ -10,7 +10,7 @@ export const search: SearchFunction = async ({ artist, title }) => {
       url: 'https://api.spotify.com/v1/search',
       urlParameters: { q: `${artist} ${title}`, type: 'album' },
       headers: { Authorization: `Bearer ${token.access_token}` },
-    })
+    }),
   ) as AlbumSearchObject
   return response.albums.items[0]?.external_urls.spotify
 }
