@@ -1,9 +1,9 @@
 import { h, render } from 'preact'
 
 import { waitForElement } from '../../common/utils/dom'
-import { App } from './components/app'
+import { FilterButtons } from './components/filter-buttons'
 
-export const main = async () => {
+export async function main() {
   const siblingElement = await waitForElement('.ui_breadcrumb_frame')
 
   // filtering doesn't work when you have a tag selected
@@ -13,5 +13,5 @@ export const main = async () => {
   app.id = 'better-rym'
   siblingElement.after(app)
 
-  render(<App />, app)
+  render(<FilterButtons />, app)
 }
