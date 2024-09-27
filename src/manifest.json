@@ -33,6 +33,11 @@
       "js": ["src/modules/cover-art/main.ts"],
       "matches": ["*://*.rateyourmusic.com/images/upload*"],
       "run_at": "document_start"
+    },
+    {
+      "js": ["src/modules/stream-link-submission/main.ts"],
+      "matches": ["*://*.rateyourmusic.com/submit_media_link*"],
+      "run_at": "document_start"
     }
   ],
   "permissions": [

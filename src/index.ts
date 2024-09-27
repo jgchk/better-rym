@@ -1,7 +1,6 @@
 import { getPageEnabled, pages } from './common/pages'
 import { main as searchBar } from './modules/search-bar'
 import { main as streamLinkMissing } from './modules/stream-link-missing'
-import { main as streamLinkSubmission } from './modules/stream-link-submission'
 import { main as userCollection } from './modules/user-collection'
 import { main as userPage } from './modules/user-page'
 import { main as voteHistoryDescriptors } from './modules/vote-history/descriptors'
@@ -17,7 +16,6 @@ const runPage = async (page: string, callback: () => unknown) => {
   callback()
 }
 
-void runPage(pages.streamLinkSubmission, streamLinkSubmission)
 void runPage(pages.userCollection, userCollection)
 void runPage(pages.filmCollection, userCollection)
 void runPage(pages.userPage, userPage)
