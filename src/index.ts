@@ -1,5 +1,4 @@
 import { getPageEnabled, pages } from './common/pages'
-import { main as coverArt } from './modules/cover-art'
 import { main as searchBar } from './modules/search-bar'
 import { main as streamLinkMissing } from './modules/stream-link-missing'
 import { main as streamLinkSubmission } from './modules/stream-link-submission'
@@ -18,7 +17,6 @@ const runPage = async (page: string, callback: () => unknown) => {
   callback()
 }
 
-void runPage(pages.coverArt, coverArt)
 void runPage(pages.streamLinkSubmission, streamLinkSubmission)
 void runPage(pages.userCollection, userCollection)
 void runPage(pages.filmCollection, userCollection)

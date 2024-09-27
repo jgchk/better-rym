@@ -29,6 +29,15 @@ export default defineConfig({
         startUrl:
           'https://rateyourmusic.com/release/album/electric-wizard/dopethrone/',
       },
+      scriptViteConfig: {
+        build: {
+          rollupOptions: {
+            output: {
+              assetFileNames: '[name]-[hash].[ext]',
+            },
+          },
+        },
+      },
     }),
   ],
 })
