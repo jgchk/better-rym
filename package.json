@@ -26,6 +26,8 @@
     "@samrum/vite-plugin-web-extension": "^5.0.0",
     "@types/chrome": "^0.0.254",
     "@types/webextension-polyfill": "^0.10.6",
+    "postcss-nested": "^6.2.0",
+    "postcss-preset-env": "^10.0.5",
     "typescript": "^5.2.2",
     "vite": "^5.0.0",
     "web-ext": "^7.8.0"
