@@ -1,27 +1,26 @@
 {
   "compilerOptions": {
-    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["src/*"]
+    },
     "target": "ESNext",
+    "useDefineForClassFields": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "allowJs": false,
+    "skipLibCheck": false,
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
     "moduleResolution": "Node",
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "jsx": "react-jsx",
-    "jsxImportSource": "preact",
-    "downlevelIteration": true,
-    "noUncheckedIndexedAccess": true,
-    "esModuleInterop": true,
     "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "plugins": [
-      {
-        "name": "typescript-plugin-css-modules",
-        "options": {
-          "classnameTransform": "camelCaseOnly",
-          "postcssOptions": {
-            "useConfig": true
-          }
-        }
-      }
-    ]
-  }
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "preserve",
+    "jsxFactory": "h",
+    "jsxFragmentFactory": "Fragment"
+  },
+  "include": ["src"]
 }

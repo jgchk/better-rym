@@ -1,12 +1,5 @@
-node_modules
-
-output/
-dist/
-profiles/
-
+**/dist
+**/node_modules
+.DS_Store
 .env
-.eslintcache
-.dccache
-
 brym.zip
-output.pem

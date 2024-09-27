@@ -1,48 +1,24 @@
-import preact from '@preact/preset-vite'
-import path from 'path'
-import { defineConfig } from 'vite'
-import webExtension, { readJsonFile } from 'vite-plugin-web-extension'
+import { defineConfig, loadEnv } from "vite";
+import preact from "@preact/preset-vite";
+import webExtension from "@samrum/vite-plugin-web-extension";
+import path from "path";
+import { getManifest } from "./src/manifest";
 
-function generateManifest() {
-  const manifest = readJsonFile('src/manifest.json')
-  const pkg = readJsonFile('package.json')
+// https://vitejs.dev/config/
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), "");
+
   return {
-    name: pkg.name,
-    description: pkg.description,
-    version: pkg.version,
-    ...manifest,
-  }
-}
-
-export default defineConfig({
-  resolve: {
-    alias: {
-      react: 'preact/compat',
-      'react-dom': 'preact/compat',
+    plugins: [
+      preact(),
+      webExtension({
+        manifest: getManifest(Number(env.MANIFEST_VERSION)),
+      }),
+    ],
+    resolve: {
+      alias: {
+        "~": path.resolve(__dirname, "./src"),
+      },
     },
-  },
-  build: {
-    emptyOutDir: true,
-  },
-  plugins: [
-    preact(),
-    webExtension({
-      manifest: generateManifest,
-      watchFilePaths: ['package.json', 'manifest.json'],
-      webExtConfig: {
-        startUrl:
-          'https://rateyourmusic.com/release/album/electric-wizard/dopethrone/',
-        chromiumProfile: path.join(__dirname, './profiles/chromium'),
-      },
-      scriptViteConfig: {
-        build: {
-          rollupOptions: {
-            output: {
-              assetFileNames: '[name]-[hash].[ext]',
-            },
-          },
-        },
-      },
-    }),
-  ],
-})
+  };
+});
