@@ -1,4 +1,5 @@
 import preact from '@preact/preset-vite'
+import path from 'path'
 import { defineConfig } from 'vite'
 import webExtension, { readJsonFile } from 'vite-plugin-web-extension'
 
@@ -31,6 +32,7 @@ export default defineConfig({
       webExtConfig: {
         startUrl:
           'https://rateyourmusic.com/release/album/electric-wizard/dopethrone/',
+        chromiumProfile: path.join(__dirname, './profiles/chromium'),
       },
       scriptViteConfig: {
         build: {

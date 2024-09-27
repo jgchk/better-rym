@@ -38,6 +38,14 @@
       "js": ["src/modules/stream-link-submission/main.ts"],
       "matches": ["*://*.rateyourmusic.com/submit_media_link*"],
       "run_at": "document_start"
+    },
+    {
+      "js": ["src/modules/user-collection/main.ts"],
+      "matches": [
+        "*://*.rateyourmusic.com/collection*",
+        "*://*.rateyourmusic.com/film_collection*"
+      ],
+      "run_at": "document_start"
     }
   ],
   "permissions": [
