@@ -20,6 +20,9 @@ export default defineConfig({
       'react-dom': 'preact/compat',
     },
   },
+  build: {
+    emptyOutDir: true,
+  },
   plugins: [
     preact(),
     webExtension({
