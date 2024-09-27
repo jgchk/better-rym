@@ -23,6 +23,11 @@
       "js": ["src/modules/stream-links/main.ts"],
       "matches": ["*://*.rateyourmusic.com/release/*"],
       "run_at": "document_start"
+    },
+    {
+      "js": ["src/modules/release-submission/main.ts"],
+      "matches": ["*://*.rateyourmusic.com/releases/ac*"],
+      "run_at": "document_start"
     }
   ],
   "permissions": [
