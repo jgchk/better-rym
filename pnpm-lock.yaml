@@ -7,9 +7,6 @@ settings:
 importers:
   .:
     dependencies:
-      '@types/string-similarity':
-        specifier: ^4.0.0
-        version: 4.0.0
       filenamify:
         specifier: ^5.1.1
         version: 5.1.1
@@ -2511,12 +2508,6 @@ packages:
     resolution:
       {
         integrity: sha512-Hl219/BT5fLAaz6NDkSuhzasy49dwQS/DSdu4MdggFB8zcXv7vflBI3xp7FEmkmdDkBUI2bPUNeMttp2knYdxw==,
-      }
-
-  '@types/string-similarity@4.0.0':
-    resolution:
-      {
-        integrity: sha512-dMS4S07fbtY1AILG/RhuwmptmzK1Ql8scmAebOTJ/8iBtK/KI17NwGwKzu1uipjj8Kk+3mfPxum56kKZE93mzQ==,
       }
 
   '@types/webextension-polyfill@0.12.1':
@@ -10960,8 +10951,6 @@ snapshots:
   '@types/prettier@2.6.0': {}
 
   '@types/stack-utils@2.0.1': {}
-
-  '@types/string-similarity@4.0.0': {}
 
   '@types/webextension-polyfill@0.12.1': {}
 

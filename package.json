@@ -20,7 +20,6 @@
     "*": "prettier --write --ignore-unknown"
   },
   "dependencies": {
-    "@types/string-similarity": "^4.0.0",
     "filenamify": "^5.1.1",
     "get-artist-title": "^1.3.1",
     "nanoid": "^3.3.4",
