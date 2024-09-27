@@ -46,6 +46,11 @@
         "*://*.rateyourmusic.com/film_collection*"
       ],
       "run_at": "document_start"
+    },
+    {
+      "js": ["src/modules/user-page/main.ts"],
+      "matches": ["*://*.rateyourmusic.com/~*"],
+      "run_at": "document_start"
     }
   ],
   "permissions": [
