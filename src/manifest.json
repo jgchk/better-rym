@@ -15,7 +15,7 @@
   },
   "content_scripts": [
     {
-      "js": ["src/index.ts"],
+      "js": ["src/modules/search-bar/main.ts"],
       "matches": ["*://*.rateyourmusic.com/*"],
       "run_at": "document_start"
     },
