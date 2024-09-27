@@ -43,3 +43,5 @@ export const main = () =>
     waitForDocumentReady().then(() => fixPaginationParameters()),
     addDropdown('Genre', 'genre', getGenres),
   ])
+
+void main()

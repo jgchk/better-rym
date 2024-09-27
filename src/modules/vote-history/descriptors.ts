@@ -40,3 +40,5 @@ export const main = () =>
     waitForDocumentReady().then(() => fixPaginationParameters()),
     addDropdown('Descriptor', 'descriptor', getDescriptors),
   ])
+
+void main()

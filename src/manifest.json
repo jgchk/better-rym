@@ -51,6 +51,16 @@
       "js": ["src/modules/user-page/main.ts"],
       "matches": ["*://*.rateyourmusic.com/~*"],
       "run_at": "document_start"
+    },
+    {
+      "js": ["src/modules/vote-history/genres.ts"],
+      "matches": ["*://*.rateyourmusic.com/rgenre/vote_history*"],
+      "run_at": "document_start"
+    },
+    {
+      "js": ["src/modules/vote-history/descriptors.ts"],
+      "matches": ["*://*.rateyourmusic.com/rdescriptor/vote_history*"],
+      "run_at": "document_start"
     }
   ],
   "permissions": [
