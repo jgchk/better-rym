@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "zip": "rm brym.zip || true && cd output && atool -a ../brym.zip *",
+    "zip": "rm brym.zip || true && cd dist && atool -a ../brym.zip *",
     "test": "jest --watch",
     "lint": "tsc --noEmit && eslint ./src",
     "lint:fix": "eslint --fix ./src",
