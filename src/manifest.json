@@ -61,6 +61,11 @@
       "js": ["src/modules/vote-history/descriptors.ts"],
       "matches": ["*://*.rateyourmusic.com/rdescriptor/vote_history*"],
       "run_at": "document_start"
+    },
+    {
+      "js": ["src/modules/stream-link-missing/main.ts"],
+      "matches": ["*://*.rateyourmusic.com/misc/media_link_you_know*"],
+      "run_at": "document_start"
     }
   ],
   "permissions": [
