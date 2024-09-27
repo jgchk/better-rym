@@ -13,5 +13,7 @@ export async function main() {
   app.id = 'better-rym'
   siblingElement.after(app)
 
-  render(<FilterButtons />, app)
+  const showReleaseTypes = !window.location.href.includes('film_collection')
+
+  render(<FilterButtons showReleaseTypes={showReleaseTypes} />, app)
 }

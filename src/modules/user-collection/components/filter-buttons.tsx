@@ -1,14 +1,12 @@
 import { h } from 'preact'
-import { useMemo } from 'preact/hooks'
 
 import { FilterButton } from './filter-button'
 
-export function FilterButtons() {
-  const showReleaseTypes = useMemo(
-    () => !window.location.href.includes('film_collection'),
-    [],
-  )
-
+export function FilterButtons({
+  showReleaseTypes,
+}: {
+  showReleaseTypes: boolean
+}) {
   return (
     <div
       style={{
