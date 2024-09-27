@@ -19,3 +19,10 @@ export const setPageEnabled = async (
   page: string,
   enabled: boolean
 ): Promise<void> => storage.set(`pages.${page}`, enabled)
+
+export const runPage = async (page: string, callback: () => unknown) => {
+  const enabled = await getPageEnabled(page)
+  if (!enabled) return
+
+  callback()
+}
