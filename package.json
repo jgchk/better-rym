@@ -9,8 +9,8 @@
     "build": "vite build",
     "watch": "vite build --watch --mode development --minify false",
     "dev": "vite",
-    "serve:firefox": "web-ext run --start-url \"about:debugging#/runtime/this-firefox\"  --source-dir ./dist/ --firefox-profile profiles/firefox",
-    "serve:chrome": "web-ext run -t chromium --start-url \"https://example.com\" --source-dir ./dist/ --chromium-profile profiles/chromium",
+    "serve:firefox": "web-ext run --start-url \"https://rateyourmusic.com/release/album/electric-wizard/dopethrone/\"  --source-dir ./dist/ --firefox-profile profiles/firefox --keep-profile-changes",
+    "serve:chrome": "web-ext run -t chromium --start-url \"https://rateyourmusic.com/release/album/electric-wizard/dopethrone/\" --source-dir ./dist/ --chromium-profile profiles/chromium --keep-profile-changes",
     "zip": "rm brym.zip || true && cd dist && atool -a ../brym.zip *"
   },
   "license": "MIT",

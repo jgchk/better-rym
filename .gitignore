@@ -1,5 +1,6 @@
 **/dist
 **/node_modules
+profiles/
 .DS_Store
 .env
 brym.zip
