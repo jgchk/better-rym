@@ -13,6 +13,205 @@ import { FillData } from '../dom'
 import { CapitalizationType, capitalize } from './capitalization'
 import { ReleaseOptions } from './types'
 
+export async function fill(
+  {
+    artists,
+    type,
+    date,
+    title,
+    format,
+    discSize,
+    attributes,
+    tracks,
+    url,
+    label,
+  }: ResolveData,
+  options: ReleaseOptions,
+): Promise<void> {
+  if (artists != null && options.fillFields.artists) {
+    await fillArtists(artists)
+  }
+
+  if (type != null && options.fillFields.type) {
+    fillType(type)
+  }
+
+  if (date != null && options.fillFields.date) {
+    fillDate(date)
+  }
+
+  if (title != null && options.fillFields.title) {
+    fillTitle(title, options.capitalization)
+  }
+
+  if (format != null && options.fillFields.format) {
+    fillFormat(format)
+  }
+
+  if (discSize != null && options.fillFields.discSize) {
+    fillDiscSize(discSize)
+  }
+
+  if (label != null && options.fillFields.label) {
+    fillLabel(label)
+  }
+
+  if (attributes != null && options.fillFields.attributes) {
+    fillAttributes(attributes)
+  }
+
+  if (tracks != null && options.fillFields.tracks) {
+    fillTracks(tracks, options.capitalization)
+  }
+
+  if (url !== undefined) {
+    fillSource(url)
+  }
+}
+
+async function fillArtists(artists: string[]) {
+  if (artists[0]?.toLowerCase() === 'various artists') {
+    // Various Artists release
+    forceQuerySelector<HTMLInputElement>(document)('#cat_va').click()
+  } else {
+    // Regular release
+    if (document.querySelector('.sortable_filed_under') != null) return
+
+    for (const artist of artists) await fillArtist(artist)
+  }
+}
+
+async function fillArtist(artist: string) {
+  // Enter search term
+  forceQuerySelector<HTMLInputElement>(document)(
+    '#filed_under_searchterm',
+  ).value = artist
+
+  // Click search button
+  forceQuerySelector<HTMLInputElement>(document)(
+    '#section_filed_under .gosearch input[type=button]',
+  ).click()
+
+  // Wait for results
+  const topResult = await waitForResult(
+    forceQuerySelector<HTMLIFrameElement>(document)('#filed_underlist'),
+  )
+
+  // Click the top result if there is one
+  topResult?.click()
+}
+
+function fillType(type: ReleaseType) {
+  const element = forceQuerySelector<HTMLInputElement>(document)(
+    `input#category${TYPE_IDS[type]}`,
+  )
+  element.click() // click to trigger DOM onClick events (e.g. field updates on 'music video' click)
+  element.checked = true // ensure that element is checked
+}
+
+export function fillDate(date: ReleaseDate) {
+  if (date.year !== undefined) fillYear(date.year)
+  if (date.month !== undefined) fillMonth(date.month)
+  if (date.day !== undefined) fillDay(date.day)
+
+  const fillEvent = new CustomEvent<FillData>('fillEvent', {
+    detail: { filledField: 'date' },
+  })
+  document.dispatchEvent(fillEvent)
+}
+
+function fillYear(year: number) {
+  forceQuerySelector<HTMLSelectElement>(document)('#year').value =
+    year.toString()
+}
+
+function fillMonth(month: number) {
+  forceQuerySelector<HTMLSelectElement>(document)('#month').value = month
+    .toString()
+    .padStart(2, '0')
+}
+
+function fillDay(day: number) {
+  forceQuerySelector<HTMLSelectElement>(document)('#day').value = day
+    .toString()
+    .padStart(2, '0')
+}
+
+function fillTitle(title: string, capitalization: CapitalizationType) {
+  forceQuerySelector<HTMLInputElement>(document)('#title').value = capitalize(
+    title,
+    capitalization,
+  )
+}
+
+function fillFormat(format: ReleaseFormat) {
+  forceQuerySelector<HTMLInputElement>(document)(
+    `#format${FORMAT_IDS[format]}`,
+  ).checked = true
+}
+
+function fillDiscSize(discSize: DiscSize) {
+  forceQuerySelector<HTMLInputElement>(document)(
+    `#disc_size${DISC_SIZE_IDS[discSize]}`,
+  ).checked = true
+}
+
+function fillLabel(label: ReleaseLabel) {
+  forceQuerySelector<HTMLInputElement>(document)(
+    '#label~table #searchterm',
+  ).value = label.name ?? ''
+
+  if (label.name)
+    forceQuerySelector<HTMLInputElement>(document)(
+      '#label~table .gosearch .btn',
+    ).click()
+
+  forceQuerySelector<HTMLInputElement>(document)('#catalog_no').value =
+    label.catno ?? ''
+}
+
+function fillAttributes(attributes: ReleaseAttribute[]) {
+  for (const attribute of attributes) fillAttribute(attribute)
+}
+
+function fillAttribute(attribute: ReleaseAttribute) {
+  forceQuerySelector<HTMLInputElement>(document)(
+    `#attrib${ATTRIBUTE_IDS[attribute]}`,
+  ).checked = true
+}
+
+function fillTracks(tracks: Track[], capitalization: CapitalizationType) {
+  const tracksString = tracks
+    .map((track, index) => {
+      const position = track.position ?? index + 1
+
+      let title = track.title ?? ''
+
+      title =
+        title.toLowerCase() === 'untitled'
+          ? '[untitled]'
+          : capitalize(title, capitalization)
+
+      if (track.header) {
+        title = `[b]${title}[/b]`
+      }
+
+      const duration = track.duration ?? ''
+
+      return `${position}|${title}|${duration}`
+    })
+    .join('\n')
+
+  forceQuerySelector<HTMLAnchorElement>(document)('#goAdvancedBtn').click()
+  forceQuerySelector<HTMLTextAreaElement>(document)('#track_advanced').value =
+    tracksString
+  forceQuerySelector<HTMLAnchorElement>(document)('#goSimpleBtn').click()
+}
+
+function fillSource(url: string) {
+  forceQuerySelector<HTMLTextAreaElement>(document)('#notes').value = url
+}
+
 const TYPE_IDS: Record<ReleaseType, string> = {
   album: 's',
   compilation: 't',
@@ -150,177 +349,4 @@ const ATTRIBUTE_IDS: Record<ReleaseAttribute, number> = {
   'songs inspired by': 69,
   'television soundtrack': 55,
   'video game soundtrack': 56,
-}
-
-const fillArtist = async (artist: string) => {
-  // Enter search term
-  forceQuerySelector<HTMLInputElement>(document)(
-    '#filed_under_searchterm',
-  ).value = artist
-
-  // Click search button
-  forceQuerySelector<HTMLInputElement>(document)(
-    '#section_filed_under .gosearch input[type=button]',
-  ).click()
-
-  // Wait for results
-  const topResult = await waitForResult(
-    forceQuerySelector<HTMLIFrameElement>(document)('#filed_underlist'),
-  )
-
-  // Click the top result if there is one
-  topResult?.click()
-}
-
-const fillArtists = async (artists: string[]) => {
-  if (artists[0]?.toLowerCase() === 'various artists') {
-    // Various Artists release
-    forceQuerySelector<HTMLInputElement>(document)('#cat_va').click()
-  } else {
-    // Regular release
-    if (document.querySelector('.sortable_filed_under') != null) return
-
-    for (const artist of artists) await fillArtist(artist)
-  }
-}
-
-const fillType = (type: ReleaseType) => {
-  const element = forceQuerySelector<HTMLInputElement>(document)(
-    `input#category${TYPE_IDS[type]}`,
-  )
-  element.click() // click to trigger DOM onClick events (e.g. field updates on 'music video' click)
-  element.checked = true // ensure that element is checked
-}
-
-const fillYear = (year: number) => {
-  forceQuerySelector<HTMLSelectElement>(document)('#year').value =
-    year.toString()
-}
-
-const fillMonth = (month: number) => {
-  forceQuerySelector<HTMLSelectElement>(document)('#month').value = month
-    .toString()
-    .padStart(2, '0')
-}
-
-const fillDay = (day: number) => {
-  forceQuerySelector<HTMLSelectElement>(document)('#day').value = day
-    .toString()
-    .padStart(2, '0')
-}
-
-export const fillDate = (date: ReleaseDate) => {
-  if (date.year !== undefined) fillYear(date.year)
-  if (date.month !== undefined) fillMonth(date.month)
-  if (date.day !== undefined) fillDay(date.day)
-
-  const fillEvent = new CustomEvent<FillData>('fillEvent', {
-    detail: { filledField: 'date' },
-  })
-  document.dispatchEvent(fillEvent)
-}
-
-const fillTitle = (title: string, capitalization: CapitalizationType) => {
-  forceQuerySelector<HTMLInputElement>(document)('#title').value = capitalize(
-    title,
-    capitalization,
-  )
-}
-
-const fillFormat = (format: ReleaseFormat) => {
-  forceQuerySelector<HTMLInputElement>(document)(
-    `#format${FORMAT_IDS[format]}`,
-  ).checked = true
-}
-
-const fillDiscSize = (discSize: DiscSize) => {
-  forceQuerySelector<HTMLInputElement>(document)(
-    `#disc_size${DISC_SIZE_IDS[discSize]}`,
-  ).checked = true
-}
-
-const fillAttribute = (attribute: ReleaseAttribute) => {
-  forceQuerySelector<HTMLInputElement>(document)(
-    `#attrib${ATTRIBUTE_IDS[attribute]}`,
-  ).checked = true
-}
-
-const fillAttributes = (attributes: ReleaseAttribute[]) => {
-  for (const attribute of attributes) fillAttribute(attribute)
-}
-
-const fillTracks = (tracks: Track[], capitalization: CapitalizationType) => {
-  const tracksString = tracks
-    .map((track, index) => {
-      const position = track.position ?? index + 1
-
-      let title = track.title ?? ''
-
-      title =
-        title.toLowerCase() === 'untitled'
-          ? '[untitled]'
-          : capitalize(title, capitalization)
-
-      if (track.header) {
-        title = `[b]${title}[/b]`
-      }
-
-      const duration = track.duration ?? ''
-
-      return `${position}|${title}|${duration}`
-    })
-    .join('\n')
-
-  forceQuerySelector<HTMLAnchorElement>(document)('#goAdvancedBtn').click()
-  forceQuerySelector<HTMLTextAreaElement>(document)('#track_advanced').value =
-    tracksString
-  forceQuerySelector<HTMLAnchorElement>(document)('#goSimpleBtn').click()
-}
-
-const fillLabel = (label: ReleaseLabel) => {
-  forceQuerySelector<HTMLInputElement>(document)(
-    '#label~table #searchterm',
-  ).value = label.name ?? ''
-
-  if (label.name)
-    forceQuerySelector<HTMLInputElement>(document)(
-      '#label~table .gosearch .btn',
-    ).click()
-
-  forceQuerySelector<HTMLInputElement>(document)('#catalog_no').value =
-    label.catno ?? ''
-}
-
-const fillSource = (url: string) => {
-  forceQuerySelector<HTMLTextAreaElement>(document)('#notes').value = url
-}
-
-export const fill = async (
-  {
-    artists,
-    type,
-    date,
-    title,
-    format,
-    discSize,
-    attributes,
-    tracks,
-    url,
-    label,
-  }: ResolveData,
-  options: ReleaseOptions,
-): Promise<void> => {
-  if (artists != null && options.fillFields.artists) await fillArtists(artists)
-  if (type != null && options.fillFields.type) fillType(type)
-  if (date != null && options.fillFields.date) fillDate(date)
-  if (title != null && options.fillFields.title)
-    fillTitle(title, options.capitalization)
-  if (format != null && options.fillFields.format) fillFormat(format)
-  if (discSize != null && options.fillFields.discSize) fillDiscSize(discSize)
-  if (label != null && options.fillFields.label) fillLabel(label)
-  if (attributes != null && options.fillFields.attributes)
-    fillAttributes(attributes)
-  if (tracks != null && options.fillFields.tracks)
-    fillTracks(tracks, options.capitalization)
-  if (url !== undefined) fillSource(url)
 }
