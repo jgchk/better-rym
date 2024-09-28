@@ -3,7 +3,6 @@ import { useEffect, useState } from 'preact/hooks'
 
 import { ReleaseOptions } from '../../modules/release-submission/utils/types'
 import { Service } from '../services/types'
-import styles from '../styles/status-form.module.css'
 import { fold, isFailed, OneShot } from '../utils/one-shot'
 import { pipe } from '../utils/pipe'
 import { Complete } from './complete'
@@ -30,7 +29,13 @@ export function StatusForm<E extends Error, T, S extends Service>({
   }, [data])
 
   return (
-    <div className={styles.container}>
+    <div
+      style={{
+        display: 'flex',
+        gap: 8,
+        alignItems: 'center',
+      }}
+    >
       <Form
         services={services}
         submitText={submitText}
@@ -96,7 +101,10 @@ function Form<S extends Service>({
 
   return (
     <form
-      className={styles.form}
+      style={{
+        display: 'flex',
+        gap: 8,
+      }}
       onSubmit={(event) => {
         event.preventDefault()
         if (selectedService !== undefined) {
@@ -110,12 +118,21 @@ function Form<S extends Service>({
         }
       }}
     >
-      <div className={styles.input}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 4,
+          alignItems: 'center',
+          width: 384,
+        }}
+      >
         <input
           type='url'
           value={url}
           required
           onInput={(event) => setUrl((event.target as HTMLInputElement).value)}
+          style={{ width: '100%' }}
         />
         <ServiceSelector
           services={services}
@@ -123,7 +140,9 @@ function Form<S extends Service>({
           onSelect={setSelectedService}
         />
         {showMissingServiceError && (
-          <div className={styles.error}>Select an import source</div>
+          <div style={{ color: 'var(--gen-text-red)' }}>
+            Select an import source
+          </div>
         )}
         {showAutoCapitalize && (
           <>
@@ -146,13 +165,24 @@ function Form<S extends Service>({
               </select>
             </label>
             <details>
-              <summary className={styles.advancedButton}>
+              <summary
+                style={{
+                  textAlign: 'center',
+                  cursor: 'pointer',
+                }}
+              >
                 Advanced Options
               </summary>
               <div
                 id='brym-release-options'
-                style='margin-top:0.5em;'
-                className={styles.input}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 4,
+                  alignItems: 'center',
+                  width: 384,
+                  marginTop: '0.5em',
+                }}
               >
                 <hr style='width:100%;margin-bottom:0.5em' />
                 <label htmlFor='brym-downloadart'>
@@ -189,7 +219,13 @@ function Form<S extends Service>({
           </>
         )}
       </div>
-      <input type='submit' value={submitText} className={styles.submit} />
+      <input
+        type='submit'
+        value={submitText}
+        style={{
+          cursor: 'pointer',
+        }}
+      />
     </form>
   )
 }
