@@ -1,3 +1,4 @@
+import { describe, expect, test } from 'vitest'
 import { capitalize } from './capitalization'
 
 describe('title caps', () => {
@@ -117,6 +118,6 @@ describe('sentence caps', () => {
   ]
 
   test.each(titles)('correctly capitalizes %p', (input, output) =>
-    expect(capitalize(input.toLowerCase(), 'sentence-case')).toEqual(output)
+    expect(capitalize(input.toLowerCase(), 'sentence-case')).toEqual(output),
   )
 })

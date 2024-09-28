@@ -1,3 +1,4 @@
+import { describe, expect, test } from 'vitest'
 import { regex } from './regex'
 
 describe('spotify regex', () => {

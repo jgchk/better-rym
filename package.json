@@ -11,7 +11,8 @@
     "dev": "vite",
     "serve:firefox": "web-ext run --start-url \"https://rateyourmusic.com/release/album/electric-wizard/dopethrone/\"  --source-dir ./dist/ --firefox-profile profiles/firefox --keep-profile-changes",
     "serve:chrome": "web-ext run -t chromium --start-url \"https://rateyourmusic.com/release/album/electric-wizard/dopethrone/\" --source-dir ./dist/ --chromium-profile profiles/chromium --keep-profile-changes",
-    "zip": "rm brym.zip || true && cd dist && atool -a ../brym.zip *"
+    "zip": "rm brym.zip || true && cd dist && atool -a ../brym.zip *",
+    "test": "vitest"
   },
   "license": "MIT",
   "dependencies": {
@@ -30,6 +31,7 @@
     "postcss-preset-env": "^10.0.5",
     "typescript": "^5.2.2",
     "vite": "^5.0.0",
+    "vitest": "^2.1.1",
     "web-ext": "^7.8.0"
   }
 }

@@ -1,3 +1,4 @@
+import { describe, expect, test } from 'vitest'
 import { splitPhrases, tokenizePhrase } from './tokenize'
 
 describe('split phrases', () => {
@@ -18,7 +19,7 @@ describe('split phrases', () => {
   ] as const
 
   test.each(tests)('correctly splits %p', (input, output) =>
-    expect(splitPhrases(input)).toEqual(output)
+    expect(splitPhrases(input)).toEqual(output),
   )
 })
 
@@ -61,6 +62,6 @@ describe('tokenize', () => {
   ] as const
 
   test.each(tests)('correctly tokenizes %p', (input, output) =>
-    expect(tokenizePhrase(input)).toEqual(output)
+    expect(tokenizePhrase(input)).toEqual(output),
   )
 })
