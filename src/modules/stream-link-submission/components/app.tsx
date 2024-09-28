@@ -18,7 +18,6 @@ import {
 } from '../../../common/utils/one-shot'
 import { pipe } from '../../../common/utils/pipe'
 import { useControlledInput } from '../hooks/use-controlled-input'
-import styles from '../styles/app.module.css'
 
 export const App: FunctionComponent<{ input: HTMLInputElement }> = ({
   input,
@@ -26,7 +25,7 @@ export const App: FunctionComponent<{ input: HTMLInputElement }> = ({
   const [url, setUrl] = useControlledInput(input)
 
   const [service, setService] = useState<(Service & Embeddable) | undefined>(
-    undefined
+    undefined,
   )
 
   useEffect(() => {
@@ -40,7 +39,7 @@ export const App: FunctionComponent<{ input: HTMLInputElement }> = ({
   const fetchEmbedCode = useCallback(async () => {
     if (!service) {
       setEmbedCode(
-        failed(new Error(`Cannot create embed codes for ${String(service)}`))
+        failed(new Error(`Cannot create embed codes for ${String(service)}`)),
       )
       return
     }
@@ -58,7 +57,14 @@ export const App: FunctionComponent<{ input: HTMLInputElement }> = ({
   }, [embedCode, setUrl])
 
   return (
-    <div className={styles.container}>
+    <div
+      style={{
+        display: 'flex',
+        gap: 4,
+        alignItems: 'center',
+        marginTop: 8,
+      }}
+    >
       <ServiceSelector
         services={EMBEDDABLES}
         selected={service}
@@ -76,8 +82,8 @@ export const App: FunctionComponent<{ input: HTMLInputElement }> = ({
           () => null,
           () => <Loader />,
           (error) => <Failed error={error} />,
-          () => <Complete />
-        )
+          () => <Complete />,
+        ),
       )}
     </div>
   )
