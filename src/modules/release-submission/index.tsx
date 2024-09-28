@@ -1,12 +1,12 @@
 import { h, render } from 'preact'
 
 import { forceQuerySelector, waitForElement } from '../../common/utils/dom'
-import { Credits } from './components/credits'
 import { Import } from './components/import'
 import { UnknownArtist } from './components/unknown-artist'
 import injectDateControls from './use-cases/date-controls'
 import injectCatalogNumberControls from './use-cases/catalog-number-controls'
 import injectLabelControls from './use-cases/label-controls'
+import injectCreditsControls from './use-cases/credits-controls'
 
 const injectImport = async () => {
   const siblingElement = await waitForElement('.submit_step_header')
@@ -57,19 +57,12 @@ const injectFileUnder = async () => {
   render(<UnknownArtist target='filedunder' />, unknownArtistDiv)
 }
 
-const injectCredits = async () => {
-  const credits = await waitForElement('#creditlist')
-  const unknownArtistDiv = document.createElement('div')
-  credits.after(unknownArtistDiv)
-  render(<Credits />, unknownArtistDiv)
-}
-
 export const main = () =>
   Promise.all([
     injectImport(),
     injectClearTracklist(),
     injectFileUnder(),
-    injectCredits(),
+    injectCreditsControls(),
     injectLabelControls(),
     injectCatalogNumberControls(),
     injectDateControls(),
