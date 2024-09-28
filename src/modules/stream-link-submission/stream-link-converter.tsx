@@ -1,12 +1,12 @@
 import { FunctionComponent, h } from 'preact'
 import { useCallback, useEffect, useState } from 'preact/hooks'
 
-import { Complete } from '../../../common/components/complete'
-import { Failed } from '../../../common/components/failed'
-import { Loader } from '../../../common/components/loader'
-import { ServiceSelector } from '../../../common/components/service-selector'
-import { EMBEDDABLES, getMatchingService } from '../../../common/services'
-import { Embeddable, Service } from '../../../common/services/types'
+import { Complete } from '../../common/components/complete'
+import { Failed } from '../../common/components/failed'
+import { Loader } from '../../common/components/loader'
+import { ServiceSelector } from '../../common/components/service-selector'
+import { EMBEDDABLES, getMatchingService } from '../../common/services'
+import { Embeddable, Service } from '../../common/services/types'
 import {
   complete,
   failed,
@@ -15,13 +15,11 @@ import {
   isComplete,
   loading,
   OneShot,
-} from '../../../common/utils/one-shot'
-import { pipe } from '../../../common/utils/pipe'
-import { useControlledInput } from '../hooks/use-controlled-input'
+} from '../../common/utils/one-shot'
+import { pipe } from '../../common/utils/pipe'
+import { useControlledInput } from './use-controlled-input'
 
-export const App: FunctionComponent<{ input: HTMLInputElement }> = ({
-  input,
-}) => {
+export function StreamLinkConverter({ input }: { input: HTMLInputElement }) {
   const [url, setUrl] = useControlledInput(input)
 
   const [service, setService] = useState<(Service & Embeddable) | undefined>(

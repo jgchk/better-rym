@@ -1,3 +1,3 @@
-import { main } from '.'
+import { injectStreamLinkConverter } from '.'
 
-void main()
+void injectStreamLinkConverter()
