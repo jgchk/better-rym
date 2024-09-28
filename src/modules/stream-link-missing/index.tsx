@@ -1,5 +1,3 @@
-import './styles.css'
-
 import { waitForDocumentReady } from '../../common/utils/dom'
 import { isDefined } from '../../common/utils/types'
 import { getDisplayType, setDisplayType } from './settings'
@@ -14,71 +12,47 @@ import {
   streamLinkNames,
 } from './types'
 
-const initializeState = async (): Promise<State> => {
-  const rows: Row[] = [
-    ...document.querySelectorAll('.mbgen tr:not(:first-of-type)'),
-  ]
-    .map((row) => {
-      const mediaLinksElement = row.querySelector('td:nth-child(2)')
-      if (!mediaLinksElement) return
-
-      const availableMediaLinks = streamLinkNames.filter((serviceId) =>
-        row.querySelector(`.ui_media_link_btn_${serviceId}`)
-      )
-      const missingMediaLinks = streamLinkNames.filter(
-        (serviceId) => !availableMediaLinks.includes(serviceId)
-      )
-
-      const artistTitle =
-        row.querySelector('td:nth-child(1)')?.textContent ?? ''
-
-      return {
-        parentElement: row,
-        mediaLinksElement,
-        availableMediaLinks,
-        missingMediaLinks,
-        artistTitle,
-      }
-    })
-    .filter(isDefined)
-  const displayType = await getDisplayType()
-  return {
-    rows,
-    displayType,
-    filters: queryStringToFilters(window.location.hash.slice(1)),
-  }
-}
-
-const render = (state: State) => {
-  for (const row of state.rows) {
-    row.mediaLinksElement.innerHTML = (
-      state.displayType === 'available'
-        ? row.availableMediaLinks
-        : row.missingMediaLinks
-    )
-      .map(
-        (serviceId) =>
-          `<span class="ui_media_link_btn ui_media_link_btn_${serviceId}" style="cursor:default;"></span>`
-      )
-      .join('')
-
-    const showLinkFilter =
-      state.filters.links.length === 0 ||
-      state.filters.links.some((serviceId) =>
-        row.missingMediaLinks.includes(serviceId)
-      )
-    const showArtistTitleFilter =
-      state.filters.artistTitle.length === 0 ||
-      row.artistTitle
-        .toLowerCase()
-        .includes(state.filters.artistTitle.toLowerCase())
-    ;(row.parentElement as HTMLElement).style.display =
-      showLinkFilter && showArtistTitleFilter ? '' : 'none'
-  }
-}
-
-export const main = async () => {
+export async function main() {
   await waitForDocumentReady()
+
+  const style = document.createElement('style')
+  style.textContent = `
+    .brym.selector-button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      opacity: 0.25;
+    
+      &:hover {
+        opacity: 0.3;
+      }
+    
+      &.selected {
+        opacity: 0.9;
+    
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
+    
+    fieldset.brym {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: fit-content;
+      margin-bottom: 12px;
+      background: var(--mono-f2);
+      border: 1px solid var(--mono-e8);
+      border-radius: 3px;
+    
+      label {
+        display: block;
+        margin-bottom: 2px;
+      }
+    }
+  `
+  document.head.append(style)
 
   let state = await initializeState()
   const applyStateHash = (state: State) => {
@@ -86,7 +60,7 @@ export const main = async () => {
     window.location.hash = hash
 
     for (const node of document.querySelectorAll<HTMLAnchorElement>(
-      'a.navlinknum, a.navlinkprev, a.navlinknext'
+      'a.navlinknum, a.navlinkprev, a.navlinknext',
     )) {
       const url = new URL(node.href)
       url.hash = hash
@@ -94,7 +68,7 @@ export const main = async () => {
     }
   }
   const updateState = (
-    updates: Partial<State> | ((state: State) => Partial<State>)
+    updates: Partial<State> | ((state: State) => Partial<State>),
   ) => {
     const newState = {
       ...state,
@@ -115,7 +89,7 @@ export const main = async () => {
   const select = document.createElement('select')
   select.innerHTML = displayTypes
     .map(
-      (displayType) => `<option value='${displayType}'>${displayType}</option>`
+      (displayType) => `<option value='${displayType}'>${displayType}</option>`,
     )
     .join('')
 
@@ -140,7 +114,7 @@ export const main = async () => {
     makeSelector(new Set(state.filters.links), (selected) => {
       updateState((s) => ({ filters: { ...s.filters, links: [...selected] } }))
       render(state)
-    })
+    }),
   )
   fieldset.append(linksFilterElement)
 
@@ -163,10 +137,73 @@ export const main = async () => {
   render(state)
 }
 
-const makeSelector = (
+async function initializeState(): Promise<State> {
+  const rows: Row[] = [
+    ...document.querySelectorAll('.mbgen tr:not(:first-of-type)'),
+  ]
+    .map((row) => {
+      const mediaLinksElement = row.querySelector('td:nth-child(2)')
+      if (!mediaLinksElement) return
+
+      const availableMediaLinks = streamLinkNames.filter((serviceId) =>
+        row.querySelector(`.ui_media_link_btn_${serviceId}`),
+      )
+      const missingMediaLinks = streamLinkNames.filter(
+        (serviceId) => !availableMediaLinks.includes(serviceId),
+      )
+
+      const artistTitle =
+        row.querySelector('td:nth-child(1)')?.textContent ?? ''
+
+      return {
+        parentElement: row,
+        mediaLinksElement,
+        availableMediaLinks,
+        missingMediaLinks,
+        artistTitle,
+      }
+    })
+    .filter(isDefined)
+  const displayType = await getDisplayType()
+  return {
+    rows,
+    displayType,
+    filters: queryStringToFilters(window.location.hash.slice(1)),
+  }
+}
+
+function render(state: State) {
+  for (const row of state.rows) {
+    row.mediaLinksElement.innerHTML = (
+      state.displayType === 'available'
+        ? row.availableMediaLinks
+        : row.missingMediaLinks
+    )
+      .map(
+        (serviceId) =>
+          `<span class="ui_media_link_btn ui_media_link_btn_${serviceId}" style="cursor:default;"></span>`,
+      )
+      .join('')
+
+    const showLinkFilter =
+      state.filters.links.length === 0 ||
+      state.filters.links.some((serviceId) =>
+        row.missingMediaLinks.includes(serviceId),
+      )
+    const showArtistTitleFilter =
+      state.filters.artistTitle.length === 0 ||
+      row.artistTitle
+        .toLowerCase()
+        .includes(state.filters.artistTitle.toLowerCase())
+    ;(row.parentElement as HTMLElement).style.display =
+      showLinkFilter && showArtistTitleFilter ? '' : 'none'
+  }
+}
+
+function makeSelector(
   initialState: Set<StreamLinkName>,
-  onChange: (selected: Set<StreamLinkName>) => void
-) => {
+  onChange: (selected: Set<StreamLinkName>) => void,
+) {
   const div = document.createElement('div')
 
   const selectedNames: Set<StreamLinkName> = initialState
