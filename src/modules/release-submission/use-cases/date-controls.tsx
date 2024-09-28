@@ -16,7 +16,7 @@ export default async function injectDateControls() {
   render(<DateButton />, container)
 }
 
-export function DateButton() {
+function DateButton() {
   const filledDate = useFilledDate()
   const [date, setDate] = useState<ReleaseDate>()
   const [publishDate, setPublishDate] = useState<ReleaseDate>()

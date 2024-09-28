@@ -1,12 +1,12 @@
 import { h, render } from 'preact'
 
 import { forceQuerySelector, waitForElement } from '../../common/utils/dom'
-import { CatalogNumber } from './components/catalog-number'
 import { Credits } from './components/credits'
 import { Import } from './components/import'
 import { Label } from './components/label'
 import { UnknownArtist } from './components/unknown-artist'
 import injectDateControls from './use-cases/date-controls'
+import injectCatalogNumberControls from './use-cases/catalog-number-controls'
 
 const injectImport = async () => {
   const siblingElement = await waitForElement('.submit_step_header')
@@ -72,13 +72,6 @@ const injectLabel = async () => {
   render(<Label />, container)
 }
 
-const injectCatalogNumber = async () => {
-  const catNoInput = await waitForElement('#catalog_no')
-  const container = document.createElement('span')
-  catNoInput.after(container)
-  render(<CatalogNumber />, container)
-}
-
 export const main = () =>
   Promise.all([
     injectImport(),
@@ -86,6 +79,6 @@ export const main = () =>
     injectFileUnder(),
     injectCredits(),
     injectLabel(),
-    injectCatalogNumber(),
+    injectCatalogNumberControls(),
     injectDateControls(),
   ])

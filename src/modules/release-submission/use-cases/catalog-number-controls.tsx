@@ -1,10 +1,17 @@
-import { FunctionComponent, h } from 'preact'
+import { render } from 'preact'
 import { useCallback } from 'preact/hooks'
-
-import { clsx } from '../../../common/utils/clsx'
+import { waitForElement } from '~/common/utils/dom'
 import classes from '../styles/buttons.module.css'
+import { clsx } from '~/common/utils/clsx'
 
-export const CatalogNumber: FunctionComponent = () => {
+export default async function injectCatalogNumberControls() {
+  const catNoInput = await waitForElement('#catalog_no')
+  const container = document.createElement('span')
+  catNoInput.after(container)
+  render(<CatalogNumber />, container)
+}
+
+function CatalogNumber() {
   const handleClearClick = useCallback(() => {
     const input = document.querySelector<HTMLInputElement>('input#catalog_no')
     if (input) input.value = ''
