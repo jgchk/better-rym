@@ -3,8 +3,6 @@ import { createPortal } from 'preact/compat'
 import { useState } from 'preact/hooks'
 
 import XIcon from '../icons/x'
-import styles from '../styles/failed.module.css'
-import { clsx } from '../utils/clsx'
 
 export const Failed: FunctionComponent<
   { error: Error; className?: string } & Omit<
@@ -23,12 +21,29 @@ export const Failed: FunctionComponent<
         onMouseMove={(event: MouseEvent) =>
           setPos({ x: event.pageX, y: event.pageY })
         }
-        className={clsx(styles.failed, className)}
+        className={className}
+        style={{
+          color: 'var(--gen-text-red)',
+        }}
         {...properties}
       />
       {showTip &&
         createPortal(
-          <div className={styles.tooltip} style={{ left: pos.x, top: pos.y }}>
+          <div
+            style={{
+              left: pos.x,
+              top: pos.y,
+              position: 'absolute',
+              maxWidth: '20vw',
+              padding: 4,
+              color: 'var(--mono-6)',
+              wordWrap: 'break-word',
+              background: 'var(--mono-f8)',
+              border: '1px var(--mono-d) solid',
+              transform: 'translate(-50%, -150%)',
+              pointerEvents: 'none',
+            }}
+          >
             {error.message}
           </div>,
           document.body,
