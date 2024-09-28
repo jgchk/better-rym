@@ -1,11 +1,19 @@
-import { FunctionComponent, h } from 'preact'
+import { render } from 'preact'
 import { useCallback } from 'preact/hooks'
-
-import { clsx } from '../../../common/utils/clsx'
-import classes from '../styles/buttons.module.css'
+import { clsx } from '~/common/utils/clsx'
+import { waitForElement } from '~/common/utils/dom'
 import { goInfobox } from '../utils/page-functions'
+import classes from '../styles/buttons.module.css'
 
-export const Label: FunctionComponent = () => {
+export default async function injectLabelControls() {
+  const clearButton = await waitForElement('input[value=Clear]')
+  const container = document.createElement('span')
+  clearButton.after(container)
+  clearButton.remove()
+  render(<Label />, container)
+}
+
+function Label() {
   const handleClearClick = useCallback(() => {
     const label = document.querySelector<HTMLInputElement>('input#label')
     if (label) label.value = '0'
