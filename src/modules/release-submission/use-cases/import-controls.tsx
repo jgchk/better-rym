@@ -24,8 +24,7 @@ export default async function injectImportControls() {
 
 function Import() {
   const { info, fetchInfo } = useReleaseInfo()
-  const [formOptions, setFormOptions] =
-    useState<ReleaseOptions>(DEFAULT_FORM_OPTIONS)
+  const [formOptions, setFormOptions] = useState(DEFAULT_FORM_OPTIONS)
 
   const fetchInfoOuter = useCallback(
     async (url: string, service: Service & Resolvable) => {
@@ -80,11 +79,11 @@ function getFilename({ title, artists }: ResolveData) {
 function ImportOptionsForm({
   onOptionsUpdate,
 }: {
-  onOptionsUpdate?: (options: ReleaseOptions) => void
+  onOptionsUpdate?: (options: ImportOptions) => void
 }) {
   const [options, setOptions_] = useState(DEFAULT_FORM_OPTIONS)
 
-  const setOptions = (newOptions: ReleaseOptions) => {
+  const setOptions = (newOptions: ImportOptions) => {
     setOptions_(newOptions)
     if (onOptionsUpdate !== undefined) {
       onOptionsUpdate(newOptions)
@@ -175,6 +174,8 @@ function ImportOptionsForm({
   )
 }
 
+type ImportOptions = ReleaseOptions & { downloadArt: boolean }
+
 const CAPITALIZATION_TYPE_MAP: Record<CapitalizationType, string> = {
   'title-case': 'Title Case',
   'sentence-case': 'Sentence case',
@@ -195,7 +196,7 @@ const FIELDS_MAP: Record<FillField, string> = {
   tracks: 'Tracklist',
 }
 
-const DEFAULT_FORM_OPTIONS: ReleaseOptions = {
+const DEFAULT_FORM_OPTIONS: ImportOptions = {
   fillFields: Object.fromEntries(
     Object.keys(FIELDS_MAP).map((field) => [field, true]),
   ) as ReleaseOptions['fillFields'],
