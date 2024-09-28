@@ -10,7 +10,7 @@ import { Loader } from './loader'
 import { getMatchingService } from '../services'
 import { ServiceSelector } from './service-selector'
 
-export function StatusForm<E extends Error, T, S extends Service>({
+export function ServiceLinkForm<E extends Error, T, S extends Service>({
   data,
   services,
   onSubmit,
@@ -37,13 +37,13 @@ export function StatusForm<E extends Error, T, S extends Service>({
         alignItems: 'center',
       }}
     >
-      <Form
+      <ServiceLinkInput
         services={services}
         submitText={submitText}
         onSubmit={(url, service) => void onSubmit(url, service)}
       >
         {children}
-      </Form>
+      </ServiceLinkInput>
       {pipe(
         data,
         fold(
@@ -57,7 +57,7 @@ export function StatusForm<E extends Error, T, S extends Service>({
   )
 }
 
-function Form<S extends Service>({
+function ServiceLinkInput<S extends Service>({
   services,
   submitText,
   onSubmit,

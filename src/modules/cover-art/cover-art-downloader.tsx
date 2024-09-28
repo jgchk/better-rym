@@ -1,7 +1,7 @@
 import { h } from 'preact'
 import { useEffect, useState } from 'preact/hooks'
 
-import { StatusForm } from '../../common/components/status-form'
+import { ServiceLinkForm } from '../../common/components/service-link-form'
 import { useReleaseInfo } from '../../common/hooks/use-release-info'
 import { RESOLVABLES } from '../../common/services'
 import { ResolveData } from '../../common/services/types'
@@ -68,7 +68,7 @@ export function CoverArtDownloader() {
           border: '1px solid var(--mono-e8)',
         }}
       >
-        <StatusForm
+        <ServiceLinkForm
           services={RESOLVABLES}
           submitText='Download'
           data={state}

@@ -7,7 +7,7 @@ import { ReleaseOptions } from '../utils/types'
 import { isComplete } from '~/common/utils/one-shot'
 import { fill } from '../utils/fillers'
 import { download } from '~/common/utils/download'
-import { StatusForm } from '~/common/components/status-form'
+import { ServiceLinkForm } from '~/common/components/service-link-form'
 import { RESOLVABLES } from '~/common/services'
 import {
   CAPITALIZATION_TYPES,
@@ -53,14 +53,14 @@ function Import() {
         Step 0: <span className='submit_step_header_title'>Import</span>
       </div>
       <div className={'submit_step_box'}>
-        <StatusForm
+        <ServiceLinkForm
           services={RESOLVABLES}
           submitText='Import'
           data={info}
           onSubmit={fetchInfoOuter}
         >
           <ImportOptionsForm onOptionsUpdate={setFormOptions} />
-        </StatusForm>
+        </ServiceLinkForm>
       </div>
     </>
   )
