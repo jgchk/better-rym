@@ -1,14 +1,22 @@
-import { FunctionComponent, h } from 'preact'
+import { render } from 'preact'
 import { useCallback, useEffect, useState } from 'preact/hooks'
-
-import { ReleaseDate, ResolveData } from '../../../common/services/types'
-import { clsx } from '../../../common/utils/clsx'
-import { datesEqual, dateToString } from '../../../common/utils/datetime'
+import { ReleaseDate, ResolveData } from '~/common/services/types'
+import { clsx } from '~/common/utils/clsx'
+import { datesEqual, dateToString } from '~/common/utils/datetime'
+import { waitForElement } from '~/common/utils/dom'
 import classes from '../styles/buttons.module.css'
 import { fillDate } from '../utils/fillers'
-import { FillData } from './dom.d'
+import { FillData } from '../components/dom'
 
-export const DateButton: FunctionComponent = () => {
+export default async function injectDateControls() {
+  const yearInput = await waitForElement('#year')
+
+  const container = document.createElement('div')
+  yearInput.after(container)
+  render(<DateButton />, container)
+}
+
+export function DateButton() {
   const filledDate = useFilledDate()
   const [date, setDate] = useState<ReleaseDate>()
   const [publishDate, setPublishDate] = useState<ReleaseDate>()
@@ -46,7 +54,7 @@ export const DateButton: FunctionComponent = () => {
   )
 }
 
-const useFilledDate = () => {
+function useFilledDate() {
   const [filledDate, setFilledDate] = useState<ReleaseDate>()
 
   const readMonth = useCallback((el?: HTMLSelectElement) => {
