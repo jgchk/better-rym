@@ -7,10 +7,11 @@ import {
 
 export const script = async (
   { id, data }: ScriptRequest,
-  tabId: number
+  tabId: number,
 ): Promise<ScriptResponse> => {
   await browser.scripting.executeScript({
     target: { tabId },
+    // @ts-ignore
     world: 'MAIN',
     func: (injectedScript: string) => {
       const element = document.createElement('script')

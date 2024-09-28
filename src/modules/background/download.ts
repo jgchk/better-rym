@@ -1,10 +1,10 @@
-import filenamify from 'filenamify/browser'
 import browser from 'webextension-polyfill'
 
 import {
   DownloadRequest,
   DownloadResponse,
 } from '../../common/utils/messaging/codec'
+import filenamify from '~/common/utils/filenamify'
 
 const mimeTypes: Record<string, string | undefined> = {
   'image/bmp': 'bmp',
@@ -37,11 +37,11 @@ export const download = async ({
         mimeTypeExtension !== undefined
           ? `.${mimeTypeExtension}`
           : urlExtension !== undefined
-          ? `.${urlExtension}`
-          : ''
+            ? `.${urlExtension}`
+            : ''
       const formattedFilename = filename.slice(0, 100 - extension.length)
       const filenameWithExtension = filenamify(
-        `${formattedFilename}${extension}`
+        `${formattedFilename}${extension}`,
       )
 
       const downloadId = await browser.downloads.download({

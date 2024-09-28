@@ -7,7 +7,10 @@ import styles from '../styles/failed.module.css'
 import { clsx } from '../utils/clsx'
 
 export const Failed: FunctionComponent<
-  { error: Error } & JSX.SVGAttributes<SVGSVGElement>
+  { error: Error; className?: string } & Omit<
+    JSX.SVGAttributes<SVGSVGElement>,
+    'className'
+  >
 > = ({ error, className, ...properties }) => {
   const [showTip, setShowTip] = useState(false)
   const [pos, setPos] = useState({ x: 0, y: 0 })
@@ -28,7 +31,7 @@ export const Failed: FunctionComponent<
           <div className={styles.tooltip} style={{ left: pos.x, top: pos.y }}>
             {error.message}
           </div>,
-          document.body
+          document.body,
         )}
     </>
   )
