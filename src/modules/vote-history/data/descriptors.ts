@@ -1,864 +1,221 @@
-const descriptors = [
-  {
-    name: 'a cappella',
-    id: '38512',
-  },
-  {
-    name: 'abstract',
-    id: '39129',
-  },
-  {
-    name: 'acoustic',
-    id: '21682',
-  },
-  {
-    name: 'aggressive',
-    id: '38484',
-  },
-  {
-    name: 'alcohol',
-    id: '39232',
-  },
-  {
-    name: 'aleatory',
-    id: '38376',
-  },
-  {
-    name: 'alienation',
-    id: '39008',
-  },
-  {
-    name: 'anarchism',
-    id: '37870',
-  },
-  {
-    name: 'androgynous vocals',
-    id: '39448',
-  },
-  {
-    name: 'angry',
-    id: '37970',
-  },
-  {
-    name: 'anthemic',
-    id: '38850',
-  },
-  {
-    name: 'anti-religious',
-    id: '38817',
-  },
-  {
-    name: 'anxious',
-    id: '37665',
-  },
-  {
-    name: 'apathetic',
-    id: '38317',
-  },
-  {
-    name: 'apocalyptic',
-    id: '38074',
-  },
-  {
-    name: 'aquatic',
-    id: '38089',
-  },
-  {
-    name: 'atmosphere',
-    id: '37944',
-  },
-  {
-    name: 'atmospheric',
-    id: '38531',
-  },
-  {
-    name: 'atonal',
-    id: '38577',
-  },
-  {
-    name: 'autumn',
-    id: '38090',
-  },
-  {
-    name: 'avant-garde',
-    id: '39401',
-  },
-  {
-    name: 'ballad',
-    id: '39088',
-  },
-  {
-    name: 'bittersweet',
-    id: '38102',
-  },
-  {
-    name: 'boastful',
-    id: '38560',
-  },
-  {
-    name: 'breakup',
-    id: '38349',
-  },
-  {
-    name: 'calm',
-    id: '38725',
-  },
-  {
-    name: 'carol',
-    id: '39300',
-  },
-  {
-    name: 'chamber music',
-    id: '39150',
-  },
-  {
-    name: 'chaotic',
-    id: '38682',
-  },
-  {
-    name: "children's music",
-    id: '39318',
-  },
-  {
-    name: 'choral',
-    id: '39563',
-  },
-  {
-    name: 'Christian',
-    id: '39262',
-  },
-  {
-    name: 'Christmas',
-    id: '39331',
-  },
-  {
-    name: 'cold',
-    id: '38093',
-  },
-  {
-    name: 'complex',
-    id: '38701',
-  },
-  {
-    name: 'composition',
-    id: '38327',
-  },
-  {
-    name: 'concept album',
-    id: '39592',
-  },
-  {
-    name: 'concerto',
-    id: '39163',
-  },
-  {
-    name: 'conscious',
-    id: '38825',
-  },
-  {
-    name: 'crime',
-    id: '21492',
-  },
-  {
-    name: 'cryptic',
-    id: '38308',
-  },
-  {
-    name: 'dark',
-    id: '38075',
-  },
-  {
-    name: 'deadpan',
-    id: '38871',
-  },
-  {
-    name: 'death',
-    id: '38338',
-  },
-  {
-    name: 'dense',
-    id: '38819',
-  },
-  {
-    name: 'depressive',
-    id: '37991',
-  },
-  {
-    name: 'desert',
-    id: '38649',
-  },
-  {
-    name: 'dissonant',
-    id: '39307',
-  },
-  {
-    name: 'disturbing',
-    id: '39534',
-  },
-  {
-    name: 'drugs',
-    id: '21331',
-  },
-  {
-    name: 'eclectic',
-    id: '38704',
-  },
-  {
-    name: 'educational',
-    id: '39301',
-  },
-  {
-    name: 'energetic',
-    id: '37669',
-  },
-  {
-    name: 'ensemble',
-    id: '38328',
-  },
-  {
-    name: 'epic',
-    id: '38083',
-  },
-  {
-    name: 'ethereal',
-    id: '37951',
-  },
-  {
-    name: 'existential',
-    id: '38813',
-  },
-  {
-    name: 'fairy tale',
-    id: '39156',
-  },
-  {
-    name: 'fantasy',
-    id: '27978',
-  },
-  {
-    name: 'female vocalist',
-    id: '39305',
-  },
-  {
-    name: 'folklore',
-    id: '38547',
-  },
-  {
-    name: 'forest',
-    id: '38647',
-  },
-  {
-    name: 'form',
-    id: '39084',
-  },
-  {
-    name: 'funereal',
-    id: '38680',
-  },
-  {
-    name: 'futuristic',
-    id: '38077',
-  },
-  {
-    name: 'generative music',
-    id: '39398',
-  },
-  {
-    name: 'Halloween',
-    id: '39332',
-  },
-  {
-    name: 'happy',
-    id: '27408',
-  },
-  {
-    name: 'hateful',
-    id: '38502',
-  },
-  {
-    name: 'heavy',
-    id: '38699',
-  },
-  {
-    name: 'hedonistic',
-    id: '39434',
-  },
-  {
-    name: 'history',
-    id: '27409',
-  },
-  {
-    name: 'holiday',
-    id: '39302',
-  },
-  {
-    name: 'humorous',
-    id: '38350',
-  },
-  {
-    name: 'hymn',
-    id: '39151',
-  },
-  {
-    name: 'hypnotic',
-    id: '37940',
-  },
-  {
-    name: 'ideology',
-    id: '38325',
-  },
-  {
-    name: 'improvisation',
-    id: '38417',
-  },
-  {
-    name: 'infernal',
-    id: '38307',
-  },
-  {
-    name: 'instrumental',
-    id: '21468',
-  },
-  {
-    name: 'interlude',
-    id: '39160',
-  },
-  {
-    name: 'intro',
-    id: '39157',
-  },
-  {
-    name: 'introspective',
-    id: '38716',
-  },
-  {
-    name: 'Islamic',
-    id: '39311',
-  },
-  {
-    name: 'jingle',
-    id: '39303',
-  },
-  {
-    name: 'lethargic',
-    id: '39135',
-  },
-  {
-    name: 'LGBT',
-    id: '21334',
-  },
-  {
-    name: 'lo-fi',
-    id: '38233',
-  },
-  {
-    name: 'lobit',
-    id: '34141',
-  },
-  {
-    name: 'lonely',
-    id: '37644',
-  },
-  {
-    name: 'longing',
-    id: '37990',
-  },
-  {
-    name: 'love',
-    id: '38326',
-  },
-  {
-    name: 'lullaby',
-    id: '39154',
-  },
-  {
-    name: 'lush',
-    id: '38698',
-  },
-  {
-    name: 'lyrics',
-    id: '37858',
-  },
-  {
-    name: 'madrigal',
-    id: '39638',
-  },
-  {
-    name: 'male vocalist',
-    id: '39304',
-  },
-  {
-    name: 'manic',
-    id: '38447',
-  },
-  {
-    name: 'martial',
-    id: '38514',
-  },
-  {
-    name: 'mashup',
-    id: '39152',
-  },
-  {
-    name: 'mechanical',
-    id: '38012',
-  },
-  {
-    name: 'medieval',
-    id: '38853',
-  },
-  {
-    name: 'meditative',
-    id: '21425',
-  },
-  {
-    name: 'medley',
-    id: '39087',
-  },
-  {
-    name: 'melancholic',
-    id: '37689',
-  },
-  {
-    name: 'mellow',
-    id: '27552',
-  },
-  {
-    name: 'melodic',
-    id: '38527',
-  },
-  {
-    name: 'microtonal',
-    id: '39607',
-  },
-  {
-    name: 'minimalistic',
-    id: '38928',
-  },
-  {
-    name: 'misanthropic',
-    id: '37657',
-  },
-  {
-    name: 'monologue',
-    id: '39130',
-  },
-  {
-    name: 'mood',
-    id: '25374',
-  },
-  {
-    name: 'movement',
-    id: '39421',
-  },
-  {
-    name: 'mysterious',
-    id: '38033',
-  },
-  {
-    name: 'mythology',
-    id: '25590',
-  },
-  {
-    name: 'nationalism',
-    id: '37922',
-  },
-  {
-    name: 'natural',
-    id: '38014',
-  },
-  {
-    name: 'nature',
-    id: '38320',
-  },
-  {
-    name: 'nihilistic',
-    id: '38081',
-  },
-  {
-    name: 'nocturnal',
-    id: '38669',
-  },
-  {
-    name: 'noisy',
-    id: '38675',
-  },
-  {
-    name: 'non-binary vocalist',
-    id: '56875',
-  },
-  {
-    name: 'novelty',
-    id: '39598',
-  },
-  {
-    name: 'nursery rhyme',
-    id: '39155',
-  },
-  {
-    name: 'occult',
-    id: '38261',
-  },
-  {
-    name: 'ominous',
-    id: '38348',
-  },
-  {
-    name: 'opera',
-    id: '39562',
-  },
-  {
-    name: 'optimistic',
-    id: '38499',
-  },
-  {
-    name: 'oratorio',
-    id: '39166',
-  },
-  {
-    name: 'orchestral',
-    id: '39599',
-  },
-  {
-    name: 'outro',
-    id: '39159',
-  },
-  {
-    name: 'pagan',
-    id: '20198',
-  },
-  {
-    name: 'paranormal',
-    id: '39405',
-  },
-  {
-    name: 'parody',
-    id: '39561',
-  },
-  {
-    name: 'party',
-    id: '39059',
-  },
-  {
-    name: 'passionate',
-    id: '37949',
-  },
-  {
-    name: 'pastoral',
-    id: '38684',
-  },
-  {
-    name: 'patriotic',
-    id: '38759',
-  },
-  {
-    name: 'peaceful',
-    id: '38085',
-  },
-  {
-    name: 'pessimistic',
-    id: '38500',
-  },
-  {
-    name: 'philosophical',
-    id: '21466',
-  },
-  {
-    name: 'playful',
-    id: '38196',
-  },
-  {
-    name: 'poem',
-    id: '39132',
-  },
-  {
-    name: 'poetic',
-    id: '38503',
-  },
-  {
-    name: 'political',
-    id: '20178',
-  },
-  {
-    name: 'polyphonic',
-    id: '39601',
-  },
-  {
-    name: 'production',
-    id: '31745',
-  },
-  {
-    name: 'progressive',
-    id: '39400',
-  },
-  {
-    name: 'propaganda',
-    id: '27613',
-  },
-  {
-    name: 'protest',
-    id: '38262',
-  },
-  {
-    name: 'psychedelic',
-    id: '38540',
-  },
-  {
-    name: 'quirky',
-    id: '37666',
-  },
-  {
-    name: 'rain',
-    id: '38648',
-  },
-  {
-    name: 'raw',
-    id: '38645',
-  },
-  {
-    name: 'rebellious',
-    id: '38889',
-  },
-  {
-    name: 'religious',
-    id: '20085',
-  },
-  {
-    name: 'repetitive',
-    id: '38607',
-  },
-  {
-    name: 'reprise',
-    id: '39215',
-  },
-  {
-    name: 'rhythmic',
-    id: '38528',
-  },
-  {
-    name: 'ritualistic',
-    id: '38681',
-  },
-  {
-    name: 'rock opera',
-    id: '39594',
-  },
-  {
-    name: 'romantic',
-    id: '27331',
-  },
-  {
-    name: 'sad',
-    id: '21611',
-  },
-  {
-    name: 'sampling',
-    id: '39140',
-  },
-  {
-    name: 'sarcastic',
-    id: '38264',
-  },
-  {
-    name: 'satanic',
-    id: '21814',
-  },
-  {
-    name: 'satirical',
-    id: '27824',
-  },
-  {
-    name: 'scary',
-    id: '38084',
-  },
-  {
-    name: 'science fiction',
-    id: '21771',
-  },
-  {
-    name: 'seasonal',
-    id: '39263',
-  },
-  {
-    name: 'section',
-    id: '39216',
-  },
-  {
-    name: 'self-hatred',
-    id: '38936',
-  },
-  {
-    name: 'sensual',
-    id: '27551',
-  },
-  {
-    name: 'sentimental',
-    id: '38581',
-  },
-  {
-    name: 'serious',
-    id: '38501',
-  },
-  {
-    name: 'sexual',
-    id: '21329',
-  },
-  {
-    name: 'silence',
-    id: '39162',
-  },
-  {
-    name: 'skit',
-    id: '39161',
-  },
-  {
-    name: 'soft',
-    id: '38700',
-  },
-  {
-    name: 'sombre',
-    id: '27518',
-  },
-  {
-    name: 'sonata',
-    id: '39149',
-  },
-  {
-    name: 'soothing',
-    id: '37981',
-  },
-  {
-    name: 'space',
-    id: '38073',
-  },
-  {
-    name: 'sparse',
-    id: '38494',
-  },
-  {
-    name: 'spiritual',
-    id: '38449',
-  },
-  {
-    name: 'sports',
-    id: '21634',
-  },
-  {
-    name: 'spring',
-    id: '38091',
-  },
-  {
-    name: 'stem',
-    id: '39449',
-  },
-  {
-    name: 'string quartet',
-    id: '39653',
-  },
-  {
-    name: 'style',
-    id: '38543',
-  },
-  {
-    name: 'suicide',
-    id: '38340',
-  },
-  {
-    name: 'suite',
-    id: '39086',
-  },
-  {
-    name: 'summer',
-    id: '38258',
-  },
-  {
-    name: 'surreal',
-    id: '38419',
-  },
-  {
-    name: 'suspenseful',
-    id: '38306',
-  },
-  {
-    name: 'symphony',
-    id: '39165',
-  },
-  {
-    name: 'technical',
-    id: '38529',
-  },
-  {
-    name: 'technique',
-    id: '38765',
-  },
-  {
-    name: 'theme',
-    id: '37942',
-  },
-  {
-    name: 'tone',
-    id: '37943',
-  },
-  {
-    name: 'tone poem',
-    id: '39164',
-  },
-  {
-    name: 'tribal',
-    id: '38650',
-  },
-  {
-    name: 'triumphant',
-    id: '39412',
-  },
-  {
-    name: 'tropical',
-    id: '38653',
-  },
-  {
-    name: 'uncommon time signatures',
-    id: '38384',
-  },
-  {
-    name: 'uplifting',
-    id: '38095',
-  },
-  {
-    name: 'urban',
-    id: '28353',
-  },
-  {
-    name: 'violence',
-    id: '38576',
-  },
-  {
-    name: 'vocal group',
-    id: '39306',
-  },
-  {
-    name: 'vulgar',
-    id: '38324',
-  },
-  {
-    name: 'Wall of Sound',
-    id: '30799',
-  },
-  {
-    name: 'waltz',
-    id: '39101',
-  },
-  {
-    name: 'war',
-    id: '38316',
-  },
-  {
-    name: 'warm',
-    id: '38086',
-  },
-  {
-    name: 'winter',
-    id: '38257',
-  },
-]
+const descriptors = (
+  [
+    [38512, 'a cappella'],
+    [39129, 'abstract'],
+    [21682, 'acoustic'],
+    [38484, 'aggressive'],
+    [39232, 'alcohol'],
+    [38376, 'aleatory'],
+    [39008, 'alienation'],
+    [37870, 'anarchism'],
+    [39448, 'androgynous vocals'],
+    [37970, 'angry'],
+    [38850, 'anthemic'],
+    [38817, 'anti-religious'],
+    [37665, 'anxious'],
+    [38317, 'apathetic'],
+    [38074, 'apocalyptic'],
+    [38089, 'aquatic'],
+    [37944, 'atmosphere'],
+    [38531, 'atmospheric'],
+    [38577, 'atonal'],
+    [38090, 'autumn'],
+    [39401, 'avant-garde'],
+    [39088, 'ballad'],
+    [38102, 'bittersweet'],
+    [38560, 'boastful'],
+    [38349, 'breakup'],
+    [38725, 'calm'],
+    [39300, 'carol'],
+    [39150, 'chamber music'],
+    [38682, 'chaotic'],
+    [39318, "children's music"],
+    [39563, 'choral'],
+    [39262, 'Christian'],
+    [39331, 'Christmas'],
+    [38093, 'cold'],
+    [38701, 'complex'],
+    [38327, 'composition'],
+    [39592, 'concept album'],
+    [39163, 'concerto'],
+    [38825, 'conscious'],
+    [21492, 'crime'],
+    [38308, 'cryptic'],
+    [38075, 'dark'],
+    [38871, 'deadpan'],
+    [38338, 'death'],
+    [38819, 'dense'],
+    [37991, 'depressive'],
+    [38649, 'desert'],
+    [39307, 'dissonant'],
+    [39534, 'disturbing'],
+    [21331, 'drugs'],
+    [38704, 'eclectic'],
+    [39301, 'educational'],
+    [37669, 'energetic'],
+    [38328, 'ensemble'],
+    [38083, 'epic'],
+    [37951, 'ethereal'],
+    [38813, 'existential'],
+    [39156, 'fairy tale'],
+    [27978, 'fantasy'],
+    [39305, 'female vocalist'],
+    [38547, 'folklore'],
+    [38647, 'forest'],
+    [39084, 'form'],
+    [38680, 'funereal'],
+    [38077, 'futuristic'],
+    [39398, 'generative music'],
+    [39332, 'Halloween'],
+    [27408, 'happy'],
+    [38502, 'hateful'],
+    [38699, 'heavy'],
+    [39434, 'hedonistic'],
+    [27409, 'history'],
+    [39302, 'holiday'],
+    [38350, 'humorous'],
+    [39151, 'hymn'],
+    [37940, 'hypnotic'],
+    [38325, 'ideology'],
+    [38417, 'improvisation'],
+    [38307, 'infernal'],
+    [21468, 'instrumental'],
+    [39160, 'interlude'],
+    [39157, 'intro'],
+    [38716, 'introspective'],
+    [39311, 'Islamic'],
+    [39303, 'jingle'],
+    [39135, 'lethargic'],
+    [21334, 'LGBT'],
+    [38233, 'lo-fi'],
+    [34141, 'lobit'],
+    [37644, 'lonely'],
+    [37990, 'longing'],
+    [38326, 'love'],
+    [39154, 'lullaby'],
+    [38698, 'lush'],
+    [37858, 'lyrics'],
+    [39638, 'madrigal'],
+    [39304, 'male vocalist'],
+    [38447, 'manic'],
+    [38514, 'martial'],
+    [39152, 'mashup'],
+    [38012, 'mechanical'],
+    [38853, 'medieval'],
+    [21425, 'meditative'],
+    [39087, 'medley'],
+    [37689, 'melancholic'],
+    [27552, 'mellow'],
+    [38527, 'melodic'],
+    [39607, 'microtonal'],
+    [38928, 'minimalistic'],
+    [37657, 'misanthropic'],
+    [39130, 'monologue'],
+    [25374, 'mood'],
+    [39421, 'movement'],
+    [38033, 'mysterious'],
+    [25590, 'mythology'],
+    [37922, 'nationalism'],
+    [38014, 'natural'],
+    [38320, 'nature'],
+    [38081, 'nihilistic'],
+    [38669, 'nocturnal'],
+    [38675, 'noisy'],
+    [56875, 'non-binary vocalist'],
+    [39598, 'novelty'],
+    [39155, 'nursery rhyme'],
+    [38261, 'occult'],
+    [38348, 'ominous'],
+    [39562, 'opera'],
+    [38499, 'optimistic'],
+    [39166, 'oratorio'],
+    [39599, 'orchestral'],
+    [39159, 'outro'],
+    [20198, 'pagan'],
+    [39405, 'paranormal'],
+    [39561, 'parody'],
+    [39059, 'party'],
+    [37949, 'passionate'],
+    [38684, 'pastoral'],
+    [38759, 'patriotic'],
+    [38085, 'peaceful'],
+    [38500, 'pessimistic'],
+    [21466, 'philosophical'],
+    [38196, 'playful'],
+    [39132, 'poem'],
+    [38503, 'poetic'],
+    [20178, 'political'],
+    [39601, 'polyphonic'],
+    [31745, 'production'],
+    [39400, 'progressive'],
+    [27613, 'propaganda'],
+    [38262, 'protest'],
+    [38540, 'psychedelic'],
+    [37666, 'quirky'],
+    [38648, 'rain'],
+    [38645, 'raw'],
+    [38889, 'rebellious'],
+    [20085, 'religious'],
+    [38607, 'repetitive'],
+    [39215, 'reprise'],
+    [38528, 'rhythmic'],
+    [38681, 'ritualistic'],
+    [39594, 'rock opera'],
+    [27331, 'romantic'],
+    [21611, 'sad'],
+    [39140, 'sampling'],
+    [38264, 'sarcastic'],
+    [21814, 'satanic'],
+    [27824, 'satirical'],
+    [38084, 'scary'],
+    [21771, 'science fiction'],
+    [39263, 'seasonal'],
+    [39216, 'section'],
+    [38936, 'self-hatred'],
+    [27551, 'sensual'],
+    [38581, 'sentimental'],
+    [38501, 'serious'],
+    [21329, 'sexual'],
+    [39162, 'silence'],
+    [39161, 'skit'],
+    [38700, 'soft'],
+    [27518, 'sombre'],
+    [39149, 'sonata'],
+    [37981, 'soothing'],
+    [38073, 'space'],
+    [38494, 'sparse'],
+    [38449, 'spiritual'],
+    [21634, 'sports'],
+    [38091, 'spring'],
+    [39449, 'stem'],
+    [39653, 'string quartet'],
+    [38543, 'style'],
+    [38340, 'suicide'],
+    [39086, 'suite'],
+    [38258, 'summer'],
+    [38419, 'surreal'],
+    [38306, 'suspenseful'],
+    [39165, 'symphony'],
+    [38529, 'technical'],
+    [38765, 'technique'],
+    [37942, 'theme'],
+    [37943, 'tone'],
+    [39164, 'tone poem'],
+    [38650, 'tribal'],
+    [39412, 'triumphant'],
+    [38653, 'tropical'],
+    [38384, 'uncommon time signatures'],
+    [38095, 'uplifting'],
+    [28353, 'urban'],
+    [38576, 'violence'],
+    [39306, 'vocal group'],
+    [38324, 'vulgar'],
+    [30799, 'Wall of Sound'],
+    [39101, 'waltz'],
+    [38316, 'war'],
+    [38086, 'warm'],
+    [38257, 'winter'],
+  ] as const
+).map(([id, name]) => ({ id: id.toString(), name }))
 
 export default descriptors
