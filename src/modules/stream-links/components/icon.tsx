@@ -1,35 +1,81 @@
 import { FunctionComponent, h } from 'preact'
-import { useCallback } from 'preact/hooks'
+import { useCallback, useState } from 'preact/hooks'
 
 import { Failed } from '../../../common/components/failed'
 import { Loader } from '../../../common/components/loader'
 import { Searchable, Service } from '../../../common/services/types'
-import { clsx } from '../../../common/utils/clsx'
 import { isComplete, isFailed, isLoading } from '../../../common/utils/one-shot'
-import css from '../styles/icon.module.css'
 import { ServiceLinkState } from './service-link'
 
 export const Icon: FunctionComponent<{
   service: Service & Searchable
   state: ServiceLinkState
 }> = ({ service, state }) => {
+  const [isHovered, setIsHovered] = useState(false)
+
   const renderIcon = useCallback(() => {
-    if (isComplete(state) && state.data._tag !== 'not-found') {
-      return state.data._tag === 'exists'
-        ? service.icon({ className: clsx(css.icon, css.full) })
-        : service.foundIcon({ className: clsx(css.icon, css.full) })
-    } else {
-      return service.notFoundIcon({
-        className: clsx(css.icon, css.empty),
+    if (isComplete(state) && state.data._tag === 'exists') {
+      return service.icon({
+        style: {
+          ...iconStyle,
+          ...(isHovered ? fullHoverStyle : fullStyle),
+        },
       })
     }
-  }, [service, state])
+
+    if (isComplete(state) && state.data._tag === 'found') {
+      return service.foundIcon({
+        style: {
+          ...iconStyle,
+          ...(isHovered ? fullHoverStyle : fullStyle),
+        },
+      })
+    }
+
+    return service.notFoundIcon({
+      style: {
+        ...iconStyle,
+        ...emptyStyle,
+      },
+    })
+  }, [service, state, isHovered])
 
   return (
-    <div className={css.container}>
+    <div
+      style={{ position: 'relative' }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       {renderIcon()}
-      {isLoading(state) && <Loader className={css.status} />}
-      {isFailed(state) && <Failed error={state.error} className={css.status} />}
+      {isLoading(state) && <Loader style={statusIconStyle} />}
+      {isFailed(state) && (
+        <Failed error={state.error} style={statusIconStyle} />
+      )}
     </div>
   )
+}
+
+const iconStyle = {
+  color: 'var(--mono-3)',
+  transition: 'opacity 0.2s',
+}
+
+const fullStyle = {
+  opacity: 0.8,
+}
+
+const fullHoverStyle = {
+  opacity: 1,
+}
+
+const emptyStyle = {
+  opacity: 0.15,
+}
+
+const statusIconStyle = {
+  position: 'absolute',
+  right: 0,
+  bottom: 0,
+  width: 16,
+  height: 16,
 }

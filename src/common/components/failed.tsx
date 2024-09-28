@@ -5,9 +5,9 @@ import { useState } from 'preact/hooks'
 import XIcon from '../icons/x'
 
 export const Failed: FunctionComponent<
-  { error: Error; className?: string } & Omit<
+  { error: Error; className?: string; style?: JSX.CSSProperties } & Omit<
     JSX.SVGAttributes<SVGSVGElement>,
-    'className'
+    'className' | 'style'
   >
 > = ({ error, className, ...properties }) => {
   const [showTip, setShowTip] = useState(false)
@@ -22,10 +22,11 @@ export const Failed: FunctionComponent<
           setPos({ x: event.pageX, y: event.pageY })
         }
         className={className}
+        {...properties}
         style={{
+          ...properties.style,
           color: 'var(--gen-text-red)',
         }}
-        {...properties}
       />
       {showTip &&
         createPortal(

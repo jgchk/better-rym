@@ -4,7 +4,10 @@ import LoaderIcon from '../icons/loader'
 import { useEffect } from 'preact/hooks'
 
 export const Loader: FunctionComponent<
-  Omit<JSX.SVGAttributes<SVGSVGElement>, 'className'> & { className?: string }
+  Omit<JSX.SVGAttributes<SVGSVGElement>, 'className' | 'style'> & {
+    className?: string
+    style?: JSX.CSSProperties
+  }
 > = ({ className, ...properties }) => {
   useEffect(() => {
     const style = document.createElement('style')
@@ -19,11 +22,12 @@ export const Loader: FunctionComponent<
   return (
     <LoaderIcon
       className={className}
+      {...properties}
       style={{
+        ...properties.style,
         color: 'var(--mono-5)',
         animation: 'spin 1.5s linear infinite',
       }}
-      {...properties}
     />
   )
 }
