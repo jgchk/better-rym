@@ -1,3 +1,3 @@
-import { main } from '.'
+import { injectCollectionFilterButtons } from '.'
 
-void main()
+void injectCollectionFilterButtons()
