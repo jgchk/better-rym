@@ -1,12 +1,12 @@
-import { main } from ".";
-import browser from "webextension-polyfill";
+import { injectCoverArtDownloader } from '.'
+import browser from 'webextension-polyfill'
 
-void main();
+void injectCoverArtDownloader()
 
 for (const cssPath of import.meta.PLUGIN_WEB_EXT_CHUNK_CSS_PATHS) {
-  const styles = document.createElement("link");
-  styles.rel = "stylesheet";
-  styles.href = browser.runtime.getURL(cssPath);
+  const styles = document.createElement('link')
+  styles.rel = 'stylesheet'
+  styles.href = browser.runtime.getURL(cssPath)
 
-  document.head.appendChild(styles);
+  document.head.appendChild(styles)
 }

@@ -1,14 +1,14 @@
 import { h, render } from 'preact'
 
 import { waitForElement } from '../../common/utils/dom'
-import { App } from './components/app'
+import { CoverArtDownloader } from './cover-art-downloader'
 
-export const main = async () => {
+export async function injectCoverArtDownloader() {
   const siblingElement = await waitForElement('#content_total_cover')
 
   const app = document.createElement('div')
   app.id = 'better-rym'
   siblingElement.after(app)
 
-  render(<App />, app)
+  render(<CoverArtDownloader />, app)
 }
