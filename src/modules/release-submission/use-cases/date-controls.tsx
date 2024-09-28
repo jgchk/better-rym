@@ -6,7 +6,7 @@ import { datesEqual, dateToString } from '~/common/utils/datetime'
 import { waitForElement } from '~/common/utils/dom'
 import classes from '../styles/buttons.module.css'
 import { fillDate } from '../utils/fillers'
-import { FillData } from '../components/dom'
+import { FillData } from '../dom'
 
 export default async function injectDateControls() {
   const yearInput = await waitForElement('#year')

@@ -9,7 +9,7 @@ import {
   Track,
 } from '../../../common/services/types'
 import { forceQuerySelector, waitForResult } from '../../../common/utils/dom'
-import { FillData } from '../components/dom.d'
+import { FillData } from '../dom'
 import { CapitalizationType, capitalize } from './capitalization'
 import { ReleaseOptions } from './types'
 
@@ -155,17 +155,17 @@ const ATTRIBUTE_IDS: Record<ReleaseAttribute, number> = {
 const fillArtist = async (artist: string) => {
   // Enter search term
   forceQuerySelector<HTMLInputElement>(document)(
-    '#filed_under_searchterm'
+    '#filed_under_searchterm',
   ).value = artist
 
   // Click search button
   forceQuerySelector<HTMLInputElement>(document)(
-    '#section_filed_under .gosearch input[type=button]'
+    '#section_filed_under .gosearch input[type=button]',
   ).click()
 
   // Wait for results
   const topResult = await waitForResult(
-    forceQuerySelector<HTMLIFrameElement>(document)('#filed_underlist')
+    forceQuerySelector<HTMLIFrameElement>(document)('#filed_underlist'),
   )
 
   // Click the top result if there is one
@@ -186,7 +186,7 @@ const fillArtists = async (artists: string[]) => {
 
 const fillType = (type: ReleaseType) => {
   const element = forceQuerySelector<HTMLInputElement>(document)(
-    `input#category${TYPE_IDS[type]}`
+    `input#category${TYPE_IDS[type]}`,
   )
   element.click() // click to trigger DOM onClick events (e.g. field updates on 'music video' click)
   element.checked = true // ensure that element is checked
@@ -223,25 +223,25 @@ export const fillDate = (date: ReleaseDate) => {
 const fillTitle = (title: string, capitalization: CapitalizationType) => {
   forceQuerySelector<HTMLInputElement>(document)('#title').value = capitalize(
     title,
-    capitalization
+    capitalization,
   )
 }
 
 const fillFormat = (format: ReleaseFormat) => {
   forceQuerySelector<HTMLInputElement>(document)(
-    `#format${FORMAT_IDS[format]}`
+    `#format${FORMAT_IDS[format]}`,
   ).checked = true
 }
 
 const fillDiscSize = (discSize: DiscSize) => {
   forceQuerySelector<HTMLInputElement>(document)(
-    `#disc_size${DISC_SIZE_IDS[discSize]}`
+    `#disc_size${DISC_SIZE_IDS[discSize]}`,
   ).checked = true
 }
 
 const fillAttribute = (attribute: ReleaseAttribute) => {
   forceQuerySelector<HTMLInputElement>(document)(
-    `#attrib${ATTRIBUTE_IDS[attribute]}`
+    `#attrib${ATTRIBUTE_IDS[attribute]}`,
   ).checked = true
 }
 
@@ -279,12 +279,12 @@ const fillTracks = (tracks: Track[], capitalization: CapitalizationType) => {
 
 const fillLabel = (label: ReleaseLabel) => {
   forceQuerySelector<HTMLInputElement>(document)(
-    '#label~table #searchterm'
+    '#label~table #searchterm',
   ).value = label.name ?? ''
 
   if (label.name)
     forceQuerySelector<HTMLInputElement>(document)(
-      '#label~table .gosearch .btn'
+      '#label~table .gosearch .btn',
     ).click()
 
   forceQuerySelector<HTMLInputElement>(document)('#catalog_no').value =
@@ -308,7 +308,7 @@ export const fill = async (
     url,
     label,
   }: ResolveData,
-  options: ReleaseOptions
+  options: ReleaseOptions,
 ): Promise<void> => {
   if (artists != null && options.fillFields.artists) await fillArtists(artists)
   if (type != null && options.fillFields.type) fillType(type)

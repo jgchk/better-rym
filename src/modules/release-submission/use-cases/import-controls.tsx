@@ -1,37 +1,31 @@
-import { FunctionComponent, h } from 'preact'
+import { render } from 'preact'
 import { useCallback } from 'preact/hooks'
-
-import { StatusForm } from '../../../common/components/status-form'
-import { useReleaseInfo } from '../../../common/hooks/use-release-info'
-import { RESOLVABLES } from '../../../common/services'
-import {
-  Resolvable,
-  ResolveData,
-  Service,
-} from '../../../common/services/types'
-import { download } from '../../../common/utils/download'
-import { isComplete } from '../../../common/utils/one-shot'
-import { fill } from '../utils/fillers'
+import { useReleaseInfo } from '~/common/hooks/use-release-info'
+import { Resolvable, ResolveData, Service } from '~/common/services/types'
+import { waitForElement } from '~/common/utils/dom'
 import { ReleaseOptions } from '../utils/types'
+import { isComplete } from '~/common/utils/one-shot'
+import { fill } from '../utils/fillers'
+import { download } from '~/common/utils/download'
+import { StatusForm } from '~/common/components/status-form'
+import { RESOLVABLES } from '~/common/services'
 
-const getFilename = ({ title, artists }: ResolveData) => {
-  let filename = ''
-  if (artists && artists.length > 0) filename += artists.join(', ')
-  if (title) {
-    if (artists && artists.length > 0) filename += ' - '
-    filename += title
-  }
-  return filename.length === 0 ? 'cover' : filename
+export default async function injectImportControls() {
+  const siblingElement = await waitForElement('.submit_step_header')
+  const app = document.createElement('div')
+  app.id = 'better-rym'
+  siblingElement.before(app)
+  render(<Import />, app)
 }
 
-export const Import: FunctionComponent = () => {
+function Import() {
   const { info, fetchInfo } = useReleaseInfo()
 
   const fetchInfoOuter = useCallback(
     async (
       url: string,
       service: Service & Resolvable,
-      options: ReleaseOptions
+      options: ReleaseOptions,
     ) => {
       const info = await fetchInfo(url, service)
       if (isComplete(info)) {
@@ -49,7 +43,7 @@ export const Import: FunctionComponent = () => {
         }
       }
     },
-    [fetchInfo]
+    [fetchInfo],
   )
 
   return (
@@ -68,4 +62,14 @@ export const Import: FunctionComponent = () => {
       </div>
     </>
   )
+}
+
+function getFilename({ title, artists }: ResolveData) {
+  let filename = ''
+  if (artists && artists.length > 0) filename += artists.join(', ')
+  if (title) {
+    if (artists && artists.length > 0) filename += ' - '
+    filename += title
+  }
+  return filename.length === 0 ? 'cover' : filename
 }
