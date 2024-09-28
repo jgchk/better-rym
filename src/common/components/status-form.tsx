@@ -1,7 +1,6 @@
 import { h, VNode } from 'preact'
 import { useEffect, useState } from 'preact/hooks'
 
-import { ReleaseOptions } from '../../modules/release-submission/utils/types'
 import { Service } from '../services/types'
 import { fold, isFailed, OneShot } from '../utils/one-shot'
 import { pipe } from '../utils/pipe'
@@ -14,14 +13,21 @@ import {
 } from '~/modules/release-submission/utils/capitalization'
 import { getMatchingService } from '../services'
 import { ServiceSelector } from './service-selector'
+import { ReleaseOptions } from '~/modules/release-submission/utils/types'
 
 export function StatusForm<E extends Error, T, S extends Service>({
   data,
   services,
   onSubmit,
   submitText = 'Submit',
-  showAutoCapitalize = false,
-}: Properties<E, T, S>): VNode {
+  children,
+}: {
+  data: OneShot<E, T>
+  services: S[]
+  onSubmit: (url: string, service: S) => void | Promise<void>
+  submitText?: string
+  children?: VNode
+}): VNode {
   useEffect(() => {
     if (isFailed(data)) {
       console.error(data.error)
@@ -39,11 +45,10 @@ export function StatusForm<E extends Error, T, S extends Service>({
       <Form
         services={services}
         submitText={submitText}
-        onSubmit={(url, service, options) =>
-          void onSubmit(url, service, options)
-        }
-        showAutoCapitalize={showAutoCapitalize}
-      />
+        onSubmit={(url, service) => void onSubmit(url, service)}
+      >
+        {children}
+      </Form>
       {pipe(
         data,
         fold(
@@ -57,36 +62,22 @@ export function StatusForm<E extends Error, T, S extends Service>({
   )
 }
 
-type Properties<E extends Error, T, S extends Service> = {
-  data: OneShot<E, T>
-  services: S[]
-  onSubmit: (
-    url: string,
-    service: S,
-    options: ReleaseOptions,
-  ) => void | Promise<void>
-  submitText?: string
-  showAutoCapitalize?: boolean
-}
-
 function Form<S extends Service>({
   services,
   submitText,
   onSubmit,
-  showAutoCapitalize = false,
-}: FormProperties<S>): VNode {
-  const _fillers: { [x: string]: boolean } = {}
-  Object.keys(FIELDS_MAP).map((field) => (_fillers[field] = true))
-
-  const [fillers, setFillers] = useState(_fillers)
+  children,
+}: {
+  services: S[]
+  submitText: string
+  onSubmit: (url: string, service: S) => void
+  children?: VNode
+}): VNode {
   const [url, setUrl] = useState('')
   const [selectedService, setSelectedService] = useState<S | undefined>(
     undefined,
   )
   const [showMissingServiceError, setShowMissingServiceError] = useState(false)
-  const [capitalization, setCapitalization] =
-    useState<CapitalizationType>('title-case')
-  const [downloadArt, setDownloadArt] = useState(false)
 
   useEffect(() => {
     const service = getMatchingService(services)(url)
@@ -108,11 +99,7 @@ function Form<S extends Service>({
       onSubmit={(event) => {
         event.preventDefault()
         if (selectedService !== undefined) {
-          onSubmit(url, selectedService, {
-            capitalization: capitalization,
-            fillFields: fillers,
-            downloadArt: downloadArt,
-          } as ReleaseOptions)
+          onSubmit(url, selectedService)
         } else {
           setShowMissingServiceError(true)
         }
@@ -144,80 +131,7 @@ function Form<S extends Service>({
             Select an import source
           </div>
         )}
-        {showAutoCapitalize && (
-          <>
-            <label htmlFor='brym-capitalize'>
-              Capitalization:&nbsp;
-              <select
-                value={capitalization}
-                onChange={(event) =>
-                  setCapitalization(
-                    (event.target as HTMLSelectElement)
-                      .value as CapitalizationType,
-                  )
-                }
-              >
-                {CAPITALIZATION_TYPES.map((capType) => (
-                  <option value={capType} key={capType}>
-                    {CAPITALIZATION_TYPE_MAP[capType]}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <details>
-              <summary
-                style={{
-                  textAlign: 'center',
-                  cursor: 'pointer',
-                }}
-              >
-                Advanced Options
-              </summary>
-              <div
-                id='brym-release-options'
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: 4,
-                  alignItems: 'center',
-                  width: 384,
-                  marginTop: '0.5em',
-                }}
-              >
-                <hr style='width:100%;margin-bottom:0.5em' />
-                <label htmlFor='brym-downloadart'>
-                  Download Cover Art:&nbsp;
-                  <input
-                    type='checkbox'
-                    checked={downloadArt}
-                    onChange={(event) =>
-                      setDownloadArt((event.target as HTMLInputElement).checked)
-                    }
-                  />
-                </label>
-                <hr style='width:100%;margin-bottom:0.5em' />
-                {Object.keys(FIELDS_MAP).map((field) => (
-                  <label key={field}>
-                    {FIELDS_MAP[field]}:&nbsp;
-                    <input
-                      id={`brym-${field}`}
-                      type='checkbox'
-                      checked={fillers[field]}
-                      onChange={(event) =>
-                        setFillers((previousState) => {
-                          const checkbox = event.target as HTMLInputElement
-                          const newState = previousState
-                          newState[checkbox.id.slice(5)] = checkbox.checked
-                          return newState
-                        })
-                      }
-                    />
-                  </label>
-                ))}
-              </div>
-            </details>
-          </>
-        )}
+        {children}
       </div>
       <input
         type='submit'
@@ -230,14 +144,107 @@ function Form<S extends Service>({
   )
 }
 
-type FormProperties<S extends Service> = {
-  services: S[]
-  submitText: string
-  onSubmit: (url: string, service: S, options: ReleaseOptions) => void
-  showAutoCapitalize?: boolean
+export function FormOptionsForm({
+  onOptionsUpdate,
+}: {
+  onOptionsUpdate?: (options: ReleaseOptions) => void
+}) {
+  const [options, setOptions_] = useState(DEFAULT_FORM_OPTIONS)
+
+  const setOptions = (newOptions: ReleaseOptions) => {
+    setOptions_(newOptions)
+    if (onOptionsUpdate !== undefined) {
+      onOptionsUpdate(newOptions)
+    }
+  }
+
+  return (
+    <>
+      <label htmlFor='brym-capitalize'>
+        Capitalization:&nbsp;
+        <select
+          value={options.capitalization}
+          onChange={(event) =>
+            setOptions({
+              ...options,
+              capitalization: (event.target as HTMLSelectElement)
+                .value as CapitalizationType,
+            })
+          }
+        >
+          {CAPITALIZATION_TYPES.map((capType) => (
+            <option value={capType} key={capType}>
+              {CAPITALIZATION_TYPE_MAP[capType]}
+            </option>
+          ))}
+        </select>
+      </label>
+      <details>
+        <summary
+          style={{
+            textAlign: 'center',
+            cursor: 'pointer',
+          }}
+        >
+          Advanced Options
+        </summary>
+        <div
+          id='brym-release-options'
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 4,
+            alignItems: 'center',
+            width: 384,
+            marginTop: '0.5em',
+          }}
+        >
+          <hr style='width:100%;margin-bottom:0.5em' />
+          <label htmlFor='brym-downloadart'>
+            Download Cover Art:&nbsp;
+            <input
+              type='checkbox'
+              checked={options.downloadArt}
+              onChange={(event) =>
+                setOptions({
+                  ...options,
+                  downloadArt: (event.target as HTMLInputElement).checked,
+                })
+              }
+            />
+          </label>
+          <hr style='width:100%;margin-bottom:0.5em' />
+          {(Object.keys(FIELDS_MAP) as FillField[]).map((field) => (
+            <label key={field}>
+              {FIELDS_MAP[field]}:&nbsp;
+              <input
+                id={`brym-${field}`}
+                type='checkbox'
+                checked={options.fillFields[field]}
+                onChange={(event) => {
+                  const field = event.currentTarget.id.slice(5) as FillField
+                  const value = event.currentTarget.checked
+
+                  setOptions({
+                    ...options,
+                    fillFields: {
+                      ...options.fillFields,
+                      [field]: value,
+                    },
+                  })
+                }}
+              />
+            </label>
+          ))}
+        </div>
+      </details>
+    </>
+  )
 }
 
-const FIELDS_MAP: Record<string, string> = {
+type FillField = keyof ReleaseOptions['fillFields']
+
+const FIELDS_MAP: Record<FillField, string> = {
   artists: 'Artists',
   type: 'Release Type',
   date: 'Release Date',
@@ -253,4 +260,12 @@ const CAPITALIZATION_TYPE_MAP: Record<CapitalizationType, string> = {
   'title-case': 'Title Case',
   'sentence-case': 'Sentence case',
   'as-is': 'Keep as-is',
+}
+
+export const DEFAULT_FORM_OPTIONS: ReleaseOptions = {
+  fillFields: Object.fromEntries(
+    Object.keys(FIELDS_MAP).map((field) => [field, true]),
+  ) as ReleaseOptions['fillFields'],
+  capitalization: 'title-case',
+  downloadArt: false,
 }
