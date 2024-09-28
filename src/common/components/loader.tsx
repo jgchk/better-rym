@@ -3,12 +3,13 @@ import { FunctionComponent, h, JSX } from 'preact'
 import LoaderIcon from '../icons/loader'
 import { useEffect } from 'preact/hooks'
 
-export const Loader: FunctionComponent<
-  Omit<JSX.SVGAttributes<SVGSVGElement>, 'className' | 'style'> & {
-    className?: string
-    style?: JSX.CSSProperties
-  }
-> = ({ className, ...properties }) => {
+export function Loader({
+  className,
+  ...properties
+}: Omit<JSX.SVGAttributes<SVGSVGElement>, 'className' | 'style'> & {
+  className?: string
+  style?: JSX.CSSProperties
+}) {
   useEffect(() => {
     const style = document.createElement('style')
     style.textContent = keyframes

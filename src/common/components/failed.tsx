@@ -4,12 +4,14 @@ import { useState } from 'preact/hooks'
 
 import XIcon from '../icons/x'
 
-export const Failed: FunctionComponent<
-  { error: Error; className?: string; style?: JSX.CSSProperties } & Omit<
-    JSX.SVGAttributes<SVGSVGElement>,
-    'className' | 'style'
-  >
-> = ({ error, className, ...properties }) => {
+export function Failed({
+  error,
+  className,
+  ...properties
+}: { error: Error; className?: string; style?: JSX.CSSProperties } & Omit<
+  JSX.SVGAttributes<SVGSVGElement>,
+  'className' | 'style'
+>) {
   const [showTip, setShowTip] = useState(false)
   const [pos, setPos] = useState({ x: 0, y: 0 })
 
