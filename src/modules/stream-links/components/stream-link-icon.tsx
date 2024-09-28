@@ -1,16 +1,19 @@
-import { FunctionComponent, h } from 'preact'
+import { h } from 'preact'
 import { useCallback, useState } from 'preact/hooks'
 
 import { Failed } from '../../../common/components/failed'
 import { Loader } from '../../../common/components/loader'
 import { Searchable, Service } from '../../../common/services/types'
 import { isComplete, isFailed, isLoading } from '../../../common/utils/one-shot'
-import { ServiceLinkState } from './service-link'
+import { StreamLinkState } from './stream-link'
 
-export const Icon: FunctionComponent<{
+export function StreamLinkIcon({
+  service,
+  state,
+}: {
   service: Service & Searchable
-  state: ServiceLinkState
-}> = ({ service, state }) => {
+  state: StreamLinkState
+}) {
   const [isHovered, setIsHovered] = useState(false)
 
   const renderIcon = useCallback(() => {

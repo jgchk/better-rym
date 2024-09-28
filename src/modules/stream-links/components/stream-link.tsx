@@ -1,4 +1,4 @@
-import { FunctionComponent, h } from 'preact'
+import { h } from 'preact'
 import { useCallback, useEffect, useState } from 'preact/hooks'
 
 import { Searchable, Service } from '../../../common/services/types'
@@ -14,18 +14,21 @@ import {
   OneShot,
 } from '../../../common/utils/one-shot'
 import { PageDataState } from '../hooks/use-page-data'
-import { Icon } from './icon'
+import { StreamLinkIcon } from './stream-link-icon'
 
-export type ServiceLinkState = OneShot<Error, ServiceLinkCompleteState>
-type ServiceLinkCompleteState =
+export type StreamLinkState = OneShot<Error, StreamLinkCompleteState>
+type StreamLinkCompleteState =
   | { _tag: 'exists' | 'found'; url: string }
   | { _tag: 'not-found' }
 
-export const ServiceLink: FunctionComponent<{
+export function StreamLink({
+  service,
+  pageData,
+}: {
   service: Service & Searchable
   pageData: PageDataState
-}> = ({ service, pageData }) => {
-  const [state, setState] = useState<ServiceLinkState>(initial)
+}) {
+  const [state, setState] = useState<StreamLinkState>(initial)
 
   useEffect(() => {
     void (async () => {
@@ -56,8 +59,8 @@ export const ServiceLink: FunctionComponent<{
   }, [pageData, service])
 
   const renderIcon = useCallback(
-    () => <Icon service={service} state={state} />,
-    [service, state]
+    () => <StreamLinkIcon service={service} state={state} />,
+    [service, state],
   )
 
   // if we have a link available, wrap in an anchor element

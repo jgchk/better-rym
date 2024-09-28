@@ -1,11 +1,11 @@
-import { FunctionComponent, h } from 'preact'
+import { h } from 'preact'
 
 import { SEARCHABLES } from '../../../common/services'
 import { usePageData } from '../hooks/use-page-data'
-import { ServiceLink } from './service-link'
+import { StreamLink } from './stream-link'
 import { useEffect } from 'preact/hooks'
 
-export const App: FunctionComponent = () => {
+export function StreamLinks() {
   const pageData = usePageData()
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export const App: FunctionComponent = () => {
       }}
     >
       {SEARCHABLES.map((service) => (
-        <ServiceLink key={service.id} service={service} pageData={pageData} />
+        <StreamLink key={service.id} service={service} pageData={pageData} />
       ))}
     </div>
   )
