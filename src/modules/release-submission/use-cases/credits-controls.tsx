@@ -9,8 +9,6 @@ import {
 import { pipe } from '~/common/utils/pipe'
 import { ifDefined, isDefined } from '~/common/utils/types'
 import { selectShortcut } from '../utils/page-functions'
-import { clsx } from '~/common/utils/clsx'
-import classes from '../styles/buttons.module.css'
 
 export default async function injectCreditsControls() {
   const credits = await waitForElement('#creditlist')
@@ -88,36 +86,48 @@ function Credits() {
   )
 
   return (
-    <div className={classes.container}>
+    <div style={{ marginBottom: '-0.25em' }}>
       {filedUnderArtists.map((artist) => (
         <input
           key={artist.id}
           type='button'
-          className={clsx('btn', classes.smallButton)}
+          className='btn'
           value={`+ ${artist.name}`}
           onClick={() => handleClick(artist)}
+          style={{
+            fontSize: '14px !important',
+            marginBottom: '0.25em',
+          }}
         />
       ))}
       {selectedText && (
         <input
           key={'featured'}
           type='button'
-          className={clsx('btn', classes.smallButton)}
+          className='btn'
           value={`+ featuring ${selectedText}`}
           onClick={() =>
             handleCredit(selectedText, 'featured', trackNumber || '')
           }
+          style={{
+            fontSize: '14px !important',
+            marginBottom: '0.25em',
+          }}
         />
       )}
       {selectedText && (
         <input
           key={'featured'}
           type='button'
-          className={clsx('btn', classes.smallButton)}
+          className='btn'
           value={`+ remixer ${selectedText}`}
           onClick={() =>
             handleCredit(selectedText, 'remixer', trackNumber || '')
           }
+          style={{
+            fontSize: '14px !important',
+            marginBottom: '0.25em',
+          }}
         />
       )}
     </div>

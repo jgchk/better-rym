@@ -1,8 +1,6 @@
 import { render } from 'preact'
 import { useCallback } from 'preact/hooks'
 import { waitForElement } from '~/common/utils/dom'
-import classes from '../styles/buttons.module.css'
-import { clsx } from '~/common/utils/clsx'
 
 export default async function injectCatalogNumberControls() {
   const catNoInput = await waitForElement('#catalog_no')
@@ -23,18 +21,20 @@ function CatalogNumber() {
   }, [])
 
   return (
-    <div className={classes.labelContainer}>
+    <div style={{ marginTop: '0.25em' }}>
       <input
         type='button'
-        className={clsx('btn blue_btn', classes.smallButton)}
+        className='btn blue_btn'
         value='Clear'
         onClick={handleClearClick}
+        style={{ fontSize: '14px !important' }}
       />
       <input
         type='button'
-        className={clsx('btn', classes.smallButton)}
+        className='btn'
         value='+ n/a'
         onClick={handleNAClick}
+        style={{ fontSize: '14px !important' }}
       />
     </div>
   )

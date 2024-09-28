@@ -2,8 +2,6 @@ import { render } from 'preact'
 import { useCallback } from 'preact/hooks'
 import { waitForElement } from '~/common/utils/dom'
 import { selectShortcut } from '../utils/page-functions'
-import { clsx } from '~/common/utils/clsx'
-import classes from '../styles/buttons.module.css'
 
 export default async function injectFileUnderControls() {
   const fileUnder = await waitForElement('#filed_underlist')
@@ -21,9 +19,10 @@ function UnknownArtist({ target }: { target: string }) {
   return (
     <input
       type='button'
-      className={clsx('btn', classes.smallButton)}
+      className='btn'
       value='+ [unknown artist]'
       onClick={handleClick}
+      style={{ fontSize: '14px !important' }}
     />
   )
 }

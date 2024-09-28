@@ -1,9 +1,7 @@
 import { render } from 'preact'
 import { useCallback } from 'preact/hooks'
-import { clsx } from '~/common/utils/clsx'
 import { waitForElement } from '~/common/utils/dom'
 import { goInfobox } from '../utils/page-functions'
-import classes from '../styles/buttons.module.css'
 
 export default async function injectLabelControls() {
   const clearButton = await waitForElement('input[value=Clear]')
@@ -32,18 +30,20 @@ function Label() {
   }, [])
 
   return (
-    <div className={classes.labelContainer}>
+    <div style={{ marginTop: '0.25em' }}>
       <input
         type='button'
-        className={clsx('btn blue_btn', classes.smallButton)}
+        className='btn blue_btn'
         value='Clear'
         onClick={handleClearClick}
+        style={{ fontSize: '14px !important' }}
       />
       <input
         type='button'
-        className={clsx('btn', classes.smallButton)}
+        className='btn'
         value='+ (No Label)'
         onClick={handleNoLabelClick}
+        style={{ fontSize: '14px !important' }}
       />
     </div>
   )

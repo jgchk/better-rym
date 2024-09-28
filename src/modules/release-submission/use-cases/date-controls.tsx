@@ -1,10 +1,8 @@
 import { render } from 'preact'
 import { useCallback, useEffect, useState } from 'preact/hooks'
 import { ReleaseDate, ResolveData } from '~/common/services/types'
-import { clsx } from '~/common/utils/clsx'
 import { datesEqual, dateToString } from '~/common/utils/datetime'
 import { waitForElement } from '~/common/utils/dom'
-import classes from '../styles/buttons.module.css'
 import { fillDate } from '../utils/fillers'
 import { FillData } from '../dom'
 
@@ -37,17 +35,19 @@ function DateButton() {
       {date && (!filledDate || !datesEqual(date, filledDate)) && (
         <input
           type='button'
-          className={clsx('btn', classes.smallButton)}
+          className='btn'
           value={`+ Release Date: ${dateToString(date)}`}
           onClick={() => fillDate(date)}
+          style={{ fontSize: '14px !important' }}
         />
       )}
       {publishDate && (!filledDate || !datesEqual(publishDate, filledDate)) && (
         <input
           type='button'
-          className={clsx('btn', classes.smallButton)}
+          className='btn'
           value={`+ Publish Date: ${dateToString(publishDate)}`}
           onClick={() => fillDate(publishDate)}
+          style={{ fontSize: '14px !important' }}
         />
       )}
     </div>
