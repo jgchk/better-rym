@@ -1,7 +1,5 @@
 import { FunctionComponent, JSX } from 'preact'
 
-import { Metadata } from '../../modules/stream-links/utils/page-data'
-
 export const SERVICE_IDS = [
   'applemusic',
   'bandcamp',
@@ -13,7 +11,7 @@ export const SERVICE_IDS = [
   'beatport',
 ] as const
 
-export type ServiceId = typeof SERVICE_IDS[number]
+export type ServiceId = (typeof SERVICE_IDS)[number]
 export type Service = {
   id: ServiceId
   name: string
@@ -22,26 +20,29 @@ export type Service = {
 }
 export type Icon = FunctionComponent<JSX.SVGAttributes<SVGSVGElement>>
 
-export type SearchFunction = (metadata: Metadata) => Promise<string | undefined>
+export type SearchFunction = (metadata: {
+  artist: string
+  title: string
+}) => Promise<string | undefined>
 export type Searchable = {
   search: SearchFunction
   foundIcon: Icon
   notFoundIcon: Icon
 }
 export const isSearchable = (
-  service: Service | (Service & Searchable)
+  service: Service | (Service & Searchable),
 ): service is Service & Searchable => 'search' in service
 
 export type ResolveFunction = (url: string) => Promise<ResolveData>
 export type Resolvable = { resolve: ResolveFunction }
 export const isResolvable = (
-  service: Service | (Service & Resolvable)
+  service: Service | (Service & Resolvable),
 ): service is Service & Resolvable => 'resolve' in service
 
 export type EmbedFunction = (url: string) => Promise<string | undefined>
 export type Embeddable = { embed: EmbedFunction }
 export const isEmbeddable = (
-  service: Service | (Service & Embeddable)
+  service: Service | (Service & Embeddable),
 ): service is Service & Embeddable => 'embed' in service
 
 export type ReleaseDate = {

@@ -1,7 +1,7 @@
 import { h } from 'preact'
 
-import { SEARCHABLES } from '../../../common/services'
-import { usePageData } from '../hooks/use-page-data'
+import { SEARCHABLES } from '../../common/services'
+import { usePageData } from './use-page-data'
 import { StreamLink } from './stream-link'
 import { useEffect } from 'preact/hooks'
 

@@ -1,14 +1,50 @@
-import { SEARCHABLES } from '../../../common/services'
-import { ServiceId } from '../../../common/services/types'
+import { useEffect, useState } from 'preact/hooks'
+
+import {
+  complete,
+  failed,
+  initial,
+  isInitial,
+  loading,
+  OneShot,
+} from '../../common/utils/one-shot'
 import {
   runScript,
   waitForDocumentReady,
   waitForElement,
-} from '../../../common/utils/dom'
+} from '~/common/utils/dom'
+import { SEARCHABLES } from '~/common/services'
+import { ServiceId } from '~/common/services/types'
 
-export type Metadata = { artist: string; title: string }
-export type PageData = { metadata: Metadata; links: Links }
-export async function getPageData(): Promise<PageData> {
+export type PageDataState = OneShot<Error, PageData>
+
+export const usePageData = (): PageDataState => {
+  const [state, setState] = useState<PageDataState>(initial)
+
+  const fetch = async () => {
+    setState(loading)
+
+    const nextState = await getPageData()
+      .then((data) => complete(data))
+      .catch((error) => failed(error))
+
+    setState(nextState)
+  }
+
+  useEffect(() => {
+    if (isInitial(state)) {
+      void fetch()
+    }
+  }, [state])
+
+  return state
+}
+
+type PageData = {
+  metadata: { artist: string; title: string }
+  links: Links
+}
+async function getPageData(): Promise<PageData> {
   const [artist, title, links] = await Promise.all([
     getArtist(),
     getTitle(),
@@ -60,7 +96,7 @@ async function getLinks(): Promise<Links> {
   >
 }
 
-export type Links = Record<ServiceId, string | undefined>
+type Links = Record<ServiceId, string | undefined>
 
 const EMPTY_LINKS = Object.fromEntries(
   SEARCHABLES.map(({ id }) => [id, undefined]),
