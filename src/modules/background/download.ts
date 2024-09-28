@@ -45,7 +45,7 @@ export const download = async ({
       )
 
       const downloadId = await browser.downloads.download({
-        url: URL.createObjectURL(blob),
+        url,
         filename: filenameWithExtension,
       })
       return { id, type: 'download', data: { id: downloadId } }
