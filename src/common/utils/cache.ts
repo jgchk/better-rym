@@ -1,6 +1,6 @@
 import * as storage from './storage'
 
-interface StoredValue<T> {
+type StoredValue<T> = {
   expire: number
   data: T
 }
@@ -22,7 +22,7 @@ export const get = async <T>(key: string): Promise<T | undefined> => {
 export const set = async <T>(
   key: string,
   value: T,
-  ttl = 3_600_000
+  ttl = 3_600_000,
 ): Promise<void> => {
   const storedValue: StoredValue<T> = { expire: Date.now() + ttl, data: value }
   await storage.set(key, storedValue)
@@ -37,7 +37,7 @@ export const clean = async (): Promise<void> => {
       if (storedValue !== undefined && isExpired(storedValue)) {
         await storage.remove(key)
       }
-    })
+    }),
   )
 }
 
@@ -45,7 +45,7 @@ export const withCache =
   <A, T>(
     key: string,
     function_: (...arguments_: A[]) => T | Promise<T>,
-    ttl?: number
+    ttl?: number,
   ) =>
   async (...arguments_: A[]): Promise<T> => {
     const argumentKey = JSON.stringify([key, arguments_])

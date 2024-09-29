@@ -1,7 +1,7 @@
 import { fetch } from '../../utils/fetch'
 import { isDefined } from '../../utils/types'
-import { SearchFunction } from '../types'
-import { SearchObject } from './codecs'
+import type { SearchFunction } from '../types'
+import type { SearchObject } from './codecs'
 
 export const search: SearchFunction = async ({ artist, title }) => {
   const response = await fetch({
@@ -15,7 +15,7 @@ export const search: SearchFunction = async ({ artist, title }) => {
   const html = new DOMParser().parseFromString(response, 'text/html')
   const scripts = [...html.getElementsByTagName('script')]
   const dataScript = scripts.find((script) =>
-    script.textContent?.includes('var ytInitialData')
+    script.textContent?.includes('var ytInitialData'),
   )?.textContent
   if (dataScript === null || dataScript === undefined)
     throw new Error('Could not find search metadata tag')

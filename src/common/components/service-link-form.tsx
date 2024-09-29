@@ -1,13 +1,15 @@
-import { h, VNode } from 'preact'
+import type { VNode } from 'preact'
+import { h } from 'preact'
 import { useEffect, useState } from 'preact/hooks'
 
-import { Service } from '../services/types'
-import { fold, isFailed, OneShot } from '../utils/one-shot'
+import { getMatchingService } from '../services'
+import type { Service } from '../services/types'
+import type { OneShot } from '../utils/one-shot'
+import { fold, isFailed } from '../utils/one-shot'
 import { pipe } from '../utils/pipe'
 import { Complete } from './complete'
 import { Failed } from './failed'
 import { Loader } from './loader'
-import { getMatchingService } from '../services'
 import { ServiceSelector } from './service-selector'
 
 export function ServiceLinkForm<E extends Error, T, S extends Service>({

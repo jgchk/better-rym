@@ -1,4 +1,5 @@
 import { h, render } from 'preact'
+
 import { waitForElement } from '~/common/utils/dom'
 
 export default async function addDropdown(
@@ -50,13 +51,13 @@ function Dropdown({ label, queryParameter, items }: DropdownProps) {
   )
 }
 
-interface DropdownProps {
+type DropdownProps = {
   label: string
   queryParameter: string
   items: DropdownItem[]
 }
 
-interface DropdownItem {
+type DropdownItem = {
   id: string
   name: string
 }

@@ -6,9 +6,9 @@ import {
 } from '../../utils/datetime'
 import { fetch } from '../../utils/fetch'
 import { getReleaseType } from '../../utils/music'
-import { ReleaseAttribute, ResolveFunction, Track } from '../types'
+import type { ReleaseAttribute, ResolveFunction, Track } from '../types'
 import { requestToken } from './auth'
-import { MusicObject, TrackObject } from './codecs'
+import type { MusicObject, TrackObject } from './codecs'
 
 const formatTrack = ({
   title,
@@ -22,23 +22,23 @@ const formatTrack = ({
 
 const getTracks = async (
   data: MusicObject,
-  token: string
+  token: string,
 ): Promise<(Track & { cc: boolean })[]> => {
   if (data.kind === 'track') return [formatTrack(data)]
 
   const fullTrackResults = await Promise.all(
     chunkArray(
       data.tracks.filter((track) => !track.title).map((track) => track.id),
-      15
+      15,
     ).map(
       async (ids) =>
         JSON.parse(
           await fetch({
             url: 'https://api-v2.soundcloud.com/tracks',
             urlParameters: { ids: ids.join(','), client_id: token },
-          })
-        ) as TrackObject[]
-    )
+          }),
+        ) as TrackObject[],
+    ),
   )
   const fullTracks = fullTrackResults.flat()
 
@@ -49,7 +49,7 @@ const getTracks = async (
           [
             track.id,
             track.title ? track : fullTracks.find(({ id }) => id === track.id),
-          ] as const
+          ] as const,
       )
       .map(
         async ([id, track]) =>
@@ -58,9 +58,9 @@ const getTracks = async (
             await fetch({
               url: `https://api-v2.soundcloud.com/tracks/${id}`,
               urlParameters: { client_id: token },
-            })
-          ) as TrackObject)
-      )
+            }),
+          ) as TrackObject),
+      ),
   )
 
   return tracks.map(formatTrack)
@@ -82,7 +82,7 @@ const getCoverArt = (data: MusicObject) => {
     urls.push(
       data.artwork_url.replace('-large', '-original'),
       data.artwork_url.replace('-large', '-t500x500'),
-      data.artwork_url
+      data.artwork_url,
     )
   }
 
@@ -92,7 +92,7 @@ const getCoverArt = (data: MusicObject) => {
         urls.push(
           track.artwork_url.replace('-large', '-original'),
           track.artwork_url.replace('-large', '-t500x500'),
-          track.artwork_url
+          track.artwork_url,
         )
       }
     }
@@ -109,7 +109,7 @@ export const resolve: ResolveFunction = async (url) => {
     await fetch({
       url: 'https://api-v2.soundcloud.com/resolve',
       urlParameters: { url, client_id: token },
-    })
+    }),
   ) as MusicObject
 
   const url_ = response.permalink_url

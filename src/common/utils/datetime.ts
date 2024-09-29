@@ -1,4 +1,4 @@
-import { ReleaseDate } from '../services/types'
+import type { ReleaseDate } from '../services/types'
 import { isDefined } from './types'
 
 export const stringToDate = (dateString: string): ReleaseDate => {

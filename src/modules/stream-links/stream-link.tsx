@@ -1,8 +1,9 @@
 import { h } from 'preact'
 import { useCallback, useEffect, useState } from 'preact/hooks'
 
-import { Searchable, Service } from '../../common/services/types'
+import type { Searchable, Service } from '../../common/services/types'
 import { parseError } from '../../common/utils/error'
+import type { OneShot } from '../../common/utils/one-shot'
 import {
   complete,
   failed,
@@ -11,10 +12,9 @@ import {
   isFailed,
   isLoading,
   loading,
-  OneShot,
 } from '../../common/utils/one-shot'
-import { PageDataState } from './use-page-data'
 import { StreamLinkIcon } from './stream-link-icon'
+import type { PageDataState } from './use-page-data'
 
 export type StreamLinkState = OneShot<Error, StreamLinkCompleteState>
 type StreamLinkCompleteState =

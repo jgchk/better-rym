@@ -5,12 +5,12 @@ export const streamLinkNames = [
   'spotify',
   'applemusic',
 ] as const
-export type StreamLinkName = typeof streamLinkNames[number]
+export type StreamLinkName = (typeof streamLinkNames)[number]
 const isStreamLinkName = (string: string): string is StreamLinkName =>
   (streamLinkNames as readonly string[]).includes(string)
 
 export const displayTypes = ['available', 'missing'] as const
-export type DisplayType = typeof displayTypes[number]
+export type DisplayType = (typeof displayTypes)[number]
 
 export type State = {
   rows: Row[]

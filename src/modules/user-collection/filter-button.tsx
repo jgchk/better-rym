@@ -1,4 +1,5 @@
-import { FunctionComponent, h } from 'preact'
+import type { FunctionComponent } from 'preact'
+import { h } from 'preact'
 import { useMemo } from 'preact/hooks'
 
 export const FilterButton: FunctionComponent<{

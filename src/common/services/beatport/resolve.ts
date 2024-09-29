@@ -2,7 +2,7 @@ import { stringToDate } from '../../utils/datetime'
 import { fetch } from '../../utils/fetch'
 import { getReleaseType } from '../../utils/music'
 import { isDefined } from '../../utils/types'
-import { ReleaseLabel, ResolveFunction } from '../types'
+import type { ReleaseLabel, ResolveFunction } from '../types'
 
 const getTitle = (document_: Document) => {
   return document_
@@ -13,7 +13,7 @@ const getTitle = (document_: Document) => {
 const getArtists = (document_: Document) => {
   return [
     ...document_.querySelectorAll(
-      '.interior-release-chart-content .interior-release-chart-content-item a[data-artist]'
+      '.interior-release-chart-content .interior-release-chart-content-item a[data-artist]',
     ),
   ]
     .map((element) => element.textContent?.trim())
@@ -23,7 +23,7 @@ const getArtists = (document_: Document) => {
 const getDate = (document_: Document) => {
   const dateString = document_
     .querySelector(
-      '.interior-release-chart-artwork-parent .interior-release-chart-content-item:nth-child(1) .value'
+      '.interior-release-chart-artwork-parent .interior-release-chart-content-item:nth-child(1) .value',
     )
     ?.textContent?.trim()
 
@@ -70,7 +70,7 @@ const getTracks = (document_: Document) =>
 
 const getCoverArt = (document_: Document) => {
   const originalUrl = document_.querySelector<HTMLImageElement>(
-    'img.interior-release-chart-artwork'
+    'img.interior-release-chart-artwork',
   )?.src
 
   const maxSizeUrl = originalUrl?.replace(/\/\d+x\d+\//, '/0x0/')
@@ -81,13 +81,13 @@ const getCoverArt = (document_: Document) => {
 const getLabel = (document_: Document): ReleaseLabel => {
   const name = document_
     .querySelector(
-      '.interior-release-chart-artwork-parent .interior-release-chart-content-item:nth-child(2) .value'
+      '.interior-release-chart-artwork-parent .interior-release-chart-content-item:nth-child(2) .value',
     )
     ?.textContent?.trim()
 
   const catno = document_
     .querySelector(
-      '.interior-release-chart-artwork-parent .interior-release-chart-content-item:nth-child(3) .value'
+      '.interior-release-chart-artwork-parent .interior-release-chart-content-item:nth-child(3) .value',
     )
     ?.textContent?.trim()
 

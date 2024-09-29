@@ -4,8 +4,8 @@ export type FetchRequest = {
   data: {
     url: string
     method?: 'GET' | 'POST'
-    urlParameters?: { [key: string]: string }
-    headers?: { [key: string]: string }
+    urlParameters?: Record<string, string>
+    headers?: Record<string, string>
     credentials?: RequestCredentials
   }
 }

@@ -1,4 +1,5 @@
-import { h, JSX } from 'preact'
+import type { JSX } from 'preact'
+import { h } from 'preact'
 
 export default function DiscogsIcon(props: JSX.SVGAttributes<SVGSVGElement>) {
   return (

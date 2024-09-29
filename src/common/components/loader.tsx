@@ -1,7 +1,8 @@
-import { FunctionComponent, h, JSX } from 'preact'
+import type { JSX } from 'preact'
+import { h } from 'preact'
+import { useEffect } from 'preact/hooks'
 
 import LoaderIcon from '../icons/loader'
-import { useEffect } from 'preact/hooks'
 
 export function Loader({
   className,

@@ -1,18 +1,18 @@
 import { render } from 'preact'
 import { useCallback, useState } from 'preact/hooks'
-import { useReleaseInfo } from '~/common/hooks/use-release-info'
-import { Resolvable, ResolveData, Service } from '~/common/services/types'
-import { waitForElement } from '~/common/utils/dom'
-import { ReleaseOptions } from '../utils/types'
-import { isComplete } from '~/common/utils/one-shot'
-import { fill } from '../utils/fillers'
-import { download } from '~/common/utils/download'
+
 import { ServiceLinkForm } from '~/common/components/service-link-form'
+import { useReleaseInfo } from '~/common/hooks/use-release-info'
 import { RESOLVABLES } from '~/common/services'
-import {
-  CAPITALIZATION_TYPES,
-  CapitalizationType,
-} from '../utils/capitalization'
+import type { Resolvable, ResolveData, Service } from '~/common/services/types'
+import { waitForElement } from '~/common/utils/dom'
+import { download } from '~/common/utils/download'
+import { isComplete } from '~/common/utils/one-shot'
+
+import type { CapitalizationType } from '../utils/capitalization'
+import { CAPITALIZATION_TYPES } from '../utils/capitalization'
+import { fill } from '../utils/fillers'
+import type { ReleaseOptions } from '../utils/types'
 
 export default async function injectImportControls() {
   const siblingElement = await waitForElement('.submit_step_header')

@@ -1,9 +1,9 @@
 import { h } from 'preact'
+import { useEffect } from 'preact/hooks'
 
 import { SEARCHABLES } from '../../common/services'
-import { usePageData } from './use-page-data'
 import { StreamLink } from './stream-link'
-import { useEffect } from 'preact/hooks'
+import { usePageData } from './use-page-data'
 
 export function StreamLinks() {
   const pageData = usePageData()

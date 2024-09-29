@@ -1,17 +1,15 @@
 import browser from 'webextension-polyfill'
 
 import { getPageEnabled, pages, setPageEnabled } from '../../common/pages'
-import {
-  BackgroundResponse,
-  isBackgroundRequest,
-} from '../../common/utils/messaging/codec'
+import type { BackgroundResponse } from '../../common/utils/messaging/codec'
+import { isBackgroundRequest } from '../../common/utils/messaging/codec'
 import { download } from './download'
 import { backgroundFetch } from './fetch'
 import { script } from './script'
 
 const getResponse = (
   message: unknown,
-  tabId: number
+  tabId: number,
 ): Promise<BackgroundResponse> => {
   if (isBackgroundRequest(message)) {
     if (message.type === 'fetch') return backgroundFetch(message)
@@ -26,7 +24,7 @@ browser.runtime.onMessage.addListener((message, sender) => {
   if (tabId === undefined) return undefined
 
   void getResponse(message, tabId).then((response) =>
-    browser.tabs.sendMessage(tabId, response)
+    browser.tabs.sendMessage(tabId, response),
   )
 })
 

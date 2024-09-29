@@ -3,7 +3,7 @@ import { stringToDate } from '../../utils/datetime'
 import { fetch } from '../../utils/fetch'
 import { getReleaseType } from '../../utils/music'
 import { isDefined } from '../../utils/types'
-import { ResolveFunction } from '../types'
+import type { ResolveFunction } from '../types'
 
 const getTitle = (document_: Document) => {
   // .song_name is misleading, it actually contains the album title
@@ -18,7 +18,7 @@ const getArtists = (document_: Document) => {
 
 const getDate = (document_: Document) => {
   const dateString =
-    document_.querySelectorAll('.section_info .meta dd').item(0)?.textContent ||
+    document_.querySelectorAll('.section_info .meta dd').item(0)?.textContent ??
     undefined
 
   return !dateString ? undefined : stringToDate(dateString)
@@ -52,7 +52,7 @@ const getType = (document_: Document, numberOfTracks: number) => {
 
 const getCoverArt = (document_: Document) => {
   const url =
-    document_.querySelector<HTMLImageElement>('.image_typeAll img')?.src ||
+    document_.querySelector<HTMLImageElement>('.image_typeAll img')?.src ??
     undefined
 
   if (!url) return undefined

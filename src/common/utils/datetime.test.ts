@@ -1,5 +1,6 @@
-import { secondsToString } from './datetime'
 import { describe, expect, test } from 'vitest'
+
+import { secondsToString } from './datetime'
 
 describe('secondsToString', () => {
   test('gets rounding correct', () => {

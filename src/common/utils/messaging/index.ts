@@ -1,17 +1,14 @@
 import { nanoid } from 'nanoid'
 import browser from 'webextension-polyfill'
 
-import {
-  BackgroundRequest,
-  BackgroundResponse,
-  isBackgroundResponse,
-} from './codec'
+import type { BackgroundRequest, BackgroundResponse } from './codec'
+import { isBackgroundResponse } from './codec'
 
 export const sendBackgroundMessage = <
   Request extends BackgroundRequest,
-  Response extends BackgroundResponse
+  Response extends BackgroundResponse,
 >(
-  request: Omit<Request, 'id'>
+  request: Omit<Request, 'id'>,
 ): Promise<Response> =>
   new Promise((resolve) => {
     const requestId = nanoid()

@@ -1,10 +1,12 @@
 import { render } from 'preact'
 import { useCallback, useEffect, useState } from 'preact/hooks'
-import { ReleaseDate, ResolveData } from '~/common/services/types'
+
+import type { ReleaseDate, ResolveData } from '~/common/services/types'
 import { datesEqual, dateToString } from '~/common/utils/datetime'
 import { waitForElement } from '~/common/utils/dom'
+
+import type { FillData } from '../dom'
 import { fillDate } from '../utils/fillers'
-import { FillData } from '../dom'
 
 export default async function injectDateControls() {
   const yearInput = await waitForElement('#year')

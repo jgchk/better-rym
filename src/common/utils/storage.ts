@@ -5,10 +5,8 @@ export const get = async <T>(key: string): Promise<T | undefined> => {
   return response[key] as T
 }
 
-export const getAll = (): Promise<{
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any
-}> => browser.storage.local.get()
+export const getAll = (): Promise<Record<string, unknown>> =>
+  browser.storage.local.get()
 
 export const set = <T>(key: string, value: T): Promise<void> =>
   browser.storage.local.set({ [key]: value })

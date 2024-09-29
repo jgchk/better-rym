@@ -1,7 +1,7 @@
 /**
  * RELEASE
  */
-export interface ReleaseData {
+export type ReleaseData = {
   '@context': string
   '@type': 'MusicAlbum'
   name: string
@@ -15,13 +15,13 @@ export interface ReleaseData {
   byArtist: ByArtist[]
 }
 
-export interface ByArtist {
+export type ByArtist = {
   '@type': string
   url?: string
   name: string
 }
 
-export interface Track {
+export type Track = {
   '@type': 'MusicRecording'
   name: string
   url: string
@@ -31,7 +31,7 @@ export interface Track {
   image?: string
 }
 
-export interface Audio {
+export type Audio = {
   '@type': AudioType
 }
 
@@ -39,7 +39,7 @@ export enum AudioType {
   AudioObject = 'AudioObject',
 }
 
-export interface Offers {
+export type Offers = {
   '@type': OffersType
   category: Category
   price: number
@@ -56,7 +56,7 @@ export enum Category {
 /**
  * VIDEO
  */
-export interface MusicVideoData {
+export type MusicVideoData = {
   '@context': string
   '@type': 'MusicVideoObject'
   name: string
@@ -77,14 +77,14 @@ export enum Type {
   MusicVideoObject = 'MusicVideoObject',
 }
 
-export interface Citation {
+export type Citation = {
   '@type': Type
   name: string
   url: string
   image?: string
 }
 
-export interface Video {
+export type Video = {
   '@type': string
   name: string
   description: string

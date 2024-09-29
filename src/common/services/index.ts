@@ -5,15 +5,8 @@ import { Discogs } from './discogs'
 import { Melon } from './melon'
 import { Soundcloud } from './soundcloud'
 import { Spotify } from './spotify'
-import {
-  Embeddable,
-  isEmbeddable,
-  isResolvable,
-  isSearchable,
-  Resolvable,
-  Searchable,
-  Service,
-} from './types'
+import type { Embeddable, Resolvable, Searchable, Service } from './types'
+import { isEmbeddable, isResolvable, isSearchable } from './types'
 import { YouTube } from './youtube'
 
 export const SERVICES: Service[] = [

@@ -1,4 +1,5 @@
 function filenameReservedRegex() {
+  // eslint-disable-next-line no-control-regex
   return /[<>:"/\\|?*\u0000-\u001F]/g
 }
 
@@ -23,8 +24,7 @@ export default function filenamify(
     throw new TypeError('Expected a string')
   }
 
-  const replacement =
-    options.replacement === undefined ? '!' : options.replacement
+  const replacement = options.replacement ?? '!'
 
   if (
     filenameReservedRegex().test(replacement) &&
@@ -46,15 +46,15 @@ export default function filenamify(
   string = string.replace(reTrailingPeriods, '')
 
   if (replacement.length > 0) {
-    const startedWithDot = string[0] === '.'
+    const startedWithDot = string.startsWith('.')
 
     // We removed the whole filename
-    if (!startedWithDot && string[0] === '.') {
+    if (!startedWithDot && string.startsWith('.')) {
       string = replacement + string
     }
 
     // We removed the whole extension
-    if (string[string.length - 1] === '.') {
+    if (string.endsWith('.')) {
       string += replacement
     }
   }

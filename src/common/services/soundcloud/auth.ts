@@ -5,7 +5,7 @@ const getScriptUrls = async () => {
   const response = await fetch({ url: 'https://soundcloud.com' })
   return [
     ...response.matchAll(
-      /<script crossorigin src="(https:\/\/a-v2\.sndcdn\.com\/assets\/[\da-z-]+\.js)"><\/script>/gm
+      /<script crossorigin src="(https:\/\/a-v2\.sndcdn\.com\/assets\/[\da-z-]+\.js)"><\/script>/gm,
     ),
   ]
     .map((match) => match[1])
@@ -19,7 +19,7 @@ const fetchClientId = async (url: string) => {
 
 const scrapeClientId = async (urls: string[]) => {
   const maybeClientIds = await Promise.all(
-    urls.map((url) => fetchClientId(url))
+    urls.map((url) => fetchClientId(url)),
   )
   return maybeClientIds.find(isDefined)
 }

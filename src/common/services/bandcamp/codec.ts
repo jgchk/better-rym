@@ -59,14 +59,14 @@ export type SecondaryTrackData = {
   inAlbum: InAlbum
 }
 
-export interface InAlbum {
+export type InAlbum = {
   albumRelease: AlbumRelease[]
 }
 
-export interface AlbumRelease {
+export type AlbumRelease = {
   recordLabel?: Label
 }
 
-export interface Label {
+export type Label = {
   name: string
 }

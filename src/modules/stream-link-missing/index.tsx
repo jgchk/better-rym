@@ -1,14 +1,11 @@
 import { waitForDocumentReady } from '../../common/utils/dom'
 import { isDefined } from '../../common/utils/types'
 import { getDisplayType, setDisplayType } from './settings'
+import type { DisplayType, Row, State, StreamLinkName } from './types'
 import {
-  DisplayType,
   displayTypes,
   filtersToQueryString,
   queryStringToFilters,
-  Row,
-  State,
-  StreamLinkName,
   streamLinkNames,
 } from './types'
 
@@ -222,7 +219,6 @@ function makeSelector(
     const streamLinkButton = document.createElement('button')
     streamLinkButton.className = 'brym selector-button'
     streamLinkButton.innerHTML = `<span class="ui_media_link_btn ui_media_link_btn_${streamLinkName}"></span>`
-    // eslint-disable-next-line unicorn/consistent-function-scoping
     const renderSelected = (selected: boolean) => {
       if (selected) {
         streamLinkButton.classList.add('selected')

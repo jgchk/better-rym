@@ -1,4 +1,5 @@
-import { FunctionComponent, h, JSX } from 'preact'
+import type { JSX } from 'preact'
+import { h } from 'preact'
 
 import CheckIcon from '../icons/check'
 

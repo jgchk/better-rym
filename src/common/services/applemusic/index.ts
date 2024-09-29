@@ -2,7 +2,7 @@ import AppleMusicIcon from '../../icons/applemusic'
 import AppleMusicFoundIcon from '../../icons/applemusic-found'
 import AppleMusicNotFoundIcon from '../../icons/applemusic-notfound'
 import { withCache } from '../../utils/cache'
-import { Resolvable, Searchable, Service } from '../types'
+import type { Resolvable, Searchable, Service } from '../types'
 import { resolve } from './resolve'
 import { search } from './search'
 

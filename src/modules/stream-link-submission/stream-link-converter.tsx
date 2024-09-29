@@ -1,4 +1,4 @@
-import { FunctionComponent, h } from 'preact'
+import { h } from 'preact'
 import { useCallback, useEffect, useState } from 'preact/hooks'
 
 import { Complete } from '../../common/components/complete'
@@ -6,7 +6,8 @@ import { Failed } from '../../common/components/failed'
 import { Loader } from '../../common/components/loader'
 import { ServiceSelector } from '../../common/components/service-selector'
 import { EMBEDDABLES, getMatchingService } from '../../common/services'
-import { Embeddable, Service } from '../../common/services/types'
+import type { Embeddable, Service } from '../../common/services/types'
+import type { OneShot } from '../../common/utils/one-shot'
 import {
   complete,
   failed,
@@ -14,7 +15,6 @@ import {
   initial,
   isComplete,
   loading,
-  OneShot,
 } from '../../common/utils/one-shot'
 import { pipe } from '../../common/utils/pipe'
 import { useControlledInput } from './use-controlled-input'

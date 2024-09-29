@@ -1,5 +1,6 @@
 import { render } from 'preact'
 import { useCallback } from 'preact/hooks'
+
 import { waitForElement } from '~/common/utils/dom'
 
 export default async function injectCatalogNumberControls() {

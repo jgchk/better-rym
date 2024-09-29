@@ -3,14 +3,14 @@ import { secondsToString, stringToDate } from '../../utils/datetime'
 import { fetch } from '../../utils/fetch'
 import { getReleaseType } from '../../utils/music'
 import { htmlDecode } from '../../utils/string'
-import {
+import type {
   ReleaseAttribute,
   ReleaseDate,
   ReleaseLabel,
   ResolveFunction,
   Track,
 } from '../types'
-import {
+import type {
   EmbedAlbumData,
   ReleaseData,
   SecondaryAlbumData,
@@ -19,23 +19,23 @@ import {
 
 const getData = (document_: Document) => {
   const text = document_.querySelector<HTMLScriptElement>(
-    'script[data-tralbum]'
+    'script[data-tralbum]',
   )?.dataset.tralbum
   return text ? (JSON.parse(text) as ReleaseData) : undefined
 }
 
 const getSecondaryData = (document_: Document) => {
   const text = document_.querySelector<HTMLScriptElement>(
-    'script[type="application/ld+json"]'
+    'script[type="application/ld+json"]',
   )?.text
 
-  if (text && text.includes('@id')) {
+  if (text?.includes('@id')) {
     return JSON.parse(text) as SecondaryAlbumData | SecondaryTrackData
   }
 }
 
 const getDate = (data: ReleaseData): ReleaseDate | undefined => {
-  const dateString = data.current.release_date || data.album_release_date
+  const dateString = data.current.release_date ?? data.album_release_date
   return dateString ? stringToDate(dateString) : undefined
 }
 
@@ -46,11 +46,11 @@ const getPublishDate = (data: ReleaseData): ReleaseDate | undefined => {
 
 const getTracks = async (
   data: ReleaseData,
-  allowEmbed = true
+  allowEmbed = true,
 ): Promise<Track[] | undefined> => {
   if (allowEmbed) {
     const hasMissingDurations = data.trackinfo.some(
-      (track) => track.duration === 0
+      (track) => track.duration === 0,
     )
 
     if (hasMissingDurations) {
@@ -77,7 +77,7 @@ const getTracks = async (
 }
 
 const getTracksFromEmbed = async (
-  data: ReleaseData
+  data: ReleaseData,
 ): Promise<Track[] | undefined> => {
   const url = `https://bandcamp.com/EmbeddedPlayer.html/album=${data.id}/size=large/artwork=small/`
   const response = await fetch({ url })
@@ -107,7 +107,7 @@ export const resolve: ResolveFunction = async (url) => {
   const data = getData(document_)
   const secondaryData = getSecondaryData(document_)
 
-  const url_ = data?.url || url
+  const url_ = data?.url ?? url
   const title = data?.current.title
   const artists = asArray(data?.artist)
   const date = data ? getDate(data) : undefined

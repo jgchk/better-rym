@@ -1,4 +1,4 @@
-import { CapitalizationType } from './capitalization'
+import type { CapitalizationType } from './capitalization'
 
 export type ReleaseOptions = {
   capitalization: CapitalizationType

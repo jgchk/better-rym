@@ -1,4 +1,5 @@
 import { describe, expect, test } from 'vitest'
+
 import { capitalize } from './capitalization'
 
 describe('title caps', () => {

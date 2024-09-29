@@ -2,11 +2,11 @@ import getArtistTitle from 'get-artist-title'
 
 import { secondsToString, stringToDate } from '../../utils/datetime'
 import { fetch } from '../../utils/fetch'
-import { FetchRequest } from '../../utils/messaging/codec'
+import type { FetchRequest } from '../../utils/messaging/codec'
 import { getReleaseType } from '../../utils/music'
-import { ResolveData, ResolveFunction, Track } from '../types'
+import type { ResolveData, ResolveFunction, Track } from '../types'
 import { YOUTUBE_KEY } from './auth'
-import { Playlist, PlaylistItems, Video } from './codecs'
+import type { Playlist, PlaylistItems, Video } from './codecs'
 import { regex } from './regex'
 
 const parseDuration = (durationString: string) => {
@@ -20,7 +20,7 @@ const parseDuration = (durationString: string) => {
 }
 
 const parseTitle = (
-  data: Video['items'][number] | Playlist['items'][number]
+  data: Video['items'][number] | Playlist['items'][number],
 ) => {
   const artistTitle = getArtistTitle(data.snippet.title)
   return artistTitle
@@ -39,7 +39,7 @@ const getTrack = async (videoId: string): Promise<Track> => {
         part: 'snippet,contentDetails',
         key: YOUTUBE_KEY,
       },
-    })
+    }),
   ) as Video
 
   if (response === undefined) throw new Error('Failed to retrieve video')
@@ -68,7 +68,7 @@ const getTracks = async (playlistId: string): Promise<Track[]> => {
       await fetch({
         url: 'https://www.googleapis.com/youtube/v3/playlistItems',
         urlParameters,
-      })
+      }),
     ) as PlaylistItems
 
     videos.push(...items)
@@ -76,7 +76,7 @@ const getTracks = async (playlistId: string): Promise<Track[]> => {
   } while (pageToken)
 
   return Promise.all(
-    videos.map((video) => getTrack(video.contentDetails.videoId))
+    videos.map((video) => getTrack(video.contentDetails.videoId)),
   )
 }
 
@@ -87,7 +87,7 @@ const resolvePlaylist = async (id: string): Promise<ResolveData> => {
     await fetch({
       url: 'https://www.googleapis.com/youtube/v3/playlists',
       urlParameters: { id, part: 'snippet', key: YOUTUBE_KEY },
-    })
+    }),
   ) as Playlist
 
   if (response === undefined) throw new Error('Failed to retrieve playlist')
@@ -121,7 +121,7 @@ const resolveVideo = async (id: string): Promise<ResolveData> => {
     await fetch({
       url: 'https://youtube.googleapis.com/youtube/v3/videos',
       urlParameters: { id, part: 'snippet,contentDetails', key: YOUTUBE_KEY },
-    })
+    }),
   ) as Video
 
   if (response === undefined) throw new Error('Failed to retrieve video')

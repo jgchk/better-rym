@@ -2,16 +2,16 @@ import { asArray } from '../../utils/array'
 import { secondsToString } from '../../utils/datetime'
 import { fetch } from '../../utils/fetch'
 import { getReleaseType } from '../../utils/music'
-import { ReleaseDate, ResolveData, ResolveFunction, Track } from '../types'
+import type { ReleaseDate, ResolveData, ResolveFunction, Track } from '../types'
 import { requestToken } from './auth'
-import {
+import type {
   AlbumObject,
   AlbumTracks,
   AlbumType,
-  isAlbumObject,
   SimplifiedTrackObject,
   TrackObject,
 } from './codecs'
+import { isAlbumObject } from './codecs'
 import { regex } from './regex'
 
 type LinkType = 'track' | 'album'

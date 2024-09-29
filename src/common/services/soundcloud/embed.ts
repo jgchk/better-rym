@@ -1,12 +1,12 @@
 import { fetch } from '../../utils/fetch'
-import { EmbedFunction } from '../types'
+import type { EmbedFunction } from '../types'
 
 export const embed: EmbedFunction = async (url) => {
   const response = await fetch({ url })
   const document_ = new DOMParser().parseFromString(response, 'text/html')
 
   const twitterEmbedUrl = document_.querySelector<HTMLMetaElement>(
-    'meta[property="twitter:player"]'
+    'meta[property="twitter:player"]',
   )?.content
   if (twitterEmbedUrl === undefined) return undefined
 

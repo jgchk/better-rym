@@ -1,8 +1,8 @@
 import { sendBackgroundMessage } from './messaging'
-import { DownloadRequest, DownloadResponse } from './messaging/codec'
+import type { DownloadRequest, DownloadResponse } from './messaging/codec'
 
 export const download = async (
-  data: DownloadRequest['data']
+  data: DownloadRequest['data'],
 ): Promise<number> => {
   const response = await sendBackgroundMessage<
     DownloadRequest,

@@ -1,5 +1,6 @@
 import { render } from 'preact'
 import { useCallback, useEffect, useState } from 'preact/hooks'
+
 import { equals, uniqueBy } from '~/common/utils/array'
 import {
   forceQuerySelector,
@@ -8,6 +9,7 @@ import {
 } from '~/common/utils/dom'
 import { pipe } from '~/common/utils/pipe'
 import { ifDefined, isDefined } from '~/common/utils/types'
+
 import { selectShortcut } from '../utils/page-functions'
 
 export default async function injectCreditsControls() {

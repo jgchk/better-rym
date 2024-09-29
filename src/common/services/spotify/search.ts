@@ -1,7 +1,7 @@
 import { fetch } from '../../utils/fetch'
-import { SearchFunction } from '../types'
+import type { SearchFunction } from '../types'
 import { requestToken } from './auth'
-import { AlbumSearchObject } from './codecs'
+import type { AlbumSearchObject } from './codecs'
 
 export const search: SearchFunction = async ({ artist, title }) => {
   const token = await requestToken()

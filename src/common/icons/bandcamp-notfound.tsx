@@ -1,7 +1,8 @@
-import { h, JSX } from 'preact'
+import type { JSX } from 'preact'
+import { h } from 'preact'
 
 export default function BandcampNotFoundIcon(
-  props: JSX.SVGAttributes<SVGSVGElement>
+  props: JSX.SVGAttributes<SVGSVGElement>,
 ) {
   return (
     <svg

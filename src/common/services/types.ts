@@ -1,4 +1,4 @@
-import { FunctionComponent, JSX } from 'preact'
+import type { FunctionComponent, JSX } from 'preact'
 
 export const SERVICE_IDS = [
   'applemusic',

@@ -4,7 +4,7 @@ import { fetch } from '../../utils/fetch'
 import { getReleaseType } from '../../utils/music'
 import { pipe } from '../../utils/pipe'
 import { ifDefined } from '../../utils/types'
-import {
+import type {
   ReleaseAttribute,
   ReleaseFormat,
   ReleaseLabel,
@@ -12,13 +12,13 @@ import {
   ResolveFunction,
   Track,
 } from '../types'
-import { MusicVideoData, ReleaseData } from './codec'
+import type { MusicVideoData, ReleaseData } from './codec'
 
 const FULL_IMAGE_SIZE = '999999999x999999999'
 
 export function convertAppleMusicDuration(appleMusicDuration: string) {
   // Extract minutes and seconds using a regular expression
-  const matches = appleMusicDuration.match(/PT(?:(\d+?)M)?(?:(\d+?)S)?/)
+  const matches = /PT(?:(\d+?)M)?(?:(\d+?)S)?/.exec(appleMusicDuration)
 
   if (!matches) {
     throw new Error(`Invalid format: ${appleMusicDuration}`)
@@ -41,12 +41,12 @@ export function convertAppleMusicDuration(appleMusicDuration: string) {
 
 const getReleaseData = (document_: Document) => {
   const releaseScript = document_.querySelector<HTMLScriptElement>(
-    'script#schema\\:music-album'
+    'script#schema\\:music-album',
   )
   if (releaseScript) return JSON.parse(releaseScript.text) as ReleaseData
 
   const musicVideoScript = document_.querySelector<HTMLScriptElement>(
-    'script#schema\\:music-video'
+    'script#schema\\:music-video',
   )
   if (musicVideoScript)
     return JSON.parse(musicVideoScript.text) as MusicVideoData
@@ -64,7 +64,7 @@ export const resolve: ResolveFunction = async (url) => {
   const date = stringToDate(
     release['@type'] === 'MusicAlbum'
       ? release.datePublished
-      : release.dateCreated
+      : release.dateCreated,
   )
 
   let tracks: Track[] | undefined
@@ -106,7 +106,7 @@ export const resolve: ResolveFunction = async (url) => {
     }
 
     const descEl = document_.querySelector(
-      '[data-testid="tracklist-footer-description"]'
+      '[data-testid="tracklist-footer-description"]',
     )
     if (descEl) {
       const descText = descEl.textContent ?? ''
@@ -134,9 +134,9 @@ export const resolve: ResolveFunction = async (url) => {
         document_.querySelector<HTMLMetaElement>('meta[property="og:image"]') ??
           undefined,
         ifDefined((el) =>
-          el.content.replace(/\d+x\d+bf-\d+\.jpg/, `${FULL_IMAGE_SIZE}.jpg`)
-        )
-      )
+          el.content.replace(/\d+x\d+bf-\d+\.jpg/, `${FULL_IMAGE_SIZE}.jpg`),
+        ),
+      ),
     )
 
     const isDownloadable =

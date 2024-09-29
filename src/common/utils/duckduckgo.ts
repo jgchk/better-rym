@@ -1,6 +1,6 @@
 import { fetch } from './fetch'
 
-interface SearchResults {
+type SearchResults = {
   /** Whether there were no results found. */
   noResults: boolean
   /** The VQD of the search query. */
@@ -9,7 +9,7 @@ interface SearchResults {
   results: SearchResult[]
 }
 
-interface SearchResult {
+type SearchResult = {
   /** The hostname of the website. (i.e. "google.com") */
   hostname: string
   /** The URL of the result. */
@@ -29,7 +29,7 @@ interface SearchResult {
   bang?: SearchResultBang
 }
 
-interface SearchResultBang {
+type SearchResultBang = {
   /** The prefix of the bang. (i.e. "w" for !w) */
   prefix: string
   /** The title of the bang. */
@@ -38,7 +38,7 @@ interface SearchResultBang {
   domain: string
 }
 
-interface CallbackSearchResult {
+type CallbackSearchResult = {
   /** Website description */
   a: string
   /** Unknown */
@@ -71,7 +71,7 @@ interface CallbackSearchResult {
   u: string
 }
 
-interface CallbackNextSearch {
+type CallbackNextSearch = {
   /** URL to the next page of results */
   n: string
 }
@@ -148,9 +148,9 @@ export const search = async (query: string): Promise<SearchResults> => {
   )[]
 
   // check for no results
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  if (searchResults.length === 1 && !('n' in searchResults[0]!)) {
-    const onlyResult = searchResults[0] as CallbackSearchResult
+
+  if (searchResults.length === 1 && !('n' in searchResults[0])) {
+    const onlyResult = searchResults[0]
     if (
       (!onlyResult.da && onlyResult.t === 'EOF') ||
       !onlyResult.a ||

@@ -1,6 +1,6 @@
 import BeatportIcon from '../../icons/beatport'
 import { withCache } from '../../utils/cache'
-import { Resolvable, Service } from '../types'
+import type { Resolvable, Service } from '../types'
 import { resolve } from './resolve'
 
 export const Beatport: Service & Resolvable = {

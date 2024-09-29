@@ -1,22 +1,22 @@
 export const regexIndexOf = (
   string: string,
   regex: RegExp,
-  startpos?: number
+  startpos?: number,
 ): number => {
-  const indexOf = string.slice(Math.max(0, startpos || 0)).search(regex)
-  return indexOf >= 0 ? indexOf + (startpos || 0) : indexOf
+  const indexOf = string.slice(Math.max(0, startpos ?? 0)).search(regex)
+  return indexOf >= 0 ? indexOf + (startpos ?? 0) : indexOf
 }
 
 export const regexLastIndexOf = (
   string: string,
   regex: RegExp,
-  startpos?: number
+  startpos?: number,
 ): number => {
   regex = regex.global
     ? regex
     : new RegExp(
         regex.source,
-        'g' + (regex.ignoreCase ? 'i' : '') + (regex.multiline ? 'm' : '')
+        'g' + (regex.ignoreCase ? 'i' : '') + (regex.multiline ? 'm' : ''),
       )
   if (typeof startpos == 'undefined') {
     startpos = string.length

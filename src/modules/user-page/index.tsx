@@ -13,13 +13,14 @@ const COMMON_STYLE =
   'vertical-align:middle; position:relative; margin-right:1em;'
 const OTHER_STYLE = COMMON_STYLE + 'top:75%; transform:translateY(-50%)'
 
-type Dictionary = { [index: string]: string }
+type Dictionary = Record<string, string>
 
 const getHeader = (alias: string) => {
   const header = headerArray.find((element) =>
-    element.textContent?.includes(alias)
+    element.textContent?.includes(alias),
   )
-  if (!header) throw "Couldn't find the requested header with alias " + alias
+  if (!header)
+    throw new Error("Couldn't find the requested header with alias " + alias)
   return header as HTMLDivElement
 }
 
@@ -28,7 +29,9 @@ const getCorrespondingContent = (alias: string) => {
     headerArray.indexOf(getHeader(alias))
   ]
   if (!content)
-    throw "Couldn't find the content corresponding to the specified header!"
+    throw new Error(
+      "Couldn't find the content corresponding to the specified header!",
+    )
   return content as HTMLDivElement
 }
 
@@ -40,7 +43,7 @@ const createEditButton = (alias: string, field: string) => {
   }" data-alias="${alias}" data-field="${field}">edit</a>`
   forceQuerySelector<HTMLAnchorElement>(getHeader(alias))('a').addEventListener(
     'click',
-    editClick
+    editClick,
   )
 }
 
@@ -48,21 +51,21 @@ const editClick = (event: MouseEvent) => {
   const button = event.target as HTMLElement
   if (
     button.style.display != 'none' &&
-    button.dataset['alias'] != null &&
-    button.dataset['field'] != null
+    button.dataset.alias != null &&
+    button.dataset.field != null
   ) {
     button.style.display = 'none'
 
     const contentBox = forceQuerySelector(
-      getCorrespondingContent(button.dataset['alias'])
+      getCorrespondingContent(button.dataset.alias),
     )('div')
     forceQuerySelector<HTMLSpanElement>(contentBox)(
-      '.rendered_text'
+      '.rendered_text',
     ).outerHTML = ''
 
     const contentText = document.createElement('textarea')
     contentText.textContent =
-      (currentPreferences.get(button.dataset['field']) as string) || ''
+      (currentPreferences.get(button.dataset.field) as string) || ''
     contentText.style.resize = 'vertical'
     contentText.rows = 6
 
@@ -80,15 +83,15 @@ const editClick = (event: MouseEvent) => {
             className={BUTTON_CLASSES}
             style={OTHER_STYLE}
             onClick={handler}
-            data-alias={button.dataset['alias']}
-            data-field={button.dataset['field']}
+            data-alias={button.dataset.alias}
+            data-field={button.dataset.field}
             key={text}
           >
             {text}
           </a>
         ))}
       </div>,
-      contentButtons
+      contentButtons,
     )
     contentButtons.prepend(contentText)
     contentBox?.append(contentButtons)
@@ -98,17 +101,17 @@ const editClick = (event: MouseEvent) => {
 const saveClick = (event: MouseEvent) => {
   const button = event.target as HTMLAnchorElement
   if (
-    button.dataset['alias'] != null &&
-    button.dataset['field'] != null &&
+    button.dataset.alias != null &&
+    button.dataset.field != null &&
     button.style.cursor != 'default'
   ) {
-    const container = getCorrespondingContent(button.dataset['alias'])
+    const container = getCorrespondingContent(button.dataset.alias)
     if (container.querySelector('svg[class*="loader"]') != null)
       lockAndLoad(button)
 
     currentPreferences.set(
-      button.dataset['field'],
-      container.querySelector('textarea')?.value || ''
+      button.dataset.field,
+      container.querySelector('textarea')?.value ?? '',
     )
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -120,9 +123,9 @@ const saveClick = (event: MouseEvent) => {
 
 const previewClick = (event: MouseEvent) => {
   const button = event.target as HTMLAnchorElement
-  if (button.dataset['alias'] != null && button.style.cursor != 'default') {
+  if (button.dataset.alias != null && button.style.cursor != 'default') {
     const container = forceQuerySelector(
-      getCorrespondingContent(button.dataset['alias'])
+      getCorrespondingContent(button.dataset.alias),
     )('div')
     if (container.querySelector('svg[class*="loader"]') != null)
       lockAndLoad(button)
@@ -131,7 +134,8 @@ const previewClick = (event: MouseEvent) => {
     if (existing) existing.outerHTML = ''
 
     void parseMarkup(
-      forceQuerySelector<HTMLTextAreaElement>(container)('textarea').value || ''
+      forceQuerySelector<HTMLTextAreaElement>(container)('textarea').value ||
+        '',
     ).then((value) => {
       const line = document.createElement('hr')
       line.style.margin = '1em 0'
@@ -149,26 +153,26 @@ const cancelClick = (event: MouseEvent) => {
 }
 
 const closeUpShop = (button: HTMLAnchorElement) => {
-  if (button.dataset['alias'] != null && button.dataset['field'] != null) {
-    const container = getCorrespondingContent(button.dataset['alias'])
-    const field = button.dataset['field']
+  if (button.dataset.alias != null && button.dataset.field != null) {
+    const container = getCorrespondingContent(button.dataset.alias)
+    const field = button.dataset.field
     if (container.querySelector('svg[class*="loader"]') != null)
       lockAndLoad(button)
 
-    void parseMarkup(currentPreferences.get(field)?.toString() || '').then(
+    void parseMarkup(currentPreferences.get(field)?.toString() ?? '').then(
       (value) => {
         container.innerHTML = `<div style="padding:14px;">${value.outerHTML}</div><div class="clear"></div>`
         forceQuerySelector<HTMLElement>(document)(
-          `.bubble_header a[data-field=${field}]`
+          `.bubble_header a[data-field=${field}]`,
         ).style.display = 'inline-block'
-      }
+      },
     )
   }
 }
 
 const lockAndLoad = (button: HTMLAnchorElement) => {
-  if (button.parentElement == null || !button.parentElement.children)
-    throw 'Unexpected null or undefined'
+  if (!button.parentElement?.children)
+    throw new Error('Unexpected null or undefined')
 
   for (const element of button.parentElement.children) {
     const anchor = element as HTMLElement
@@ -187,8 +191,8 @@ const lockAndLoad = (button: HTMLAnchorElement) => {
 }
 
 const unlock = (button: HTMLAnchorElement) => {
-  if (button.parentElement == null || !button.parentElement.children)
-    throw 'Unexpected null or undefined'
+  if (!button.parentElement?.children)
+    throw new Error('Unexpected null or undefined')
 
   for (const element of button.parentElement.children) {
     const anchor = element as HTMLElement
@@ -224,23 +228,23 @@ export const main = async () => {
     })
     currentPreferences = new FormData(
       forceQuerySelector<HTMLFormElement>(
-        new DOMParser().parseFromString(response2, 'text/html')
-      )('#mediumForm')
+        new DOMParser().parseFromString(response2, 'text/html'),
+      )('#mediumForm'),
     )
 
     createEditButton(
       htmlOrder
         .querySelector('li#fav_artists')
         ?.textContent?.trim()
-        .toLowerCase() || 'favorite artists',
-      'fav_music'
+        .toLowerCase() ?? 'favorite artists',
+      'fav_music',
     )
     createEditButton(
       htmlOrder
         .querySelector('li#other_comments')
         ?.textContent?.trim()
-        .toLowerCase() || 'other comments',
-      'comments'
+        .toLowerCase() ?? 'other comments',
+      'comments',
     )
   }
 }

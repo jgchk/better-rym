@@ -1,6 +1,6 @@
 import { fetch } from '../../../common/utils/fetch'
 import { getReleaseType } from '../../utils/music'
-import {
+import type {
   DiscSize,
   ReleaseDate,
   ReleaseLabel,
@@ -8,7 +8,7 @@ import {
   ResolveFunction,
 } from '../types'
 import { client_key, client_secret } from './auth'
-import { Format, FormatDescription, Master, Release } from './codec'
+import type { Format, FormatDescription, Master, Release } from './codec'
 import { regex } from './regex'
 
 type LinkType = 'release' | 'master'
@@ -169,10 +169,7 @@ const parseFormatName = (data: ResolveData, format: Format) => {
   }
 }
 
-const parseFormatDescription = (
-  data: ResolveData,
-  desc: FormatDescription | string
-) => {
+const parseFormatDescription = (data: ResolveData, desc: FormatDescription) => {
   switch (desc) {
     case '16"':
     case '12"':
@@ -401,7 +398,7 @@ const resolveRelease = async (id: string): Promise<ResolveData> => {
         key: client_key,
         secret: client_secret,
       },
-    })
+    }),
   ) as Release
 
   const url = response.uri
@@ -409,7 +406,7 @@ const resolveRelease = async (id: string): Promise<ResolveData> => {
   const artists = response.artists.map((artist) =>
     // id 194 = various artists
     // we do this by id instead of name ('Various' on discogs) to allow for artists named 'Various'
-    artist.id === 194 ? 'Various Artists' : artist.name
+    artist.id === 194 ? 'Various Artists' : artist.name,
   )
   const date = !response.released ? undefined : parseDate(response.released)
   const tracks = response.tracklist.map((track) => ({
@@ -457,7 +454,7 @@ const getMasterPrimaryReleaseId = async (masterId: string) => {
         key: client_key,
         secret: client_secret,
       },
-    })
+    }),
   ) as Master
   return response.main_release
 }
@@ -469,7 +466,7 @@ export const resolve: ResolveFunction = async (url) => {
   const type = match[5]
   if (!type || !isValidLinkType(type))
     throw new Error(
-      `Expected link to be release/master. Received: ${String(type)}`
+      `Expected link to be release/master. Received: ${String(type)}`,
     )
 
   const id = match[6]

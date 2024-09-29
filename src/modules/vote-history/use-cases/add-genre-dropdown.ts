@@ -1,6 +1,6 @@
-import addDropdown from './add-dropdown'
 import { genres } from '../data/genres'
+import addDropdown from './add-dropdown'
 
-export default function addGenreDropdown() {
-  addDropdown('Genre', 'genre', genres)
+export default async function addGenreDropdown() {
+  await addDropdown('Genre', 'genre', genres)
 }

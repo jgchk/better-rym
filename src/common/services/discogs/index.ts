@@ -1,6 +1,6 @@
 import DiscogsIcon from '../../icons/discogs'
 import { withCache } from '../../utils/cache'
-import { Resolvable, Service } from '../types'
+import type { Resolvable, Service } from '../types'
 import { regex } from './regex'
 import { resolve } from './resolve'
 

@@ -1,7 +1,8 @@
-import { h, VNode } from 'preact'
-
-import { Service } from '../services/types'
+import type { VNode } from 'preact'
+import { h } from 'preact'
 import { useState } from 'preact/hooks'
+
+import type { Service } from '../services/types'
 
 export function ServiceSelector<S extends Service>({
   services,

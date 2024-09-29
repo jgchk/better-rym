@@ -1,5 +1,5 @@
 import { fetch } from '../../utils/fetch'
-import { TokenResponse } from './codecs'
+import type { TokenResponse } from './codecs'
 
 const client_id = import.meta.env.VITE_SPOTIFY_ID as string
 const client_secret = import.meta.env.VITE_SPOTIFY_SECRET as string

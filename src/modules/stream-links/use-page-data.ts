@@ -1,20 +1,21 @@
 import { useEffect, useState } from 'preact/hooks'
 
+import { SEARCHABLES } from '~/common/services'
+import type { ServiceId } from '~/common/services/types'
+import {
+  runScript,
+  waitForDocumentReady,
+  waitForElement,
+} from '~/common/utils/dom'
+
+import type { OneShot } from '../../common/utils/one-shot'
 import {
   complete,
   failed,
   initial,
   isInitial,
   loading,
-  OneShot,
 } from '../../common/utils/one-shot'
-import {
-  runScript,
-  waitForDocumentReady,
-  waitForElement,
-} from '~/common/utils/dom'
-import { SEARCHABLES } from '~/common/services'
-import { ServiceId } from '~/common/services/types'
 
 export type PageDataState = OneShot<Error, PageData>
 
@@ -79,21 +80,23 @@ async function getLinks(): Promise<Links> {
   const linksString = element_.dataset.links
   if (!linksString) return EMPTY_LINKS
 
-  const linksData = JSON.parse(linksString)
+  const linksData = JSON.parse(linksString) as PageLinksData
 
-  const e: { [service: string]: string } = {}
-  for (const service in linksData) {
-    const linkData = linksData[service]
-    const r = f(service, linkData, streamingPreferences)
-    if (r) {
-      e[service] = getFullLink(service, r)
-    }
-  }
+  const links = Object.fromEntries(
+    Object.entries(linksData).map(([service, linkData]) => {
+      const r = getLinkData(service, linkData, streamingPreferences)
+      if (r) {
+        const link = getFullLink(service, r)
+        return [service, link]
+      }
 
-  return Object.fromEntries(SEARCHABLES.map(({ id }) => [id, e[id]])) as Record<
-    ServiceId,
-    string | undefined
-  >
+      return [service, undefined]
+    }),
+  )
+
+  return Object.fromEntries(
+    SEARCHABLES.map(({ id }) => [id, links[id]]),
+  ) as Record<ServiceId, string | undefined>
 }
 
 type Links = Record<ServiceId, string | undefined>
@@ -107,9 +110,9 @@ const getStreamingPreferences = async (): Promise<
 > => {
   return new Promise((resolve) => {
     const listener = (e: Event) => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      const streamingPreferences = (e as CustomEvent).detail
-        .streamingPreferences as StreamingPreferences
+      const streamingPreferences =
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        (e as CustomEvent).detail.streamingPreferences as StreamingPreferences
 
       document.removeEventListener('StreamingPreferencesEvent', listener)
 
@@ -125,50 +128,106 @@ const getStreamingPreferences = async (): Promise<
   })
 }
 
-type StreamingPreferences = { service_regions: Record<string, unknown> }
+type PageLinksData = Record<
+  string,
+  Record<
+    string,
+    LinkData & {
+      default?: true
+      for?: string[]
+      not?: string[]
+      media_id: string
+    }
+  >
+>
 
-function f(
+type StreamingPreferences = { service_regions: Record<string, string> }
+
+function getLinkData(
   service: string,
-  linkData: any,
+  linkData: PageLinksData[string],
   streamingPreferences: StreamingPreferences,
-) {
-  let a = null
-  let n = null
+): LinkData | null {
+  let bestLinkData = null
+  let bestMediaId = null
 
-  for (const r in linkData) {
-    const index = linkData[r]
-    if (index.default) (a = index), (n = r)
-    else if (
-      index.for &&
-      index.for.includes(streamingPreferences.service_regions[service])
-    )
-      return (index.media_id = r), index
+  for (const [mediaId, index] of Object.entries(linkData)) {
+    if ('default' in index && index.default) {
+      bestLinkData = index
+      bestMediaId = mediaId
+    } else if (
+      index.for?.includes(streamingPreferences.service_regions[service])
+    ) {
+      index.media_id = mediaId
+      return index
+    }
   }
 
-  return a
-    ? a.not && a.not.includes(streamingPreferences.service_regions[service])
-      ? null
-      : ((a.media_id = n), a)
-    : null
+  if (bestLinkData) {
+    if (
+      bestLinkData.not?.includes(streamingPreferences.service_regions[service])
+    ) {
+      return null
+    }
+
+    if (bestMediaId !== null) {
+      bestLinkData.media_id = bestMediaId
+    }
+
+    return bestLinkData
+  }
+
+  return null
 }
 
-function getFullLink(service: string, linkData: any) {
+function getFullLink(service: string, linkData: LinkData) {
   switch (service) {
-    case 'spotify':
-      return `https://open.spotify.com/${linkData.type}/${linkData.media_id}`
-    case 'applemusic':
-      return `https://geo.music.apple.com/${linkData.loc}/${
-        linkData.album ? 'album' : 'video'
-      }/${linkData.album ? linkData.album : linkData.video}/${
-        linkData.media_id
-      }`
-    case 'soundcloud':
-      return `https://${linkData.url}`
-    case 'bandcamp':
-      return `https://${linkData.url}`
-    case 'youtube':
-      return `https://www.youtube.com/watch?v=${linkData.media_id}`
+    case 'spotify': {
+      const data = linkData as SpotifyLinkData
+      return `https://open.spotify.com/${data.type}/${data.media_id}`
+    }
+
+    case 'applemusic': {
+      const data = linkData as AppleMusicLinkData
+      return `https://geo.music.apple.com/${data.loc}/${
+        data.album ? 'album' : 'video'
+      }/${data.album ? data.album : data.video}/${data.media_id}`
+    }
+
+    case 'soundcloud': {
+      const data = linkData as SoundcloudLinkData
+      return `https://${data.url}`
+    }
+
+    case 'bandcamp': {
+      const data = linkData as BandcampLinkData
+      return `https://${data.url}`
+    }
+
+    case 'youtube': {
+      const data = linkData as YoutubeLinkData
+      return `https://www.youtube.com/watch?v=${data.media_id}`
+    }
+
     default:
       throw new Error(`Cannot create links for service: ${service}`)
   }
 }
+
+type LinkData =
+  | SpotifyLinkData
+  | AppleMusicLinkData
+  | SoundcloudLinkData
+  | BandcampLinkData
+  | YoutubeLinkData
+
+type SpotifyLinkData = { type: string; media_id: string }
+type AppleMusicLinkData = {
+  album?: string
+  video?: string
+  loc: string
+  media_id: string
+}
+type SoundcloudLinkData = { url: string }
+type BandcampLinkData = { url: string }
+type YoutubeLinkData = { media_id: string }

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'preact/hooks'
 
 export const useControlledInput = (
-  input: HTMLInputElement
+  input: HTMLInputElement,
 ): readonly [string, (value: string) => void] => {
   const [value, setValue] = useState(input.value)
 
@@ -16,7 +16,7 @@ export const useControlledInput = (
     (value: string) => {
       input.value = value
     },
-    [input]
+    [input],
   )
 
   return [value, setInputValue] as const

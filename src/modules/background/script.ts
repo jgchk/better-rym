@@ -1,6 +1,6 @@
 import browser from 'webextension-polyfill'
 
-import {
+import type {
   ScriptRequest,
   ScriptResponse,
 } from '../../common/utils/messaging/codec'
@@ -11,7 +11,7 @@ export const script = async (
 ): Promise<ScriptResponse> => {
   await browser.scripting.executeScript({
     target: { tabId },
-    // @ts-ignore
+    // @ts-expect-error - this is a valid injection world
     world: 'MAIN',
     func: (injectedScript: string) => {
       const element = document.createElement('script')

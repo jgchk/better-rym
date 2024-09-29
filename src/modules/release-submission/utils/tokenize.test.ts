@@ -1,4 +1,5 @@
 import { describe, expect, test } from 'vitest'
+
 import { splitPhrases, tokenizePhrase } from './tokenize'
 
 describe('split phrases', () => {

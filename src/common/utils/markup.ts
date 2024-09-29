@@ -1,6 +1,6 @@
 import { fetch } from './fetch'
 
-export const parseMarkup = async (markup: string): Promise<HTMLSpanElement> => {
+export async function parseMarkup(markup: string): Promise<Element> {
   // if markup is empty, just return an empty span
   if (!markup) {
     const span = document.createElement('span')
@@ -19,5 +19,5 @@ export const parseMarkup = async (markup: string): Promise<HTMLSpanElement> => {
 
   return new DOMParser()
     .parseFromString(output.slice(33, -2), 'text/html')
-    .querySelector('.rendered_text') as HTMLSpanElement
+    .querySelector('.rendered_text')!
 }

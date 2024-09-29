@@ -3,9 +3,9 @@ import { useCallback, useState } from 'preact/hooks'
 
 import { Failed } from '../../common/components/failed'
 import { Loader } from '../../common/components/loader'
-import { Searchable, Service } from '../../common/services/types'
+import type { Searchable, Service } from '../../common/services/types'
 import { isComplete, isFailed, isLoading } from '../../common/utils/one-shot'
-import { StreamLinkState } from './stream-link'
+import type { StreamLinkState } from './stream-link'
 
 export function StreamLinkIcon({
   service,

@@ -1,10 +1,11 @@
 import browser from 'webextension-polyfill'
 
-import {
+import filenamify from '~/common/utils/filenamify'
+
+import type {
   DownloadRequest,
   DownloadResponse,
 } from '../../common/utils/messaging/codec'
-import filenamify from '~/common/utils/filenamify'
 
 const mimeTypes: Record<string, string | undefined> = {
   'image/bmp': 'bmp',

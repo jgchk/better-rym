@@ -247,7 +247,7 @@ export type Release = {
       title: string
       duration: string
       type_: 'heading' | 'track'
-    }
+    },
   ]
   images: [{ resource_url: string }]
   formats: [Format]
@@ -255,7 +255,7 @@ export type Release = {
     {
       name: string
       catno: string
-    }
+    },
   ]
   released?: string
 }

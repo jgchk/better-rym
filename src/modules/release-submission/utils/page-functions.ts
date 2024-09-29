@@ -4,10 +4,10 @@ export const selectShortcut = (
   type: string,
   id: number,
   name: string,
-  target: string
+  target: string,
 ): void =>
   void runScript(
-    `selectShortcut(\`${type}\`, ${id}, \`${name}\`, \`${target}\`)`
+    `selectShortcut(\`${type}\`, ${id}, \`${name}\`, \`${target}\`)`,
   )
 
 // window.parent.goInfobox(897)

@@ -53,7 +53,7 @@ export const tokenizePhrase = (text: string): Token[] => {
       // push current token onto sequence
       tokens.push(t)
     }
-    text = text.slice(matchIndex + ((t && t.text?.length) ?? 0))
+    text = text.slice(matchIndex + (t?.text?.length ?? 0))
   }
   return tokens
 }
@@ -80,8 +80,8 @@ export const splitPhrases = (text: string): string[] => {
       lastSlice = lastSlice.slice(
         0,
         pipe(regexLastIndexOf(lastSlice, /\S/), (index_) =>
-          index_ === -1 ? undefined : index_ + 1
-        )
+          index_ === -1 ? undefined : index_ + 1,
+        ),
       )
       phrases.push(lastSlice, ' / ')
 

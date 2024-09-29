@@ -1,13 +1,14 @@
 import { findLastIndex } from '../../../common/utils/array'
 import { pipe } from '../../../common/utils/pipe'
-import { Phrase, Token, tokenize } from './tokenize'
+import type { Phrase, Token } from './tokenize'
+import { tokenize } from './tokenize'
 
 export const CAPITALIZATION_TYPES = [
   'title-case',
   'sentence-case',
   'as-is',
 ] as const
-export type CapitalizationType = typeof CAPITALIZATION_TYPES[number]
+export type CapitalizationType = (typeof CAPITALIZATION_TYPES)[number]
 
 const ENG_DO_NOT_CAPITALIZE = new Set([
   'a',
@@ -53,7 +54,7 @@ const toTitleCase = ({ text, type }: Token) => {
 
 export const capitalize = (
   text: string,
-  capitalization: CapitalizationType
+  capitalization: CapitalizationType,
 ): string =>
   capitalization === 'as-is'
     ? text
@@ -74,11 +75,11 @@ const capitalizePhrase =
               index === firstWordIndex
                 ? toTitleCase(token)
                 : token.type === 'romanNumeral'
-                ? token.text.toUpperCase()
-                : token.text.toLowerCase()
+                  ? token.text.toUpperCase()
+                  : token.text.toLowerCase(),
             )
             .join(''),
-          formatMixText
+          formatMixText,
         )
       : pipe(
           phrase
@@ -94,7 +95,7 @@ const capitalizePhrase =
               }
             })
             .join(''),
-          formatMixText
+          formatMixText,
         )
   }
 

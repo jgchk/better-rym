@@ -1,4 +1,4 @@
-import {
+import type {
   DiscSize,
   ReleaseAttribute,
   ReleaseDate,
@@ -9,9 +9,10 @@ import {
   Track,
 } from '../../../common/services/types'
 import { forceQuerySelector, waitForResult } from '../../../common/utils/dom'
-import { FillData } from '../dom'
-import { CapitalizationType, capitalize } from './capitalization'
-import { ReleaseOptions } from './types'
+import type { FillData } from '../dom'
+import type { CapitalizationType } from './capitalization'
+import { capitalize } from './capitalization'
+import type { ReleaseOptions } from './types'
 
 export async function fill(
   {

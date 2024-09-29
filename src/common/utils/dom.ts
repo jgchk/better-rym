@@ -1,5 +1,5 @@
 import { sendBackgroundMessage } from './messaging'
-import { ScriptRequest, ScriptResponse } from './messaging/codec'
+import type { ScriptRequest, ScriptResponse } from './messaging/codec'
 
 export const isDocumentReady = (): boolean =>
   document.readyState === 'complete' || document.readyState === 'interactive'
@@ -64,7 +64,7 @@ export const runScript = async (script: string) => {
 }
 
 export const waitForResult = (
-  iframe: HTMLIFrameElement
+  iframe: HTMLIFrameElement,
 ): Promise<HTMLDivElement | undefined> =>
   new Promise((resolve) => {
     const listener = () => {
