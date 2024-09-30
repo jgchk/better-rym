@@ -1,3 +1,7 @@
+import { pages, runPage } from '~/common/pages'
+
 import { main } from '.'
 
-void main()
+void runPage(pages.streamLinkMissing, () => {
+  void main()
+})

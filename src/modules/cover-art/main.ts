@@ -1,3 +1,7 @@
+import { pages, runPage } from '~/common/pages'
+
 import { injectCoverArtDownloader } from '.'
 
-void injectCoverArtDownloader()
+void runPage(pages.coverArt, () => {
+  void injectCoverArtDownloader()
+})

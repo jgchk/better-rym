@@ -1,3 +1,7 @@
+import { pages, runPage } from '~/common/pages'
+
 import { injectStreamLinkConverter } from '.'
 
-void injectStreamLinkConverter()
+void runPage(pages.streamLinkSubmission, () => {
+  void injectStreamLinkConverter()
+})
