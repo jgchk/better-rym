@@ -1,9 +1,9 @@
 {
-  "name": "vite-web-extension",
-  "version": "1.0.0",
-  "displayName": "Vite Web Extension",
-  "author": "@samrum/vite-plugin-web-extension",
-  "description": "A @samrum/vite-plugin-web-extension web extension",
+  "name": "better-rym",
+  "version": "5.0.0",
+  "displayName": "BetterRYM",
+  "author": "jgchk",
+  "description": "Improvements for RateYourMusic",
   "type": "module",
   "scripts": {
     "build": "vite build",
@@ -16,7 +16,7 @@
     "lint": "prettier --check . && tsc --noEmit && eslint .",
     "format": "prettier --write ."
   },
-  "license": "MIT",
+  "license": "GPL-3.0-or-later",
   "dependencies": {
     "get-artist-title": "^1.3.1",
     "nanoid": "^5.0.7",
