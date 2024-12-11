@@ -8,6 +8,7 @@ import type {
   AlbumObject,
   AlbumTracks,
   AlbumType,
+  ArtistObject,
   SimplifiedTrackObject,
   TrackObject,
 } from './codecs'

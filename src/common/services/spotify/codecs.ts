@@ -41,7 +41,7 @@ export type SimplifiedTrackObject = {
   artists: ArtistObject[]
 }
 
-type ArtistObject = {
+export type ArtistObject = {
   external_urls: ExternalUrlObject
   href: string
   id: string
