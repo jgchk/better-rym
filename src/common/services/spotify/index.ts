@@ -15,5 +15,5 @@ export const Spotify: Service & Searchable & Resolvable = {
   foundIcon: SpotifyFoundIcon,
   notFoundIcon: SpotifyNotFoundIcon,
   search: withCache('spotify-search', search),
-  resolve: withCache('spotify-resolve', resolve),
+  resolve,
 }
