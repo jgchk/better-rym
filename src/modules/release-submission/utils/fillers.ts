@@ -95,7 +95,7 @@ async function fillArtist(artist: string) {
 
   // Wait for results
   const topResult = await waitForResult(
-    forceQuerySelector<HTMLIFrameElement>(document)('#filed_underlist'),
+    forceQuerySelector<HTMLIFrameElement>(document)('#filed_underperformerlist'),
   )
 
   // Click the top result if there is one
