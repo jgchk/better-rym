@@ -56,11 +56,16 @@ const getTracks = async (
   // currently there's no proper way to add links to the individual artists, so it seems
   // counterproductive to add them to the song titles as it's more effort to fix all the
   // unlinked credits than to add them manually and it also messes with capitalization.
-  const shouldIncludeArtists =
-    !allTracks.every((track) => (new Set(track.artists.map((artist) => artist.name))).isSupersetOf(artists_set))
+  const shouldIncludeArtists = !allTracks.every((track) =>
+    new Set(track.artists.map((artist) => artist.name)).isSupersetOf(
+      artists_set,
+    ),
+  )
   if (shouldIncludeArtists) {
-    alert("This is likely to be a VA or split release. Please add the artist links to the tracks individually" +
-          "according to the guidelines as RYM artist lookup is not yet supported in this case.")
+    alert(
+      'This is likely to be a VA or split release. Please add the artist links to the tracks individually' +
+        'according to the guidelines as RYM artist lookup is not yet supported in this case.',
+    )
   }
   const numberOfDiscs = new Set(allTracks.map((track) => track.disc_number))
     .size
