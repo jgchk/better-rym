@@ -4,3 +4,4 @@ profiles/
 .DS_Store
 .env
 brym.zip
+.eslintcache
