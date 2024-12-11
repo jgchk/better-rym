@@ -6,7 +6,7 @@ import { waitForElement } from '~/common/utils/dom'
 import { selectShortcut } from '../utils/page-functions'
 
 export default async function injectFileUnderControls() {
-  const fileUnder = await waitForElement('#filed_underlist')
+  const fileUnder = await waitForElement('#filed_underperformerlist')
   const unknownArtistDiv = document.createElement('div')
   fileUnder.after(unknownArtistDiv)
   render(<UnknownArtist target='filedunder' />, unknownArtistDiv)
