@@ -37,6 +37,7 @@ const getPosition = (
 
 const getTracks = async (
   tracks: AlbumTracks,
+  artists: ArtistObject[],
   token: string,
 ): Promise<Track[]> => {
   let next = tracks.next
@@ -51,24 +52,21 @@ const getTracks = async (
     allTracks.push(...nextResponse.items)
     next = nextResponse.next
   }
-
-  // The album metadata doesn't actually tell us if it's various artists. So
-  // make sure we don't append the same artist(s) to every track name.
+  const artists_set = new Set(artists.map((artist) => artist.name))
+  // currently there's no proper way to add links to the individual artists, so it seems
+  // counterproductive to add them to the song titles as it's more effort to fix all the
+  // unlinked credits than to add them manually and it also messes with capitalization.
   const shouldIncludeArtists =
-    new Set(
-      allTracks.map((track) =>
-        track.artists.map((artist) => artist.name).join(', '),
-      ),
-    ).size > 1
-
+    !allTracks.every((track) => (new Set(track.artists.map((artist) => artist.name))).isSupersetOf(artists_set))
+  if (shouldIncludeArtists) {
+    alert("This is likely to be a VA or split release. Please add the artist links to the tracks individually" +
+          "according to the guidelines as RYM artist lookup is not yet supported in this case.")
+  }
   const numberOfDiscs = new Set(allTracks.map((track) => track.disc_number))
     .size
   return allTracks.map((track) => ({
     position: getPosition(track, numberOfDiscs),
-    title:
-      (shouldIncludeArtists
-        ? `${track.artists.map((artist) => artist.name).join(', ')} - `
-        : '') + track.name,
+    title: track.name,
     duration: secondsToString(track.duration_ms / 1000),
   }))
 }
@@ -98,7 +96,7 @@ const resolveAlbum = async (
   const title = response.name
   const artists = response.artists.map((artist) => artist.name)
   const date = parseDate(response.release_date)
-  const tracks = await getTracks(response.tracks, token)
+  const tracks = await getTracks(response.tracks, response.artists, token)
   const type = parseType(response.album_type, tracks.length)
   const coverArt = asArray(getCoverArt(response))
   const label = {

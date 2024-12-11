@@ -76,7 +76,7 @@ async function fillArtists(artists: string[]) {
     forceQuerySelector<HTMLInputElement>(document)('#cat_va').click()
   } else {
     // Regular release
-    if (document.querySelector('.sortable_filed_under') != null) return
+    if (document.querySelector('.sortable_filed_under_performer') != null) return
 
     for (const artist of artists) await fillArtist(artist)
   }
