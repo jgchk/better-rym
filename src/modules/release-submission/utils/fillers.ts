@@ -73,14 +73,20 @@ export async function fill(
 async function fillArtists(artists: string[]) {
   if (artists[0]?.toLowerCase() === 'various artists') {
     // Various Artists release
-    forceQuerySelector<HTMLInputElement>(document)('#cat_va').click()
-  } else {
-    // Regular release
-    if (document.querySelector('.sortable_filed_under_performer') != null)
-      return
-
-    for (const artist of artists) await fillArtist(artist)
+    forceQuerySelector<HTMLInputElement>(document)('#cat_va').click();
+    return;
   }
+
+  // Check if "Various Artists (non-classical)" is already selected
+  const vaNonClassicalRadio = document.querySelector<HTMLInputElement>('#cat_va');
+  if (vaNonClassicalRadio?.checked) {
+    return; // Exit if "Various Artists (non-classical)" is selected
+  }
+
+  // Regular release
+  if (document.querySelector('sortable_filed_under_performer') != null) return;
+
+  for (const artist of artists) await fillArtist(artist);
 }
 
 async function fillArtist(artist: string) {
