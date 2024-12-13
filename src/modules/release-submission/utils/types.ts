@@ -12,5 +12,6 @@ export type ReleaseOptions = {
     attributes: boolean
     tracks: boolean
     label: boolean
+    dupa: boolean
   }
 }

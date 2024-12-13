@@ -198,8 +198,8 @@ const FIELDS_MAP: Record<FillField, string> = {
 
 const DEFAULT_FORM_OPTIONS: ImportOptions = {
   fillFields: Object.fromEntries(
-    Object.keys(FIELDS_MAP).map((field) => [field, true]),
+    Object.keys(FIELDS_MAP).map((field) => [field, field === 'artists' ? false : true]),
   ) as ReleaseOptions['fillFields'],
   capitalization: 'title-case',
   downloadArt: false,
-}
+};
