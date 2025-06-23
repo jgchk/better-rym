@@ -1,3 +1,13 @@
+declare namespace chrome {
+  namespace runtime {
+    // Minimal stubs; extend if more typings are needed
+    type ManifestPermissions = any
+    interface ManifestBase {}
+    interface ManifestV2 {}
+    interface ManifestV3 {}
+  }
+}
+
 import pkg from '../package.json'
 
 const sharedManifest = {
@@ -48,6 +58,11 @@ const sharedManifest = {
     {
       js: ['src/modules/vote-history/genres.ts'],
       matches: ['*://*.rateyourmusic.com/rgenre/vote_history*'],
+      run_at: 'document_start',
+    },
+    {
+      js: ['src/modules/vote-history/films.ts'],
+      matches: ['*://*.rateyourmusic.com/rgenre/film_vote_history*'],
       run_at: 'document_start',
     },
     {

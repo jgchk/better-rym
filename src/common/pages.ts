@@ -10,6 +10,7 @@ export const pages = {
   userPage: '/~',
   voteHistoryGenres: '/rgenre/vote_history',
   voteHistoryDescriptors: '/rdescriptor/vote_history',
+  voteHistoryFilms: '/rgenre/film_vote_history',
   streamLinkMissing: '/misc/media_link_you_know',
 }
 

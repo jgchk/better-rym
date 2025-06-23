@@ -1,10 +1,11 @@
 import { pages, runPage } from '~/common/pages'
 
+import runCommonVoteHistoryLogic from './common'
 import addGenreDropdown from './use-cases/add-genre-dropdown'
-import fixPaginationParameters from './use-cases/fix-pagination-parameters'
 
-async function main() {
-  await Promise.all([fixPaginationParameters(), addGenreDropdown()])
+async function main(): Promise<void> {
+  await runCommonVoteHistoryLogic()
+  await addGenreDropdown()
 }
 
 void runPage(pages.voteHistoryGenres, () => {
