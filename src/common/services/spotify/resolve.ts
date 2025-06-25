@@ -83,9 +83,25 @@ const getTracks = async (
 const parseType = (type: AlbumType, numberOfTracks: number) =>
   type === 'compilation' ? type : getReleaseType(numberOfTracks)
 
-const getCoverArt = (data: AlbumObject | TrackObject) => {
+const getCoverArt = async (data: AlbumObject | TrackObject): Promise<string | undefined> => {
   const images = isAlbumObject(data) ? data.images : data.album.images
-  return images.sort((a, b) => b.width * b.height - a.width * a.height)[0]?.url
+  const best = images.sort((a, b) => b.width * b.height - a.width * a.height)[0]
+  if (!best?.url) return undefined
+
+  const match = best.url.match(/([a-z0-9]{12})([a-z0-9]{4})([a-z0-9]{24})$/)
+  if (match && match[2] !== '82c1') {
+    const fullResUrl = best.url.replace(
+      /([a-z0-9]{12})([a-z0-9]{4})([a-z0-9]{24})$/,
+      `$182c1$3`
+    )
+    try {
+      const body = await fetch({ url: fullResUrl })
+      if (body && body.length > 0) return fullResUrl
+    } catch (e) {
+      // ignore
+    }
+  }
+  return best.url
 }
 
 const resolveAlbum = async (
@@ -107,7 +123,7 @@ const resolveAlbum = async (
   const date = parseDate(response.release_date)
   const tracks = await getTracks(response.tracks, response.artists, token)
   const type = parseType(response.album_type, tracks.length)
-  const coverArt = asArray(getCoverArt(response))
+  const coverArt = asArray(await getCoverArt(response))
   const label = {
     name: response.copyrights[0]?.text
       // https://github.com/jgchk/better-rym/issues/128
@@ -152,7 +168,7 @@ const resolveTrack = async (
       duration: secondsToString(response.duration_ms / 1000),
     },
   ]
-  const coverArt = asArray(getCoverArt(response))
+  const coverArt = asArray(await getCoverArt(response))
 
   return {
     url,
