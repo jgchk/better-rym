@@ -5,6 +5,7 @@ import { Discogs } from './discogs'
 import { Melon } from './melon'
 import { Soundcloud } from './soundcloud'
 import { Spotify } from './spotify'
+import { Traxsource } from './traxsource'
 import type { Embeddable, Resolvable, Searchable, Service } from './types'
 import { isEmbeddable, isResolvable, isSearchable } from './types'
 import { YouTube } from './youtube'
@@ -18,6 +19,7 @@ export const SERVICES: Service[] = [
   YouTube,
   Melon,
   Beatport,
+  Traxsource,
 ]
 
 export const SEARCHABLES: (Service & Searchable)[] =
