@@ -13,7 +13,7 @@ export default defineConfig(({ mode }) => {
     plugins: [
       preact(),
       webExtension({
-        manifest: getManifest(Number(env.MANIFEST_VERSION)),
+        manifest: getManifest(Number(env.MANIFEST_VERSION) || 3),
       }),
     ],
     resolve: {

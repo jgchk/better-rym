@@ -131,11 +131,16 @@ export const resolve: ResolveFunction = async (url) => {
 
     coverArt = asArray(
       pipe(
-        document_.querySelector<HTMLMetaElement>('meta[property="og:image"]') ??
-          undefined,
-        ifDefined((el) =>
-          el.content.replace(/\d+x\d+bf-\d+\.jpg/, `${FULL_IMAGE_SIZE}.jpg`),
+        document_.querySelector<HTMLSourceElement>(
+          'div[slot="artwork"] source[type="image/jpeg"]',
         ),
+        ifDefined((el) => {
+          // get the last (largest?) srcset entry, take URL before whitespace
+          const srcset = el?.attributes?.srcset?.value
+          if (!srcset) return undefined
+          const lastSrc = srcset.split(',').pop()?.trim()
+          return lastSrc ? lastSrc.split(' ')[0] : undefined
+        }),
       ),
     )
 
