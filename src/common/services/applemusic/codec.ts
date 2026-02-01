@@ -7,7 +7,7 @@ export type ReleaseData = {
   name: string
   description: string
   citation: unknown[]
-  tracks: Track[]
+  tracks: TrackLockup[]
   workExample: Track[]
   url: string
   genre: string[]
@@ -51,6 +51,20 @@ export enum OffersType {
 
 export enum Category {
   Free = 'free',
+}
+
+// The TrackLockup (I don't know if "lockup" has some special meaning beyond
+// being easily confused with "lookup"). Is part of the SSR hydration payload
+// from `<script type="application/json" id="serialized-server-data">` and
+// respresents a single track on the album page.
+export type TrackLockup = {
+  artistName: string
+  artwork: string | null
+  composer: string
+  title: string
+  trackNumber: number
+  duration: number // in milliseconds
+  discNumber: number
 }
 
 /**
