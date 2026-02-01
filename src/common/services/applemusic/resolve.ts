@@ -12,38 +12,50 @@ import type {
   ResolveFunction,
   Track,
 } from '../types'
-import type { MusicVideoData, ReleaseData } from './codec'
+import type { MusicVideoData, ReleaseData, TrackLockup } from './codec'
 
 const FULL_IMAGE_SIZE = '999999999x999999999'
 
-export function convertAppleMusicDuration(appleMusicDuration: string) {
-  // Extract minutes and seconds using a regular expression
-  const matches = /PT(?:(\d+?)M)?(?:(\d+?)S)?/.exec(appleMusicDuration)
+function formatMs(ms: number): string {
+  const totalSeconds = Math.floor(ms / 1000);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
 
-  if (!matches) {
-    throw new Error(`Invalid format: ${appleMusicDuration}`)
-  }
-
-  // If minutes are not defined, set it to '0'
-  const mins = matches[1] || '0'
-  // If seconds are not defined, set it to '00'
-  const secs = matches[2] || '00'
-
-  // Pad the seconds with a leading 0 if it's a single digit
-  const minutes = mins
-  const seconds = secs.length === 1 ? '0' + secs : secs
-
-  // Construct the final duration string
-  const duration = `${minutes}:${seconds}`
-
-  return duration
+  return `${minutes}:${String(seconds).padStart(2, '0')}`;
 }
 
 const getReleaseData = (document_: Document) => {
+  // The Apple Music page loads all the tracks information from an SSR
+  // hydration payload in
+  // `<script type="application/json" id="serialized-server-data">`.
+  //
+  // This is actually easier to deal with because it's structured and
+  // doesn't have to be scapred from the HTML.
+  const serverData = document_.querySelector<HTMLScriptElement>(
+    'script#serialized-server-data',
+  )
+  let tracks: TrackLockup[] = [];
+  if (serverData) {
+    const sections = JSON.parse(serverData.text)[0].data.sections;
+
+    // There will be TrackLockup[] per disc. We can append them all together
+    // because each track has the discNumber.
+    for (const disc of sections.filter((x: any) => x.itemKind === 'trackLockup')) {
+      tracks.push(...disc.items as TrackLockup[]);
+    }
+  }
+
+  // TODO(elliotchance): This release data is a subset of everything available
+  // in serverData above, but it is older and works for most of the general
+  // metadata. However, the code can eb refactoted to not need to this at all.
   const releaseScript = document_.querySelector<HTMLScriptElement>(
     'script#schema\\:music-album',
   )
-  if (releaseScript) return JSON.parse(releaseScript.text) as ReleaseData
+  if (releaseScript) {
+    const releaseData = JSON.parse(releaseScript.text) as ReleaseData
+    releaseData.tracks = tracks;
+    return releaseData;
+  }
 
   const musicVideoScript = document_.querySelector<HTMLScriptElement>(
     'script#schema\\:music-video',
@@ -52,6 +64,10 @@ const getReleaseData = (document_: Document) => {
     return JSON.parse(musicVideoScript.text) as MusicVideoData
 
   throw new Error('Could not get release data for URL ' + document_.URL)
+}
+
+function isMulitpleDiscs(tracks: TrackLockup[]): boolean {
+  return new Set(tracks.map((t) => t.discNumber)).size > 1;
 }
 
 export const resolve: ResolveFunction = async (url) => {
@@ -86,13 +102,33 @@ export const resolve: ResolveFunction = async (url) => {
       release.image.replace('{w}x{h}mv', FULL_IMAGE_SIZE),
     ]
   } else {
-    tracks = release.tracks.map((t, i) => ({
-      position: String(i + 1),
-      title: t.name,
-      duration: ifDefined(convertAppleMusicDuration)(t.duration),
-    }))
-
     artists = release.byArtist.map((a) => a.name)
+
+    tracks = release.tracks.map((t, i) => {
+      // Apple Music does not make the distinction between albums that are
+      // compilations or not. Individual tracks just _might_ have artists,
+      // but it's also common for commpilations to exclude the track artist
+      // credits if it's the same as the album artist.
+      //
+      // As a fair balance for this ambiguity, we only include artist credits
+      // when they are different from the album artist.
+      let title = t.title;
+      if (t.artistName && t.artistName !== artists[0]) {
+        title = t.artistName + ' - ' + t.title;
+      }
+
+      let position = (t.trackNumber || i + 1).toString();
+      if (isMulitpleDiscs(release.tracks)) {
+        position = t.discNumber.toString() + '.' + position;
+      }
+
+      return {
+        position,
+        title,
+        duration: formatMs(t.duration),
+      };
+    });
+
     title = release.name
     type = getReleaseType(release.tracks.length)
     format = 'lossless digital'
