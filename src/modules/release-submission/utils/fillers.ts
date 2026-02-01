@@ -206,10 +206,26 @@ function fillTracks(tracks: Track[], capitalization: CapitalizationType) {
     })
     .join('\n')
 
-  forceQuerySelector<HTMLAnchorElement>(document)('#goAdvancedBtn').click()
+  const goAdvancedBtn = forceQuerySelector<HTMLAnchorElement>(document)(
+    '#goAdvancedBtn',
+  )
+  // Prevent CSP violation by temporarily removing javascript: href
+  const originalHref = goAdvancedBtn.href
+  goAdvancedBtn.href = '#'
+  goAdvancedBtn.click()
+  goAdvancedBtn.href = originalHref
+
   forceQuerySelector<HTMLTextAreaElement>(document)('#track_advanced').value =
     tracksString
-  forceQuerySelector<HTMLAnchorElement>(document)('#goSimpleBtn').click()
+
+  const goSimpleBtn = forceQuerySelector<HTMLAnchorElement>(document)(
+    '#goSimpleBtn',
+  )
+  // Prevent CSP violation by temporarily removing javascript: href
+  const originalSimpleHref = goSimpleBtn.href
+  goSimpleBtn.href = '#'
+  goSimpleBtn.click()
+  goSimpleBtn.href = originalSimpleHref
 }
 
 function fillSource(url: string) {

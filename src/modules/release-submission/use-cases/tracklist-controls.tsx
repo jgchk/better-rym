@@ -6,11 +6,12 @@ export default async function injectTracklistControls() {
   const lengthClear = document.createElement('a')
   lengthClear.id = 'clearAllLengths'
   lengthClear.className = 'btn blue_btn btn_small rating_btn'
-  lengthClear.href = 'javascript:void(0);'
+  lengthClear.href = '#'
   lengthClear.style.cssText = 'margin-left: 1em; visibility: visible;'
   lengthClear.textContent = 'clear lengths'
 
-  lengthClear.addEventListener('click', () => {
+  lengthClear.addEventListener('click', (e) => {
+    e.preventDefault()
     const advancedInputContainer = forceQuerySelector(document)('#tracks_adv')
     const isAdvanced =
       window.getComputedStyle(advancedInputContainer).display !== 'none'
@@ -18,8 +19,16 @@ export default async function injectTracklistControls() {
     const advancedInput =
       forceQuerySelector<HTMLTextAreaElement>(document)('#track_advanced')
 
-    if (!isAdvanced)
-      forceQuerySelector<HTMLAnchorElement>(document)('#goAdvancedBtn').click()
+    if (!isAdvanced) {
+      const goAdvancedBtn = forceQuerySelector<HTMLAnchorElement>(document)(
+        '#goAdvancedBtn',
+      )
+      // Prevent CSP violation by temporarily removing javascript: href
+      const originalHref = goAdvancedBtn.href
+      goAdvancedBtn.href = '#'
+      goAdvancedBtn.click()
+      goAdvancedBtn.href = originalHref
+    }
 
     advancedInput.value = advancedInput.value
       .split('\n')
@@ -27,8 +36,16 @@ export default async function injectTracklistControls() {
       .map((line) => [...line.split('|').slice(0, 2), ''].join('|'))
       .join('\n')
 
-    if (!isAdvanced)
-      forceQuerySelector<HTMLAnchorElement>(document)('#goSimpleBtn').click()
+    if (!isAdvanced) {
+      const goSimpleBtn = forceQuerySelector<HTMLAnchorElement>(document)(
+        '#goSimpleBtn',
+      )
+      // Prevent CSP violation by temporarily removing javascript: href
+      const originalHref = goSimpleBtn.href
+      goSimpleBtn.href = '#'
+      goSimpleBtn.click()
+      goSimpleBtn.href = originalHref
+    }
   })
 
   clearAll.after(lengthClear)
